@@ -1,0 +1,464 @@
+{
+  "evaluation_results": [
+    {
+      "control-id": "ac-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable and not satisfied' correctly reflects the explanation and statement that no concurrent session controls exist in the subsystem, indicating a gap in implementation.",
+        "explanation_quality": "The explanation clearly and accurately details why the control is not implemented, referencing the lack of session management in the logging subsystem and absence of configuration options.",
+        "configuration_support": "The configuration section is appropriately empty, which aligns with the explanation that no relevant configuration exists for this control in the subsystem.",
+        "overall_consistency": "The status, explanation, empty configuration, and statement all consistently indicate the control is applicable but not satisfied, with no contradictions present."
+      },
+      "recommendation": "To improve clarity, consider refining the control-description to remove redundancy and improve grammar. Additionally, explicitly state in the explanation that the responsibility for concurrent session control lies outside the scope of this subsystem to further clarify boundaries."
+    },
+    {
+      "control-id": "ac-12",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The control-status 'applicable and not satisfied' correctly reflects that the system does not provide session termination capabilities as required by AC-12.",
+        "explanation_quality": "The explanation clearly and accurately describes the lack of session management and termination features, directly grounded in the observed implementation scope and functionality.",
+        "configuration_support": "The empty configuration is appropriate here, as no relevant configuration exists or is needed to demonstrate compliance due to lack of functionality.",
+        "overall_consistency": "All parts \u2013 status, explanation, configuration, and statement \u2013 consistently indicate the control is applicable but not satisfied, with no contradictions."
+      },
+      "recommendation": "Consider adding a brief note in the explanation or statement about any compensating controls or future plans to address this gap, if applicable. Otherwise, the mapping is well aligned and clear."
+    },
+    {
+      "control-id": "ac-3",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The control-status correctly reflects that the control is applicable but only satisfied through configuration, which matches the explanation and evidence showing enforcement is via OS file permissions and filtering configuration, not in-app controls.",
+        "explanation_quality": "The explanation is clear, detailed, and accurately describes the approach to access enforcement, including the absence of in-app enforcement and reliance on OS-level permissions and data redaction filters.",
+        "configuration_support": "The provided configuration references are specific, valid, and directly support the explanation by pointing to file paths and keys controlling file permission modes and redaction filters.",
+        "overall_consistency": "All parts \u2014 status, explanation, configuration, and statement \u2014 consistently describe the indirect enforcement approach without contradictions, reinforcing a coherent and aligned mapping."
+      },
+      "recommendation": "No major changes needed; however, consider adding explicit mention of how access control policies are mapped or reconciled with OS-level enforcement to enhance traceability and compliance clarity."
+    },
+    {
+      "control-id": "ac-4",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The control status 'applicable but only satisfied through configuration' aligns well with the explanation that enforcement is achieved solely via configuration parameters rather than embedded authorization logic.",
+        "explanation_quality": "The explanation clearly describes how information flow enforcement is implemented through configurable filters and file/network configurations, accurately reflecting the observed implementation.",
+        "configuration_support": "The provided configuration references are specific and relevant, pointing to exact files, keys, and lines that define field filters and writer permissions, supporting the explanation effectively.",
+        "overall_consistency": "All parts of the control\u2014including status, explanation, configuration, and statement\u2014are coherent and reinforce each other without contradiction."
+      },
+      "recommendation": "No significant improvements needed; consider adding explicit examples or snippets from the configuration files to further strengthen evidence if possible."
+    },
+    {
+      "control-id": "ac-9",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'applicable and not satisfied' status is appropriate given the explanation that no functionality exists to notify users of previous logon information, directly supporting the stated control status.",
+        "explanation_quality": "The explanation clearly and accurately states that the system lacks any mechanisms to notify users of prior logons, referencing the absence of authentication/session management in the logging subsystem, which aligns well with the control requirement.",
+        "configuration_support": "The empty configuration section correctly reflects that there is no configuration or implementation supporting this control, which is consistent with the 'not satisfied' status and explanation.",
+        "overall_consistency": "All parts\u2014the control statement, explanation, status, and configuration\u2014align and reinforce each other without contradiction, presenting a coherent and consistent control mapping."
+      },
+      "recommendation": "No changes are necessary for this mapping. To improve future mappings, consider adding explicit references or code comments indicating the absence of the feature for stronger evidence, but the current mapping is complete and appropriate."
+    },
+    {
+      "control-id": "au-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable but only satisfied through configuration' accurately reflects the explanation that non-repudiation relies solely on properly configuring logging fields and file permissions, with no built-in authentication mechanisms.",
+        "explanation_quality": "The explanation clearly details how non-repudiation is enabled by logging user-identifying information, field filters for masking/redaction, and OS-level file permissions, which matches the control's conceptual requirements and observed implementation.",
+        "configuration_support": "The configuration references specific file paths, key paths, and line numbers in the logging configuration that directly relate to field filters and file permission modes, providing concrete and valid evidence supporting the explanation.",
+        "overall_consistency": "All parts\u2014status, explanation, configuration, and statement\u2014are aligned and reinforce that non-repudiation is achieved through the specified logging configuration and access controls, without contradictions."
+      },
+      "recommendation": "No major changes needed; however, improving the control-description for clarity and fixing the trailing punctuation would enhance professionalism. Also, consider adding explicit examples of the logged fields and masking rules in the configuration to strengthen traceability."
+    },
+    {
+      "control-id": "au-3",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable but only satisfied through configuration' accurately reflects the explanation that the logging framework supports the required audit content only when properly configured.",
+        "explanation_quality": "The explanation clearly describes how the logging framework supports audit record content and the necessity of explicit configuration to meet control requirements, with detailed references to fields, filters, and output management.",
+        "configuration_support": "The configuration references are specific and relevant to log encoders, field filters, and file rotation, which directly support the explanation and statement about audit record content control.",
+        "overall_consistency": "All parts\u2014the status, explanation, configuration, and statement\u2014align well without contradiction, reinforcing that compliance depends on correct configuration of logging components."
+      },
+      "recommendation": "No major improvements needed; consider adding explicit examples or snippets from the referenced configuration files to further strengthen evidence and clarity."
+    },
+    {
+      "control-id": "au-9",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The control-status accurately reflects that the control is applicable but only satisfied through configuration, matching the explanation that protection depends on OS-level permissions and external alerting.",
+        "explanation_quality": "The control-explanation is clear, detailed, and accurately describes the implementation and limitations, including the lack of application-level controls and reliance on external mechanisms.",
+        "configuration_support": "The configuration reference to 'config/logging.yaml' at 'writers.file.mode' with line number provides a specific and valid example supporting the claim about file permission settings (0600).",
+        "overall_consistency": "All parts\u2014status, explanation, configuration, and statement\u2014are coherent and mutually reinforcing without any contradictions."
+      },
+      "recommendation": "Consider including more explicit references or evidence for the external alerting mechanisms (e.g., configuration or tooling details) to strengthen the mapping further, and potentially clarify whether any monitoring tools are mandated or recommended."
+    },
+    {
+      "control-id": "cm-14",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The control-status accurately reflects that the control is applicable but satisfied only through configuration, which aligns with the explanation and configuration references provided.",
+        "explanation_quality": "The control-explanation clearly and accurately describes the scope, the role of the logging subsystem, and how the external CI/CD processes enforce digital signature verification, appropriately excluding firmware verification due to scope.",
+        "configuration_support": "The configuration references are specific and valid, pointing to relevant files (.goreleaser.yml and .github/workflows/release.yml) with exact key paths and line numbers that demonstrate signature and verification steps supporting the control.",
+        "overall_consistency": "All parts\u2014the status, explanation, configuration, and statements\u2014are coherent and reinforce one another without contradictions, presenting a clear and consistent mapping."
+      },
+      "recommendation": "No major improvements needed; however, adding brief excerpts or sample configuration snippets from the referenced files could further strengthen evidence clarity and support for auditors reviewing this mapping."
+    },
+    {
+      "control-id": "cm-5",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 2
+      },
+      "total_score": 7,
+      "justifications": {
+        "status_alignment": "The control-status 'applicable but partially satisfied' aligns well with the explanation and statement describing partial enforcement via file permissions but lacking integrated authentication, authorization, and approval mechanisms.",
+        "explanation_quality": "The control-explanation is clearly written, accurately describes the partial implementation scope, and grounds the rationale in observed OS-level file permission enforcement and missing change management controls.",
+        "configuration_support": "The configuration section is empty; while the explanation refers to file permissions (0600) as the enforcement mechanism, no explicit configuration artifact or code snippet is provided to validate this, limiting the configuration support to partial.",
+        "overall_consistency": "All parts\u2014the status, explanation, configuration (noting lack thereof), and statement\u2014are consistent and reinforce the partial satisfaction of the control without contradiction."
+      },
+      "recommendation": "Include explicit configuration evidence such as excerpts from file permission settings, system configuration files, or deployment manifests that demonstrate the 0600 file mode enforcement. This will strengthen the configuration support and provide clearer traceability between rationale and implementation."
+    },
+    {
+      "control-id": "ia-11",
+      "scores": {
+        "status_alignment": 1,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 7,
+      "justifications": {
+        "status_alignment": "The status 'applicable and not satisfied' is partially correct because the explanation states the control is not applicable within this subsystem, which conflicts slightly with the stated applicability.",
+        "explanation_quality": "The explanation is clearly written, detailed, and firmly grounded in the observed implementation, specifying why re-authentication is not supported in this subsystem.",
+        "configuration_support": "No configuration is provided, which is appropriate since the subsystem does not support authentication or re-authentication features.",
+        "overall_consistency": "All parts reinforce each other without contradiction except for a minor inconsistency between the stated control status and the explanation about applicability."
+      },
+      "recommendation": "Clarify the control-status to reflect that the control is not applicable to this subsystem, for example, changing it to 'not applicable' or adding justification for why it is considered applicable yet not satisfied. This will align status with explanation and improve overall consistency."
+    },
+    {
+      "control-id": "ia-2",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 2
+      },
+      "total_score": 7,
+      "justifications": {
+        "status_alignment": "The control-status 'applicable and not satisfied' is appropriate because the explanation and statement confirm that the subsystem does not implement identification or authentication functions, making the control relevant but unmet.",
+        "explanation_quality": "The explanation is clear, detailed, and accurately describes the subsystem's role and its lack of authentication capabilities, grounding the rationale in the observed implementation.",
+        "configuration_support": "The configuration is empty (an empty array), which is acceptable since the subsystem does not implement the control; however, providing explicit configuration evidence or clarifying the absence of relevant configuration would strengthen support.",
+        "overall_consistency": "All parts (status, explanation, configuration, and statement) align well without contradiction, consistently describing the subsystem's limited scope and the control's unmet status."
+      },
+      "recommendation": "Include an explicit note or configuration evidence confirming the absence of authentication or identification settings to strengthen the configuration support. This would provide clearer traceability and completeness for audit purposes."
+    },
+    {
+      "control-id": "ia-6",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable but only satisfied through configuration' aligns precisely with the explanation that the control is enforced via configuration flags and filters rather than inherent code functionality.",
+        "explanation_quality": "The explanation is clear, detailed, and accurate, explicitly describing how the logging subsystem does not implement authentication itself but uses configurable filters to obscure sensitive authentication data, matching the control requirements.",
+        "configuration_support": "The configuration references are specific, correct, and valid, pointing to actual config file paths and keys that control redaction, hashing, and masking of sensitive authentication fields, supporting the explanation and status.",
+        "overall_consistency": "All parts of the control (status, explanation, configuration, and statement) consistently reinforce that the control is implemented solely through configuration-based obscuration of authentication feedback, with no contradictions."
+      },
+      "recommendation": "No significant improvements are necessary; however, including example values or explicit confirmation that these configurations are actively enforced in production could further strengthen the evidence and clarity."
+    },
+    {
+      "control-id": "ia-7",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 0,
+        "overall_consistency": 2
+      },
+      "total_score": 6,
+      "justifications": {
+        "status_alignment": "The status 'applicable and not satisfied' correctly reflects the explanation and statement that authentication mechanisms for cryptographic modules are missing, indicating a compliance gap.",
+        "explanation_quality": "The explanation is clear, detailed, and accurately describes the lack of authentication mechanisms and reliance on OS-level permissions, which is directly grounded in the observed implementation.",
+        "configuration_support": "No configuration details are provided despite the control requiring implementation evidence; the empty configuration array offers no specifics to support the rationale.",
+        "overall_consistency": "All parts (status, explanation, statement) consistently indicate a lack of cryptographic module authentication, reinforcing the applicability and non-satisfaction of the control without contradiction."
+      },
+      "recommendation": "Include specific configuration evidence or references to configuration files/settings that demonstrate the absence of cryptographic module authentication to strengthen the mapping. Providing explicit configuration details or excerpts would improve the completeness and support the rationale more robustly."
+    },
+    {
+      "control-id": "ia-8",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 2
+      },
+      "total_score": 7,
+      "justifications": {
+        "status_alignment": "The control-status 'applicable and not satisfied' accurately reflects the explanation that the logging subsystem does not implement identification or authentication for non-organizational users, indicating a compliance gap.",
+        "explanation_quality": "The control-explanation clearly and specifically describes why the control is not satisfied, referencing reliance on redaction and OS-level permissions rather than direct authentication mechanisms, which aligns with the control's intent.",
+        "configuration_support": "The control-configuration is an empty array, which is appropriate since no specific configuration supports satisfaction of the control; however, it would be better to explicitly state that no configuration exists or is applicable to reinforce this point.",
+        "overall_consistency": "All parts - status, explanation, configuration, and statement - consistently indicate that the control is applicable but not implemented in the logging subsystem, with no contradictions."
+      },
+      "recommendation": "Explicitly document in the control-configuration section that no configuration exists or is applicable for this control to improve clarity and completeness. Additionally, consider adding references to the upstream systems responsible for authentication to provide a fuller context."
+    },
+    {
+      "control-id": "sc-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'not applicable' status is correct because the explanation clearly states that the logging subsystem does not handle network session management or disconnection, which aligns with the control's intent.",
+        "explanation_quality": "The control-explanation is clear, specific, and accurately grounded in the subsystem's implementation responsibilities, explicitly stating why the control does not apply.",
+        "configuration_support": "No configuration is provided or required, which is appropriate since the subsystem does not implement the functionality addressed by the control; this is clearly indicated by the empty configuration array.",
+        "overall_consistency": "All parts\u2014from status to explanation, configuration, and statement\u2014are coherent and consistently reinforce that SC-10 is not applicable to this subsystem."
+      },
+      "recommendation": "No changes are necessary. The mapping is well-justified, clear, and internally consistent. For further improvement, consider linking the explanation directly to the referenced source files to strengthen traceability."
+    },
+    {
+      "control-id": "sc-2",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The control-status perfectly reflects the explanation and configuration, indicating that the control is applicable and satisfied solely through configuration measures rather than inherent code features.",
+        "explanation_quality": "The explanation is clear, detailed, and accurately describes how separation is implemented through specific configurations such as restrictive file permissions and field filtering, aligning well with the control's intent.",
+        "configuration_support": "The configuration references are precise and relevant, pointing to specific file paths, keys, and line numbers that illustrate how file permissions and field filters are configured to enforce separation.",
+        "overall_consistency": "All parts\u2014the status, explanation, configuration, and statement\u2014are fully aligned and reinforce each other without contradictions, providing a cohesive and complete mapping."
+      },
+      "recommendation": "No changes required; the mapping is thorough and well-documented. To further strengthen future mappings, consider including sample configuration snippets or additional context on how the filters are applied dynamically during logging."
+    },
+    {
+      "control-id": "sc-23",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The control-status 'applicable but only satisfied through configuration' accurately reflects the explanation that the control is not inherently implemented by default but requires proper configuration to satisfy it.",
+        "explanation_quality": "The explanation clearly describes the division of responsibility between the caddytls module and configuration of log filtering and network transport, grounding the rationale in the observed implementation and its limitations.",
+        "configuration_support": "The configuration references are specific and relevant, pointing to key files and settings (TLS session ticket rotation, field filter hashing, network writer TLS enablement) directly tied to protecting session authenticity.",
+        "overall_consistency": "All parts\u2014the status, explanation, configuration, and statement\u2014are aligned and reinforce each other without contradictions, providing a coherent mapping of the control."
+      },
+      "recommendation": "No major changes needed; to further improve clarity, consider adding brief comments or examples in the configuration files referenced to explicitly show how these settings should be applied to satisfy the control."
+    },
+    {
+      "control-id": "sc-24",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 0,
+        "overall_consistency": 2
+      },
+      "total_score": 6,
+      "justifications": {
+        "status_alignment": "The status 'applicable but partially satisfied' is correct as the explanation clearly states partial satisfaction due to lack of comprehensive failure state definitions and automatic failover mechanisms.",
+        "explanation_quality": "The explanation is detailed, clearly written, and accurately grounded in the observed implementation, describing both what is implemented (log rotation, structured logging) and what is missing (explicit known state failover).",
+        "configuration_support": "No configuration details are provided despite the control requiring specific implementation details; the empty configuration array means there is no direct evidence supporting the partial satisfaction claim.",
+        "overall_consistency": "All parts (status, explanation, statement) consistently reflect partial implementation and align without contradiction."
+      },
+      "recommendation": "Include specific configuration details or evidence demonstrating the implemented aspects of log rotation, retention policies, or structured logging to strengthen the control-configuration section. This will better substantiate the partial satisfaction status and improve traceability."
+    },
+    {
+      "control-id": "sc-28",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable but only satisfied through configuration' accurately reflects the explanation that no native encryption exists and protection depends on configuration of file permissions and log filters.",
+        "explanation_quality": "The explanation clearly describes the reliance on restrictive file permissions and log field filtering to protect information at rest, matching the observed implementation rationale and control statement.",
+        "configuration_support": "The configuration references are specific and relevant, pointing to file permission modes and redaction filter settings in the logging.json config file, which directly support the control explanation.",
+        "overall_consistency": "All parts \u2014 status, explanation, configuration, and statement \u2014 align well without contradictions, reinforcing the rationale that protection is achieved via configuration rather than encryption."
+      },
+      "recommendation": "No significant improvement needed. To enhance clarity, consider expanding the control-description to remove placeholders and better summarize the protection methods, ensuring it matches the detailed explanation."
+    },
+    {
+      "control-id": "sc-3",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The control-status clearly states that the control is applicable and satisfied solely through configuration, which matches the explanation and configuration details provided.",
+        "explanation_quality": "The explanation is clear, detailed, and accurately describes how configuration (file permissions and field filters) enforces security function isolation, aligning well with the control intent.",
+        "configuration_support": "The configuration references are specific, valid, and directly support the explanation by pointing to exact files, keys, and line numbers related to restrictive file modes and field filters.",
+        "overall_consistency": "All components\u2014status, explanation, configuration, and statement\u2014are aligned without contradiction and reinforce the control\u2019s implementation through configuration."
+      },
+      "recommendation": "No major changes needed; consider adding brief examples or excerpts from the configuration files to further strengthen evidence and ease reviewer validation."
+    },
+    {
+      "control-id": "sc-39",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 2
+      },
+      "total_score": 7,
+      "justifications": {
+        "status_alignment": "The control-status 'applicable but only satisfied through configuration' correctly reflects that the control relies on OS process isolation and specific configuration (file permissions) rather than code-level enforcement.",
+        "explanation_quality": "The explanation clearly describes that process isolation is provided by the OS with supporting configuration on file permissions, accurately reflecting the observed implementation and rationale.",
+        "configuration_support": "While the configuration points to a specific file and key controlling file permissions, it lacks detail on the exact permission value (e.g., 0600) and how this is enforced or verified, making it only partially specific.",
+        "overall_consistency": "All parts\u2014status, explanation, configuration, and statement\u2014are aligned and mutually reinforcing without contradictions, presenting a coherent mapping."
+      },
+      "recommendation": "Enhance the control-configuration section by explicitly specifying the expected file permission value (e.g., '0600') and how it is validated to improve specificity and clarity. Including a snippet or example of the configuration setting would also strengthen evidence support."
+    },
+    {
+      "control-id": "sc-4",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable but only satisfied through configuration' accurately reflects that the control is not inherently enforced by the system but depends on proper configuration as described in the explanation and evidenced by the configuration entries.",
+        "explanation_quality": "The explanation clearly details how shared resources are controlled via file permissions and field filters, and it explicitly states the absence of built-in controls, grounding the rationale in the actual implementation and administrative responsibilities.",
+        "configuration_support": "The configuration references are specific, relevant, and valid, pointing to exact lines and keys in the logging configuration that implement the described controls (file modes, field filters, TLS usage).",
+        "overall_consistency": "All parts (status, explanation, configuration, and statement) consistently emphasize that the control's effectiveness depends on correct configuration of logging permissions and filters, with no contradictions or gaps."
+      },
+      "recommendation": "No major improvements needed; however, consider including explicit examples or current configuration values (e.g., actual file mode set) in the explanation or configuration to further strengthen traceability and evidence. Additionally, clarifying the optional nature of TLS in the explanation and statement could improve completeness."
+    },
+    {
+      "control-id": "sc-5",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable but only satisfied through configuration' correctly reflects that the control is not inherently enforced by the system code but requires specific configuration settings to achieve compliance, as explained and evidenced.",
+        "explanation_quality": "The explanation clearly describes the scope and limits of the system's DoS protection capabilities, linking specific mitigation methods (log rotation, retention, file permissions) to the control and acknowledging gaps (network DoS protection).",
+        "configuration_support": "The configuration references are detailed and specific, pointing to exact config file paths, keys, and line numbers which implement the mitigation controls described, providing strong evidence for the explanation.",
+        "overall_consistency": "The control status, explanation, configuration, and statement are fully aligned without contradictions, each reinforcing the fact that the control is met through configuration rather than intrinsic system features."
+      },
+      "recommendation": "No major improvements are necessary; however, consider replacing the placeholder text in 'control-description' with a complete and clear description to improve documentation completeness."
+    },
+    {
+      "control-id": "sc-8",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The control-status correctly reflects that the control is applicable but only satisfied through configuration, consistent with the explanation that the system does not enforce TLS by default and relies on secure configuration.",
+        "explanation_quality": "The explanation clearly describes the mechanism by which transmission confidentiality and integrity are achieved, noting the dependency on secure configuration and the system's lack of default enforcement, which accurately reflects the observed implementation.",
+        "configuration_support": "The configuration references are specific and valid, pointing to the exact file, keys, and lines that control TLS enablement and network endpoint configuration, supporting the explanation and status precisely.",
+        "overall_consistency": "All elements \u2014 status, explanation, configuration, and the control statement \u2014 are aligned and reinforce the same message without contradiction, presenting a coherent and accurate mapping."
+      },
+      "recommendation": "No major improvements needed; however, consider improving the control-description by replacing the placeholder text with an actual parameter value or removing the placeholder to enhance clarity and completeness."
+    },
+    {
+      "control-id": "si-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 2
+      },
+      "total_score": 7,
+      "justifications": {
+        "status_alignment": "The status 'applicable but only satisfied through configuration' aligns well with the explanation that input validation is not enforced by code but through configuration of field filters.",
+        "explanation_quality": "The explanation clearly describes the rationale behind using configurable filters for input validation, referencing specific input types and the overall approach, which matches the control intent.",
+        "configuration_support": "The configuration references the field_filters key appropriately, supporting the explanation. However, the inclusion of 'logging.file_writer.file_mode' at line 40 is unrelated to input validation and reduces specificity and correctness of the configuration evidence.",
+        "overall_consistency": "All parts (status, explanation, statement, and configuration) consistently emphasize configuration-based input validation through field filters without contradiction."
+      },
+      "recommendation": "Remove or replace the unrelated 'logging.file_writer.file_mode' configuration reference to improve specificity and accuracy. Consider adding more detail or examples in the explanation about how the filters are configured to further strengthen the rationale."
+    },
+    {
+      "control-id": "si-16",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 2
+      },
+      "total_score": 7,
+      "justifications": {
+        "status_alignment": "The status 'applicable but only satisfied through configuration' correctly reflects that the control is not implemented directly in code but is achieved via configuration and environment hardening, consistent with the explanation.",
+        "explanation_quality": "The explanation is clear, detailed, and accurately describes reliance on host OS and runtime environment for memory protection, grounding the rationale for the control status appropriately.",
+        "configuration_support": "The configuration references an experimental memory protection flag in a specific config file with a clear key path and line number, but it is unclear if this alone fully satisfies the control or if additional configurations are needed; thus, it is somewhat incomplete.",
+        "overall_consistency": "All parts \u2014 status, explanation, configuration, and statement \u2014 consistently emphasize indirect memory protection through configuration and environment, with no contradictions."
+      },
+      "recommendation": "Enhance the configuration evidence by including additional relevant configuration items or documentation demonstrating deployment in a hardened environment and how the experimental flag contributes to memory protection. Clarify if the single referenced config entry fully satisfies the control or if other controls/settings complement it."
+    }
+  ],
+  "evaluation_timestamp": "2025-06-21 16:28:07.571687"
+}

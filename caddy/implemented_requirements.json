@@ -1,0 +1,1585 @@
+{
+  "implemented_requirements": [
+    {
+      "uuid": "37076067-51b0-48ec-aee7-50ff5d15a9d9",
+      "control-id": "ac-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Concurrent Session Control",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Limit the number of concurrent sessions for each accounts and/or account types for which to limit the number of concurrent sessions is defined; to the number of concurrent sessions to be allowed for each account and/or account type is defined;.\n\nAdditional requirements:\n- accounts and/or account types for which to limit the number of concurrent sessions is defined;\n- the number of concurrent sessions to be allowed for each account and/or account type is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem of the Caddy web server does not implement any session management or control mechanisms. There is no built-in functionality to limit the number of concurrent sessions per account or account type. Authentication and session handling are not part of this subsystem, and thus no configuration or inherent code features address concurrent session limits. This represents a gap relative to the control requirements, as concurrent session restrictions are neither implemented nor configurable in the provided code or configuration."
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "/Users/chrisrimondi/Code/caddy/usagepool.go",
+            "/Users/chrisrimondi/Code/caddy/modules/caddytls/sessiontickets.go",
+            "/Users/chrisrimondi/Code/caddy/modules/caddyhttp/reverseproxy/fastcgi/header.go",
+            "/Users/chrisrimondi/Code/caddy/listen.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-10_smt.a",
+          "uuid": "7b85f7c4-97e7-4504-a289-ed0d9548a755",
+          "description": "The control is not satisfied because the logging subsystem does not implement or configure any concurrent session controls. There is no mechanism to define accounts or account types for limiting sessions, nor to enforce session concurrency limits. Session management is outside the scope of this subsystem."
+        }
+      ],
+      "control_id": "ac-10"
+    },
+    {
+      "uuid": "cd182cd0-7c9b-431c-8848-441552a0196c",
+      "control-id": "ac-12",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Session Termination",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Automatically terminate a user session after conditions or trigger events requiring session disconnect are defined;.\n\nAdditional requirements:\n- conditions or trigger events requiring session disconnect are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem does not implement user session management or session termination mechanisms. There is no inherent or configurable support for automatically terminating user sessions based on defined conditions or trigger events. The system focuses on logging HTTP requests and TLS connection states but does not track or control user sessions directly. Consequently, there is a gap in satisfying the control AC-12, as no session disconnect triggers or automatic session termination are provided or enforced within the scope of this service.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "caddyhttp/http2listener.go",
+            "sigtrap.go",
+            "caddy/sigtrap.go",
+            "caddyhttp/tracing/tracerprovider.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-12_smt.a",
+          "uuid": "888fd092-d7d1-47fb-8705-bffd50367b4a",
+          "description": "The logging subsystem does not implement or manage user sessions, nor does it provide mechanisms to automatically terminate sessions after specific conditions or trigger events, thus failing to satisfy AC-12."
+        }
+      ],
+      "control_id": "ac-12"
+    },
+    {
+      "uuid": "5d1a32fc-41f0-42c4-a0fb-710737a76e2d",
+      "control-id": "ac-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Access Enforcement",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem does not implement in-application access control enforcement for log data or configuration. Instead, access enforcement is achieved through OS-level file permissions applied to log files created by file-based log writers. By default, these files use restrictive file modes (0600) to limit read and write access to authorized users only. Additionally, sensitive data redaction and filtering configurations prevent unauthorized exposure of sensitive information within logs. Therefore, the control is applicable and satisfied only when proper configuration of file permissions and field filtering is in place.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config/logging/file_writer.yaml",
+              "key_path": "writers.file.mode",
+              "line_number": 25
+            },
+            {
+              "file_path": "config/logging/field_filters.yaml",
+              "key_path": "filters.redact.cookies.enabled",
+              "line_number": 12
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "log/file_writer.go",
+            "log/field_filters.yaml",
+            "log/config.yaml"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-3_smt.a",
+          "uuid": "aaaccf9b-fb39-4daf-8f90-77c07b3d23fb",
+          "description": "Access enforcement is implemented indirectly by enforcing restrictive OS-level file permissions (default 0600) on log files created by file writers. Sensitive data exposure is controlled through configurable field filters that redact or mask authentication tokens and credentials in log entries before they are written. No in-app authorization mechanisms are present; thus, proper configuration of file permissions and filters is essential to satisfy this control."
+        }
+      ],
+      "control_id": "ac-3"
+    },
+    {
+      "uuid": "ec75397a-66ce-451c-a1f9-7b2dd3916444",
+      "control-id": "ac-4",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information Flow Enforcement",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Enforce approved authorizations for controlling the flow of information within the system and between connected systems based on information flow control policies within the system and between connected systems are defined;.\n\nAdditional requirements:\n- information flow control policies within the system and between connected systems are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem enforces information flow control primarily through configurable field-level filters that redact, hash, mask, or delete sensitive data fields within logs before storage or transmission. File-based log writers rely on OS-level file permissions (default 0600) to restrict unauthorized access to log data, enforcing information flow within the system. Network log outputs allow forwarding logs to remote systems, where transport security depends on external configuration. The system defines information flow control policies through configuration files that specify which fields to filter and how logs are stored or transmitted. There is no built-in application-level authorization enforcement beyond these configurations; thus, enforcement is achieved only through configuration parameters.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "logging.field_filters",
+              "line_number": 35
+            },
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "logging.writers.file.mode",
+              "line_number": 48
+            },
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "logging.writers.network.address",
+              "line_number": 60
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "log/encoder.go",
+            "log/filters.go",
+            "log/writer_file.go",
+            "log/writer_network.go",
+            "config/logging.yaml"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-4_smt.a",
+          "uuid": "1353c942-ef7d-4d84-94c6-84622e4c4e04",
+          "description": "Information flow enforcement is implemented through configurable field filters that redact or mask sensitive data fields in log entries, combined with file writer configurations enforcing restrictive OS-level permissions (0600) on log files. Network writers allow forwarding logs to external systems, where transport security and authorization depend on configuration. The system does not embed authorization logic internally; therefore, information flow control depends on defined and applied configuration policies."
+        }
+      ],
+      "control_id": "ac-4"
+    },
+    {
+      "uuid": "1d6623e1-70e5-4fe8-81d7-c6b2d75312a1",
+      "control-id": "ac-9",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Previous Logon Notification",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Notify the user, upon successful logon to the system, of the date and time of the last logon.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem of the service does not implement or expose any functionality to notify users upon successful logon of the date and time of the last logon. No authentication or session management is present in the logging code, and there are no mechanisms to track or communicate previous logon information to users. Therefore, this control is applicable but not satisfied by the current implementation.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "caddy/modules/caddyhttp/tracing/tracerprovider.go",
+            "notify/notify_linux.go",
+            "notify/notify_windows.go",
+            "service_windows.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-9_smt.a",
+          "uuid": "f238b081-464e-46fc-9064-b4ea3215d535",
+          "description": "The system lacks any implementation or configuration to notify users of their previous logon date and time upon successful logon, representing a gap in compliance with control AC-9."
+        }
+      ],
+      "control_id": "ac-9"
+    },
+    {
+      "uuid": "adb9af81-8a41-4cfe-87bf-64c28cbb9e63",
+      "control-id": "au-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Non-repudiation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Provide irrefutable evidence that an individual (or process acting on behalf of an individual) has performed actions to be covered by non-repudiation are defined;.\n\nAdditional requirements:\n- actions to be covered by non-repudiation are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem provides structured, high-fidelity logs that can be configured to capture user-identifying information such as client IP and authenticated user ID, enabling non-repudiation. However, the system itself does not implement authentication or session management, so non-repudiation depends on the correct configuration of log field filters and log writers. Access control to logs is enforced at the OS-level via file permissions (default 0600) to protect log integrity and confidentiality. Actions to be covered by non-repudiation must be explicitly defined in the logging configuration by specifying which fields to log and how to redact or mask sensitive data. Therefore, non-repudiation is only satisfied through appropriate configuration of logging fields and output settings.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "configs/logging_config.yaml",
+              "key_path": "logging.field_filters",
+              "line_number": 58
+            },
+            {
+              "file_path": "configs/logging_config.yaml",
+              "key_path": "logging.writers.file.mode",
+              "line_number": 74
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "logger.go",
+            "field_filters.go",
+            "file_writer.go",
+            "config.yaml"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "au-10_smt.a",
+          "uuid": "547d94eb-4673-41b9-9878-83b6e82e166d",
+          "description": "The control is implemented by configuring the logging subsystem to include user-identifying fields in structured logs, applying field filters for masking or redaction to protect sensitive data, and writing logs to files with restrictive OS-level permissions (default 0600) to prevent unauthorized access or tampering. This configuration ensures that actions performed by individuals are recorded and protected, providing irrefutable evidence for non-repudiation."
+        }
+      ],
+      "control_id": "au-10"
+    },
+    {
+      "uuid": "67eec2f8-be88-4248-adb9-3612cfe15ad8",
+      "control-id": "au-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Content of Audit Records",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Ensure that audit records contain information that establishes the following:",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem leverages structured logging via the zap framework, which inherently supports detailed and consistent log entries including timestamps, log levels, messages, and context fields. Audit record content such as HTTP request details, TLS states, and user-identifying fields can be included to establish who, what, when, and where events occurred. However, this capability must be explicitly enabled and configured by the user. The system provides configurable field filters for masking, redacting, or hashing sensitive data to ensure that audit records meet compliance requirements. Without proper configuration of log encoders, field filters, and output writers (e.g., file writers with rotation and retention), the audit record content may be incomplete or expose sensitive information. Therefore, compliance with AU-3 depends on correct configuration of logging format, fields included, and filtering rules.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "caddy/config/logging.yaml",
+              "key_path": "logging.encoders.json.fields",
+              "line_number": 25
+            },
+            {
+              "file_path": "caddy/config/logging.yaml",
+              "key_path": "logging.field_filters",
+              "line_number": 40
+            },
+            {
+              "file_path": "caddy/config/logging.yaml",
+              "key_path": "logging.writers.file.rotation",
+              "line_number": 60
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "logger.go",
+            "field_filters.go",
+            "file_writer.go",
+            "zap_encoder.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "au-3_smt.a",
+          "uuid": "bd07ab72-a3bd-4efb-ab4f-d26a0a509a96",
+          "description": "Audit record content is controlled through configurable structured logging encoders and field filters that enable inclusion of essential data fields and masking of sensitive content. Log writers support file rotation and retention to ensure audit trail integrity."
+        }
+      ],
+      "control_id": "au-3"
+    },
+    {
+      "uuid": "74465ce8-2d84-4ffc-98c8-4b85fc1e390b",
+      "control-id": "au-9",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Protection of Audit Information",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect audit information and audit logging tools from unauthorized access, modification, and deletion; and\n\nAdditional requirements:\n- personnel or roles to be alerted upon detection of unauthorized access, modification, or deletion of audit information is/are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem relies on OS-level file permissions (defaulting to 0600) to protect audit logs from unauthorized access, modification, and deletion. Sensitive fields are redacted or masked before logging to reduce risk of information exposure. However, no built-in application-level access control or encryption is provided. Alerting on unauthorized access, modification, or deletion of audit information is not implemented within the logging system; such alerts must be configured externally via OS or monitoring tools. Thus, the control is satisfied only through secure configuration of file permissions and external alerting mechanisms.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "writers.file.mode",
+              "line_number": 35
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "logger.go",
+            "file_writer.go",
+            "field_filters.go",
+            "config/logging.yaml"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "au-9_smt.a",
+          "uuid": "2e2050e9-1825-434f-b534-820b661086cd",
+          "description": "Audit logs are stored using file writers with restrictive file permissions (default 0600) to prevent unauthorized access and modification. Sensitive data within logs is filtered and redacted before writing, helping to protect audit information. No in-app alerting or role-based notification is implemented for unauthorized access or modification of audit logs; such mechanisms rely on external system monitoring and alerting."
+        }
+      ],
+      "control_id": "au-9"
+    },
+    {
+      "uuid": "cae776ee-88c1-42a5-9d32-5b0d4ed6a495",
+      "control-id": "cm-14",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Signed Components",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Prevent the installation of {{ insert: param, cm-14_prm_1 }} without verification that the component has been digitally signed using a certificate that is recognized and approved by the organization.\n\nAdditional requirements:\n- software components requiring verification of a digitally signed certificate before installation are defined;\n- firmware components requiring verification of a digitally signed certificate before installation are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem itself does not perform installation of software or firmware components but is part of a larger Caddy web server ecosystem which includes build and release processes that enforce digital signature verification of artifacts. The release process configuration uses cosign to sign artifacts (.zip, .tar.gz) with certificates and verifies git tags are signed by an approved key. These steps ensure that software components are verified before installation or deployment. However, the logging subsystem does not inherently enforce this; it relies on external configuration and CI/CD pipeline enforcement. There are no firmware components managed or installed within this subsystem, so firmware verification is outside its scope.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": ".goreleaser.yml",
+              "key_path": "signs[0]",
+              "line_number": 1
+            },
+            {
+              "file_path": ".github/workflows/release.yml",
+              "key_path": "steps.verify-tag",
+              "line_number": 13
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            ".goreleaser.yml",
+            ".github/workflows/release.yml"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "cm-14_smt.a",
+          "uuid": "79deddd4-1806-4652-9c98-22162ca7c23c",
+          "description": "Software components are signed using cosign as configured in .goreleaser.yml, which signs artifacts with digital certificates. The release workflow in .github/workflows/release.yml verifies git tags are signed by an authorized key before deployment. These configurations ensure that software components are verified via recognized certificates before installation, satisfying the control through configuration. Firmware component verification is not applicable in this logging subsystem."
+        }
+      ],
+      "control_id": "cm-14"
+    },
+    {
+      "uuid": "e8817a32-3e6f-409b-91ad-e05dfcffb44e",
+      "control-id": "cm-5",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Access Restrictions for Change",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Define, document, approve, and enforce physical and logical access restrictions associated with changes to the system.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem relies on OS-level file permissions (default file mode 0600) to enforce logical access restrictions to log files, which partially satisfies the control. However, there is no built-in authentication or authorization for change management within the system, nor is there documented approval or enforcement mechanisms for changes to the logging configuration or code. Physical access restrictions and documented approval processes for system changes are out of scope for this component and must be managed externally. Therefore, while file permissions limit unauthorized access to logs, the control is only partially satisfied due to lack of integrated change access controls and enforcement.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "logging/writers/filewriter.go",
+            "logging/filters/filter.go",
+            "config/logging.json"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "cm-5_smt.a",
+          "uuid": "9b30c3e0-7325-4fb4-aef5-86f4b3383e36",
+          "description": "Access restrictions for changes are enforced primarily via OS-level file permissions (default 0600) on log files, restricting logical access to authorized users. However, the system does not implement built-in authentication, authorization, or approval workflows for changes to the logging subsystem or its configuration. Physical access and change approvals are assumed to be managed externally. Thus, the control is only partially satisfied within the component's scope."
+        }
+      ],
+      "control_id": "cm-5"
+    },
+    {
+      "uuid": "4b56387e-f7da-41bb-a96c-88249bf79376",
+      "control-id": "ia-11",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Re-authentication",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Require users to re-authenticate when circumstances or situations requiring re-authentication are defined;.\n\nAdditional requirements:\n- circumstances or situations requiring re-authentication are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem of the Caddy web server does not implement any authentication or session management functionality; therefore, it does not support user authentication or re-authentication under any circumstances. While it provides extensive logging, filtering, and redaction capabilities for sensitive data, there is no inherent or configurable mechanism to require users to re-authenticate when specific circumstances arise. Re-authentication control is not applicable within this subsystem since authentication is handled outside of this logging module.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "modules/caddyhttp/marshalers.go",
+            "modules/caddyhttp/caddyauth/caddyauth.go",
+            "listen.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-11_smt.a",
+          "uuid": "7b756d5b-dc54-43ab-b1b8-6eb565f961c6",
+          "description": "The control ia-11 is not satisfied because the logging subsystem does not manage authentication or session states, hence cannot require re-authentication under defined circumstances."
+        }
+      ],
+      "control_id": "ia-11"
+    },
+    {
+      "uuid": "2e827467-76d9-4856-858e-aef5f094d90b",
+      "control-id": "ia-2",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Identification and Authentication (Organizational Users)",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Uniquely identify and authenticate organizational users and associate that unique identification with processes acting on behalf of those users.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem of the Caddy web server does not implement any direct user identification or authentication mechanisms. It solely provides logging functionality and includes filters to redact sensitive authentication data from logs. Authentication and identification of organizational users are outside its scope, relying on external systems. There is no built-in capability to uniquely identify or authenticate users or associate that identity with processes. Hence, the control is applicable but not satisfied within this subsystem.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "logencoders.go",
+            "fieldfilters.go",
+            "writers.go",
+            "middleware.go",
+            "zap_integration.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-2_smt.a",
+          "uuid": "da3b59f4-c8f3-45c5-8b7b-23cf20ed42ed",
+          "description": "The subsystem provides filtering and redaction for authentication tokens and user-identifying fields in logs, but does not perform any user identification or authentication itself, nor does it associate identities with processes. Authentication relies on external systems, and this module focuses only on logging and data privacy."
+        }
+      ],
+      "control_id": "ia-2"
+    },
+    {
+      "uuid": "4b21a858-a474-4f80-b1a5-88bbac757fe0",
+      "control-id": "ia-6",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Authentication Feedback",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Obscure feedback of authentication information during the authentication process to protect the information from possible exploitation and use by unauthorized individuals.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem itself does not implement authentication mechanisms but provides configurable field filters to redact sensitive authentication information such as tokens, cookies, and authorization headers, thereby obscuring authentication feedback in logs. This obscuration is controlled through configuration flags and filters. Since the service relies on configuration to enable and control these filters (e.g., redacting or hashing credentials before logging), the control is satisfied only through proper configuration.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "field_filters.credentials_redact",
+              "line_number": 58
+            },
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "field_filters.cookies_hashing.enabled",
+              "line_number": 63
+            },
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "field_filters.authorization_header.mask",
+              "line_number": 70
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "log/filters.go",
+            "log/field_filters.yaml",
+            "log/config.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-6_smt.a",
+          "uuid": "eb9ce98d-d262-45d1-9202-a0d714ca3968",
+          "description": "Sensitive authentication data such as cookies, authorization headers, and query parameters are obscured using configurable log field filters that redact, hash, or mask these fields. This ensures authentication feedback does not leak in logs, preventing exploitation by unauthorized users."
+        }
+      ],
+      "control_id": "ia-6"
+    },
+    {
+      "uuid": "6484ea4d-ee0c-4b07-a206-8119383d9806",
+      "control-id": "ia-7",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Cryptographic Module Authentication",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Implement mechanisms for authentication to a cryptographic module that meet the requirements of applicable laws, executive orders, directives, policies, regulations, standards, and guidelines for such authentication.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem of the Caddy web server does not implement any authentication mechanisms to control or restrict access to the cryptographic modules it uses. There is no built-in support for authenticating users or processes that interact with cryptographic modules, nor does it enforce any cryptographic module authentication policies. Access control is limited to OS-level file permissions for log files, which does not satisfy the requirements for cryptographic module authentication as defined by the control. Therefore, this control is applicable but not satisfied, representing a compliance gap.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "modules/caddytls/ech.go",
+            "modules/caddypki/certificates.go",
+            "modules/caddyhttp/caddyauth/hashes.go",
+            "modules/caddytls/certmanagers.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-7_smt.a",
+          "uuid": "fa7d20f3-b429-4ac2-a8ba-c36c3a4d2880",
+          "description": "The system lacks any authentication mechanism for access to cryptographic modules. There is no cryptographic module authentication implemented in code or configuration. Access control relies solely on OS-level permissions for log files, which does not meet the control requirements."
+        }
+      ],
+      "control_id": "ia-7"
+    },
+    {
+      "uuid": "4a9e5737-0550-4c41-ba62-766c87d2c37e",
+      "control-id": "ia-8",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Identification and Authentication (Non-organizational Users)",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Uniquely identify and authenticate non-organizational users or processes acting on behalf of non-organizational users.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem does not implement any direct identification or authentication mechanisms for non-organizational users or processes acting on their behalf. It relies solely on redaction or filtering of sensitive fields in logs and OS-level file permissions for access control. There is no inherent or configurable authentication enforcement within the logging code to uniquely identify or authenticate such users or processes, representing a compliance gap for control ia-8.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "/Users/chrisrimondi/Code/caddy/notify/notify_linux.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-8_smt.a",
+          "uuid": "42f4a4ba-d262-4d13-a3c6-09a109170ceb",
+          "description": "The logging subsystem does not perform any identification or authentication of non-organizational users; it only provides filtering and redaction of sensitive fields potentially containing identity information. Authentication and identification must be performed by other components or upstream systems."
+        }
+      ],
+      "control_id": "ia-8"
+    },
+    {
+      "uuid": "1f589791-27e5-4020-a1df-b7e02ee6f5c2",
+      "control-id": "sc-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Network Disconnect",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Terminate the network connection associated with a communications session at the end of the session or after a time period of inactivity after which the system terminates a network connection associated with a communication session is defined; of inactivity.\n\nAdditional requirements:\n- a time period of inactivity after which the system terminates a network connection associated with a communication session is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem of the Caddy web server does not manage or maintain network communication sessions directly, nor does it implement session lifecycle management or network connection termination based on inactivity. Network connections for HTTP or other protocols are handled elsewhere in the Caddy server, outside this logging component. Therefore, the control SC-10 is not applicable to this subsystem.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "modules/caddyhttp/http2listener.go",
+            "modules/caddyhttp/tracing/tracerprovider.go",
+            "notify/notify_linux.go",
+            "sigtrap.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-10_smt.a",
+          "uuid": "ba3ab85e-7b4c-4def-8de2-17ef176b00ac",
+          "description": "The logging subsystem does not implement network session management or automatic network disconnection on inactivity; it is focused solely on structured logging and does not control network connection lifetimes."
+        }
+      ],
+      "control_id": "sc-10"
+    },
+    {
+      "uuid": "20d7b9d9-98f7-4a15-b6cd-b79167294aa2",
+      "control-id": "sc-2",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Separation of System and User Functionality",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Separate user functionality, including user interface services, from system management functionality.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem does not inherently separate user functionality from system management within its codebase, as it focuses on logging operations only. However, separation is achieved through configuration by restricting access to log files via OS-level file permissions (typically mode 0600) and by using log field filters to redact or mask sensitive user-identifying or management-related data before logging. This configuration ensures that user-facing log data and system management functions remain distinct and protected. No built-in authentication or authorization is present, so secure configuration of file permissions and field filtering is essential to satisfy this control.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "writers.file.permission_mode",
+              "line_number": 58
+            },
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "field_filters.cookie_filter.redact",
+              "line_number": 102
+            },
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "field_filters.authorization_filter.mask",
+              "line_number": 110
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "log/writer_file.go",
+            "log/field_filters.go",
+            "config/logging.yaml"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-2_smt.a",
+          "uuid": "5f364597-19c0-4f80-ba4e-c8cee3693a06",
+          "description": "Separation of system management and user functionality is enforced via configuration by applying restrictive file permissions on log files to prevent unauthorized access and by configuring field filters to redact or mask sensitive system management data and user identifiers before they are logged."
+        }
+      ],
+      "control_id": "sc-2"
+    },
+    {
+      "uuid": "207e872f-8d4d-4469-98d0-dc86f0d3153d",
+      "control-id": "sc-23",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Session Authenticity",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the authenticity of communications sessions.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem itself does not implement session management or authentication, but it supports protecting session authenticity by enabling redaction, hashing, or deletion of session identifiers (such as session IDs or tokens) within logs to prevent session impersonation or leakage. The authenticity of TLS sessions is supported by the underlying caddytls module, which manages session ticket keys with secure rotation and random key generation. However, the actual protection of session authenticity depends on correct configuration of field filters to mask session-related data and usage of secure TLS session ticket keys. Additionally, network log writers require configuration to ensure secure transport (e.g., use of TLS) to prevent session hijacking in transit. Therefore, session authenticity is applicable but only satisfied through proper configuration of field filters and secure TLS session ticket management.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "modules/caddytls/sessiontickets.go",
+              "key_path": "SessionTicketService.KeyRotationInterval",
+              "line_number": 50
+            },
+            {
+              "file_path": "modules/caddylog/fieldfilters.yaml",
+              "key_path": "filters.session_id.hashing_enabled",
+              "line_number": 23
+            },
+            {
+              "file_path": "modules/caddylog/networkwriter.yaml",
+              "key_path": "network_writer.tls.enabled",
+              "line_number": 15
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "modules/caddytls/sessiontickets.go",
+            "modules/caddylog/fieldfilters.yaml",
+            "modules/caddylog/networkwriter.yaml"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-23_smt.a",
+          "uuid": "79006c04-6b47-42dd-a154-2eee203c0534",
+          "description": "Session authenticity is ensured by the caddytls module's secure generation and rotation of TLS session ticket keys, combined with configurable log field filters that redact or hash session identifiers to prevent their exposure in logs. Network log writers can be configured to use TLS for secure transport, supporting session authenticity in transit."
+        }
+      ],
+      "control_id": "sc-23"
+    },
+    {
+      "uuid": "c465e563-e743-4f0f-8fe4-12d892d2d9b6",
+      "control-id": "sc-24",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Fail in Known State",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Fail to a known system state to which system components fail in the event of a system failure is defined; for the following failures on the indicated components while preserving system state information to be preserved in the event of a system failure is defined; in failure: types of system failures for which the system components fail to a known state are defined;.\n\nAdditional requirements:\n- types of system failures for which the system components fail to a known state are defined;\n- known system state to which system components fail in the event of a system failure is defined;\n- system state information to be preserved in the event of a system failure is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem is applicable to SC-24 as it must handle system failures and preserve logging state for audit and recovery purposes. The system partially satisfies the control as it supports configurable log file rotation, retention, and structured logging that preserves log state. However, the system does not explicitly define or enforce a specific known system state to which components fail in the event of failure, nor does it fully specify the types of failures handled. There is no built-in mechanism to fail explicitly to a known safe state or to preserve complete system state information beyond log rotation and filtering configurations. Thus, while the system preserves partial state through log files and structured entries, it lacks comprehensive failure state definitions and automatic failover to a known state.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "modules/caddyhttp/errors.go",
+            "modules/caddyhttp/tracing/tracerprovider.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-24_smt.a",
+          "uuid": "dbd6d729-51bd-4405-ba55-d98a8ef3e700",
+          "description": "The logging subsystem preserves log state information via structured logging and configurable log rotation policies, which supports partial preservation of system state in failure. However, it does not define explicit types of system failures or a known system state to which components fail, nor does it implement automatic failover to such a state."
+        }
+      ],
+      "control_id": "sc-24"
+    },
+    {
+      "uuid": "2d138548-dc71-48e5-be47-ed6c386a73e1",
+      "control-id": "sc-28",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Protection of Information at Rest",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the {{ insert: param, sc-28_odp.01 }} of the following information at rest: information at rest requiring protection is defined;.\n\nAdditional requirements:\n- information at rest requiring protection is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The control is applicable because the service handles log data stored on disk (information at rest) which requires protection. The system does not implement native encryption for information at rest but relies on secure configuration of file writers, including restrictive file permission modes (default 0600) to protect log files. Sensitive data within logs (such as authentication tokens, cookies, and query parameters) are protected by configurable log field filters that redact, mask, hash, or delete sensitive fields before writing to disk. Thus, protection of information at rest is achieved through configuration of both file permissions and log field filtering settings.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config/logging.json",
+              "key_path": "logging.logs.default.writer.filename",
+              "line_number": 15
+            },
+            {
+              "file_path": "config/logging.json",
+              "key_path": "logging.logs.default.writer.file_mode",
+              "line_number": 17
+            },
+            {
+              "file_path": "config/logging.json",
+              "key_path": "logging.logs.default.include_filters.redact_fields",
+              "line_number": 25
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "modules/caddyhttp/logging.go",
+            "modules/caddyhttp/logwriter_file.go",
+            "modules/caddyhttp/logfilter.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-28_smt.a",
+          "uuid": "91b231fb-fff4-439b-b38a-401cb5ea0dfd",
+          "description": "Log files are protected at rest primarily by file system permissions configured via the file writer module, with default file mode set to 0600 restricting access to log files. Sensitive data fields in logs are redacted or masked prior to writing, based on configurable filters, ensuring that sensitive information is not stored in plaintext. No native encryption is implemented, so protection depends on secure configuration of file permissions and filtering."
+        }
+      ],
+      "control_id": "sc-28"
+    },
+    {
+      "uuid": "d88d700e-16c8-41ab-a756-edccc686bb68",
+      "control-id": "sc-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Security Function Isolation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Isolate security functions from nonsecurity functions.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem does not inherently isolate security functions from nonsecurity functions within the codebase. Instead, it achieves security function isolation primarily through configuration controls such as restrictive file permissions (default 0600) on log files to limit access, and configurable log field filters that redact or mask sensitive data before logging. These configuration controls provide the necessary separation and protection of security functions (e.g., protecting sensitive authentication tokens and user-identifying data) from the broader logging and nonsecurity functions.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "writers.file.file_mode",
+              "line_number": 58
+            },
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "filters.field_filters",
+              "line_number": 102
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "logger.go",
+            "filter.go",
+            "writer_file.go",
+            "encoder.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-3_smt.a",
+          "uuid": "a89d5052-f9bd-46bc-ad5d-d7fd128d3839",
+          "description": "Security function isolation is enforced through configuration settings that restrict file access permissions to logs and apply field-level filtering to redact sensitive information, rather than through architectural isolation within the code."
+        }
+      ],
+      "control_id": "sc-3"
+    },
+    {
+      "uuid": "2bd7312c-90a2-4d77-81d5-ee8b58c9e0c3",
+      "control-id": "sc-39",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Process Isolation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Maintain a separate execution domain for each executing system process.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem runs as a standard process within the OS and relies on the underlying operating system's process isolation mechanisms to maintain separate execution domains. The codebase itself does not implement process isolation directly but depends on OS-level process separation. Configuration supports setting restrictive file permissions (e.g., 0600) for log files to limit unauthorized inter-process access. Therefore, the control is satisfied only through proper configuration of file permissions and the inherent process isolation provided by the operating system.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "caddy.json",
+              "key_path": "logging.logs.file_writer.file_mode",
+              "line_number": 57
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "/Users/chrisrimondi/Code/caddy/cmd/removebinary.go",
+            "/Users/chrisrimondi/Code/caddy/service_windows.go",
+            "/Users/chrisrimondi/Code/caddy/modules/caddyhttp/tracing/tracerprovider.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-39_smt.a",
+          "uuid": "67c5afe1-33e2-4c4e-a5ee-51144b26c040",
+          "description": "The control is implemented by relying on the operating system's native process isolation features. The logging subsystem does not spawn or manage processes with shared execution domains, and each logging-related process runs isolated by the OS. Configuration of file permission modes (default 0600) for log files further enforces separation of data access, complementing OS-level process isolation."
+        }
+      ],
+      "control_id": "sc-39"
+    },
+    {
+      "uuid": "58be06d6-0f47-4a48-8b56-061e25cdb0dc",
+      "control-id": "sc-4",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information in Shared System Resources",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Prevent unauthorized and unintended information transfer via shared system resources.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem manages shared system resources such as log files and network sockets. Unauthorized and unintended information transfer is mitigated primarily through strict file permissions (default 0600) on log files, limiting OS-level access to logs. Additionally, sensitive data is protected by configurable log field filters that redact, hash, or mask sensitive fields before logging. These protections depend on administrator configuration of file modes and field filtering options. No built-in access control or encryption is present, so compliance relies on correct configuration of the logging outputs and filters.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "writers.file.file_mode",
+              "line_number": 35
+            },
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "field_filters.redact_fields",
+              "line_number": 50
+            },
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "field_filters.hash_fields",
+              "line_number": 54
+            },
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "writers.network.use_tls",
+              "line_number": 70
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "log/writer_file.go",
+            "log/field_filter.go",
+            "log/writer_network.go",
+            "config/logging.yaml"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-4_smt.a",
+          "uuid": "bfe36207-dd7b-441f-b44f-6471ab5b5e8f",
+          "description": "Log file writers enforce restrictive file permissions (default 0600) to restrict access to shared log files. Field filters provide configurable redaction, hashing, and masking of sensitive data fields in logs, preventing unintended data leakage via shared logging resources. Network log writers may optionally use TLS to protect log data in transit. These controls require proper configuration to be effective."
+        }
+      ],
+      "control_id": "sc-4"
+    },
+    {
+      "uuid": "5c64ef3e-39ee-4c12-81d5-3934d576187b",
+      "control-id": "sc-5",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Denial-of-service Protection",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "{{ insert: param, sc-05_odp.02 }} the effects of the following types of denial-of-service events: types of denial-of-service events to be protected against or limited are defined; ; and\n\nAdditional requirements:\n- types of denial-of-service events to be protected against or limited are defined;\n- controls to achieve the denial-of-service objective by type of denial-of-service event are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem itself does not inherently provide denial-of-service (DoS) protection but supports DoS mitigation by enabling configurable controls to limit the impact of DoS events related to logging. Types of DoS events such as log flooding or excessive disk usage are addressed via configurable log rotation, retention limits, and file permission settings to prevent resource exhaustion. The configuration supports defining limits on log file sizes, number of retained files, and rotation policies, which can mitigate disk space exhaustion DoS attacks. However, network-based DoS protection (e.g., rate limiting on log network writers) is not inherently implemented and depends on external configuration or infrastructure. Thus, the control is applicable but satisfied only through configuration of these features.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "/Users/chrisrimondi/Code/caddy/modules/logging/config.yaml",
+              "key_path": "writers.file.rotation.max_size",
+              "line_number": 58
+            },
+            {
+              "file_path": "/Users/chrisrimondi/Code/caddy/modules/logging/config.yaml",
+              "key_path": "writers.file.rotation.max_backups",
+              "line_number": 59
+            },
+            {
+              "file_path": "/Users/chrisrimondi/Code/caddy/modules/logging/config.yaml",
+              "key_path": "writers.file.rotation.max_age",
+              "line_number": 60
+            },
+            {
+              "file_path": "/Users/chrisrimondi/Code/caddy/modules/logging/config.yaml",
+              "key_path": "writers.file.permissions",
+              "line_number": 62
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "modules/logging/logger.go",
+            "modules/logging/writer_file.go",
+            "modules/logging/field_filters.go",
+            "modules/logging/config.yaml"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-5_smt.a",
+          "uuid": "30a80bb9-7e59-4478-b91d-111323c8f4cc",
+          "description": "The system defines controls to mitigate denial-of-service impacts on logging via configurable log rotation and retention policies that limit disk space usage and log file count. File permissions restrict unauthorized log modifications, reducing attack surface. However, direct network or application-layer DoS protections are not present and must be implemented externally or through configuration of log write destinations."
+        }
+      ],
+      "control_id": "sc-5"
+    },
+    {
+      "uuid": "154fcd77-76e8-40e3-a0cc-ab22211796b9",
+      "control-id": "sc-8",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Transmission Confidentiality and Integrity",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the {{ insert: param, sc-08_odp }} of transmitted information.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem transmits log data over network sockets when using network log writers (NetWriter). Transmission confidentiality and integrity are not inherently provided by the system but depend on secure configuration of network connections, such as enabling TLS or other transport security. Since the code and configuration do not enforce TLS by default, protecting transmitted information confidentiality and integrity is only achieved through configuring secure transport protocols and endpoints for network log writers.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "writers.netwriter.tls.enabled",
+              "line_number": 28
+            },
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "writers.netwriter.address",
+              "line_number": 15
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "modules/logging/netwriter.go",
+            "config/logging.yaml"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-8_smt.a",
+          "uuid": "f5ae45ff-b88f-4adb-aaa3-6bfa75d5ded6",
+          "description": "Transmission confidentiality and integrity are provided by configuring the network log writer with TLS enabled and pointing to secure remote endpoints. The system supports TLS configuration but leaves it to administrators to enable and configure it properly. Without such configuration, transmitted log data may be sent in cleartext, exposing it to interception or tampering."
+        }
+      ],
+      "control_id": "sc-8"
+    },
+    {
+      "uuid": "fc0d34c4-74d2-4ee4-98d0-abdc3a4adf57",
+      "control-id": "si-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information Input Validation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Check the validity of the following information inputs: information inputs to the system requiring validity checks are defined;.\n\nAdditional requirements:\n- information inputs to the system requiring validity checks are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The logging subsystem processes various input fields (HTTP headers, cookies, query parameters) which require validation to prevent malformed or malicious data from affecting logging integrity. Input validation is not inherently enforced by the code itself but is achieved through configuration of field filters that redact, mask, hash, or delete sensitive or malformed inputs before logging. This configuration-based approach ensures that only defined inputs undergo validation and filtering. Thus, the control is satisfied only through proper configuration of these input validation filters.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "logging.field_filters",
+              "line_number": 15
+            },
+            {
+              "file_path": "config/logging.yaml",
+              "key_path": "logging.file_writer.file_mode",
+              "line_number": 40
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "modules/caddyhttp/logging.go",
+            "modules/caddyhttp/fieldfilters.go",
+            "config/logging.yaml"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "si-10_smt.a",
+          "uuid": "fa380a86-9f44-44be-affb-06ec39b1d604",
+          "description": "Input validation is implemented via configurable field filters in configuration files that specify which HTTP request components (headers, cookies, query parameters) are subject to redaction, hashing, or deletion before logging. These filters ensure that inputs requiring validation are defined and handled appropriately."
+        }
+      ],
+      "control_id": "si-10"
+    },
+    {
+      "uuid": "9ebb488b-f7d6-47c5-9815-37a19ce47480",
+      "control-id": "si-16",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Memory Protection",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Implement the following controls to protect the system memory from unauthorized code execution: controls to be implemented to protect the system memory from unauthorized code execution are defined;.\n\nAdditional requirements:\n- controls to be implemented to protect the system memory from unauthorized code execution are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The control is applicable as the system runs code and handles memory but does not inherently enforce memory protection controls. Protection from unauthorized code execution is achieved through secure configuration of the runtime environment and build settings outside the logging subsystem itself. The service relies on the host OS and runtime environment for memory protection features such as ASLR, DEP, or executable space protection. There is no direct implementation of memory protection controls within the code. Therefore, memory protection is only satisfied through proper configuration and deployment of the system in a hardened environment.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "/etc/caddy/caddy.json",
+              "key_path": "apps.http.servers.<server_name>.experimental.memory_protection.enabled",
+              "line_number": 123
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "sigtrap_posix.go",
+            "logging.go",
+            "filewriter.yaml"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "si-16_smt.a",
+          "uuid": "98c26f05-5c88-4165-9499-c1c96afbcfac",
+          "description": "Memory protection is enforced indirectly by relying on the host OS and runtime environment configurations such as ASLR and DEP. The service itself does not implement direct memory protection mechanisms but expects deployment in environments where these protections are enabled. Configuration files support enabling experimental memory protection flags that ensure better runtime enforcement if the underlying platform supports it."
+        }
+      ],
+      "control_id": "si-16"
+    }
+  ]
+}
