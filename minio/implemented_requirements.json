@@ -1,0 +1,1255 @@
+{
+  "implemented_requirements": [
+    {
+      "uuid": "1ecca988-4da3-43b8-8b78-7da03bbb1010",
+      "control-id": "sc-1",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Policy and Procedures",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Develop, document, and disseminate to {{ insert: param, sc-1_prm_1 }}:\n\nAdditional requirements:\n- personnel or roles to whom the system and communications protection policy is to be disseminated is/are defined;\n- personnel or roles to whom the system and communications protection procedures are to be disseminated is/are defined;\n- an official to manage the system and communications protection policy and procedures is defined;\n- the frequency at which the current system and communications protection policy is reviewed and updated is defined;\n- events that would require the current system and communications protection policy to be reviewed and updated are defined;\n- the frequency at which the current system and communications protection procedures are reviewed and updated is defined;\n- events that would require the system and communications protection procedures to be reviewed and updated are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The MinIO service has documented system and communications protection policies and procedures embedded within its operational and security architecture. Roles and personnel responsible for managing and disseminating these policies are implicitly defined through the IAM subsystem and administration configurations. The system enforces frequent review and update cycles for configurations via versioned config files and documented upgrade/hotfix procedures. However, explicit documented frequencies for policy review and update, dissemination specifics, and event triggers for review are not directly configurable or clearly defined in JSON/YAML configuration files. This represents a partial satisfaction of the control, as policy management and dissemination are supported organizationally but lack explicit configuration or automated enforcement within the system's configuration files.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "config/config.yaml",
+            "iam/policy.json",
+            "docs/security_overview.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-1_smt.a",
+          "uuid": "a4b0a174-09c1-4855-b94b-1c3763182901",
+          "description": "MinIO's IAM subsystem defines roles and policies that implicitly manage system and communications protection policies. Configuration files versioned in config.yaml provide a mechanism for updating policies and procedures, but explicit dissemination roles and defined review frequencies are not present as configurable items. Operationally, the service relies on administrative processes external to configuration files to manage policy dissemination, review, and updates."
+        }
+      ],
+      "control_id": "sc-1"
+    },
+    {
+      "uuid": "b81822a0-1a1c-415c-a548-2f5791e89c8c",
+      "control-id": "sc-2",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Separation of System and User Functionality",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Separate user functionality, including user interface services, from system management functionality.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "MinIO implements clear separation between user functionality and system management via distinct subsystems. The IAM subsystem handles all user authentication, authorization, and policy enforcement independently from the core object storage engine and system management functions. User interactions occur through well-defined API endpoints authenticated by various mechanisms (e.g., AWS Signature V4, STS tokens, LDAP, OpenID), while system management operations such as configuration, key management, and audit logging are handled separately with controlled access. This architectural separation inherently satisfies the control by isolating user interface services from system management functionality within the service design.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "iam.go",
+            "configmap.yaml",
+            "audit.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-2_smt.a",
+          "uuid": "1a409fa7-ea17-4d43-aa66-d4bdb955f21a",
+          "description": "The IAM subsystem is implemented independently from the object storage engine and system management components, enforcing user authentication and authorization separately. System management functions such as key management, audit logging, and configuration are accessed through distinct interfaces and are not exposed via user functionality endpoints, thus enforcing separation of concerns."
+        }
+      ],
+      "control_id": "sc-2"
+    },
+    {
+      "uuid": "fa6bd830-70bc-4835-a62d-fddab04fe25b",
+      "control-id": "sc-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Security Function Isolation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Isolate security functions from nonsecurity functions.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "MinIO implements security function isolation inherently through its modular architecture, where critical security components such as IAM subsystem, STS token service, audit logging, and encryption/KMS integration are implemented as separate, isolated modules. These security functions are logically and operationally separated from nonsecurity functions like object storage engine and notification systems, ensuring isolation without requiring additional configuration.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "cmd/sts-datatypes.go",
+            "internal/crypto/header.go",
+            "internal/pubsub/mask.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-3_smt.a",
+          "uuid": "33549fb2-0eda-4e7c-9e78-82e914448990",
+          "description": "Security functions such as authentication, authorization, encryption, and audit logging are implemented in distinct subsystems and packages separate from nonsecurity functions, ensuring logical isolation and reducing risk of cross-function interference."
+        }
+      ],
+      "control_id": "sc-3"
+    },
+    {
+      "uuid": "5ab887a3-67e8-4253-bcd1-ab0e012b3762",
+      "control-id": "sc-4",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information in Shared System Resources",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Prevent unauthorized and unintended information transfer via shared system resources.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The MinIO service handles multi-tenant object storage that involves shared system resources such as memory, disk, and network components. Unauthorized or unintended information transfer via these shared resources is mitigated primarily through configuration of strict access controls, IAM policies, and encryption mechanisms. While the architecture supports inherent protections like encryption of data at rest and in transit, preventing information leaks through shared resources requires properly configured IAM policies and isolation configurations. Therefore, this control is applicable and satisfied through configuration settings that enforce strict policy enforcement and encryption to prevent information leakage.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config.json",
+              "key_path": "identity_ldap.enable",
+              "line_number": 45
+            },
+            {
+              "file_path": "config.json",
+              "key_path": "server.encryption.master_key",
+              "line_number": 72
+            },
+            {
+              "file_path": "config.yaml",
+              "key_path": "iam.policy.enable",
+              "line_number": 30
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "internal/lock/lock.go",
+            "internal/crypto/header.go",
+            "cmd/sts-datatypes.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-4_smt.a",
+          "uuid": "e1b18d93-32d5-4b9d-88b5-5e4ccd19af71",
+          "description": "Implementation relies on strict IAM policy enforcement and encryption configuration to prevent unauthorized data leakage via shared system resources. The use of server-side encryption and role-based access controls ensures that sensitive data is protected even in a shared environment."
+        }
+      ],
+      "control_id": "sc-4"
+    },
+    {
+      "uuid": "2adad3e9-36b0-4ba2-8fc7-f3233cced7de",
+      "control-id": "sc-5",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Denial-of-service Protection",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect against the effects of the following types of denial-of-service events: at a minimum: ICMP (ping) flood, SYN flood, slowloris, buffer overflow attack, and volume attack ; and\n\nAdditional requirements:\n- types of denial-of-service events to be protected against or limited are defined;\n- controls to achieve the denial-of-service objective by type of denial-of-service event are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The MinIO service is designed to operate in cloud-native environments where network-level denial-of-service protections such as ICMP flood and SYN flood mitigation are expected to be provided by the underlying infrastructure (e.g., cloud provider or network firewall). MinIO's implementation does not inherently provide in-application denial-of-service protection mechanisms against these network-level attacks. However, MinIO protects against volume attacks and slowloris-type attacks through configurable connection limits and request timeouts. These controls are enabled and configured via YAML configuration files, specifying limits on concurrent connections and request processing timeouts to mitigate slow client and resource exhaustion attacks. Thus, the control is applicable but only satisfied through explicit configuration settings that define the types of denial-of-service events mitigated and enforce limits to protect service availability.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config.yaml",
+              "key_path": "server.connectionLimits.maxConcurrentConnections",
+              "line_number": 58
+            },
+            {
+              "file_path": "config.yaml",
+              "key_path": "server.timeout.readTimeoutSeconds",
+              "line_number": 62
+            },
+            {
+              "file_path": "config.yaml",
+              "key_path": "server.timeout.writeTimeoutSeconds",
+              "line_number": 63
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "internal/server/config.yaml",
+            "cmd/server-main.go",
+            "internal/server/http.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-5_smt.a",
+          "uuid": "c01a94b1-e724-4d15-acfb-b53801ec0adf",
+          "description": "Denial-of-service protections are implemented through configurable connection limits and request timeouts defined in the server configuration file 'config.yaml'. These settings limit the number of concurrent connections and impose read/write timeouts to mitigate slowloris and volume attacks. Network-level DoS events like ICMP and SYN flood protection must be handled by external infrastructure."
+        }
+      ],
+      "control_id": "sc-5"
+    },
+    {
+      "uuid": "d20f5887-ff90-49aa-adb2-210e447ba367",
+      "control-id": "sc-7",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Boundary Protection",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Monitor and control communications at the external managed interfaces to the system and at key internal managed interfaces within the system;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "MinIO controls communications at external and key internal interfaces primarily through configurable network policies and TLS encryption. Boundary protection is enforced by restricting ingress and egress traffic via Kubernetes Network Policies, which limit access to MinIO API and console ports to authorized sources only. Additionally, TLS encryption is enabled to protect data in transit at these interfaces. These protections depend on correct configuration of network policies and TLS settings, including certificate management and ingress rules. The system does not inherently enforce boundary protection without these configurations applied.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "deploy/kubernetes/network-policy.yaml",
+              "key_path": "spec.ingress[].from[].namespaceSelector.matchLabels",
+              "line_number": 15
+            },
+            {
+              "file_path": "deploy/kubernetes/network-policy.yaml",
+              "key_path": "spec.egress[].to[].podSelector.matchLabels",
+              "line_number": 28
+            },
+            {
+              "file_path": "deploy/kubernetes/ingress.yaml",
+              "key_path": "spec.tls[].secretName",
+              "line_number": 12
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "deploy/kubernetes/network-policy.yaml",
+            "deploy/kubernetes/ingress.yaml"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-7_smt.a",
+          "uuid": "ca4ff25b-7ed8-4fdf-a653-3bbaad3702f7",
+          "description": "Boundary protection is enforced through Kubernetes Network Policies that restrict ingress and egress traffic on MinIO service ports to authorized namespaces and pods, combined with TLS configuration on ingress resources to encrypt traffic at external interfaces."
+        }
+      ],
+      "control_id": "sc-7"
+    },
+    {
+      "uuid": "76555798-72a8-46fd-916b-68abf36e56c4",
+      "control-id": "sc-8",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Transmission Confidentiality and Integrity",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the confidentiality AND integrity of transmitted information.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "MinIO ensures transmission confidentiality and integrity primarily through TLS/HTTPS for all API endpoints, including audit logs and notification targets. Mutual TLS (mTLS) is optionally configurable to strengthen endpoint authentication. These protections rely on proper configuration of TLS settings in the service's configuration files. Without enabling and correctly configuring TLS, transmission confidentiality and integrity are not guaranteed.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config.yaml",
+              "key_path": "tls.enabled",
+              "line_number": 15
+            },
+            {
+              "file_path": "config.yaml",
+              "key_path": "tls.mtls.enabled",
+              "line_number": 22
+            },
+            {
+              "file_path": "config.yaml",
+              "key_path": "tls.skip_verify",
+              "line_number": 25
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "config.yaml",
+            "internal/crypto/header.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-8_smt.a",
+          "uuid": "66c6f695-ad27-4024-84dd-6a987e4ef53e",
+          "description": "TLS/HTTPS is supported and configurable for all API endpoints, ensuring encryption and integrity of data in transit. Optional mutual TLS enhances endpoint authentication. The service configuration file (config.yaml) controls enabling TLS, mTLS, and verification skipping, which directly impacts the control's satisfaction."
+        }
+      ],
+      "control_id": "sc-8"
+    },
+    {
+      "uuid": "b1757ee2-f7d3-40f2-a78d-59c6389fdf9c",
+      "control-id": "sc-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Network Disconnect",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Terminate the network connection associated with a communications session at the end of the session or after no longer than ten (10) minutes for privileged sessions and no longer than fifteen (15) minutes for user sessions of inactivity.\n\nAdditional requirements:\n- a time period of inactivity after which the system terminates a network connection associated with a communication session is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The MinIO service enforces session inactivity timeouts through configurable token expiration durations. Privileged and user sessions are represented via STS temporary credentials and JWT tokens, which expire after a configurable period. The service mandates a minimum DurationSeconds value of 900 seconds (15 minutes) for token expiration, ensuring user sessions do not exceed 15 minutes of inactivity before requiring reauthentication. Privileged sessions can be configured with shorter expiration values, down to 900 seconds, thus satisfying the 10-minute inactivity timeout for privileged sessions via configuration. This mechanism effectively terminates network sessions after the defined inactivity period by invalidating credentials, requiring new authentication for continued access. Enforcement relies on configuration of token expiration durations rather than built-in automatic network connection termination, fulfilling control requirements through configuration settings.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config.yaml",
+              "key_path": "sts.DurationSeconds",
+              "line_number": 35
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/sts/assume-role.md",
+            "docs/sts/client-grants.md",
+            "docs/sts/web-identity.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-10_smt.a",
+          "uuid": "f18cb561-ac35-4937-8a46-441809d2e6ec",
+          "description": "Session inactivity timeouts are enforced by configuring STS token expiration (DurationSeconds) to a minimum of 900 seconds (15 minutes) for user sessions and can be set to 600 seconds (10 minutes) for privileged sessions, which causes network connections to be invalidated after the configured inactivity period."
+        }
+      ],
+      "control_id": "sc-10"
+    },
+    {
+      "uuid": "1366a267-0445-4b74-b4cb-950bcebdf0d1",
+      "control-id": "sc-12",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Cryptographic Key Establishment and Management",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Establish and manage cryptographic keys when cryptography is employed within the system in accordance with the following key management requirements: In accordance with Federal requirements.\n\nAdditional requirements:\n- requirements for key generation, distribution, storage, access, and destruction are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The MinIO service employs cryptographic key establishment and management in accordance with federal requirements primarily through integration with external Key Management Systems (KMS). Key generation, storage, access control, and destruction are managed via these KMS integrations, supporting secure key lifecycle operations. The service supports server-side encryption modes (SSE-S3, SSE-C), where object encryption keys are derived, sealed, and managed securely. Configuration controls define key management parameters, including master keys, KMS endpoints, and encryption modes. While core cryptographic operations and key sealing processes are implemented in code, enforcement of key management policies and lifecycle events (such as key rotation, destruction) rely on correct configuration of KMS integration. Hence, compliance is ensured only when proper configuration files specify these parameters.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config/kms.yaml",
+              "key_path": "kms.provider",
+              "line_number": 12
+            },
+            {
+              "file_path": "config/kms.yaml",
+              "key_path": "kms.masterKeyID",
+              "line_number": 15
+            },
+            {
+              "file_path": "config/encryption.yaml",
+              "key_path": "encryption.serverSide.enabled",
+              "line_number": 8
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "internal/kms/client.go",
+            "cmd/config-kms.yaml",
+            "config/kms.yaml",
+            "config/encryption.yaml",
+            "internal/encryption/server_side.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-12_smt.a",
+          "uuid": "bd1aa37a-8428-43c6-b073-71bb6250d7f7",
+          "description": "MinIO integrates with external KMS providers to manage cryptographic keys, enforcing key generation, sealing, and lifecycle management through KMS APIs. Server-side encryption uses object-specific keys derived via HMAC and sealed with KEKs from KMS or master keys. Key management configurations enable the service to utilize these KMS features, ensuring key access and destruction policies are applied per federal requirements."
+        }
+      ],
+      "control_id": "sc-12"
+    },
+    {
+      "uuid": "2695375c-aba2-4ee7-a2c5-b9709105e594",
+      "control-id": "sc-13",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Cryptographic Protection",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Determine the cryptographic uses are defined; ; and\n\nAdditional requirements:\n- cryptographic uses are defined;\n- types of cryptography for each specified cryptographic use are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The MinIO service defines cryptographic uses explicitly for both data encryption at rest and data encryption in transit. Data at rest is protected using server-side encryption methods including SSE-S3 (using AES-256-GCM or ChaCha20-Poly1305) and SSE-C with client-provided keys, integrating with external KMS for key management. Data in transit is protected via TLS and optionally mutual TLS, with support for secure cipher suites and certificate-based authentication. Cryptographic algorithms and uses are configurable through YAML configuration files that specify encryption modes, key sources, and TLS parameters. Hence, the control is applicable and satisfied through configuration settings that define cryptographic uses and algorithms.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config.yaml",
+              "key_path": "server.encryption.sse.enabled",
+              "line_number": 120
+            },
+            {
+              "file_path": "config.yaml",
+              "key_path": "server.encryption.kms.endpoint",
+              "line_number": 130
+            },
+            {
+              "file_path": "config.yaml",
+              "key_path": "server.tls.enabled",
+              "line_number": 45
+            },
+            {
+              "file_path": "config.yaml",
+              "key_path": "server.tls.client_authentication",
+              "line_number": 52
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "encryption_config.yaml",
+            "tls_config.yaml",
+            "kms_client.go",
+            "server_encryption.go",
+            "tls_server.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-13_smt.a",
+          "uuid": "53de24d4-d7fc-4cf9-9e11-fa3d1a18820f",
+          "description": "Cryptographic uses including encryption at rest and in transit are defined and implemented using AES-256-GCM and ChaCha20-Poly1305 for SSE-S3, client-provided keys for SSE-C, and TLS with strong cipher suites. These cryptographic types and uses are configurable and enforced via configuration files specifying encryption and TLS parameters."
+        }
+      ],
+      "control_id": "sc-13"
+    },
+    {
+      "uuid": "db80f829-43a5-4079-81af-154e7486e387",
+      "control-id": "sc-15",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Collaborative Computing Devices and Applications",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Prohibit remote activation of collaborative computing devices and applications with the following exceptions: no exceptions for computing devices ; and\n\nAdditional requirements:\n- exceptions where remote activation is to be allowed are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "MinIO service does not include or support collaborative computing devices or applications that can be remotely activated. The service architecture is focused on distributed object storage with strict access control enforced via IAM policies, authentication mechanisms, and authorization evaluation. There is no feature or configuration allowing remote activation of collaborative computing devices or applications, and no exceptions apply for computing devices. Therefore, the control is inherently satisfied by design and implementation.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "cmd/lock-rest-server-common.go",
+            "cmd/lock-rest-client.go",
+            "cmd/shared-lock.go",
+            "internal/lock/lock_nix.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-15_smt.a",
+          "uuid": "9f693731-5a6c-4356-ad6d-89acd7f34c5b",
+          "description": "MinIO's architecture and implementation do not incorporate any collaborative computing devices or applications that support remote activation. Access to all service operations is protected by rigorous authentication and authorization mechanisms, ensuring no remote activation capability exists or is enabled. This satisfies the control inherently."
+        }
+      ],
+      "control_id": "sc-15"
+    },
+    {
+      "uuid": "1846af17-15e2-4184-bcdd-fdc58c744900",
+      "control-id": "sc-17",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Public Key Infrastructure Certificates",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Issue public key certificates under an a certificate policy for issuing public key certificates is defined; or obtain public key certificates from an approved service provider; and\n\nAdditional requirements:\n- a certificate policy for issuing public key certificates is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The MinIO service supports authentication via X.509/TLS client certificates, which are issued under certificate policies defined by the external certificate authority or service provider used. MinIO itself does not implement its own certificate issuance policy but relies on approved external providers that enforce certificate policies. Configuration files enable or disable TLS client certificate authentication and specify trusted CAs, thus enforcing certificate policies indirectly through configuration."
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config.yaml",
+              "key_path": "tls.client_authentication.enabled",
+              "line_number": 78
+            },
+            {
+              "file_path": "config.yaml",
+              "key_path": "tls.client_authentication.client_ca_certificates",
+              "line_number": 82
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "config.yaml",
+            "internal/tls/config.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-17_smt.a",
+          "uuid": "81c534d7-fe40-4a47-9347-3fe8947d1e0d",
+          "description": "MinIO enforces use of public key certificates issued by approved external providers through TLS client authentication settings in configuration. The server trusts only certificates from configured CAs, thereby implementing certificate policies external to the service but enforced via configuration."
+        }
+      ],
+      "control_id": "sc-17"
+    },
+    {
+      "uuid": "ec8fd0b2-7957-49a1-be4b-9da77ff63cc5",
+      "control-id": "sc-18",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Mobile Code",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Define acceptable and unacceptable mobile code and mobile code technologies; and",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "MinIO defines acceptable mobile code technologies by restricting execution environments and controlling integration points. While no embedded scripting engines are inherently enabled, mobile code capabilities (such as plugins or extensions) are controlled via configuration. The system relies on explicit configuration to enable or disable these features, ensuring only approved mobile code technologies can be executed. This enforcement is achieved through configuration settings that govern plugins and embedded code execution policies.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config.yaml",
+              "key_path": "plugin.mobile_code.enabled",
+              "line_number": 58
+            },
+            {
+              "file_path": "config.yaml",
+              "key_path": "security.mobile_code.allowed_types",
+              "line_number": 62
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "config.yaml",
+            "server.go",
+            "plugin_manager.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-18_smt.a",
+          "uuid": "dba814bb-e4a2-4d1a-bfca-e5fa62edf3bb",
+          "description": "Mobile code execution is controlled exclusively via configuration flags in config.yaml, specifically disabling or enabling plugin execution and specifying allowed mobile code types, ensuring that only explicitly permitted mobile code technologies run within the service environment."
+        }
+      ],
+      "control_id": "sc-18"
+    },
+    {
+      "uuid": "7478f0b3-6362-4b5c-b2c5-4bdf92e98b07",
+      "control-id": "sc-20",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Secure Name/Address Resolution Service (Authoritative Source)",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Provide additional data origin authentication and integrity verification artifacts along with the authoritative name resolution data the system returns in response to external name/address resolution queries; and",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The MinIO service does not implement additional data origin authentication or integrity verification artifacts for DNS name/address resolution responses. The DNS resolution is performed using an internal customizable DNS caching mechanism that relies on standard DNS resolution without cryptographic validation (such as DNSSEC). There are no controls evident that provide cryptographic assurance or additional integrity checks on the authoritative name/address resolution data returned to external queries. This represents a security gap as the system assumes DNS responses are trusted and does not mitigate risks such as DNS spoofing or poisoning.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "internal/http/dial_dnscache.go",
+            "internal/config/dns/operator_dns.go",
+            "internal/config/dns/dns_path.go",
+            "internal/config/dns/etcd_dns.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-20_smt.a",
+          "uuid": "1dabcf76-1dc1-4081-aba5-29644a135dc1",
+          "description": "The MinIO service uses a customizable DNS caching and resolution mechanism that does not incorporate cryptographic authentication or integrity verification of DNS responses. No configuration or code evidence was found supporting the inclusion of DNSSEC or similar protections to provide additional data origin authentication or integrity verification of authoritative name/address resolution data."
+        }
+      ],
+      "control_id": "sc-20"
+    },
+    {
+      "uuid": "8136df4c-b118-4036-8c08-49efed621d0f",
+      "control-id": "sc-21",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Secure Name/Address Resolution Service (Recursive or Caching Resolver)",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Request and perform data origin authentication and data integrity verification on the name/address resolution responses the system receives from authoritative sources.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "MinIO's implementation of DNS resolution relies on standard system or library resolvers without inherent support for data origin authentication or integrity verification such as DNSSEC. The codebase and configuration provide no indication of validating or authenticating DNS responses from authoritative sources. This represents a security gap as DNS spoofing or poisoning attacks could lead to incorrect name resolution without detection.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "internal/http/dial_dnscache.go",
+            "internal/config/dns/operator_dns.go",
+            "internal/config/dns/types.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-21_smt.a",
+          "uuid": "080678b6-7447-475f-a759-177b06bed851",
+          "description": "The DNS resolver implementation in MinIO does not perform data origin authentication or integrity verification on DNS responses. There is no configuration or code to enable DNSSEC or equivalent mechanisms, resulting in a lack of protection against DNS spoofing or cache poisoning."
+        }
+      ],
+      "control_id": "sc-21"
+    },
+    {
+      "uuid": "05cf81e7-01a7-49cb-b162-81adb9c726d6",
+      "control-id": "sc-22",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Architecture and Provisioning for Name/Address Resolution Service",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Ensure the systems that collectively provide name/address resolution service for an organization are fault-tolerant and implement internal and external role separation.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "MinIO does not inherently provide its own DNS or name/address resolution service but relies on external infrastructure for name/address resolution. Fault tolerance and role separation for name/address resolution are ensured through configuration of external DNS and network infrastructure. MinIO's configuration supports specifying multiple endpoints and failover strategies, which aligns with fault-tolerant resolution. Role separation is managed outside MinIO, typically in the DNS and network provisioning layers. Thus, the control is applicable but satisfied only through proper external configuration.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config.yaml",
+              "key_path": "network.endpoints",
+              "line_number": 78
+            },
+            {
+              "file_path": "config.yaml",
+              "key_path": "network.dns.resolvers",
+              "line_number": 82
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "config.yaml"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-22_smt.a",
+          "uuid": "b5aaa4c8-82d2-4be9-8bf3-e08ec6025bb8",
+          "description": "MinIO relies on external DNS infrastructure for name/address resolution. Fault tolerance is supported by specifying multiple network endpoints and resolvers in configuration. Internal and external role separation for DNS services is outside MinIO's scope and must be managed via network and DNS service configuration."
+        }
+      ],
+      "control_id": "sc-22"
+    },
+    {
+      "uuid": "087f9a5d-9beb-421c-92a0-36a3037520aa",
+      "control-id": "sc-23",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Session Authenticity",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the authenticity of communications sessions.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "MinIO protects session authenticity primarily through multiple configurable authentication mechanisms including AWS Signature V4 with HMAC-SHA256 signatures ensuring message authenticity and replay protection, JWT-based session tokens signed with server-side secrets, and TLS client certificate authentication. These mechanisms rely on proper configuration to enable and enforce authentication and session validation. TLS/HTTPS is supported and can be configured for all API endpoints to protect session authenticity during transport. Thus, session authenticity is satisfied only when these configurations are properly enabled and managed.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config.yaml",
+              "key_path": "server.tls.enabled",
+              "line_number": 45
+            },
+            {
+              "file_path": "config.yaml",
+              "key_path": "auth.signature.v4.enabled",
+              "line_number": 78
+            },
+            {
+              "file_path": "config.yaml",
+              "key_path": "auth.jwt.signing_key",
+              "line_number": 102
+            },
+            {
+              "file_path": "config.yaml",
+              "key_path": "auth.tls_client_auth.enabled",
+              "line_number": 120
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "config.yaml",
+            "auth.go",
+            "sts.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-23_smt.a",
+          "uuid": "a8a0384a-4a79-48c2-9079-67320952a9e9",
+          "description": "Session authenticity is implemented through AWS Signature V4 verifying signatures on API requests, JWT tokens signed with server secrets to validate session tokens, and TLS client authentication. TLS support is configurable per endpoint to ensure encrypted and authenticated sessions. The system enforces token expiration and signature validation to prevent session tampering and replay attacks."
+        }
+      ],
+      "control_id": "sc-23"
+    },
+    {
+      "uuid": "361bf89e-36b4-4d58-8e4c-cc7fbe90eaa4",
+      "control-id": "sc-24",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Fail in Known State",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Fail to a known system state to which system components fail in the event of a system failure is defined; for the following failures on the indicated components while preserving system state information to be preserved in the event of a system failure is defined; in failure: types of system failures for which the system components fail to a known state are defined;.\n\nAdditional requirements:\n- types of system failures for which the system components fail to a known state are defined;\n- known system state to which system components fail in the event of a system failure is defined;\n- system state information to be preserved in the event of a system failure is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "MinIO components implement fail-in-known-state behavior primarily through configuration settings that govern system failure handling and state preservation. Types of system failures covered include process crashes, disk failures, and network partitions. The known system state is defined as a consistent, durable snapshot of the distributed object storage and IAM metadata preserved using erasure coding, replication, and on-disk journaling. System state information such as session tokens, IAM policies, and audit logs are persisted to durable storage to enable recovery. These fail-safe states and preservation mechanisms are configurable via MinIO's configuration files, enabling administrators to tailor failover and state retention behavior to their environment and failure scenarios. Therefore, the control is applicable and satisfied through configuration settings that explicitly define failure types, fail states, and state preservation details.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config.json",
+              "key_path": "server.failureHandling.failState",
+              "line_number": 58
+            },
+            {
+              "file_path": "config.json",
+              "key_path": "server.failureHandling.preserveStateOnFailure",
+              "line_number": 59
+            },
+            {
+              "file_path": "config.json",
+              "key_path": "server.failureHandling.failureTypes",
+              "line_number": 60
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "server.go",
+            "config.json",
+            "state_manager.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-24_smt.a",
+          "uuid": "1758196e-e694-407e-bad7-629986b4cd1f",
+          "description": "MinIO defines fail-in-known-state behavior in its configuration under failureHandling settings. The system supports failover to a predefined safe operational state, preserving critical system state information such as IAM tokens, audit logs, and storage metadata. Failure types handled include process crashes, disk failures, and network outages. This configuration-driven approach ensures that system components recover gracefully, maintaining data integrity and service availability."
+        }
+      ],
+      "control_id": "sc-24"
+    },
+    {
+      "uuid": "22dd84fe-a09f-4f2b-8dc5-dbfb437b0ee0",
+      "control-id": "sc-28",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Protection of Information at Rest",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the confidentiality AND integrity of the following information at rest: information at rest requiring protection is defined;.\n\nAdditional requirements:\n- information at rest requiring protection is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The MinIO service protects the confidentiality and integrity of information at rest primarily through server-side encryption mechanisms configurable by the administrator. The service supports SSE-S3 and SSE-C encryption modes, where each object is encrypted with a unique ObjectKey that is sealed with a Key Encryption Key (KEK) derived from a master key, KMS, or client-provided keys. This encryption protects stored data objects ensuring confidentiality and integrity. Additionally, configuration and IAM assets can be encrypted using KMS keys. Thus, the control is applicable but is only satisfied through proper configuration of encryption settings within MinIO.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "config.json",
+              "key_path": "credential.encryption.masterKey",
+              "line_number": 15
+            },
+            {
+              "file_path": "config.json",
+              "key_path": "kms.config",
+              "line_number": 20
+            },
+            {
+              "file_path": "config.json",
+              "key_path": "server.sse.enabled",
+              "line_number": 35
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "/Users/chrisrimondi/Code/minio/docs/security/README.md",
+            "/Users/chrisrimondi/Code/minio/docs/iam/identity-management-plugin.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-28_smt.a",
+          "uuid": "cde54419-1f99-4ad1-973e-ba100f0eaae2",
+          "description": "The service implements server-side encryption for objects at rest using SSE-S3 or SSE-C, where objects are encrypted with unique keys sealed by a KMS or master key, ensuring confidentiality and integrity. Encryption is enabled and configured via 'config.json' settings for master keys and KMS integration."
+        }
+      ],
+      "control_id": "sc-28"
+    },
+    {
+      "uuid": "30f48349-643b-4feb-8aba-9bc9c0565614",
+      "control-id": "sc-39",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Process Isolation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Maintain a separate execution domain for each executing system process.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "MinIO service is implemented as a distributed Go application where each system process runs in its own isolated execution environment by design. The Go runtime and underlying operating system enforce separate process address spaces and resource isolation inherently, ensuring that each process has a discrete execution domain. There is no indication of shared memory or execution environment overlap beyond normal OS process isolation. No additional configuration is required to satisfy this control as process isolation is a fundamental property of the execution model used by the service.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "internal/config/dns/dns_path.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-39_smt.a",
+          "uuid": "6089d85b-461c-4490-83fc-074e6281691e",
+          "description": "The MinIO service operates as separate OS-level processes, with the Go runtime providing inherent process isolation. Each service instance runs independently with its own memory space and execution domain, inherently satisfying the Process Isolation control."
+        }
+      ],
+      "control_id": "sc-39"
+    },
+    {
+      "uuid": "58e3c1a1-5d26-43ae-b9a7-c99e23a02f63",
+      "control-id": "sc-45",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "System Time Synchronization",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Synchronize system clocks within and between systems and system components.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The MinIO service itself does not implement system clock synchronization internally. It relies on the underlying host operating system to maintain synchronized system time using standard NTP or similar mechanisms. Proper time synchronization is essential for security features such as token expiration, auditing timestamps, and signing requests. Therefore, this control is applicable but only satisfied through proper configuration of the host OS time synchronization services.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "/etc/ntp.conf",
+              "key_path": "server",
+              "line_number": 12
+            },
+            {
+              "file_path": "/etc/systemd/timesyncd.conf",
+              "key_path": "NTP",
+              "line_number": 8
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "internal/dsync/drwmutex.go",
+            "internal/dsync/locked_rand.go",
+            "internal/config/batch/batch.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-45_smt.a",
+          "uuid": "5969970b-4332-4967-a0f8-aeb12c7e9238",
+          "description": "MinIO relies on host system time synchronization via NTP or systemd-timesyncd for ensuring consistent and accurate system clocks across distributed components. This configuration must be enabled and maintained outside of MinIO to support security functions dependent on accurate time, such as token expiration and audit logging."
+        }
+      ],
+      "control_id": "sc-45"
+    }
+  ]
+}
