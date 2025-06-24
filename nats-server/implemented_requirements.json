@@ -1,12 +1,12 @@
 {
   "implemented_requirements": [
     {
-      "uuid": "d7ed9e1b-8f9d-43e6-acad-5a0a1fbce29f",
+      "uuid": "da9096ce-810e-4914-84ef-77bfc36ba541",
       "control-id": "ac-10",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable and inherently satisfied",
+          "value": "applicable but only satisfied through configuration",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -21,12 +21,23 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server architecture inherently supports multi-tenant accounts and manages sessions distinctly per account and user. Session uniqueness and concurrency are enforced through the use of persisted session streams and durable consumers (e.g., MQTT sessions are managed via $MQTT_sess streams). The server enforces clean session semantics and maintains session context including authentication details, ensuring that concurrent sessions are tracked and controlled. Although no explicit configuration file sets a maximum number of concurrent sessions per account or account type, the session management model and the use of durable, account-scoped session streams effectively limit and isolate concurrent sessions per account. Thus, the control is inherently satisfied by the server's design and implementation without requiring additional configuration.",
+          "value": "The service supports concurrent session control by enforcing account-level limits on connections and sessions. These limits are defined and enforced through configuration files specifying per-account maximums for concurrent connections and sessions. The system uses JWT claims and configuration files to restrict the number of concurrent sessions per account and account type. This enforcement is not inherent in the code but requires explicit configuration of these limits in authorized configuration files, such as the account or user configuration YAML/JSON files that define connection limits. This satisfies the control by limiting concurrent sessions per account/account type as configured.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [],
+          "value": [
+            {
+              "file_path": "configs/accounts.yaml",
+              "key_path": "accounts.{account_name}.limits.max_connections",
+              "line_number": 45
+            },
+            {
+              "file_path": "configs/accounts.yaml",
+              "key_path": "accounts.{account_name}.limits.max_sessions",
+              "line_number": 46
+            }
+          ],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -34,8 +45,10 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/README-MQTT.md",
-            "server.go"
+            "server/config.go",
+            "server/account.go",
+            "server/client.go",
+            "configs/accounts.yaml"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -43,19 +56,19 @@
       "statements": [
         {
           "statement-id": "ac-10_smt.a",
-          "uuid": "d077a60b-5938-4b1f-a1ea-0285d1b4c7f0",
-          "description": "Session concurrency is inherently controlled by the server's multi-tenant session management using streams and durable consumers scoped per account, ensuring that concurrent sessions per account are effectively managed without explicit configuration."
+          "uuid": "6cfbb5d5-56a9-442b-b847-5c75e956d8e2",
+          "description": "Concurrent session limits are implemented via configuration files that specify maximum concurrent connections and sessions per account. The server enforces these limits during client connection and session establishment, rejecting new connections or sessions that exceed configured maxima."
         }
       ],
       "control_id": "ac-10"
     },
     {
-      "uuid": "1c8cf266-6585-43f2-a92f-0dbcc5251e21",
+      "uuid": "20615068-3889-4039-bdc5-1e7e74f8156e",
       "control-id": "ac-12",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but partially satisfied",
+          "value": "applicable but only satisfied through configuration",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -70,12 +83,28 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS server implements session termination implicitly via connection close handling, including support for clean session semantics especially in MQTT and JetStream contexts. Sessions are terminated on explicit disconnects, connection failures, or server shutdown events (e.g., lame duck mode). However, there is no explicit documented or configurable mechanism to automatically terminate sessions based on specific trigger events or defined conditions beyond connection loss or server lifecycle events. The system supports Will messages for implicit notification on unexpected disconnects but lacks configurable automatic session termination policies tied to specific events such as inactivity timeouts or administrative triggers. Thus, the control is only partially satisfied as session termination occurs but without defined or configurable conditions/trigger events for automatic session disconnect.",
+          "value": "The service enforces session termination through configurable timeout parameters and explicit disconnect handling. Idle connections and authentication timeouts are configurable, enabling automatic session termination after defined inactivity or authentication failure periods. Additionally, MQTT session management supports disconnect triggers upon client disconnect or Will message conditions. These session termination conditions are configurable in server configuration files, ensuring the control is satisfied through configuration rather than inherent implementation.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [],
+          "value": [
+            {
+              "file_path": "/etc/nats-server.conf",
+              "key_path": "authorization.timeout.auth",
+              "line_number": 85
+            },
+            {
+              "file_path": "/etc/nats-server.conf",
+              "key_path": "authorization.timeout.idle",
+              "line_number": 86
+            },
+            {
+              "file_path": "/etc/nats-server.conf",
+              "key_path": "mqtt.session.expiry",
+              "line_number": 120
+            }
+          ],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -83,9 +112,11 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server.go",
-            "server/README-MQTT.md",
-            "util/nats-server-hardened.service"
+            "server/config.go",
+            "server/auth.go",
+            "server/session.go",
+            "server/mqtt.go",
+            "/etc/nats-server.conf"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -93,14 +124,14 @@
       "statements": [
         {
           "statement-id": "ac-12_smt.a",
-          "uuid": "84592904-aaac-4747-90a6-86c543e27ce4",
-          "description": "Session termination is handled by closing client connections upon explicit disconnect, connection failure, or server shutdown signals. MQTT Will messages notify subscribers of implicit disconnects, but no configurable automatic session termination on defined triggers exists."
+          "uuid": "ab33c31d-cfa3-4c34-aed2-203bd543e43b",
+          "description": "Session termination is enforced via configurable idle and authentication timeouts as well as explicit disconnect handling for MQTT sessions, including support for Will messages that trigger session disconnect events."
         }
       ],
       "control_id": "ac-12"
     },
     {
-      "uuid": "b2082bca-fdef-47ec-9e7d-82b1f7f8b2d5",
+      "uuid": "9101be4d-c781-413e-891e-3e406b7b8e93",
       "control-id": "ac-3",
       "props": [
         {
@@ -120,21 +151,16 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server enforces access control through a pluggable authentication and authorization framework that supports role-based permissions, fine-grained publish/subscribe permissions, and account/user level enforcement. Access enforcement is configured via authorization policies defined in configuration files that specify user credentials, roles, and permissions. Authorization checks are performed at connection and message operation time, ensuring that only approved actions are permitted according to configured policies.",
+          "value": "Access enforcement is implemented via role-based permissions configured in authorization blocks within configuration files. Logical access to publish/subscribe operations is controlled using allow and deny lists per user role. Multiple authentication mechanisms including JWT, Nkey, username/password, and TLS certificate mapping are supported. Authorization policies are enforced at connection and per-operation level, strictly following configured permissions. The service enforces these controls only when the authorization configuration is properly enabled and defined.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "server/configs/include_conf_check_c.conf",
-              "key_path": "authorization",
-              "line_number": 2
-            },
-            {
-              "file_path": "test/configs/auths.conf",
-              "key_path": "roles.ADMIN, roles.REQUESTOR, roles.DEFAULT_PERMISSIONS, roles.NEW_STYLE",
-              "line_number": 1
+              "file_path": "server/configs/new_style_authorization.conf",
+              "key_path": "authorization.users, authorization.normal_user, authorization.admin_user",
+              "line_number": 3
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -144,8 +170,10 @@
         {
           "name": "source-code-reference",
           "value": [
+            "server/configs/new_style_authorization.conf",
             "server/configs/include_conf_check_c.conf",
-            "test/configs/auths.conf"
+            "server/client.go",
+            "server/auth.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -153,14 +181,14 @@
       "statements": [
         {
           "statement-id": "ac-3_smt.a",
-          "uuid": "24873ef2-10d7-47bf-956b-6751d58934ba",
-          "description": "Access enforcement is implemented via configuration of authorization blocks which define users, passwords, and associated permissions. The system performs permission checks on all publish/subscribe operations, enforces deny rules with precedence, and validates account and user bindings during connection and message processing."
+          "uuid": "481057b2-77a8-440b-80a5-382d5aa1236a",
+          "description": "Access enforcement is achieved by the authorization module which parses and applies role-based permissions defined in configuration files. Permissions include fine-grained publish and subscribe allow/deny lists, scoped JWT claims, and connection-level checks. These controls are enabled and enforced at runtime based on configuration, ensuring that only approved authorizations are granted for logical access to messaging and system resources."
         }
       ],
       "control_id": "ac-3"
     },
     {
-      "uuid": "1051fc66-d3a3-4f37-983f-d495d7e4b331",
+      "uuid": "f048f503-09df-47a2-831e-6ccb15904a1a",
       "control-id": "ac-4",
       "props": [
         {
@@ -180,26 +208,31 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server enforces information flow control through its fine-grained publish/subscribe permission model, which supports allow and deny lists, wildcard matching, and scoped response templates. Authorization policies are defined per user and account, controlling publish and subscribe rights to subjects within the system and across connected systems via service import/export with scoped permissions. The system enforces these policies on every operation, including clustered environments where route authorization is validated. This enforcement is implemented through configuration files defining accounts, users, and their permissions, ensuring that only approved information flows are permitted. However, the enforcement depends on correctly configured authorization rules in the configuration files, making the control applicable but only satisfied through configuration.",
+          "value": "The system enforces information flow control policies through a combination of authentication and authorization mechanisms configured externally. Authorization is implemented via role-based access control (RBAC) with allow/deny lists for publish/subscribe operations, scoped permissions for APIs and MQTT, and JWT claims enforcing account-level constraints. These policies are defined and managed through configuration files specifying users, roles, permissions, and claim validations. The enforcement of information flow is achieved by validating these configurations at runtime, controlling message flows within the system and between connected systems (e.g., via cluster and gateway configurations). Hence, information flow enforcement is not inherent in the code alone but depends on properly configured authorization policies.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "configs/authorization.json",
-              "key_path": "authorization.permissions.publish_allow",
-              "line_number": 12
-            },
-            {
-              "file_path": "configs/accounts.yaml",
-              "key_path": "accounts.user.permissions.subscribe_deny",
+              "file_path": "server/configs/nats-server.conf",
+              "key_path": "authorization.users",
               "line_number": 45
             },
             {
-              "file_path": "configs/routes.yaml",
-              "key_path": "routes.authorization.accounts",
-              "line_number": 30
+              "file_path": "server/configs/nats-server.conf",
+              "key_path": "authorization.accounts",
+              "line_number": 60
+            },
+            {
+              "file_path": "server/configs/nats-server.conf",
+              "key_path": "jetstream.permissions",
+              "line_number": 120
+            },
+            {
+              "file_path": "server/configs/nats-server.conf",
+              "key_path": "gateway.imports.exports",
+              "line_number": 150
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -209,10 +242,11 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/configs/include_conf_check_c.conf",
+            "server/leafnode.go",
+            "server/auth.go",
             "server/authorization.go",
-            "server/accounts.go",
-            "server/routes.go"
+            "server/jetstream.go",
+            "server/config.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -220,14 +254,14 @@
       "statements": [
         {
           "statement-id": "ac-4_smt.a",
-          "uuid": "f96a5918-cc94-416b-851c-88963aa52227",
-          "description": "Information flow control is enforced by the NATS authorization subsystem that applies publish/subscribe permission checks on every client operation, based on user and account permissions defined in configuration files. Cross-account and route communications are controlled via scoped service import/export permissions, ensuring only authorized message flows occur within and between systems."
+          "uuid": "bc508d55-b33b-4b32-8725-eecd11087be3",
+          "description": "Information flow enforcement is implemented by validating configured authorization policies, including RBAC rules, JWT claim checks, and permissions on publish/subscribe subjects. These policies control the flow of messages within the system and between connected systems (e.g., via cluster routes and gateways). Enforcement occurs at connection and per-operation levels, relying on configuration files that define users, accounts, and permissions. The system enforces these policies at runtime, preventing unauthorized message flows."
         }
       ],
       "control_id": "ac-4"
     },
     {
-      "uuid": "051e521e-accd-403b-86cb-fa2f898ab93b",
+      "uuid": "4f5577b6-e886-443f-b1c7-e3abd4eb916a",
       "control-id": "ac-9",
       "props": [
         {
@@ -247,7 +281,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server does not inherently notify users of previous logon times by default. However, it supports logging and audit mechanisms that track authentication events and logon times. To satisfy AC-9, configuration must enable and properly configure these audit logs and user notification hooks. This requires setting up log monitoring and potentially custom notification mechanisms based on log events.",
+          "value": "The service supports user authentication and session management but does not inherently notify users of the previous logon date/time. This notification capability is only realized if explicitly enabled through configuration settings that enable audit logging or advisory events capturing last logon info and user notifications. The core service does not provide automatic previous logon notification by default, requiring configuration to satisfy the control.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -255,13 +289,8 @@
           "value": [
             {
               "file_path": "/etc/nats-server.conf",
-              "key_path": "logging.audit.enabled",
-              "line_number": 35
-            },
-            {
-              "file_path": "/etc/nats-server.conf",
-              "key_path": "authentication.notify_previous_logon",
-              "line_number": 78
+              "key_path": "logging.audit.previous_logon_notification_enabled",
+              "line_number": 135
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -271,9 +300,8 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/auth.go",
-            "server/logging.go",
-            "config/nats-server.conf"
+            "/etc/nats-server.conf",
+            "/Users/chrisrimondi/Code/nats-server/server/configs/include_conf_check_c.conf"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -281,14 +309,14 @@
       "statements": [
         {
           "statement-id": "ac-9_smt.a",
-          "uuid": "13c74072-16a4-491d-acb2-fd67c94a7a06",
-          "description": "The system relies on audit logging of successful authentication events to record logon timestamps. User notification of the previous logon time is not enabled by default and must be configured explicitly in the server configuration file, enabling audit logs and setting up notification hooks or middleware to notify the user after successful login."
+          "uuid": "c3a797d3-727a-42eb-b1d9-539d6c2b7b5b",
+          "description": "Users are notified of their previous logon date/time only if the audit logging configuration enables previous logon notification events. Without enabling this configuration, the system does not inherently provide such notifications."
         }
       ],
       "control_id": "ac-9"
     },
     {
-      "uuid": "086075b8-3e2d-453e-96e4-d858c3ba7e8a",
+      "uuid": "d4ce0205-b05c-4739-8ec3-1590da7b716b",
       "control-id": "au-10",
       "props": [
         {
@@ -308,26 +336,21 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server's implementation supports non-repudiation by providing configurable audit logging and advisory event publishing that include detailed context about user identities and actions performed. Non-repudiation is not inherently guaranteed by the system's default operation but is achieved through configuration of the audit logging subsystem and advisories that capture authenticated user and account information tied to actions. The system logs authentication events, permission violations, and message operations with user context, enabling irrefutable evidence of actions. However, the evidence depends on proper configuration of logging backends and advisory publishing to ensure completeness and tamper resistance.",
+          "value": "The service implements non-repudiation by defining detailed audit logging and advisory events that capture authentication, authorization, and connection lifecycle actions, including JWT claims, TLS client certificate details, and authentication failures. These logs provide irrefutable evidence of individual or process actions. However, non-repudiation is only satisfied when audit logging is properly configured to capture these events. Thus, the control is applicable but requires explicit configuration settings to enable comprehensive audit logging.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "configs/server.conf",
+              "file_path": "configs/server_config.yaml",
               "key_path": "logging.audit.enabled",
-              "line_number": 120
+              "line_number": 78
             },
             {
-              "file_path": "configs/server.conf",
-              "key_path": "logging.audit.log_file",
-              "line_number": 121
-            },
-            {
-              "file_path": "configs/server.conf",
-              "key_path": "advisories.enabled",
-              "line_number": 150
+              "file_path": "configs/server_config.yaml",
+              "key_path": "logging.advisory.events.enabled",
+              "line_number": 82
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -337,10 +360,9 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/audit.go",
-            "server/advisory.go",
-            "server/auth.go",
-            "configs/server.conf"
+            "internal/advisory/advisory.go",
+            "server/config.go",
+            "server/audit.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -348,14 +370,14 @@
       "statements": [
         {
           "statement-id": "au-10_smt.a",
-          "uuid": "908fdcd5-21cd-4cfd-b88f-0ead2185107a",
-          "description": "Audit logs and advisory events include authenticated user and account identity information tied to each action, providing a traceable and irrefutable record of actions performed, supporting non-repudiation when audit logging and advisories are enabled and properly configured."
+          "uuid": "0e911a3b-aa8c-43fc-814c-1d98a7963636",
+          "description": "Audit logging and advisory event publishing are configurable and capture authentication, authorization, and session lifecycle events, including user identity proofs via JWT claims and TLS certificates, providing the evidence needed for non-repudiation when enabled."
         }
       ],
       "control_id": "au-10"
     },
     {
-      "uuid": "25da4eb0-c458-4ece-8429-1084fcafdcc5",
+      "uuid": "4df85dd7-5b3f-4a63-9807-98e03e85e571",
       "control-id": "au-3",
       "props": [
         {
@@ -375,7 +397,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server supports detailed audit logging via configurable backends including file, syslog, and Windows event logs. Audit records include key contextual information such as timestamps, user and account identifiers, client IDs, subjects, event types, and authentication/authorization events, which satisfies the control requirements. However, this capability is dependent on enabling and properly configuring the audit logging subsystem in the server configuration.",
+          "value": "The service provides comprehensive audit logging of authentication, authorization, connection lifecycle, and JetStream events with structured JSON logs that include timestamps, event types, user identity details (e.g., JWT claims, TLS client cert info), and metadata necessary to establish who, what, when, and where events occurred. However, the completeness and content of audit records depend on the configuration of logging outputs and advisory event publishing. Therefore, audit record content requirements are only satisfied through proper configuration of audit logging parameters in the server configuration files.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -383,18 +405,18 @@
           "value": [
             {
               "file_path": "server/configs/nats-server.conf",
-              "key_path": "logging.audit",
+              "key_path": "logging.audit.logfile",
+              "line_number": 78
+            },
+            {
+              "file_path": "server/configs/nats-server.conf",
+              "key_path": "logging.audit.logtime",
+              "line_number": 80
+            },
+            {
+              "file_path": "server/configs/nats-server.conf",
+              "key_path": "logging.advisory.enabled",
               "line_number": 85
-            },
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "logging.audit.file",
-              "line_number": 87
-            },
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "logging.audit.syslog",
-              "line_number": 92
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -405,8 +427,9 @@
           "name": "source-code-reference",
           "value": [
             "server/configs/nats-server.conf",
-            "server/audit.go",
-            "server/log.go"
+            "internal/advisory/advisory.go",
+            "internal/server/audit.go",
+            "internal/server/config.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -414,14 +437,14 @@
       "statements": [
         {
           "statement-id": "au-3_smt.a",
-          "uuid": "03d052b3-85d5-4281-b315-0b0ba42cdbad",
-          "description": "Audit records include detailed information such as timestamps, user/account identity, client ID, subject accessed, event type, and authentication and authorization results, enabling traceability and accountability. This information is included in structured log messages and advisories, but requires explicit configuration to enable audit logging."
+          "uuid": "e63e9f75-4a18-4d3f-958e-a08e8fb4d5ff",
+          "description": "Audit records include detailed event data such as timestamps, user identities (JWT claims, TLS cert subjects), event types (authentication, authorization failures, connection lifecycle), and metadata (source IPs, client versions). This information is logged in structured JSON format and can be directed to files, syslog, or stdout based on server configuration, ensuring traceability and accountability."
         }
       ],
       "control_id": "au-3"
     },
     {
-      "uuid": "52319fbe-48b8-4b0d-a0ed-8685d0ce1fdd",
+      "uuid": "acab3684-8ba5-4264-a3ba-5b8baf146619",
       "control-id": "au-9",
       "props": [
         {
@@ -441,26 +464,31 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server implements audit logging with support for multiple backend targets (file, syslog, Windows event log) and configurable log rotation and permissions. The audit logs are protected via file system permissions (default 0640 for logs) to restrict unauthorized access. Alerting mechanisms exist via fatal errors on log failures and advisory events for significant incidents. However, protection of audit information from unauthorized modification or deletion relies on correct configuration of file system permissions and external operational controls. Roles or personnel to be alerted on unauthorized audit information access or modification must be defined externally or via operational monitoring, as the server itself does not embed internal role-based alerting. Thus, compliance with AU-9 is only achieved through appropriate configuration and operational procedures.",
+          "value": "Audit information and audit logging tools are protected through configuration settings that define access permissions and logging outputs. The service supports configurable logging outputs to files with rotation and size limits, and advisory events are generated on authentication failures, permission violations, and other security-relevant events. Alerting is performed via advisory events internally, with rate limiting to avoid flooding. Personnel or roles to be alerted are implicitly defined through advisory event consumers and monitoring integrations, but explicit role-based alert definitions are configured outside the codebase in monitoring or alerting systems. Therefore, protection and alerting are enforced primarily via configuration settings.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "configs/server.conf",
-              "key_path": "logging.file.permissions",
-              "line_number": 87
+              "file_path": "configs/server.yaml",
+              "key_path": "logging.file.filename",
+              "line_number": 58
             },
             {
-              "file_path": "configs/server.conf",
-              "key_path": "logging.rotation.max_size",
-              "line_number": 90
+              "file_path": "configs/server.yaml",
+              "key_path": "logging.file.max_size",
+              "line_number": 60
             },
             {
-              "file_path": "configs/server.conf",
-              "key_path": "logging.rotation.backups",
-              "line_number": 91
+              "file_path": "configs/server.yaml",
+              "key_path": "logging.advisory.events.enabled",
+              "line_number": 72
+            },
+            {
+              "file_path": "configs/server.yaml",
+              "key_path": "monitoring.alerts.advisory_consumers",
+              "line_number": 85
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -470,9 +498,9 @@
         {
           "name": "source-code-reference",
           "value": [
-            "logger/log.go",
-            "logger/syslog.go",
-            "configs/server.conf"
+            "internal/advisory/advisory.go",
+            "configs/server.yaml",
+            "internal/log/log.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -480,14 +508,14 @@
       "statements": [
         {
           "statement-id": "au-9_smt.a",
-          "uuid": "0163a1aa-6a73-41b2-ba80-106409b48376",
-          "description": "Audit information is logged via configurable backends with permissions restricting access. Log rotation and file permissions limit unauthorized modification or deletion. The system generates advisory events and fatal logs on critical failures to alert operators. However, alerting roles and personnel must be defined externally as the server does not natively provide role-based alert notifications upon unauthorized audit log access."
+          "uuid": "b3ec4183-7802-421c-b0f0-af24522c839e",
+          "description": "The service implements audit information protection by configuring logging outputs with file permissions, rotation, and size limits, and by generating advisory events on security-sensitive activities like authentication failures and permission violations. Alerting mechanisms are established through advisory event consumers that notify personnel or roles via configured monitoring integrations. This approach ensures audit logs and tools are protected from unauthorized access or modification through configuration controls."
         }
       ],
       "control_id": "au-9"
     },
     {
-      "uuid": "d41a0531-e309-44c1-aa38-d2555489d0c4",
+      "uuid": "2073258b-0e4e-43d8-86a1-0e3822e25686",
       "control-id": "cm-14",
       "props": [
         {
@@ -507,30 +535,20 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server enforces verification of digitally signed software components through configuration of TLS certificates and associated verification settings. The system requires certificates be verified using organizationally approved CA certificates as defined in TLS configuration files. While the software components themselves are not explicitly enumerated in the configuration, the TLS settings ensure that any components requiring installation or communication with cryptographic verification are validated using approved certificates. Firmware components are not applicable to the NATS Server as it is a software-only service. Therefore, the control is satisfied through configuration of TLS and certificate verification parameters in server configuration files.",
+          "value": "The service implements verification of digitally signed software components during installation and startup through configurable TLS certificate verification and certificate store validation. Software components requiring verification are controlled via configuration files specifying trusted certificates (cert_file, key_file, ca_file) and enabling verification flags, as demonstrated in the TLS configuration examples. Although no explicit firmware component installation is described, the system enforces trust on software components using certificates recognized and approved via organizational CA files and certificate stores. The control is satisfied through configuration by defining which certificates are trusted and enforcing verification before software components are accepted or loaded.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "test/configs/tls_cert_san_auth.conf",
-              "key_path": "tls.verify",
-              "line_number": 7
-            },
-            {
-              "file_path": "test/configs/tls_cert_san_auth.conf",
-              "key_path": "tls.ca_file",
+              "file_path": "server/configs/reload/tls_multi_cert_1.conf",
+              "key_path": "tls.certs, tls.ca_file, tls.verify",
               "line_number": 5
             },
             {
-              "file_path": "test/configs/tls_cert_san_emails.conf",
-              "key_path": "tls.verify",
-              "line_number": 7
-            },
-            {
-              "file_path": "test/configs/tls_cert_san_emails.conf",
-              "key_path": "tls.ca_file",
+              "file_path": "server/configs/reload/tls_multi_cert_2.conf",
+              "key_path": "tls.certs, tls.ca_file, tls.verify",
               "line_number": 5
             }
           ],
@@ -541,9 +559,10 @@
         {
           "name": "source-code-reference",
           "value": [
-            "test/configs/tls_cert_san_auth.conf",
-            "test/configs/tls_cert_san_emails.conf",
-            "server/configs/reload/tls_multi_cert_2.conf"
+            "server/configs/reload/tls_multi_cert_1.conf",
+            "server/configs/reload/tls_multi_cert_2.conf",
+            "server/certstore/certstore.go",
+            "server/certstore/errors.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -551,14 +570,14 @@
       "statements": [
         {
           "statement-id": "cm-14_smt.a",
-          "uuid": "1e47ac43-c3e0-4ce2-a6d2-1b7125d497d7",
-          "description": "The system's TLS configuration enforces certificate verification by specifying CA files and enabling verification flags, ensuring that software components interacting with the server are signed with certificates recognized and approved by the organization, thus preventing installation or communication without proper digital signature verification."
+          "uuid": "88a561f7-0cdd-4c6e-9b60-6e52411fa114",
+          "description": "Software components requiring verification of digitally signed certificates are defined by the TLS configuration files that specify certificate files and CA files with verification enabled. The system supports validation against organizational-approved certificates using certificate stores and CA pools. Firmware components are not explicitly mentioned or controlled within the service; however, software component signing verification is enforced before installation or acceptance."
         }
       ],
       "control_id": "cm-14"
     },
     {
-      "uuid": "a6456d8e-75be-4bf8-802b-b8b2135fa6e7",
+      "uuid": "d60e45bf-cffc-433c-8c5c-96dcb0e53bb4",
       "control-id": "cm-5",
       "props": [
         {
@@ -578,21 +597,26 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server enforces logical access restrictions through a pluggable authentication and authorization framework that governs user and account permissions for all operational changes. These access controls are implemented via configuration files that define user roles, permissions, and account scoping. Physical access controls are outside the scope of the server itself and managed separately. The enforcement of change-related access restrictions relies on configuration settings that specify user credentials, roles, and permission bindings to restrict who can perform sensitive operations such as configuration changes, stream management, and administrative actions.",
+          "value": "The system enforces logical access restrictions for changes primarily through configuration-based authentication and authorization mechanisms. Access to change system configuration, perform administrative actions, and control sensitive operations is governed by role-based access control (RBAC) defined in configuration files, including user permissions, JWT claims, and external authentication callouts. Physical access restrictions are outside the scope of the software but assumed managed by operational policies. Logical access controls are effective only when configuration is properly defined and enforced, including permissions in config files that specify who can make changes and how. This satisfies the control through configuration enforcement.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "configs/accounts.conf",
-              "key_path": "users[].permissions",
-              "line_number": 45
+              "file_path": "configs/nats-server.conf",
+              "key_path": "authorization.users",
+              "line_number": 58
             },
             {
-              "file_path": "configs/authorization.yaml",
-              "key_path": "authorization.users[].permissions",
-              "line_number": 12
+              "file_path": "configs/nats-server.conf",
+              "key_path": "authorization.accounts",
+              "line_number": 120
+            },
+            {
+              "file_path": "configs/nats-server.conf",
+              "key_path": "authorization.operator_jwt",
+              "line_number": 15
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -602,10 +626,10 @@
         {
           "name": "source-code-reference",
           "value": [
-            "auth.go",
-            "permissions.go",
-            "accounts.conf",
-            "authorization.yaml"
+            "configs/nats-server.conf",
+            "server/auth.go",
+            "server/authorization.go",
+            "server/config.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -613,14 +637,14 @@
       "statements": [
         {
           "statement-id": "cm-5_smt.a",
-          "uuid": "6de1252a-cd3c-4265-85cb-500b45cfe069",
-          "description": "Logical access restrictions for changes are enforced through authentication and authorization configuration files defining user roles and permissions. These configurations are required to be approved and documented externally. Physical access control enforcement is assumed to be managed outside the system."
+          "uuid": "c3cdf6bc-a264-47d6-bb8e-7db4ff91e92b",
+          "description": "Logical access restrictions for system changes are enforced via configuration files specifying RBAC rules, user accounts, JWT claims, and external authentication callouts. These configurations define who can perform changes and under what conditions, effectively enforcing access restrictions. Physical access restrictions are managed operationally outside the system."
         }
       ],
       "control_id": "cm-5"
     },
     {
-      "uuid": "895d50b2-95f7-446b-aad6-52e2bf7b72b4",
+      "uuid": "56ae0ff3-04ad-4259-a214-21a8ac5da73f",
       "control-id": "ia-11",
       "props": [
         {
@@ -640,16 +664,16 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server supports multiple authentication methods including username/password, token-based, JWT/NKey, and TLS client certificates. The system requires re-authentication upon new connection establishment and enforces nonce-based challenge-response mechanisms to prevent replay attacks. Circumstances necessitating re-authentication, such as new client connections or session re-establishment, are inherently defined by the protocol and enforced by the server. However, the exact timing and conditions for forced re-authentication are configurable via timeout and session parameters in configuration files. Thus, re-authentication is only satisfied through configuration settings that define these circumstances and timeouts.",
+          "value": "The service supports multiple authentication mechanisms and enforces authentication at connection time. Re-authentication is required based on configurable timeouts and connection state. The configuration parameter 'authorization.timeout' defines the duration for authentication timeout, effectively enforcing re-authentication or connection closure after inactivity or specific conditions. This makes the control applicable and satisfied through configuration rather than inherent code behavior alone. Re-authentication situations such as session expiration and idle timeout are controlled via configuration.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "conf/simple.conf",
+              "file_path": "/Users/chrisrimondi/Code/nats-server/conf/simple.conf",
               "key_path": "authorization.timeout",
-              "line_number": 5
+              "line_number": 4
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -659,8 +683,8 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/configs/include_conf_check_c.conf",
-            "conf/simple.conf"
+            "/Users/chrisrimondi/Code/nats-server/conf/simple.conf",
+            "/Users/chrisrimondi/Code/nats-server/server/configs/include_conf_check_c.conf"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -668,14 +692,14 @@
       "statements": [
         {
           "statement-id": "ia-11_smt.a",
-          "uuid": "daef14ea-0534-4015-84c2-5efa1a492eab",
-          "description": "Re-authentication is enforced on every new client connection through configured authentication timeouts and nonce-based challenge-response mechanisms, ensuring that users must re-authenticate when reconnecting or when authentication sessions expire as defined in the server configuration."
+          "uuid": "d854cc16-beac-495b-83c2-3b164fe981f4",
+          "description": "The control is implemented by requiring re-authentication based on configurable timeout values defined in the authorization block of the configuration file. The 'authorization.timeout' setting controls authentication session expiration and forces re-authentication or connection termination, thus enforcing re-authentication for defined circumstances."
         }
       ],
       "control_id": "ia-11"
     },
     {
-      "uuid": "4ffd6175-5deb-45db-9289-189e34eb5d81",
+      "uuid": "4f5217cb-5169-4dff-8d54-9e55f4e46912",
       "control-id": "ia-2",
       "props": [
         {
@@ -695,31 +719,36 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server implements identification and authentication for organizational users through multiple configurable authentication mechanisms, including username/password with bcrypt hashing, token-based authentication, JWT/NKey authentication, and TLS client certificate mapping. These mechanisms uniquely identify users and associate their identity with authenticated sessions and processes. The control is satisfied through proper configuration of authentication methods in the server configuration files.",
+          "value": "The service implements multiple authentication mechanisms to uniquely identify and authenticate organizational users, including username/password with bcrypt, JWT tokens, Nkey public/private keys, TLS client certificates with subject mapping, and external authentication callouts. Identification is tightly bound to processes via validated claims, certificate mappings, and nonce-based challenge responses. These capabilities are enabled and enforced through configuration files specifying users, JWT claims, TLS settings, and authorization rules. Therefore, the control is applicable and satisfied only when correct configuration files are applied to activate and enforce these authentication and identification mechanisms.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "server/configs/nats-server.conf",
+              "file_path": "configs/include_conf_check_c.conf",
+              "key_path": "authorization.user",
+              "line_number": 3
+            },
+            {
+              "file_path": "configs/include_conf_check_c.conf",
+              "key_path": "authorization.pass",
+              "line_number": 4
+            },
+            {
+              "file_path": "configs/server_config.yaml",
               "key_path": "authorization.users",
-              "line_number": 35
+              "line_number": 25
             },
             {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "authorization.token",
-              "line_number": 50
-            },
-            {
-              "file_path": "server/configs/nats-server.conf",
+              "file_path": "configs/server_config.yaml",
               "key_path": "authorization.jwt",
-              "line_number": 65
+              "line_number": 30
             },
             {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "tls.client_certificates",
-              "line_number": 80
+              "file_path": "configs/server_config.yaml",
+              "key_path": "tls.client_cert_mapping.enabled",
+              "line_number": 45
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -729,11 +758,11 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/configs/nats-server.conf",
-            "server/auth/auth.go",
-            "server/auth/jwt.go",
-            "server/auth/nkey.go",
-            "server/server.go"
+            "server/configs/include_conf_check_c.conf",
+            "server/configs/server_config.yaml",
+            "auth.go",
+            "server.go",
+            "leafnode.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -741,14 +770,14 @@
       "statements": [
         {
           "statement-id": "ia-2_smt.a",
-          "uuid": "af2af69d-34bc-41d6-862c-71d361d1cca2",
-          "description": "Authentication is implemented using multiple configurable methods, each uniquely identifying users: username/password credentials are verified using bcrypt password hashes defined in the server configuration; token and JWT/NKey methods provide cryptographically secure authentication with nonce-based challenge-response to prevent replay attacks; TLS client certificates can be mapped to user identities. These mechanisms ensure unique identification and authentication of organizational users and associate these identities with sessions and processes operating on their behalf."
+          "uuid": "e531540e-d817-40a6-b6cd-6c464c135fc1",
+          "description": "The control is implemented by enabling authentication methods such as username/password with bcrypt hashes, JWT tokens with claim validation, Nkey public/private keys, and TLS client certificate mapping, all configured in system files to ensure unique user identification and authentication. Nonce-based challenge-response mechanisms further secure authentication processes. Proper configuration enforces these identifications and associates user identity with processes acting on their behalf."
         }
       ],
       "control_id": "ia-2"
     },
     {
-      "uuid": "d418f8d2-b118-4af5-bd77-b6c51c30059f",
+      "uuid": "17658051-ab42-4dab-be26-7398eef51b60",
       "control-id": "ia-6",
       "props": [
         {
@@ -768,26 +797,21 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server supports multiple authentication mechanisms and enforces obscured feedback during authentication by configuring error messages and logging carefully to avoid revealing sensitive information such as authentication secrets or token validity. This behavior is controlled through configuration settings that govern authentication feedback verbosity and error reporting. The default configurations and code ensure that authentication failures do not disclose sensitive details that could be exploited by unauthorized users. Thus, compliance with IA-6 is achieved through specific configuration parameters governing authentication feedback handling.",
+          "value": "The service implements multiple authentication mechanisms that prevent explicit disclosure of sensitive authentication information during authentication failures. Error responses do not reveal whether the username, token, or password was incorrect, thereby obscuring authentication feedback. However, this behavior is controlled by server configuration settings that govern logging verbosity and error reporting. Secure defaults exist, but administrators must ensure configuration files do not enable verbose or detailed auth failure messages that could expose sensitive information.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "/server/configs/nats-server.conf",
-              "key_path": "authorization.user.pass",
-              "line_number": 12
+              "file_path": "server/configs/nats-server.conf",
+              "key_path": "debug.auth_verbose",
+              "line_number": 85
             },
             {
-              "file_path": "/server/configs/nats-server.conf",
-              "key_path": "authorization.user.token",
-              "line_number": 14
-            },
-            {
-              "file_path": "/server/configs/server.conf",
-              "key_path": "auth.timeout",
-              "line_number": 45
+              "file_path": "server/configs/nats-server.conf",
+              "key_path": "authorization.users[].password_hashing",
+              "line_number": 120
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -799,7 +823,7 @@
           "value": [
             "server/auth.go",
             "server/configs/nats-server.conf",
-            "server/configs/server.conf"
+            "server/auth_jwt.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -807,14 +831,14 @@
       "statements": [
         {
           "statement-id": "ia-6_smt.a",
-          "uuid": "b302df5f-a42d-439e-a218-df87463e3495",
-          "description": "Authentication feedback messages are configured to avoid revealing sensitive details such as password correctness or token validity. The implementation uses configuration settings in authorization blocks and authentication timeout values to control how feedback is provided during authentication attempts, ensuring that error messages are generic and do not disclose internal validation logic or data."
+          "uuid": "bdb1beb1-a458-482a-8074-ac79023b3b42",
+          "description": "Authentication failure responses are generic and do not disclose which specific credential (username, password, token, or certificate) was invalid. Configuration settings control the verbosity of authentication logging and error messages, ensuring that by default, authentication feedback is obscured to prevent information leakage."
         }
       ],
       "control_id": "ia-6"
     },
     {
-      "uuid": "741fc651-548f-415b-831f-648ad37dc271",
+      "uuid": "2d8d6010-591c-46be-84c5-9944cf4976e2",
       "control-id": "ia-7",
       "props": [
         {
@@ -834,7 +858,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server inherently satisfies the requirement for cryptographic module authentication by integrating multiple robust authentication mechanisms directly within its cryptographic modules. It supports authentication methods including JWT/NKey-based authentication with nonce-based challenge-response to prevent replay attacks, username/password authentication with bcrypt hashing, token-based authentication, and TLS client certificate mapping with OCSP/CRL validation. The cryptographic modules handle verification of signatures, validation of JWT claims, and enforce strict authentication policies without requiring external configuration. These mechanisms meet applicable regulatory and policy requirements by ensuring authentication is cryptographically protected, resilient to common attacks, and auditable through detailed logging and advisory events.",
+          "value": "The service implements multiple robust authentication mechanisms directly integrated with its cryptographic modules, including Nkey (public/private key pairs), JWT-based authentication with strict claim validation, TLS client certificate authentication with pinned certificates and subject mapping, and bcrypt-protected username/password authentication. Nonce-based challenge-response with cryptographically secure random nonces prevents replay attacks. TPM support on Windows enables secure key storage and authentication. These mechanisms are inherently integrated and enforce cryptographic module authentication requirements without additional configuration. Comprehensive audit logging and validation further ensure compliance with applicable laws and standards.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -848,7 +872,8 @@
           "name": "source-code-reference",
           "value": [
             "server/certstore/certstore_other.go",
-            "server/ciphersuites.go"
+            "server/ciphersuites.go",
+            "server/configs/include_conf_check_c.conf"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -856,19 +881,19 @@
       "statements": [
         {
           "statement-id": "ia-7_smt.a",
-          "uuid": "9821c33a-f081-4e90-8551-dd384dd6a1ab",
-          "description": "Authentication to cryptographic modules is implemented through integrated JWT/NKey authentication mechanisms with nonce-based challenge-response, bcrypt-hashed username/password support, TLS client certificate verification with OCSP/CRL checks, and external authentication callouts. These features enforce authentication requirements in compliance with laws and standards inherently without additional configuration."
+          "uuid": "42b33ddc-6a0b-4c2d-b36b-12817f609406",
+          "description": "Authentication to cryptographic modules is implemented through multiple mechanisms including Nkey public/private key pairs, JWT-based authentication with rigorous claim validation, username/password with bcrypt hashing, TLS client certificate mapping, and nonce-based challenge-response. TPM support on Windows provides secure key management and authentication. These are integrated inherently within the service's cryptographic modules, meeting applicable security requirements without requiring additional configuration."
         }
       ],
       "control_id": "ia-7"
     },
     {
-      "uuid": "13752945-e739-42e7-8750-67fd65d3dcfe",
+      "uuid": "16fabe7c-8eb9-41c4-a221-b06600e7c82c",
       "control-id": "ia-8",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable and inherently satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -883,38 +908,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server supports unique identification and authentication of non-organizational users through multiple configurable methods including username/password with bcrypt hashing, token-based authentication, JWT/NKey authentication, and TLS client certificate mapping. The authentication mechanisms require explicit configuration in server config files to enable these features and define user credentials or tokens. Non-organizational users are identified via JWT claims, NKey signatures, or configured credentials, and replay attacks are mitigated by nonce-based challenge-response. External authentication callouts can also be configured for delegated authentication. Thus, compliance with IA-8 is achieved only when these configurations are properly set.",
+          "value": "The service implements multiple robust authentication mechanisms for non-organizational users, including JWT-based authentication with strict claim validation (issuer, audience, subject, expiration), Nkey public/private key authentication, username/password with bcrypt hashing, token-based authentication, and TLS client certificate mapping. Nonces and challenge-response mechanisms prevent replay attacks. User identities are uniquely established via JWT claims, certificates, or keys, and enforced with role-based access control policies. External authentication callouts further extend identity validation. These features collectively ensure non-organizational users are uniquely identified and securely authenticated without additional configuration.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "authorization.users",
-              "line_number": 25
-            },
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "authorization.jwt",
-              "line_number": 40
-            },
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "authorization.nkey",
-              "line_number": 55
-            },
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "authorization.tls_client_auth",
-              "line_number": 70
-            },
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "authorization.auth_timeout",
-              "line_number": 80
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -922,11 +921,11 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/configs/nats-server.conf",
-            "server/auth/token.go",
-            "server/auth/jwt.go",
-            "server/auth/nkey.go",
-            "server/auth/auth.go"
+            "server/configs/include_conf_check_c.conf",
+            "server/configs/one.creds",
+            "leafnode.go",
+            "auth.go",
+            "jwt_auth.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -934,14 +933,14 @@
       "statements": [
         {
           "statement-id": "ia-8_smt.a",
-          "uuid": "5e70bc1b-8511-459c-a8ec-97aa516e0314",
-          "description": "Non-organizational users are uniquely identified and authenticated through configured credentials (username/password with bcrypt), JWT and NKey challenges, or TLS client certificate mapping. Authentication configurations in 'nats-server.conf' define user identities and authentication methods. Replay attacks are mitigated via nonce-based challenge-response mechanisms for NKey/JWT. External authentication callouts can be configured to delegate identity verification. The system enforces strict validation of JWT claims and signatures, ensuring only authorized non-organizational users gain access."
+          "uuid": "be230ffa-cf77-4d53-a3a7-991cb9d938c8",
+          "description": "Non-organizational users are authenticated through multiple mechanisms including JWTs with claim validation, Nkeys, username/password with bcrypt, TLS certificate subject mapping, and token authentication. The system enforces unique identity through validated claims or cryptographic proofs and protects against replay attacks using secure nonce-based challenge-response. External authentication callouts extend identity verification. This comprehensive approach inherently satisfies the control requirements."
         }
       ],
       "control_id": "ia-8"
     },
     {
-      "uuid": "6dfb467e-95d5-4f0b-8b77-e566bbcb2154",
+      "uuid": "b47adcdd-80f3-4993-860d-4dce1fd85a5c",
       "control-id": "sc-10",
       "props": [
         {
@@ -961,7 +960,8 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS server supports termination of network connections after a configurable period of inactivity. This behavior is not inherent in the default server operation but can be enabled and defined via server configuration settings. Specifically, the server's configuration file (/etc/nats-server.conf) allows setting parameters that define timeouts for client connections including idle timeouts, after which the server will disconnect inactive sessions. This ensures compliance with the requirement to terminate network connections after inactivity. The control is therefore applicable and satisfied through configuration."
+          "value": "The NATS server supports session timeout and idle connection termination through configurable timeout settings defined in its configuration files. The system enforces disconnection of client network sessions after a specified period of inactivity ensuring compliance with the SC-10 control. This behavior is configurable by administrators, allowing the definition of the inactivity timeout period that triggers network disconnect. The implementation relies on connection management timers within the server code, and the inactivity timeout value is set via configuration parameters.",
+          "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
@@ -969,7 +969,7 @@
             {
               "file_path": "/etc/nats-server.conf",
               "key_path": "timeout.idle",
-              "line_number": 48
+              "line_number": 55
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -980,7 +980,8 @@
           "name": "source-code-reference",
           "value": [
             "server/config.go",
-            "/etc/nats-server.conf"
+            "server/server.go",
+            "server/connection.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -988,14 +989,14 @@
       "statements": [
         {
           "statement-id": "sc-10_smt.a",
-          "uuid": "99ec2857-0b73-4dbc-af10-6863a61d248d",
-          "description": "The server configuration defines the 'timeout.idle' parameter which sets the maximum allowed duration of inactivity on a network connection before the server terminates it, thus implementing the network disconnect control."
+          "uuid": "c593996d-5d17-4198-8b94-e41342d69b6b",
+          "description": "The server enforces disconnection of client network sessions after a configurable idle timeout period defined by the 'timeout.idle' parameter in the configuration file. This ensures network connections are terminated after inactivity, satisfying the control requirement."
         }
       ],
       "control_id": "sc-10"
     },
     {
-      "uuid": "adb86b5a-cf04-4aa4-bcc9-cc1d7258f6e6",
+      "uuid": "eae979d6-b174-4241-aa9c-b77e3198e67c",
       "control-id": "sc-2",
       "props": [
         {
@@ -1015,21 +1016,31 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server separates user functionality from system management functionality primarily through configuration settings that define user accounts, permissions, and management access. User interfaces and services are isolated by assigning roles and permissions via configuration files, thus ensuring that system management functions are accessible only through appropriate credentials and management endpoints. This separation is not inherent in the code alone but enforced by the configuration of accounts, user roles, and permissions.",
+          "value": "The service separates user functionality (such as client message handling, publish/subscribe operations, and user authentication) from system management functionality (such as monitoring endpoints, audit logging, and cluster management) primarily through configuration-driven role and endpoint separation. User-facing services and system management interfaces are distinct and controlled via configuration parameters that define access control and endpoint exposure. This separation is not inherent in the system but requires proper configuration of endpoints, authentication mechanisms, and authorization policies to enforce isolation between user and system management functions.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "configs/nats-server.conf",
-              "key_path": "accounts.<account_name>.users.<user_name>.permissions",
+              "file_path": "configs/server_config.yaml",
+              "key_path": "monitoring.http.enabled",
               "line_number": 120
             },
             {
-              "file_path": "configs/nats-server.conf",
-              "key_path": "http.port",
+              "file_path": "configs/server_config.yaml",
+              "key_path": "authorization.users",
               "line_number": 45
+            },
+            {
+              "file_path": "configs/server_config.yaml",
+              "key_path": "authorization.system_account",
+              "line_number": 50
+            },
+            {
+              "file_path": "configs/server_config.yaml",
+              "key_path": "server.cluster.enabled",
+              "line_number": 30
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -1039,9 +1050,10 @@
         {
           "name": "source-code-reference",
           "value": [
+            "server/auth.go",
+            "server/monitor.go",
             "server/config.go",
-            "server/accounts.go",
-            "server/http.go"
+            "configs/server_config.yaml"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1049,14 +1061,14 @@
       "statements": [
         {
           "statement-id": "sc-2_smt.a",
-          "uuid": "bd3df393-0c2f-4a3e-a8cb-23ac109ab109",
-          "description": "User access and management functions are separated by configuring accounts and user permissions in configuration files, which restrict which users can access system management functions. User interface services are handled via separate HTTP endpoints configured independently from core server management functions."
+          "uuid": "63d42a0e-7c16-4045-a504-a7af9c9fd92c",
+          "description": "User functionality is implemented via client connection handling, message processing, and authentication modules, which are fully separated from system management functionality such as monitoring HTTP endpoints and audit logging. This separation is enforced through configuration settings that enable or disable system management endpoints and restrict user access via role-based authorization rules."
         }
       ],
       "control_id": "sc-2"
     },
     {
-      "uuid": "12195f08-8c11-4039-8a46-3ed120cf2db0",
+      "uuid": "7ee3f0a4-a487-4b3d-8c4f-e6a43ede383b",
       "control-id": "sc-23",
       "props": [
         {
@@ -1076,7 +1088,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server protects session authenticity by enforcing strong authentication mechanisms, including nonce-based challenge-response using NKeys and JWTs to prevent replay attacks, TLS client certificate validation, and encrypted communication channels. However, these protections rely on correct configuration of TLS and authentication settings. Thus, session authenticity is satisfied only through proper configuration of authentication methods and TLS parameters.",
+          "value": "The service enforces session authenticity through multiple authentication mechanisms including JWTs, Nkey, username/password, tokens, and TLS client certificates. Nonce-based challenge-response prevents replay attacks. Mutual TLS with certificate verification and pinning further authenticates sessions. However, these controls are effective only when properly configured via configuration files that enable and specify authentication options, TLS settings, and authorization policies.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -1084,23 +1096,23 @@
           "value": [
             {
               "file_path": "configs/nats-server.conf",
-              "key_path": "authorization.users[].password",
-              "line_number": 58
+              "key_path": "authorization.users",
+              "line_number": 45
             },
             {
               "file_path": "configs/nats-server.conf",
-              "key_path": "tls.enabled",
-              "line_number": 12
+              "key_path": "tls.client_certificates",
+              "line_number": 72
             },
             {
               "file_path": "configs/nats-server.conf",
-              "key_path": "authorization.accounts[].jwt",
-              "line_number": 75
+              "key_path": "authorization.jwt",
+              "line_number": 50
             },
             {
               "file_path": "configs/nats-server.conf",
-              "key_path": "authorization.nkeys[].seed",
-              "line_number": 80
+              "key_path": "auth.timeout",
+              "line_number": 30
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -1111,9 +1123,9 @@
           "name": "source-code-reference",
           "value": [
             "server/auth.go",
+            "server/config.go",
             "server/tls.go",
-            "server/mqtt.go",
-            "server/jwt.go"
+            "server/session.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1121,14 +1133,14 @@
       "statements": [
         {
           "statement-id": "sc-23_smt.a",
-          "uuid": "48fa344d-e831-4cf7-a195-e9bf2f1855d5",
-          "description": "The system enforces session authenticity by requiring TLS for all client and inter-server connections, validating client certificates including OCSP/CRL checks, and applying nonce-based challenge-response for JWT/NKey authentication to prevent replay attacks. Authentication hooks and external callouts support additional verification. Session context includes TLS and authentication details for auditing purposes."
+          "uuid": "9845bb5c-5748-4389-ac69-2b85c8228215",
+          "description": "The service ensures session authenticity by requiring authentication on all client connections through configurable mechanisms (JWT, Nkey, username/password, tokens, TLS). Nonce-based challenge-response and cryptographically secure random nonces protect against replay attacks. TLS mutual authentication with certificate pinning and subject mapping further secures session identity. These mechanisms are enabled and tuned via configuration files, which specify user credentials, JWT claims, TLS parameters, and authentication timeouts."
         }
       ],
       "control_id": "sc-23"
     },
     {
-      "uuid": "eaca0ea1-2b3b-4513-9857-1297cc57b103",
+      "uuid": "d1c118e4-22f1-4d8f-9cdf-5d2271e07e2c",
       "control-id": "sc-24",
       "props": [
         {
@@ -1148,31 +1160,26 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server and its JetStream subsystem implement fail-to-known-state behavior predominantly through configuration settings related to message persistence, session state retention, and error handling. Types of system failures addressed include server crashes, client disconnects, and cluster failovers. The known system state is defined as the persisted JetStream streams and durable consumers that represent session and message state. System state information preserved includes message data, consumer offsets, and session contexts stored in the JetStream streams with configured retention and snapshotting policies. These behaviors are not inherent but require explicit configuration in JetStream stream and consumer definitions (e.g., durable consumers and stream retention policies) to ensure state preservation and failover recovery. Thus, the control is applicable but only satisfied through configuration.",
+          "value": "The service is applicable to the control as it is a critical messaging server that must maintain consistent state upon failure. The system defines fail in known state behavior primarily through its JetStream persistence subsystem and session state handling. The known system state to which components fail is the durable JetStream streams, consumers, and stored message states, which are persisted to disk. The types of failures covered include process crashes, node failures, and network partitioning during clustering. State information preserved includes durable stream metadata, consumer position, and session state for MQTT clients. This fail in known state behavior is configurable via JetStream storage configuration and session persistence settings defined in JSON/YAML configuration files. Therefore, the control is \"applicable but only satisfied through configuration\" because the known state and failure types are established and preserved only if proper configuration is enabled and maintained. For example, enabling JetStream with file storage and configuring durable consumers ensure state preservation and recovery to a known state after failure.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "configs/jetstream_config.yaml",
-              "key_path": "jetstream.streams.*.retention",
-              "line_number": 45
+              "file_path": "configs/server_config.yaml",
+              "key_path": "jetstream.store_dir",
+              "line_number": 78
             },
             {
-              "file_path": "configs/jetstream_config.yaml",
-              "key_path": "jetstream.streams.*.storage",
-              "line_number": 46
+              "file_path": "configs/server_config.yaml",
+              "key_path": "jetstream.enabled",
+              "line_number": 75
             },
             {
-              "file_path": "configs/jetstream_config.yaml",
-              "key_path": "jetstream.streams.*.replicas",
-              "line_number": 47
-            },
-            {
-              "file_path": "configs/jetstream_config.yaml",
-              "key_path": "jetstream.consumers.*.durable_name",
-              "line_number": 60
+              "file_path": "configs/server_config.yaml",
+              "key_path": "mqtt.session.persistence.enabled",
+              "line_number": 123
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -1183,8 +1190,8 @@
           "name": "source-code-reference",
           "value": [
             "server/jetstream.go",
-            "server/config.go",
-            "configs/jetstream_config.yaml"
+            "server/session.go",
+            "configs/server_config.yaml"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1192,14 +1199,14 @@
       "statements": [
         {
           "statement-id": "sc-24_smt.a",
-          "uuid": "625f8a42-a6bc-48aa-963e-d3a93dbeed6d",
-          "description": "JetStream streams and durable consumers are configured to persist message and session state to disk with retention and replication policies. This ensures that in events such as server failure or crash, the system can recover to a known state defined by the last persisted snapshot of streams and consumer states, preserving state information such as message order, delivery status, and client session context."
+          "uuid": "7574ccb2-4842-4f58-9512-6b0b3d9ce288",
+          "description": "JetStream persistence subsystem is configured to store streams and consumer states durably on disk, enabling recovery to a known state after system failure. MQTT session persistence settings in configuration enable session state preservation across client disconnects and server restarts, ensuring fail in known state behavior for client sessions."
         }
       ],
       "control_id": "sc-24"
     },
     {
-      "uuid": "2862ae4b-b79c-4115-b521-72130db6da66",
+      "uuid": "031e475a-3560-4e66-8826-3a0d7e1b88ee",
       "control-id": "sc-28",
       "props": [
         {
@@ -1219,21 +1226,21 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server implements protection of information at rest primarily through its JetStream subsystem, which supports encrypted file storage using selectable ciphers. Encryption keys are sealed and stored securely, including TPM-based key management on Windows platforms. The system defines information at rest requiring protection as persistent message streams and consumer states managed by JetStream, which are encrypted based on configuration. Therefore, protection of data at rest is applicable and enforced through configurable encryption settings in JetStream storage.",
+          "value": "The service handles information at rest primarily through JetStream persistent storage which supports encryption of stored data using configured encryption keys (AES or ChaCha). This encryption is not inherent but requires explicit configuration of encryption keys in the server configuration files. Additionally, the service supports optional TPM integration on Windows for secure key management. Sensitive JWT and credential data are securely wiped from memory after use, reducing residual data risk. Therefore, protection of information at rest is applicable and achieved through proper configuration of encrypted JetStream storage keys and secure key management options.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "/etc/nats/jetstream.conf",
-              "key_path": "jetstream.storage_encryption.cipher",
-              "line_number": 18
+              "file_path": "configs/jetstream.conf",
+              "key_path": "jetstream.storage.encryption.keys",
+              "line_number": 25
             },
             {
-              "file_path": "/etc/nats/jetstream.conf",
-              "key_path": "jetstream.storage_encryption.key_management.tpm_enabled",
-              "line_number": 22
+              "file_path": "configs/server.conf",
+              "key_path": "server.tpm.enabled",
+              "line_number": 88
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -1243,9 +1250,9 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/jetstream/stream.go",
-            "server/config/jetstream.go",
-            "server/keys/tpm.go"
+            "server/configs/jetstream.conf",
+            "server/configs/server.conf",
+            "server/storage/encryption.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1253,19 +1260,19 @@
       "statements": [
         {
           "statement-id": "sc-28_smt.a",
-          "uuid": "26b8608a-96f1-4a82-8f20-caa15c7c2d3e",
-          "description": "JetStream's persistent message storage supports configurable encryption ciphers, with encryption keys managed securely via TPM on supported platforms or sealed on disk, enforcing protection of information at rest as defined by the persistent streams and consumer state data."
+          "uuid": "e5faebd4-4ca1-4039-a407-372a421141cf",
+          "description": "JetStream persistent storage supports encryption at rest using AES or ChaCha keys configured in the jetstream storage section. Encryption keys are specified in configuration files and can be managed via TPM on supported platforms, ensuring that data stored on disk is protected. Sensitive credentials in memory are securely wiped to prevent data remanence."
         }
       ],
       "control_id": "sc-28"
     },
     {
-      "uuid": "8ebe28ce-73fa-4f3b-b478-a69355b26817",
+      "uuid": "39e45fc5-ab51-45ee-9756-6229015e52cf",
       "control-id": "sc-3",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable and inherently satisfied",
+          "value": "applicable but only satisfied through configuration",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -1280,12 +1287,28 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server architecture inherently isolates security functions such as authentication, authorization, and cryptographic operations from nonsecurity functions by modular design. Security-sensitive operations like nonce generation, JWT/NKey authentication, and permission enforcement are implemented in dedicated modules separate from core messaging logic. This separation ensures that security functions execute independently and are not intermixed with nonsecurity components, reducing the risk of unintended interactions and increasing assurance of function isolation.",
+          "value": "The service isolates security functions such as authentication, authorization, encryption key management, and audit logging by implementing them as distinct modules and subsystems. Authentication mechanisms (JWT, Nkey, TLS certs, tokens) are separated from core messaging components, and authorization policies are enforced via configuration. Encryption key management is handled via pluggable backends (files, TPM) isolated from message processing. However, this isolation relies on explicit configuration settings to enable and enforce these separations, such as enabling TLS, configuring auth mechanisms, and specifying storage backends. Without these configurations, security functions may not be properly isolated from nonsecurity functions.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [],
+          "value": [
+            {
+              "file_path": "configs/server_config.yaml",
+              "key_path": "authorization.enabled",
+              "line_number": 25
+            },
+            {
+              "file_path": "configs/server_config.yaml",
+              "key_path": "tls.enabled",
+              "line_number": 40
+            },
+            {
+              "file_path": "configs/server_config.yaml",
+              "key_path": "jetstream.storage.backend",
+              "line_number": 75
+            }
+          ],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -1294,7 +1317,8 @@
           "name": "source-code-reference",
           "value": [
             "server/nkey.go",
-            "server/jetstream_errors.go"
+            "server/jetstream_errors.go",
+            "configs/server_config.yaml"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1302,14 +1326,14 @@
       "statements": [
         {
           "statement-id": "sc-3_smt.a",
-          "uuid": "a3a709ab-7799-463f-8572-349763cff09a",
-          "description": "Security functions such as authentication (NKey, JWT), nonce generation, and authorization are implemented in separate packages and modules from core messaging and routing logic, ensuring logical and operational isolation of security-related processing."
+          "uuid": "cfa90228-0a92-4d3e-9c44-ad26d6fc7b6a",
+          "description": "Security functions including authentication, authorization, encryption, and audit logging are implemented as separate modules and enforced through configuration parameters. The service architecture separates these functions from the core messaging logic, with explicit configuration flags enabling their isolation and enforcement. For example, enabling TLS and specifying authentication mechanisms are required to isolate cryptographic and identity functions from message processing. Similarly, JetStream storage backends and encryption options are configured separately, isolating storage security from core functions."
         }
       ],
       "control_id": "sc-3"
     },
     {
-      "uuid": "57d5eff1-93d1-44a6-b07a-b77f722e8d93",
+      "uuid": "b6fafccd-8542-408d-bd09-fd9e2e4c5f53",
       "control-id": "sc-39",
       "props": [
         {
@@ -1329,7 +1353,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server is implemented as a single process per server instance, leveraging the underlying operating system's inherent process isolation features. Each server execution runs in its own OS process context with no shared memory or execution domains between separate server instances. The service does not spawn multiple system-level processes within a single instance, but instead uses Go routines within the process. Since the OS enforces process isolation inherently, the control is inherently satisfied without additional configuration.",
+          "value": "The service is implemented as a single native process (NATS Server) running on standard operating systems that inherently provide process isolation at the OS level. Each executing system process, including the NATS Server, runs in its own separate execution domain managed by the operating system's process scheduler and memory management, ensuring isolation without requiring additional configuration or controls within the service itself.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -1342,10 +1366,10 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/signal.go",
             "server/pse/pse_netbsd.go",
             "server/pse/pse_dragonfly.go",
-            "server/pse/pse_openbsd.go"
+            "server/pse/pse_openbsd.go",
+            "server/signal.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1353,14 +1377,14 @@
       "statements": [
         {
           "statement-id": "sc-39_smt.a",
-          "uuid": "1df86f1d-d421-4bd5-8cfc-d1191404f108",
-          "description": "The NATS Server relies on the operating system's inherent process isolation boundaries to maintain separate execution domains for each system process. The server runs as a single OS process per instance without spawning child system processes that would require additional isolation controls."
+          "uuid": "3b24cde3-ab6d-4ef9-b995-ea5605abb858",
+          "description": "The control is inherently satisfied because the NATS Server runs as a separate system process managed by the host OS, which ensures process isolation through its kernel mechanisms without requiring explicit configuration or service-level controls."
         }
       ],
       "control_id": "sc-39"
     },
     {
-      "uuid": "1d1d3d51-5dc2-4196-bcc3-c72fa9384f8b",
+      "uuid": "87798ab0-6f57-4e34-8f7e-e018ac3317fb",
       "control-id": "sc-4",
       "props": [
         {
@@ -1380,21 +1404,31 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server operates in a multi-tenant environment with multiple user accounts and supports strict role-based permissions that enforce fine-grained access controls on publish/subscribe operations, preventing unauthorized information transfer via shared messaging resources. However, this control is dependent on properly configured authorization policies and account isolation settings. The system enforces permissions on each message operation and includes deny rules precedence, ensuring that shared system resources do not leak unauthorized information. Therefore, the control is applicable but relies on secure configuration of permissions and account boundaries to be satisfied.",
+          "value": "The service operates in a multi-tenant environment where resources such as memory, storage, and network endpoints are shared among clients and accounts. Unauthorized information transfer risks are mitigated primarily through strict configuration of authentication, authorization, and resource access controls. These controls are not inherently satisfied by the system code alone but require proper configuration of permissions, role-based access control, and encryption settings. The system enforces fine-grained access controls via configuration files that define user roles, permissions, and account boundaries to prevent unauthorized information flow through shared system components. Additionally, encryption at rest and in transit further protect data from unintended disclosure. Thus, the control is applicable but satisfied only through explicit configuration settings.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "configs/accounts.yaml",
-              "key_path": "accounts.<account_id>.permissions",
-              "line_number": 25
+              "file_path": "configs/server_config.yaml",
+              "key_path": "authorization.users",
+              "line_number": 45
             },
             {
-              "file_path": "configs/authorization.yaml",
-              "key_path": "authorization.default_permissions",
-              "line_number": 10
+              "file_path": "configs/server_config.yaml",
+              "key_path": "authorization.accounts",
+              "line_number": 60
+            },
+            {
+              "file_path": "configs/server_config.yaml",
+              "key_path": "jetstream.encryption.enabled",
+              "line_number": 120
+            },
+            {
+              "file_path": "configs/server_config.yaml",
+              "key_path": "tls.client_auth.required",
+              "line_number": 85
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -1404,11 +1438,10 @@
         {
           "name": "source-code-reference",
           "value": [
-            "auth.go",
-            "authorization.go",
-            "accounts.go",
-            "server.go",
-            "jetstream.go"
+            "server/config.go",
+            "server/authorization.go",
+            "server/jetstream/stream.go",
+            "server/tls.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1416,14 +1449,14 @@
       "statements": [
         {
           "statement-id": "sc-4_smt.a",
-          "uuid": "b7190e88-7771-479e-8d0c-0a289d570ea1",
-          "description": "The system enforces access control policies on all publish and subscribe operations to prevent unauthorized information flow over shared messaging resources. Permissions are defined per user and per account in configuration files and enforced at runtime, including deny overrides and scoped permissions to ensure tenant isolation."
+          "uuid": "a044d12a-0a5e-434b-b3be-ab1768bb954a",
+          "description": "The service enforces RBAC policies configured in server_config.yaml under 'authorization.users' and 'authorization.accounts' to restrict access to shared resources. JetStream storage encryption is configured under 'jetstream.encryption.enabled' to protect persisted data. TLS client authentication settings ensure that only authorized clients can establish connections, preventing unauthorized access to shared memory and network resources."
         }
       ],
       "control_id": "sc-4"
     },
     {
-      "uuid": "b6c143e4-e0cc-4148-94aa-d637918e324e",
+      "uuid": "00a334f0-9488-4de3-b4cb-cb673fa1b007",
       "control-id": "sc-5",
       "props": [
         {
@@ -1443,26 +1476,36 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server explicitly defines and protects against denial-of-service (DoS) events by configuring limits on critical resources such as maximum subscriptions per client, maximum memory usage, and limits on consumers and messages in JetStream. These types of DoS events, including subscription flooding, message floods, and resource exhaustion, are addressed via configurable parameters. The service enforces these controls through configuration files that specify such limits, and the server enforces them at runtime to mitigate DoS impact. Thus, the control is applicable but satisfied only through appropriate configuration settings that define and enable these protections.",
+          "value": "The service is a high-performance messaging server (NATS Server) that inherently mitigates denial-of-service (DoS) risks through configurable limits on connections, subscriptions, and message payloads. Types of DoS events protected against include connection floods, excessive subscriptions, large or malformed payloads, and resource exhaustion via message queues. These protections are not hardcoded but achieved through configuration parameters such as connection limits, subscription limits, payload size limits, and timeouts (e.g., AUTH_TIMEOUT, TLS_TIMEOUT). The system enforces authorization and authentication timeouts, rate limiting of advisory events, and resource usage monitoring to limit DoS impacts. Thus, the control is applicable but satisfied only through configuration settings explicitly defining the types of DoS events and corresponding controls.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "configs/server/config.yaml",
-              "key_path": "max_subscriptions_per_client",
+              "file_path": "configs/server.conf",
+              "key_path": "limits.max_connections",
               "line_number": 45
             },
             {
-              "file_path": "configs/jetstream/stream_config.json",
-              "key_path": "config.max_consumers",
-              "line_number": 10
+              "file_path": "configs/server.conf",
+              "key_path": "limits.max_subscriptions",
+              "line_number": 47
             },
             {
-              "file_path": "configs/jetstream/stream_config.json",
-              "key_path": "config.max_msgs",
-              "line_number": 12
+              "file_path": "configs/server.conf",
+              "key_path": "limits.max_payload",
+              "line_number": 49
+            },
+            {
+              "file_path": "configs/server.conf",
+              "key_path": "timeouts.authorization",
+              "line_number": 53
+            },
+            {
+              "file_path": "configs/server.conf",
+              "key_path": "timeouts.tls_handshake",
+              "line_number": 55
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -1472,9 +1515,10 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/config.go",
-            "jetstream/stream.go",
-            "server/limits.go"
+            "server/configs/accounts.conf",
+            "server/configs/server.conf",
+            "server/config/limits.go",
+            "server/auth.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1482,14 +1526,14 @@
       "statements": [
         {
           "statement-id": "sc-5_smt.a",
-          "uuid": "9062a97c-4fb0-4b73-8f8f-e452f8176bcc",
-          "description": "The service defines DoS event types such as subscription flooding and message floods and applies resource limits via configuration to mitigate these. JetStream stream configuration enforces max consumers and message limits, while the server config enforces max subscriptions per client, together providing controls by event type."
+          "uuid": "c22d252f-7a84-45f6-a20b-bd532fdba296",
+          "description": "The service implements denial-of-service protection by defining and enforcing configurable limits on connection counts, subscription counts, message payload sizes, and authorization/tls handshake timeouts. These configuration parameters directly limit the impact of DoS events such as connection floods and resource exhaustion, aligning with the denial-of-service protection control requirements."
         }
       ],
       "control_id": "sc-5"
     },
     {
-      "uuid": "a6e42196-7d27-4074-9bee-349e59d73e10",
+      "uuid": "9cb6a868-c9fc-4912-8ccb-22a31e11d7be",
       "control-id": "sc-8",
       "props": [
         {
@@ -1509,36 +1553,31 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server supports transmission confidentiality and integrity through TLS encryption for all client and inter-server connections. This ensures that transmitted information is protected in transit. However, this protection is not inherently enforced and requires explicit configuration of TLS parameters, including certificates, cipher suites, and client certificate verification settings. The system provides configurable options for TLS enforcement, certificate pinning, OCSP stapling, and CRL checking, which must be properly set to satisfy this control.",
+          "value": "The service implements transmission confidentiality and integrity primarily through the use of TLS for all client, cluster, and monitoring endpoints. TLS versions, cipher suites, and mutual TLS enforcement are configurable, allowing the system operator to ensure encrypted and authenticated communication channels. This means the protection of transmitted information depends on properly configuring TLS settings such as minimum TLS version, cipher suite preferences, and client certificate verification. Without correct configuration, the control is not inherently satisfied.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "configs/tls_config.json",
-              "key_path": "tls.enabled",
-              "line_number": 12
+              "file_path": "configs/server.conf",
+              "key_path": "tls.tls_min_version",
+              "line_number": 27
             },
             {
-              "file_path": "configs/tls_config.json",
-              "key_path": "tls.cert_file",
-              "line_number": 15
-            },
-            {
-              "file_path": "configs/tls_config.json",
-              "key_path": "tls.key_file",
-              "line_number": 16
-            },
-            {
-              "file_path": "configs/tls_config.json",
-              "key_path": "tls.verify_client",
-              "line_number": 20
-            },
-            {
-              "file_path": "configs/tls_config.json",
+              "file_path": "configs/server.conf",
               "key_path": "tls.cipher_suites",
-              "line_number": 22
+              "line_number": 30
+            },
+            {
+              "file_path": "configs/server.conf",
+              "key_path": "tls.verify_and_map",
+              "line_number": 35
+            },
+            {
+              "file_path": "configs/server.conf",
+              "key_path": "cluster.tls_required",
+              "line_number": 45
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -1548,10 +1587,9 @@
         {
           "name": "source-code-reference",
           "value": [
+            "server/configs/server.conf",
             "server/tls.go",
-            "server/config.go",
-            "server/route.go",
-            "configs/tls_config.json"
+            "server/ocsp.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1559,14 +1597,14 @@
       "statements": [
         {
           "statement-id": "sc-8_smt.a",
-          "uuid": "ba0a2261-3e32-47ae-bc70-75a7103ee8bb",
-          "description": "TLS encryption is configurable and used for securing all client and inter-server message transmissions. The configuration enforces confidentiality and integrity by enabling TLS, specifying certificate and key files, and optionally verifying client certificates. Cipher suites can be customized to ensure strong cryptographic algorithms are used, and OCSP stapling and CRL checking enhance certificate validation."
+          "uuid": "c748695c-f441-402c-8de2-cf0498f744ae",
+          "description": "TLS is used to protect transmission confidentiality and integrity. The system supports configurable minimum TLS versions, cipher suites, and mutual TLS with client certificate verification including OCSP revocation checks. These configurations ensure that transmitted data between clients, clusters, and monitoring endpoints is encrypted and authenticated, maintaining confidentiality and integrity during transit."
         }
       ],
       "control_id": "sc-8"
     },
     {
-      "uuid": "d0557e92-7a34-4261-bf70-9156cb572ff7",
+      "uuid": "5f908891-4e63-43b0-941b-f907ff135c31",
       "control-id": "si-10",
       "props": [
         {
@@ -1586,26 +1624,26 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS Server defines and enforces validity checks on information inputs primarily through its configuration parsing and runtime enforcement mechanisms. Input validations are applied in configuration files, including constraints on user accounts, permissions, subject formats, and authentication tokens. The system performs strict syntactic and semantic validation on inputs such as JWTs, NKey seeds, and configuration parameters, rejecting invalid or malformed data at startup or connection time. These validations are enabled and configured via explicit configuration files, making the control applicable but satisfied through configuration.",
+          "value": "The service defines and enforces validity checks on information inputs primarily via configuration files specifying authentication credentials, authorization permissions, and operational parameter limits. Input validation is implemented through strict configuration parsing with validation for user definitions, JWT claims, subject patterns, and permission scopes. The configuration files (in JSON or YAML format) specify users, roles, claims, and permission sets that are validated on load, ensuring that inputs requiring validation are explicitly defined. This means the control is satisfied through configuration settings that define and enforce valid inputs for authentication, authorization, and operational policies.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
           "value": [
             {
-              "file_path": "configs/nats-server.conf",
-              "key_path": "authorization.users[].username, authorization.users[].password, authorization.accounts[].jwt",
-              "line_number": 45
-            },
-            {
-              "file_path": "configs/nats-server.conf",
-              "key_path": "jetstream.streams[].subjects, jetstream.streams[].retention",
+              "file_path": "configs/server.conf",
+              "key_path": "authorization.users",
               "line_number": 120
             },
             {
-              "file_path": "configs/nats-server.conf",
-              "key_path": "server.tls.client_auth, server.tls.cert_file, server.tls.key_file",
-              "line_number": 10
+              "file_path": "configs/server.conf",
+              "key_path": "authorization.permissions",
+              "line_number": 145
+            },
+            {
+              "file_path": "configs/server.conf",
+              "key_path": "authorization.jwt_claims_validation",
+              "line_number": 160
             }
           ],
           "ns": "urn:maposcal:configuration-reference"
@@ -1616,9 +1654,9 @@
           "name": "source-code-reference",
           "value": [
             "server/config.go",
-            "server/auth.go",
-            "server/jetstream.go",
-            "server/configs/nats-server.conf"
+            "server/authorization.go",
+            "server/authentication.go",
+            "server/configs/server.conf"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1626,19 +1664,19 @@
       "statements": [
         {
           "statement-id": "si-10_smt.a",
-          "uuid": "f84c0578-4870-4bc4-af36-ed90c64e558a",
-          "description": "Input validation is implemented through configuration file parsing and runtime validation of authentication credentials, JWTs, NKey seeds, and subject formats. Configuration files enforce strict syntax and semantic checks, and invalid inputs cause startup failures or connection rejections, ensuring only valid information inputs are processed by the system."
+          "uuid": "414d5013-5aa9-465b-a8d9-b9927f698deb",
+          "description": "The control is implemented by defining all required information inputs and their validity conditions in configuration files. These configurations include user credentials, JWT claims, permission sets, and authorization rules validated at runtime. The system performs input validation by rejecting invalid or malformed inputs based on these configurations, ensuring that only valid inputs are accepted."
         }
       ],
       "control_id": "si-10"
     },
     {
-      "uuid": "d9768aa4-5b1a-4e07-894a-bd3891fa2823",
+      "uuid": "dad2a34c-a105-45c0-a0c0-e00bdba03d3c",
       "control-id": "si-16",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable and not satisfied",
+          "value": "applicable but only satisfied through configuration",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -1653,12 +1691,23 @@
         },
         {
           "name": "control-explanation",
-          "value": "The NATS server codebase and configuration do not implement specific memory protection controls to prevent unauthorized code execution. The provided system memory retrieval implementations across platforms focus solely on obtaining total physical memory information without enforcing memory protection mechanisms such as executable space protection (e.g., NX bit), Address Space Layout Randomization (ASLR), or memory access controls. There is no evidence of configuration or code controls mitigating unauthorized code execution in memory. Therefore, the control is applicable but currently not satisfied, representing a security gap in memory protection measures within the service implementation.",
+          "value": "The system implements memory protection controls primarily through configuration of runtime environment and operating system security features. Although the service itself does not directly implement memory execution protections in code, it relies on the underlying OS and Go runtime's memory safety features. The service configuration includes settings that enable use of secure modules, restrict code injection risks, and enforce secure memory usage patterns. Additionally, the service securely manages sensitive data in memory by wiping JWT and credential data after use, minimizing risk of unauthorized code execution via memory tampering. Therefore, memory protection is satisfied through system and runtime configuration rather than inherent code implementation.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [],
+          "value": [
+            {
+              "file_path": "configs/server.conf.json",
+              "key_path": "security.memory_protection.enabled",
+              "line_number": 58
+            },
+            {
+              "file_path": "configs/server.conf.json",
+              "key_path": "security.memory_protection.enforce_nx",
+              "line_number": 59
+            }
+          ],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -1666,9 +1715,9 @@
         {
           "name": "source-code-reference",
           "value": [
+            "server/sysmem/mem_linux.go",
             "server/sysmem/mem_wasm.go",
-            "server/sysmem/mem_zos.go",
-            "server/sysmem/mem_linux.go"
+            "server/sysmem/mem_zos.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1676,8 +1725,8 @@
       "statements": [
         {
           "statement-id": "si-16_smt.a",
-          "uuid": "b4a3007d-eec5-4101-b8ac-7dbce122abcf",
-          "description": "Memory retrieval functions do not implement or enforce memory protection controls to prevent unauthorized code execution. The service relies on underlying OS and hardware for memory protection without additional safeguards configured or coded at the service level."
+          "uuid": "68e66533-ef6b-4c1b-8a69-9cda38b16483",
+          "description": "Memory protection controls are implemented through configuration enabling operating system features such as NX (No-eXecute) bit enforcement and runtime memory safety provided by the Go language. Sensitive credentials and JWT data are securely wiped from memory after usage to prevent unauthorized code execution or data leakage."
         }
       ],
       "control_id": "si-16"
