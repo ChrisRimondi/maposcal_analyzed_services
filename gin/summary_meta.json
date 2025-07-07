@@ -1,246 +1,2090 @@
 {
-  "/Users/chrisrimondi/Code/gin/version.go": {
-    "summary": "The file solely defines a constant representing the framework version and contains no security controls such as authentication, authorization, encryption, or input validation. It does not implement any compliance-related features like logging, auditing, or IAM role management. There are no apparent security risks or outstanding TODOs given its limited scope and functionality.",
-    "vector_id": 0
+  "CODE_OF_CONDUCT.md": {
+    "summary": "The file defines a community Code of Conduct focused on promoting respectful, inclusive, and harassment-free participation but does not implement technical security controls such as authentication, authorization, encryption, or input validation. Compliance-related features include a clear reporting mechanism for unacceptable behavior with confidentiality assurances and defined enforcement responsibilities for maintainers, supporting accountability and audit trails in community management. No direct IAM roles or logging mechanisms are specified, and no explicit TODOs or security risks are evident. However, reliance on manual enforcement and email-based incident reporting could pose operational risks if not adequately monitored or documented.",
+    "vector_id": 0,
+    "inspector_results": {
+      "file_path": "CODE_OF_CONDUCT.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/gin/CODE_OF_CONDUCT.md. This file type is not currently supported by the automated inspectors."
+    }
   },
-  "/Users/chrisrimondi/Code/gin/codecov.yml": {
-    "summary": "The codecov.yml file enforces high test coverage thresholds (99% for projects and 95-99% for patches) and requires continuous integration to pass before merging, promoting code quality and reducing risk of untested or faulty code deployment. However, it lacks explicit security controls such as authentication, authorization, encryption, or input validation, and does not address compliance features like logging or audit trails. No obvious risks or TODOs are present, but reliance solely on coverage metrics without integrating security-focused checks may leave security vulnerabilities undetected.",
-    "vector_id": 1
+  "AUTHORS.md": {
+    "summary": "The AUTHORS.md file contains a comprehensive list of contributors to the Gin web framework but includes no source code or security-related implementations. It lacks any security controls such as authentication, authorization, encryption, or input validation. There are no compliance-relevant features like logging, auditing, or IAM role definitions present. Since it is purely a documentation file listing authors and contributors, it poses no direct security risks or outstanding TODOs related to security or compliance.",
+    "vector_id": 1,
+    "inspector_results": {
+      "file_path": "AUTHORS.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/gin/AUTHORS.md. This file type is not currently supported by the automated inspectors."
+    }
   },
-  "/Users/chrisrimondi/Code/gin/recovery.go": {
-    "summary": "The file implements a panic recovery middleware for HTTP servers, focusing on capturing and logging runtime panics to prevent crashes, enhancing availability. It masks sensitive authorization headers in logs to protect credentials and differentiates handling for broken pipe errors to avoid unnecessary stack traces. The middleware supports customizable recovery handlers and logs detailed stack traces when debugging is enabled. However, it lacks direct authentication, authorization, or encryption controls, and there is no explicit integration with IAM roles or audit trails beyond logging panics. While it provides robust input validation by recovering from panics, it does not sanitize or validate request data further. No explicit TODOs or risks are noted, though reliance on panic recovery should not replace proper error handling in application logic.",
-    "vector_id": 2
+  "version.go": {
+    "summary": "The file solely defines a constant representing the framework's version and lacks any security controls such as authentication, authorization, encryption, or input validation. There are no compliance-related features like logging, auditing, or IAM role management present. No obvious risks or TODOs are indicated, as the file is minimal and purely informational, posing no direct security implications.",
+    "vector_id": 2,
+    "inspector_results": {
+      "file_path": "version.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/version.go is written in Golang. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/tree.go": {
-    "summary": "The file implements a high-performance HTTP router tree structure focusing on URL path parsing and matching, including support for wildcards and parameters. It lacks explicit security controls such as authentication, authorization, or encryption, relying on correct path handling and strict validation of wildcard usage to prevent conflicts. Input validation is performed on URL segments to ensure valid wildcard naming and path structure, reducing injection risks. No direct compliance features like logging, auditing, or IAM roles are present. Risks include panics triggered by malformed or conflicting routes, which could be exploited for denial-of-service if input is not sanitized upstream. The code also assumes single-threaded modifications (not concurrency-safe), potentially leading to race conditions in concurrent environments.",
-    "vector_id": 3
+  "recovery.go": {
+    "summary": "The file implements a panic recovery middleware for HTTP handlers, providing resilience by catching panics and returning HTTP 500 errors, thus preventing service crashes. Security controls include masking Authorization headers in logs to protect sensitive credentials and differentiating broken pipe errors to avoid unnecessary stack traces. It supports customizable recovery handling and conditional detailed logging based on debug mode. Compliance-relevant features include detailed panic logging with timestamps and request headers (with sensitive data masked), aiding auditing and incident analysis. However, there is no explicit authentication, authorization, or encryption logic. A risk is the reliance on recovering panics without addressing root causes, which might mask underlying issues; also, error handling for broken connections is minimal. No explicit TODOs or direct IAM integrations are present.",
+    "vector_id": 3,
+    "inspector_results": {
+      "file_path": "recovery.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "bytes",
+          "errors",
+          "fmt",
+          "io",
+          "log",
+          "net",
+          "net/http",
+          "net/http/httputil",
+          "os",
+          "runtime",
+          "strings",
+          "time"
+        ],
+        "network_modules": [
+          "net",
+          "net/http"
+        ],
+        "file_system_modules": [
+          "fmt",
+          "io",
+          "os"
+        ],
+        "logging_modules": [
+          "log"
+        ],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/recovery.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net', 'net/http']. File system access is expected using the discovered modules: ['fmt', 'io', 'os']. Logging capabilities are expected to be using these modules: ['log']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/.goreleaser.yaml": {
-    "summary": "The configuration file primarily manages build and changelog generation settings for the project, lacking explicit security controls such as authentication, authorization, encryption, or input validation. It includes compliance-relevant features for auditing purposes by generating detailed changelogs grouped by commit types and authorship via GitHub API, aiding traceability and accountability. There are no direct IAM role assignments or logging mechanisms within this file. An obvious risk is the build being skipped by default, which might inadvertently prevent security patches or updates from being included in releases. No TODOs or explicit security-related annotations are present, indicating a need for supplementary security-focused configurations elsewhere in the project.",
-    "vector_id": 4
+  "go.mod": {
+    "summary": "This Go module manifest lists dependencies for the Gin web framework, including libraries for JSON/YAML processing, validation, and cryptography. Key security-related packages include `go-playground/validator` for input validation and `golang.org/x/crypto` for cryptographic functions, supporting secure data handling and encryption. However, the file itself lacks explicit authentication, authorization, or logging controls, which must be implemented elsewhere in the application. Indirect dependencies suggest potential support for auditing or profiling (e.g., `pprof`). No explicit TODOs or risk indicators are present here, but ensuring secure configuration of these dependencies and regular updates is critical to maintain compliance and mitigate vulnerabilities.",
+    "vector_id": 4,
+    "inspector_results": {
+      "file_path": "go.mod",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/gin/go.mod. This file type is not currently supported by the automated inspectors."
+    }
   },
-  "/Users/chrisrimondi/Code/gin/auth.go": {
-    "summary": "The file implements Basic HTTP Authentication middleware for user and proxy authentication using username-password pairs stored in memory. It enforces authentication by validating credentials via constant-time comparison to prevent timing attacks, then sets user identity in the request context for downstream authorization. The middleware supports custom realms and returns appropriate HTTP status codes (401 for users, 407 for proxies) when unauthorized. However, it lacks encryption beyond base64 encoding, no logging or auditing of authentication attempts is present, and credentials are handled in plain memory without integration with secure credential stores or IAM roles. Input validation is minimal, relying on non-empty usernames and account lists. There are no explicit TODOs or mitigation for brute force or replay attacks, which poses potential security risks in production.",
-    "vector_id": 5
+  "tree.go": {
+    "summary": "The file implements a URL routing tree structure with path parameter parsing and wildcard support, focusing on efficient route matching but lacking explicit security controls such as authentication, authorization, or encryption. It includes input validation around wildcard names and path conflicts, reducing injection risks. Compliance features like logging or auditing are absent, and there is no IAM role integration. The code panics on invalid route configurations, which could cause service disruption if inputs are not properly sanitized beforehand. A potential risk is the absence of concurrency safety and explicit protections against malformed or malicious input beyond basic wildcard validation. Overall, the file is a routing utility without built-in security or compliance mechanisms, relying on higher layers for such controls.",
+    "vector_id": 5,
+    "inspector_results": {
+      "file_path": "tree.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "bytes",
+          "net/url",
+          "strings",
+          "unicode",
+          "unicode/utf8",
+          "github.com/gin-gonic/gin/internal/bytesconv"
+        ],
+        "network_modules": [
+          "net/url"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/tree.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/url']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/logger.go": {
-    "summary": "The file implements a configurable HTTP request logger middleware for the Gin framework, focusing on detailed request and response logging with color-coded output for terminal readability. It includes features for skipping logs based on paths or custom logic, supports custom log formatting, and writes to various outputs. While it captures essential request metadata (method, path, status, latency, client IP, errors), it lacks direct security controls like authentication, authorization, or encryption mechanisms. Compliance-relevant aspects include structured error logging and the ability to audit requests/responses, but there is no explicit support for IAM roles or secure log storage. No obvious security risks or TODOs are present; however, sensitive information could be exposed if logs are not properly protected or filtered before writing.",
-    "vector_id": 6
+  "LICENSE": {
+    "summary": "The file is a standard MIT License text and does not contain any source code or implementation details related to security controls, compliance features, or risks. It grants broad permissions to use, modify, and distribute the software without restrictions, but explicitly disclaims any warranties or liabilities. There are no authentication, authorization, encryption, input validation, logging, auditing, or IAM-related features present. Consequently, no security risks or TODOs can be identified from this license file alone.",
+    "vector_id": 6,
+    "inspector_results": {
+      "file_path": "LICENSE",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/gin/LICENSE. This file type is not currently supported by the automated inspectors."
+    }
   },
-  "/Users/chrisrimondi/Code/gin/deprecated.go": {
-    "summary": "The file defines a deprecated binding method that logs a warning and delegates to a newer binding function, indicating a transition in input validation practices. It lacks direct security controls like authentication, authorization, or encryption, but focuses on input binding with a suggestion to use updated methods that better handle validation errors. There are no explicit logging or auditing mechanisms beyond a simple log statement for deprecation warnings. No IAM roles or compliance-specific features are present. The risk lies primarily in using deprecated functions that may not enforce error handling consistently, potentially leading to improper input validation or unhandled errors, so migrating to the recommended methods is advised.",
-    "vector_id": 7
+  "auth.go": {
+    "summary": "The file implements Basic HTTP Authentication middleware for users and proxy users, leveraging constant-time comparison to prevent timing attacks during credential validation. It supports configurable realms and enforces non-empty user lists and usernames. Authentication credentials are processed and stored in-memory as base64-encoded strings. However, passwords are handled in plaintext within memory and transmitted via Basic Auth headers, which is insecure without TLS. There are no explicit encryption or session management controls, nor logging or auditing features for authentication events, which could hinder compliance requirements. The code lacks input validation beyond basic assertions and does not address rate limiting or brute-force protection, representing potential security risks. Proxy authentication is similarly handled but separated. No TODOs or error handling improvements are noted.",
+    "vector_id": 7,
+    "inspector_results": {
+      "file_path": "auth.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "crypto/subtle",
+          "encoding/base64",
+          "net/http",
+          "strconv",
+          "github.com/gin-gonic/gin/internal/bytesconv"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": [
+          "encoding/base64"
+        ]
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/auth.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. Potential cryptographic operations are happening using the following modules. ['encoding/base64']."
+    }
   },
-  "/Users/chrisrimondi/Code/gin/.golangci.yml": {
-    "summary": "This configuration file sets up a comprehensive Go static analysis pipeline emphasizing security and code quality, notably enabling the gosec linter with specific security rules targeting common vulnerabilities such as hardcoded credentials and improper error handling. It enforces input validation and error checking patterns through additional linters while excluding generated code, test files, and third-party dependencies to reduce noise. Compliance features include strict linting to ensure maintainable, secure code, but there are no explicit IAM or logging-related controls. The exclusions and presets may risk missing issues in legacy or comment-laden code, and the absence of explicit encryption or authentication checks outside gosec suggests reliance on external validation. No TODOs or critical risks are evident, but careful review of exclusions is advisable to avoid blind spots.",
-    "vector_id": 8
+  "Makefile": {
+    "summary": "The Makefile enforces code quality and consistency through automated formatting, linting, vetting, and testing, which indirectly supports secure coding practices by catching bugs and style issues early. It lacks direct security controls like authentication, authorization, encryption, or input validation. Compliance-relevant features include test coverage reporting and automated tool installation, but there is no explicit logging, auditing, or IAM role management. No obvious security risks or TODO comments are present, though the absence of explicit security checks or compliance logging suggests these are handled elsewhere. Overall, this file focuses on maintaining code hygiene rather than implementing direct security mechanisms.",
+    "vector_id": 8,
+    "inspector_results": {
+      "file_path": "Makefile",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/gin/Makefile. This file type is not currently supported by the automated inspectors."
+    }
   },
-  "/Users/chrisrimondi/Code/gin/routergroup.go": {
-    "summary": "This file implements a router grouping mechanism for HTTP request handling, supporting middleware stacking and route organization by path prefixes. Security controls include input validation for HTTP methods and prevention of URL parameter usage in static file serving, mitigating path traversal risks. Authorization and authentication are implied to be handled via middleware but are not explicitly implemented here. Compliance features such as logging or auditing are not present. The design supports extensible middleware chains facilitating centralized security controls. Risks include absence of built-in encryption, lack of explicit IAM or audit logging, and reliance on correct middleware usage for security. No TODOs or explicit error handling enhancements are noted, but static file access checks could be improved for robust permission enforcement.",
-    "vector_id": 9
+  "BENCHMARKS.md": {
+    "summary": "The file contains extensive benchmarking data comparing multiple Go HTTP routers across various API route scenarios, focusing on performance metrics like latency, memory allocations, and throughput. There is no implementation of security controls such as authentication, authorization, encryption, or input validation. Compliance-related features like logging, auditing, or IAM roles are absent. The content is purely performance-oriented, lacking any direct security or compliance considerations. No obvious security risks or TODOs are indicated since this file serves only as a benchmark report and does not include source code or configuration impacting security posture.",
+    "vector_id": 9,
+    "inspector_results": {
+      "file_path": "BENCHMARKS.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/gin/BENCHMARKS.md. This file type is not currently supported by the automated inspectors."
+    }
   },
-  "/Users/chrisrimondi/Code/gin/debug.go": {
-    "summary": "The file primarily provides debug logging functionality for the Gin framework, including conditional output based on debug mode. Security controls like authentication, authorization, and encryption are not addressed here. Compliance-relevant features include debug-level logging of routes, templates, and warnings about Go version compatibility and thread-safety of template setting, which aid auditing and operational transparency. Key risks involve potential misuse of debug mode in production, which is cautioned against but not enforced, and the non-thread-safe template setting that could cause concurrency issues if misused. No explicit input validation or IAM role handling exists. Overall, the file supports development diagnostics but requires careful management to avoid exposing sensitive debug information or causing race conditions in production environments.",
-    "vector_id": 10
+  "deprecated.go": {
+    "summary": "The file contains a deprecated method for binding request data to structs, advising migration to newer methods that handle errors more explicitly. It lacks direct security controls such as authentication, authorization, encryption, or input validation but is part of a framework that likely supports these elsewhere. The method logs a deprecation warning, aiding auditing and maintainability. However, the use of automatic error handling in MustBindWith may mask input validation failures if not carefully managed. No explicit compliance features like IAM roles or detailed logging are implemented here, and the TODO is to replace this deprecated function with recommended alternatives to ensure clearer error management and maintain codebase hygiene.",
+    "vector_id": 10,
+    "inspector_results": {
+      "file_path": "deprecated.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "log",
+          "github.com/gin-gonic/gin/binding"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [
+          "log"
+        ],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/deprecated.go is written in Golang. No networking capabilities have been detected in this file. No file system access has been detected in this file. Logging capabilities are expected to be using these modules: ['log']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/doc.go": {
-    "summary": "The file is a minimal package descriptor for the Gin web framework, containing no implementation or security controls. It lacks any code related to authentication, authorization, encryption, input validation, logging, or auditing. Consequently, there are no evident compliance features or security risks present in this file. As a placeholder, it does not require immediate security considerations or TODOs but serves only as a package declaration.",
-    "vector_id": 11
+  "go.sum": {
+    "summary": "The file is a Go module checksum file listing dependencies with their cryptographic hashes, ensuring integrity and preventing tampering of third-party libraries. While it does not directly implement security controls like authentication, authorization, or encryption, it supports supply chain security by verifying module authenticity. Compliance-wise, it indirectly aids auditing by enabling reproducible builds and detecting unauthorized changes in dependencies. No explicit logging, IAM roles, or input validation features are present. There are no obvious risks or TODOs within the file itself; however, reliance on external libraries requires ongoing monitoring for vulnerabilities or deprecated versions to maintain security posture.",
+    "vector_id": 11,
+    "inspector_results": {
+      "file_path": "go.sum",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/gin/go.sum. This file type is not currently supported by the automated inspectors."
+    }
   },
-  "/Users/chrisrimondi/Code/gin/fs.go": {
-    "summary": "The file implements a custom HTTP file system wrapper that disables directory listing by overriding the Readdir method, enhancing security by preventing exposure of file structures. It lacks explicit authentication, authorization, or encryption controls, focusing solely on restricting file metadata disclosure. There are no compliance-specific features like logging, auditing, or IAM role enforcement. The main security control is input validation implicitly via Go\u2019s standard library file handling, though no additional validation or sanitization is evident. No obvious TODOs or risk comments appear, but the absence of access control means this should be combined with upstream security measures to prevent unauthorized file access.",
-    "vector_id": 12
+  "routergroup.go": {
+    "summary": "The file implements a router grouping mechanism supporting middleware chaining and route registration with HTTP methods. Security controls include input validation for HTTP methods to prevent invalid requests and restrictions on URL parameters for static file serving, mitigating injection risks. Middleware support enables adding authentication or authorization layers at group levels, though no built-in IAM or encryption is evident. Compliance features like logging or auditing are not explicitly handled here, relying on middleware for such concerns. Static file handling includes existence and permission checks before serving files, reducing unauthorized access risks. No explicit TODOs or comments indicate pending security improvements, but the absence of native logging, authentication, or authorization mechanisms suggests these must be integrated externally to ensure robust security and compliance.",
+    "vector_id": 12,
+    "inspector_results": {
+      "file_path": "routergroup.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "net/http",
+          "path",
+          "regexp",
+          "strings"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/routergroup.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/context.go": {
-    "summary": "The file implements a web request context providing extensive input binding and output rendering capabilities, with built-in input validation by content type and HTTP method. It supports controlled flow interruption to enforce authorization or validation failures. While it manages request-scoped data securely using mutexes, it lacks explicit authentication or authorization controls, relying on middleware for such. Cookie handling supports secure attributes including HttpOnly and SameSite to mitigate CSRF risks. Client IP determination considers trusted proxies, enhancing security in proxy environments. Error aggregation enables centralized error management but no direct auditing or detailed logging features are present. File upload handling includes directory and permission management but no explicit sanitization or size enforcement beyond configured multipart limits. No explicit TODOs or comments highlight unresolved security concerns.",
-    "vector_id": 13
+  "README.md": {
+    "summary": "The README.md for the Gin web framework outlines its high-performance HTTP router with middleware support, JSON validation, and error management but does not explicitly detail built-in security controls like authentication, authorization, or encryption. It supports extensibility through middleware, implying that security features such as input validation and access control must be implemented via additional middleware or application logic. Logging and auditing mechanisms are not described, nor are compliance-specific features like IAM roles. No obvious security risks or TODOs are mentioned directly, suggesting that security responsibilities largely depend on developers integrating Gin with appropriate third-party or custom solutions to meet security and compliance requirements.",
+    "vector_id": 13,
+    "inspector_results": {
+      "file_path": "README.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/gin/README.md. This file type is not currently supported by the automated inspectors."
+    }
   },
-  "/Users/chrisrimondi/Code/gin/utils.go": {
-    "summary": "The file provides utility functions primarily for request binding, HTTP handler wrapping, and data manipulation, but lacks explicit security controls such as authentication, authorization, or encryption mechanisms. Input validation is minimal and mostly related to string parsing and character checks without strong sanitization or threat mitigation. There are no logging, auditing, or IAM-related features present, which limits compliance capabilities. Potential risks include panic calls on invalid input or state, which could lead to denial of service if not properly handled upstream. Environment variables are used for port configuration but without validation or secure defaults. There are no TODOs or comments indicating unfinished or insecure areas, but the absence of explicit security and compliance features suggests this utility code should be supplemented with robust controls in higher-level components.",
-    "vector_id": 14
+  "debug.go": {
+    "summary": "The file implements debug logging and warnings for a web framework, focusing on runtime diagnostics rather than direct security controls like authentication or encryption. It conditionally outputs detailed debug information about routes, templates, and environment warnings when in debug mode, encouraging release mode for production to reduce exposure. It includes thread-safety warnings for template loading, which mitigates concurrency risks. Compliance features are minimal but include error logging during debug to standard error streams. No explicit input validation, authorization, or IAM role handling is present. A notable risk is reliance on debug mode flags to control logging verbosity, which if misconfigured, might leak sensitive internal state. The code advises but does not enforce secure production configurations, suggesting a need for stricter environment management.",
+    "vector_id": 14,
+    "inspector_results": {
+      "file_path": "debug.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "fmt",
+          "html/template",
+          "runtime",
+          "strconv",
+          "strings",
+          "sync/atomic"
+        ],
+        "network_modules": [],
+        "file_system_modules": [
+          "fmt"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/debug.go is written in Golang. No networking capabilities have been detected in this file. File system access is expected using the discovered modules: ['fmt']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/response_writer.go": {
-    "summary": "The file implements a custom HTTP response writer wrapper enhancing standard response capabilities by tracking status codes and body size, but it lacks explicit security controls such as authentication, authorization, encryption, or input validation. Compliance-relevant features like logging or auditing are absent, and there are no IAM role checks. The code does include safeguards against rewriting headers after they are sent, which helps maintain response integrity. It supports HTTP connection hijacking, flushing, and server push, but these advanced features require careful use to avoid security risks. No explicit TODOs or comments indicate pending security improvements, though the absence of security-focused controls and audit logging represents an obvious gap for production use in secure environments.",
-    "vector_id": 15
+  "doc.go": {
+    "summary": "The file is a minimal package declaration for the Gin web framework, containing no implementation or security controls such as authentication, authorization, encryption, input validation, logging, or auditing features. It lacks any compliance-relevant elements or IAM role integrations and does not indicate any security risks or TODO items. As a placeholder, it provides no inherent security functionality or vulnerabilities.",
+    "vector_id": 15,
+    "inspector_results": {
+      "file_path": "doc.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/doc.go is written in Golang. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/mode.go": {
-    "summary": "The file manages Gin framework\u2019s operational modes (debug, release, test) with thread-safe mode setting and retrieval, impacting logging verbosity and error output. It provides controls for input validation via toggling the default binding validator and JSON decoder behaviors, enhancing security by enabling strict JSON parsing to prevent unknown fields and number decoding issues. However, it lacks direct authentication, authorization, or encryption features. Logging outputs default to standard output/error streams but allow customization. Compliance-related features like auditing or IAM roles are not addressed. A notable risk is the potential disabling of input validation, which could expose the application to malformed or malicious inputs if misused. There are no explicit TODOs, but mode misconfiguration triggers a panic, which could affect stability if not handled properly.",
-    "vector_id": 16
+  "fs.go": {
+    "summary": "The file defines a custom HTTP file system wrapper that disables directory listing by overriding the Readdir method to always return nil, preventing exposure of directory contents through the web server. This acts as an access control mechanism to reduce information disclosure risks. There is no authentication, authorization, encryption, or input validation implemented here, as the focus is on controlling file system visibility. The code lacks explicit logging or auditing features relevant for compliance, and no IAM role considerations are present. Overall, the main security control is restricting directory enumeration to mitigate data leakage, with no obvious TODOs or vulnerabilities in the limited scope of this file.",
+    "vector_id": 16,
+    "inspector_results": {
+      "file_path": "fs.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "net/http",
+          "os"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [
+          "os"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/fs.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. File system access is expected using the discovered modules: ['os']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/context_appengine.go": {
-    "summary": "The file sets a platform constant specific to Google App Engine but contains no security controls such as authentication, authorization, encryption, or input validation. It lacks compliance-related features like logging, auditing, or IAM role management. No obvious security risks or TODOs are present, as the code is minimal and primarily serves as a platform identifier without implementing any functional logic.",
-    "vector_id": 17
+  "context.go": {
+    "summary": "The file implements a request context for a web framework, providing mechanisms for input binding with automatic content-type detection and validation, supporting JSON, XML, YAML, and others. It includes flow control features to abort or continue middleware chains safely. Security controls include input validation through binding methods and safe cookie handling with attributes like HttpOnly, Secure, and SameSite to mitigate CSRF risks. Client IP detection respects trusted proxy configurations. Error management aggregates errors per request for potential auditing or logging. However, the file lacks explicit authentication, authorization, encryption, or comprehensive logging/auditing controls. No obvious TODOs or major risks are present, but reliance on external binding and error handling suggests careful integration is necessary to avoid injection or DoS vulnerabilities.",
+    "vector_id": 17,
+    "inspector_results": {
+      "file_path": "context.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "errors",
+          "fmt",
+          "io",
+          "io/fs",
+          "log",
+          "math",
+          "mime/multipart",
+          "net",
+          "net/http",
+          "net/url",
+          "os",
+          "path/filepath",
+          "strings",
+          "sync",
+          "time",
+          "github.com/gin-contrib/sse",
+          "github.com/gin-gonic/gin/binding",
+          "github.com/gin-gonic/gin/render"
+        ],
+        "network_modules": [
+          "net",
+          "net/http",
+          "net/url"
+        ],
+        "file_system_modules": [
+          "fmt",
+          "io",
+          "os",
+          "path/filepath"
+        ],
+        "logging_modules": [
+          "log"
+        ],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/context.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net', 'net/http', 'net/url']. File system access is expected using the discovered modules: ['fmt', 'io', 'os', 'path/filepath']. Logging capabilities are expected to be using these modules: ['log']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/path.go": {
-    "summary": "The file implements URL path normalization by canonicalizing paths to prevent directory traversal via `.` and `..` segments, which is a key input validation control protecting against path injection attacks. It enforces a leading slash and consolidates multiple slashes, mitigating malformed path inputs. However, it lacks explicit authentication, authorization, encryption, or logging mechanisms, indicating it serves as a utility rather than a security enforcement layer. No compliance-related features such as auditing or IAM role checks are present. There are no obvious TODOs or error handling for malformed inputs, though the logic appears robust. The main security focus is on sanitizing URL paths to prevent exploitation through crafted URLs, reducing risks in downstream request handling.",
-    "vector_id": 18
+  "CONTRIBUTING.md": {
+    "summary": "The CONTRIBUTING.md file outlines guidelines for issue reporting and pull request submissions but does not address security controls like authentication, authorization, encryption, or input validation. It emphasizes code quality through testing and documentation, supporting compliance by encouraging thorough testing and clear change records. However, it lacks explicit instructions on logging, auditing, or managing IAM roles, and does not highlight any security risks or TODOs, suggesting an opportunity to include security-specific contribution requirements or checks.",
+    "vector_id": 18,
+    "inspector_results": {
+      "file_path": "CONTRIBUTING.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/gin/CONTRIBUTING.md. This file type is not currently supported by the automated inspectors."
+    }
   },
-  "/Users/chrisrimondi/Code/gin/errors.go": {
-    "summary": "The file implements a structured error handling mechanism with typed errors and metadata support, facilitating clear categorization (e.g., bind, render, public, private errors). It enables JSON serialization of errors for consistent API responses, aiding in transparency and debugging. However, it lacks explicit security controls such as input validation, authentication, or encryption. Compliance features like detailed logging or audit trails are not present, and no IAM roles or access control mechanisms are evident. The design focuses on error management rather than security enforcement. No explicit TODOs or risk comments are included, but the absence of sanitization or sensitive data handling in error metadata could pose information disclosure risks if not managed carefully in higher layers.",
-    "vector_id": 19
+  "utils.go": {
+    "summary": "The file provides utility functions primarily for request binding, HTTP handler wrapping, and string/path processing, but lacks direct security controls like authentication, authorization, or encryption. Input validation is minimal, limited to ASCII checks and basic string parsing without sanitization safeguards. No explicit logging, auditing, or IAM role management is present, which may affect compliance requirements. The panic calls on invalid inputs could cause denial-of-service if exploited. The Bind function enforces non-pointer structs, reducing some misuse risk, but error handling relies heavily on panics. Environment variable usage for port resolution is logged via debugPrint, but no secure configuration validation is evident. Overall, the file is low-risk but would benefit from enhanced input validation, error handling, and integration with security and auditing mechanisms.",
+    "vector_id": 19,
+    "inspector_results": {
+      "file_path": "utils.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "encoding/xml",
+          "net/http",
+          "os",
+          "path",
+          "reflect",
+          "runtime",
+          "strings",
+          "unicode"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [
+          "os"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [
+        {
+          "method": "Environment Variables (os.Getenv)",
+          "variable": "port",
+          "source": "PORT"
+        }
+      ],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/utils.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. File system access is expected using the discovered modules: ['os']. No logging capabilities have been detected in this file. Configuration settings, either from environmental variables, or other sources are stored in the following variables:  port. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/gin.go": {
-    "summary": "The file implements a web framework engine focusing on HTTP routing with configurable middleware support. Security controls include trusted proxy management to validate client IPs from headers, reducing IP spoofing risks, though defaults trust all proxies, which is flagged as unsafe. It supports HTTPS and QUIC for encrypted transport but lacks built-in authentication or authorization mechanisms. Input validation is partially addressed via path cleaning and normalization to prevent routing issues. Compliance features include middleware hooks suitable for logging and error recovery; however, explicit auditing or IAM role enforcement is absent. Warning logs highlight unsafe proxy trust configurations. No direct TODOs are present, but the default permissive trusted proxies and reliance on user middleware for security controls represent notable risk areas.",
-    "vector_id": 20
+  "response_writer.go": {
+    "summary": "The file implements a custom HTTP response writer that wraps the standard Go ResponseWriter, adding tracking of response status and size. It lacks direct security controls such as authentication, authorization, encryption, or input validation, as it focuses purely on response management. Compliance-relevant features like logging or auditing are absent, and there are no explicit IAM role checks. The code includes a warning if headers are written multiple times, which may help detect logic errors. The implementation supports HTTP/2 server push and connection hijacking, which require careful use to avoid security risks. No explicit TODOs or comments indicate unfinished security-related tasks; however, the absence of input/output validation or logging could represent a risk in security-sensitive contexts.",
+    "vector_id": 20,
+    "inspector_results": {
+      "file_path": "response_writer.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "bufio",
+          "io",
+          "net",
+          "net/http"
+        ],
+        "network_modules": [
+          "net",
+          "net/http"
+        ],
+        "file_system_modules": [
+          "bufio",
+          "io"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/response_writer.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net', 'net/http']. File system access is expected using the discovered modules: ['bufio', 'io']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/render/render.go": {
-    "summary": "The file defines a flexible rendering interface supporting multiple content types (JSON, XML, HTML, YAML, etc.) with methods to write data and set HTTP content types. Security controls are minimal, mostly centered on content-type setting to prevent MIME-type confusion, though no explicit authentication, authorization, encryption, or input validation is present. Compliance features like logging or auditing are absent, and IAM roles are not relevant. The design allows extensibility but lacks built-in safeguards against injection attacks or data leakage through rendered output. There are no explicit TODOs or comments indicating pending security improvements, suggesting a need for external controls to handle security and compliance requirements.",
-    "vector_id": 21
+  "mode.go": {
+    "summary": "The file manages application modes (debug, release, test) with atomic state changes to control logging verbosity and behavior, supporting environment-based configuration. It provides no direct authentication, authorization, or encryption controls but influences binding validation through toggles that enable or disable JSON decoding strictness and input validation, impacting security posture. Logging output destinations for normal and error logs are configurable, aiding compliance with auditing and traceability requirements. The explicit panic on unknown modes enforces strict mode setting, reducing misconfiguration risk. However, disabling bind validation entirely poses a security risk by allowing unchecked input, which may lead to injection vulnerabilities. No IAM or detailed audit logging features are present, limiting compliance scope.",
+    "vector_id": 21,
+    "inspector_results": {
+      "file_path": "mode.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "flag",
+          "io",
+          "os",
+          "sync/atomic",
+          "github.com/gin-gonic/gin/binding"
+        ],
+        "network_modules": [],
+        "file_system_modules": [
+          "io",
+          "os"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/mode.go is written in Golang. No networking capabilities have been detected in this file. File system access is expected using the discovered modules: ['io', 'os']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/render/msgpack.go": {
-    "summary": "This file implements MsgPack serialization for HTTP responses, focusing on encoding data with a specific content type. It lacks explicit security controls such as authentication, authorization, encryption, or input validation. There are no compliance-relevant features like logging, auditing, or role-based access controls present. The code simply handles data serialization and writing to the response writer. No obvious security risks or TODOs are indicated, though the absence of input validation or safeguards against malicious data injection could be a concern if untrusted inputs are serialized without prior checks.",
-    "vector_id": 22
+  "context_appengine.go": {
+    "summary": "The file contains minimal code solely setting a platform identifier for Google App Engine, with no implemented security controls such as authentication, authorization, encryption, or input validation. It lacks compliance features like logging, auditing, or IAM role management. Since it serves only as a platform flag initializer, there are no immediate security risks or TODOs apparent within this snippet.",
+    "vector_id": 22,
+    "inspector_results": {
+      "file_path": "context_appengine.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/context_appengine.go is written in Golang. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/render/xml.go": {
-    "summary": "The file implements XML response rendering by encoding data into XML and setting the appropriate content type header. It lacks explicit security controls such as input validation, authentication, or authorization, relying on upstream logic for those aspects. There are no encryption or compliance features like logging, auditing, or IAM role enforcement present. The code is straightforward and low-risk in itself but could be vulnerable to XML-related attacks (e.g., XML external entity injection) if input data is not properly sanitized elsewhere. No TODOs or comments indicate pending security enhancements. Overall, this component serves as a utility for formatting responses without embedded security or compliance safeguards.",
-    "vector_id": 23
+  "path.go": {
+    "summary": "The file implements a canonical URL path cleaning function that normalizes input paths by removing redundant slashes, current directory references, and parent directory traversals. It provides input validation by sanitizing path strings to prevent directory traversal attacks, which is critical for secure URL handling. However, it lacks explicit authentication, authorization, encryption, or logging mechanisms, focusing solely on path normalization. No IAM roles or compliance-auditing features are present. There are no outstanding TODOs or obvious security risks in the path cleaning logic itself, but secure usage depends on integrating this function within a broader security context managing access controls and logging elsewhere.",
+    "vector_id": 23,
+    "inspector_results": {
+      "file_path": "path.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/path.go is written in Golang. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/render/html.go": {
-    "summary": "The file implements HTML template rendering with configurable delimiters and template loading mechanisms, supporting both production and debug modes. It lacks explicit security controls such as authentication, authorization, or input validation, potentially exposing risks of template injection if untrusted data is passed without sanitization. No encryption or secure headers are set during rendering. Compliance features like logging, auditing, or IAM role enforcement are absent, and there is no evident handling for error conditions beyond panics in debug mode template loading. The reliance on `template.Must` can cause server crashes on template parsing errors. Overall, the code focuses on rendering functionality without integrating security best practices or compliance-related controls, posing risks in untrusted input scenarios and error handling robustness.",
-    "vector_id": 24
+  "errors.go": {
+    "summary": "The file defines a structured error handling system for the Gin framework, categorizing errors by type (e.g., binding, rendering, public/private). It supports metadata attachment and JSON serialization for standardized error reporting, aiding transparency and debugging. While it enhances error traceability, it lacks direct security controls like authentication, authorization, or encryption. Compliance features focus on error classification and structured output, which can support auditing and monitoring but do not implement logging or IAM roles themselves. No explicit input validation or sanitization is evident, posing a risk if error meta or messages expose sensitive data. There are no TODOs or explicit security warnings, but care must be taken to avoid leaking internal details through public error responses.",
+    "vector_id": 24,
+    "inspector_results": {
+      "file_path": "errors.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "fmt",
+          "reflect",
+          "strings",
+          "github.com/gin-gonic/gin/codec/json"
+        ],
+        "network_modules": [],
+        "file_system_modules": [
+          "fmt"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/errors.go is written in Golang. No networking capabilities have been detected in this file. File system access is expected using the discovered modules: ['fmt']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/render/redirect.go": {
-    "summary": "The file implements an HTTP redirect handler that enforces valid redirect status codes, preventing misuse of inappropriate codes via a panic on invalid input. However, it lacks explicit input validation or sanitization for the redirect location, posing potential open redirect risks. There are no authentication, authorization, encryption, or logging mechanisms, nor any compliance-focused features like auditing or IAM role checks. The absence of content type setting aligns with redirect behavior but offers no security benefit. No TODOs or comments indicate planned improvements. Overall, while status code validation is a positive control, the redirect URL should be validated or constrained to mitigate security risks.",
-    "vector_id": 25
+  "gin.go": {
+    "summary": "The file implements a web framework engine focusing on HTTP routing, with configurable options for trusted proxies and path handling. Security controls include client IP validation via trusted proxy CIDRs and headers, with warnings if all proxies are trusted (a risky default). While it supports TLS and QUIC for encrypted transport, there is no built-in authentication or authorization, leaving that to middleware. Input validation is partially addressed through path cleaning and parameter parsing. Compliance features include middleware support suitable for logging and recovery, and route inspection for auditing. Risks include default trusting of all proxies (insecure unless explicitly restricted), absence of explicit IAM or audit logging mechanisms, and reliance on user-added middleware for authentication and detailed access control. No explicit TODOs or fixes are noted.",
+    "vector_id": 25,
+    "inspector_results": {
+      "file_path": "gin.go",
+      "language": "Golang",
+      "control_hints": [
+        "sc8"
+      ],
+      "loaded_modules": {
+        "modules": [
+          "fmt",
+          "html/template",
+          "net",
+          "net/http",
+          "os",
+          "path",
+          "regexp",
+          "strings",
+          "sync",
+          "github.com/gin-gonic/gin/internal/bytesconv",
+          "filesystem \"github.com/gin-gonic/gin/internal/fs",
+          "github.com/gin-gonic/gin/render",
+          "github.com/quic-go/quic-go/http3",
+          "golang.org/x/net/http2",
+          "golang.org/x/net/http2/h2c"
+        ],
+        "network_modules": [
+          "net",
+          "net/http",
+          "golang.org/x/net/http2"
+        ],
+        "file_system_modules": [
+          "fmt",
+          "os"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/gin.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net', 'net/http', 'golang.org/x/net/http2']. File system access is expected using the discovered modules: ['fmt', 'os']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/render/text.go": {
-    "summary": "The file implements a rendering utility that formats and writes string data to HTTP responses with a fixed plain text content type. It lacks explicit security controls such as authentication, authorization, encryption, or input validation, potentially exposing risks like format string vulnerabilities if untrusted input is passed to the formatter. There are no compliance-related features like logging, auditing, or IAM role enforcement present. The code assumes trusted inputs and does not sanitize or validate the data before output, which could lead to injection attacks or information disclosure. No TODOs or security warnings are noted, but enhancing input validation and adding logging for rendering operations would improve security and compliance posture.",
-    "vector_id": 26
+  "render/render.go": {
+    "summary": "The file defines a generic rendering interface supporting multiple content types (JSON, XML, HTML, YAML, etc.) with methods for outputting data and setting content types, but it lacks explicit security controls such as authentication, authorization, or encryption mechanisms. It includes a secure JSON variant, suggesting some consideration for mitigating JSON-specific risks. There are no evident compliance features like logging, auditing, or IAM role enforcement. Input validation is not addressed here, likely delegated elsewhere. The code\u2019s primary risk lies in insufficient context for security controls around rendering output, and no TODOs or warnings are present, indicating a need for complementary layers to handle security and compliance comprehensively.",
+    "vector_id": 26,
+    "inspector_results": {
+      "file_path": "render/render.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "net/http"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/render/render.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/render/reader.go": {
-    "summary": "The file defines a utility for streaming content with customizable headers and content type but lacks any explicit security controls such as authentication, authorization, encryption, or input validation. It does not implement logging, auditing, or IAM role enforcement, which are important for compliance. The code sets HTTP headers, including content length, but does not sanitize header values, posing a risk of header injection if untrusted input is used. There are no obvious TODOs or error handling enhancements. Overall, the component serves as a low-level content renderer without built-in security measures, relying on upstream layers to enforce access control and input validation.",
-    "vector_id": 27
+  "render/msgpack.go": {
+    "summary": "The file provides MsgPack serialization functionality with no explicit security controls like authentication, authorization, or encryption. It sets a specific content type for HTTP responses and encodes data using the third-party codec library. There are no input validation mechanisms or compliance features such as logging, auditing, or IAM role enforcement. The code appears focused solely on data rendering without addressing security or compliance concerns, and no TODOs or obvious risks are indicated, though the absence of validation or logging could be a risk in sensitive contexts.",
+    "vector_id": 27,
+    "inspector_results": {
+      "file_path": "render/msgpack.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "net/http",
+          "github.com/ugorji/go/codec"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/render/msgpack.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/render/yaml.go": {
-    "summary": "The file implements YAML rendering for HTTP responses, focusing on marshaling data into YAML format and setting appropriate content types. It lacks security controls such as input validation, authentication, authorization, or encryption, which may expose risks if untrusted data is marshaled or sensitive information is output without safeguards. There are no compliance-related features like logging, auditing, or IAM role enforcement. The code assumes trusted input and does not mitigate risks related to data injection or exposure, representing a potential security gap in environments requiring strict data handling or regulatory compliance. No TODOs or comments suggest planned enhancements.",
-    "vector_id": 28
+  "render/xml.go": {
+    "summary": "The xml.go file provides a simple XML rendering utility that encodes data into XML format and sets the appropriate content type in HTTP responses. It lacks explicit security controls such as authentication, authorization, encryption, or input validation, relying on upstream components for these safeguards. There are no compliance-specific features like logging, auditing, or IAM role enforcement present. The code's primary risk lies in the absence of input validation before encoding, which could lead to XML injection if untrusted data is processed. No TODOs or comments indicate planned security enhancements or compliance measures. Overall, it functions as a low-level output formatter without inherent security or compliance mechanisms.",
+    "vector_id": 28,
+    "inspector_results": {
+      "file_path": "render/xml.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "encoding/xml",
+          "net/http"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/render/xml.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/render/toml.go": {
-    "summary": "The file provides functionality to serialize data into TOML format and send it as an HTTP response with the appropriate content type. It lacks any direct security controls such as authentication, authorization, encryption, or input validation, as it focuses solely on data rendering. There are no compliance-related features like logging, auditing, or IAM role management implemented. Potential risks include the absence of input validation before marshaling, which could lead to unintended data exposure or injection if untrusted data is processed. No TODOs or explicit security considerations are noted in the code.",
-    "vector_id": 29
+  "render/html.go": {
+    "summary": "The file provides HTML template rendering capabilities without built-in security controls such as authentication, authorization, or encryption. It supports customizable delimiters and function maps, which could introduce injection risks if user-supplied data is improperly sanitized before rendering. There is no explicit input validation or output encoding beyond Go\u2019s html/template default escaping. Compliance-relevant features like logging, auditing, or IAM role enforcement are absent. A notable risk is the panic triggered if no template source is provided in debug mode, which may cause denial of service. Overall, the code assumes safe template usage but lacks explicit safeguards against template injection or improper data handling, requiring careful integration with upstream security controls.",
+    "vector_id": 29,
+    "inspector_results": {
+      "file_path": "render/html.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "html/template",
+          "net/http",
+          "github.com/gin-gonic/gin/internal/fs"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/render/html.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/render/data.go": {
-    "summary": "The file implements a simple data rendering utility that sets a custom Content-Type header and writes byte data to an HTTP response. It lacks explicit security controls such as authentication, authorization, encryption, or input validation, posing potential risks if untrusted data or content types are handled without sanitization. There are no compliance-related features like logging, auditing, or role-based access control. The code\u2019s minimal scope suggests it should be used within a larger, security-aware context. No TODOs or comments indicate planned improvements or security considerations. Overall, the file is low-risk but requires careful integration to prevent injection or content spoofing vulnerabilities.",
-    "vector_id": 30
+  "render/redirect.go": {
+    "summary": "The file implements a simple HTTP redirect mechanism enforcing allowed redirect status codes to prevent misuse; however, it lacks explicit authentication, authorization, or input validation on the redirect location, posing potential open redirect vulnerabilities. There are no encryption features or compliance-related elements such as logging, auditing, or IAM role enforcement. The panic on invalid status codes ensures strict adherence to HTTP standards but could cause application crashes if misused. No TODOs or comments indicate planned security enhancements. Overall, this module requires additional controls to validate redirect destinations and incorporate logging to meet security and compliance best practices.",
+    "vector_id": 30,
+    "inspector_results": {
+      "file_path": "render/redirect.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "fmt",
+          "net/http"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [
+          "fmt"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/render/redirect.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. File system access is expected using the discovered modules: ['fmt']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/render/json.go": {
-    "summary": "The file implements multiple JSON rendering strategies with custom content types, focusing on output formatting rather than security controls like authentication or authorization. Input validation is minimal, relying on JSON marshalling without explicit sanitization beyond JSON escaping in JSONP to prevent injection. It uses safe escaping for JavaScript callbacks, aiding XSS mitigation. There are no explicit logging, auditing, or IAM role features, which may be a compliance gap. The SecureJSON prefix handling aims to prevent JSON hijacking but only when the data is a JSON array, which might be insufficient. No encryption or access control mechanisms are present, and error handling is basic. Overall, the file provides JSON output utilities but lacks built-in security or compliance features and could benefit from enhanced input validation and auditability.",
-    "vector_id": 31
+  "render/text.go": {
+    "summary": "The file implements a simple content rendering mechanism for HTTP responses, focusing on plain text output with customizable formatting. It lacks explicit security controls such as authentication, authorization, encryption, or input validation, which could lead to injection or formatting vulnerabilities if untrusted input is passed to the formatting function. There are no compliance-related features like logging, auditing, or IAM role enforcement. The use of formatted output without sanitization is a potential security risk. No TODOs or comments indicate planned improvements or mitigations. Overall, this code is a low-level utility that should be used cautiously within a secure context to prevent misuse or injection attacks.",
+    "vector_id": 31,
+    "inspector_results": {
+      "file_path": "render/text.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "fmt",
+          "net/http",
+          "github.com/gin-gonic/gin/internal/bytesconv"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [
+          "fmt"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/render/text.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. File system access is expected using the discovered modules: ['fmt']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/render/protobuf.go": {
-    "summary": "The file implements protobuf serialization for HTTP responses without incorporating any explicit security controls such as authentication, authorization, encryption, or input validation. It lacks mechanisms for logging or auditing marshaling operations, which may be relevant for compliance tracking. The code assumes that the input data correctly implements the protobuf message interface without validating or sanitizing it, posing a potential risk if untrusted data is passed. There are no TODO comments or indications of pending security enhancements. Overall, the file serves a functional role in data serialization but does not address security or compliance concerns directly, leaving such responsibilities to higher-level components.",
-    "vector_id": 32
+  "render/reader.go": {
+    "summary": "The file implements a response rendering utility that streams data with customizable content type, content length, and headers. It lacks any built-in authentication, authorization, or encryption mechanisms, relying entirely on the caller to enforce security controls. No input validation is performed on headers or content length, potentially exposing risks such as header injection or incorrect content handling. The code does not include any logging or auditing features, nor does it manage IAM roles or compliance-related metadata. Overall, it serves as a low-level utility with no direct security or compliance controls, so its safe use depends on external context and proper upstream validation and access control. There are no explicit TODOs or error handling enhancements noted.",
+    "vector_id": 32,
+    "inspector_results": {
+      "file_path": "render/reader.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "io",
+          "net/http",
+          "strconv"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [
+          "io"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/render/reader.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. File system access is expected using the discovered modules: ['io']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/ginS/gins.go": {
-    "summary": "This file provides a thin wrapper around the Gin web framework, centralizing engine initialization and exposing routing and static file serving methods. It does not implement explicit security controls like authentication, authorization, encryption, or input validation, relying on Gin\u2019s defaults and middleware for such features. It supports TLS via RunTLS, enabling encrypted communication, but certificate management is external. There is no built-in logging, auditing, or IAM role management, though middleware can be globally attached for those purposes. The singleton pattern ensures a single engine instance, which is good for consistent middleware application. No obvious TODOs or security warnings are present; however, responsibility for security controls and compliance features lies with the middleware and handlers added by the user.",
-    "vector_id": 33
+  "render/yaml.go": {
+    "summary": "The file provides functionality to serialize data into YAML format and write it to an HTTP response with the appropriate content type. It lacks any built-in security controls such as authentication, authorization, encryption, or input validation. There are no mechanisms for logging, auditing, or enforcing IAM roles, which limits compliance relevance. The code assumes the input data is safe to marshal and transmit without sanitization, posing a potential injection or data leakage risk if untrusted data is processed. No TODOs or error-handling enhancements related to security are present. Overall, this component is a simple data renderer without embedded security or compliance features, and its safe use depends on upstream controls.",
+    "vector_id": 33,
+    "inspector_results": {
+      "file_path": "render/yaml.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "net/http",
+          "github.com/goccy/go-yaml"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/render/yaml.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/query.go": {
-    "summary": "The file implements a query parameter binding mechanism that extracts URL query values and maps them to a given object, followed by validation of the populated object. It lacks explicit security controls such as authentication, authorization, or encryption. Input validation is present but limited to the final validation call without visible sanitization or protection against injection attacks. There are no compliance features like logging, auditing, or IAM role enforcement. The absence of error handling details and security checks may expose risks if untrusted inputs are passed, suggesting a need for enhanced validation, input sanitization, and integration with broader security frameworks. No TODOs or comments indicate planned improvements.",
-    "vector_id": 34
+  "render/toml.go": {
+    "summary": "The file implements a TOML renderer that serializes data to TOML format and sets the appropriate content type in HTTP responses. It lacks explicit security controls such as authentication, authorization, encryption, or input validation, relying solely on the external TOML marshaling library. There are no compliance features like logging, auditing, or IAM role enforcement present. Potential risks include unvalidated data serialization leading to injection or information disclosure if malicious or sensitive data is passed. Additionally, error handling is minimal and does not log or audit failures, which may hinder incident investigation. There are no TODOs or comments indicating future security improvements.",
+    "vector_id": 34,
+    "inspector_results": {
+      "file_path": "render/toml.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "net/http",
+          "github.com/pelletier/go-toml/v2"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/render/toml.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/header.go": {
-    "summary": "The code provides functionality to bind HTTP request headers to Go structs with automatic validation after mapping. It includes input handling by mapping headers case-insensitively but lacks explicit authentication, authorization, or encryption controls. There are no evident logging, auditing, or IAM role integrations, which are typically important for compliance. The design assumes trust in incoming headers without sanitization beyond validation, posing potential injection or spoofing risks if used improperly. No TODOs or comments suggest pending security improvements or known issues. Overall, the file focuses on data binding and validation but does not implement or enforce any direct security or compliance mechanisms.",
-    "vector_id": 35
+  "render/data.go": {
+    "summary": "The file defines a simple data rendering utility that sets a custom Content-Type header and writes byte data to an HTTP response. It lacks explicit security controls such as authentication, authorization, encryption, or input validation, which could be relevant if the data originates from untrusted sources. There are no compliance-related features like logging, auditing, or IAM role enforcement. The design assumes trusted input and does not address potential risks like content spoofing or injection attacks. No TODOs or security warnings are indicated, but incorporating input validation and secure handling of Content-Type values would enhance robustness and compliance readiness.",
+    "vector_id": 35,
+    "inspector_results": {
+      "file_path": "render/data.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "net/http"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/render/data.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/msgpack.go": {
-    "summary": "The file implements MsgPack data binding by decoding HTTP request bodies into objects, incorporating basic input validation after deserialization. It lacks explicit security controls such as authentication, authorization, or encryption within this scope. There are no evident compliance features like logging, auditing, or role-based access management integrated. Potential risks include relying solely on the correctness and security of the deserialization process, which could be vulnerable to malformed or malicious MsgPack data if upstream validation is insufficient. No TODOs or error handling enhancements are indicated, suggesting limited resilience or traceability for decoding failures. Overall, this component serves as a low-level data parser without built-in security or compliance mechanisms.",
-    "vector_id": 36
+  "render/json.go": {
+    "summary": "The file provides multiple JSON rendering implementations focusing on output formatting and content-type setting, but it lacks direct security controls like authentication or authorization. Input validation is minimal, limited to escaping JSONP callbacks to mitigate injection risks. There is no encryption or sensitive data handling evident. Compliance features such as logging or auditing are absent, and no IAM role management is included. A potential risk exists in the JSONP renderer if callbacks are not strictly validated beyond escaping, which could expose to cross-site scripting (XSS). Additionally, the SecureJSON prefix handling assumes array responses without strong guarantees, which might cause unexpected behavior. Overall, the file is a presentation layer utility with limited security features and no explicit controls for compliance or access management.",
+    "vector_id": 36,
+    "inspector_results": {
+      "file_path": "render/json.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "bytes",
+          "fmt",
+          "html/template",
+          "net/http",
+          "unicode",
+          "github.com/gin-gonic/gin/codec/json",
+          "github.com/gin-gonic/gin/internal/bytesconv"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [
+          "fmt"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/render/json.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. File system access is expected using the discovered modules: ['fmt']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/binding_nomsgpack.go": {
-    "summary": "The file defines interfaces and implementations for binding and validating HTTP request data into Go structs, supporting multiple content types without Msgpack. It includes a pluggable validator interface leveraging an external validation library to ensure input correctness, which aids input validation but lacks explicit authentication, authorization, or encryption controls. The design facilitates structured request parsing but does not include logging, auditing, or IAM role management features. No direct security risks or TODOs are evident, though reliance on external validators means validation robustness depends on their correct configuration. Absence of built-in security controls necessitates integrating this binding layer within a secure framework that enforces authentication, authorization, encryption, and audit logging separately.",
-    "vector_id": 37
+  "render/protobuf.go": {
+    "summary": "The file provides functionality to serialize and render protobuf messages over HTTP with a specific content type. It lacks any built-in security controls such as authentication, authorization, encryption, or input validation, relying on upstream components to ensure data integrity and access control. There are no compliance-related features like logging or auditing present, nor any IAM role enforcement. The code assumes the input data correctly implements the protobuf interface without safeguards, which could lead to runtime panics or unexpected behavior if misused. No explicit TODOs or error handling improvements are noted, indicating potential risks in error propagation and absence of security hardening.",
+    "vector_id": 37,
+    "inspector_results": {
+      "file_path": "render/protobuf.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "net/http",
+          "google.golang.org/protobuf/proto"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/render/protobuf.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/form_mapping.go": {
-    "summary": "The file implements form data binding by mapping HTTP form inputs to Go structs or maps, emphasizing flexible input parsing with support for custom unmarshaling and default values. It lacks explicit security controls such as authentication, authorization, or encryption, relying on caller context for those aspects. Input validation is limited to type conversion and format parsing (e.g., time formats), without sanitization or injection protection. There are no built-in compliance features like logging, auditing, or IAM role enforcement. Potential risks include unchecked input size, absence of strict validation or sanitization, and silent failures in type conversion that could lead to unexpected behavior. No TODOs or security warnings are indicated, but the package should be used with additional safeguards in consuming code.",
-    "vector_id": 38
+  "ginS/README.md": {
+    "summary": "The file contains a minimal Gin-based API server lacking explicit security controls such as authentication, authorization, encryption, or input validation. There are no compliance-related features like logging, auditing, or IAM role enforcement. The code uses a non-standard import (`ginS`), possibly a typo or placeholder, which could introduce risks if it points to untrusted or experimental packages. Overall, it is a basic proof-of-concept with no evident security safeguards or compliance mechanisms, posing risks if deployed in production without enhancements.",
+    "vector_id": 38,
+    "inspector_results": {
+      "file_path": "ginS/README.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/gin/ginS/README.md. This file type is not currently supported by the automated inspectors."
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/xml.go": {
-    "summary": "The file provides XML deserialization functionality with binding methods to decode HTTP request bodies or byte slices into Go objects, followed by validation. It lacks explicit security controls such as input sanitization beyond XML decoding, no authentication or authorization checks, and no encryption handling. There are no logging or auditing mechanisms to track binding operations, nor IAM role enforcement. Potential risks include XML external entity (XXE) attacks if the XML decoder is not securely configured, and absence of input size limits or schema validation could expose the system to denial of service or injection attacks. No TODO comments or mitigation strategies are present, indicating a need for enhanced input validation and security hardening.",
-    "vector_id": 39
+  "ginS/gins.go": {
+    "summary": "The file provides a singleton wrapper around the Gin web framework engine, exposing routing, middleware, and static file serving capabilities. It supports HTTPS via RunTLS, enabling encrypted transport. However, it lacks built-in authentication, authorization, input validation, or explicit security headers; these must be implemented by middleware or handlers. There are no evident compliance features like logging, auditing, or IAM role integration within this wrapper\u2014although middleware support allows their insertion. The design assumes users will add necessary security controls externally. No TODOs or direct security risks are visible, but the absence of default security mechanisms and reliance on user-supplied middleware could lead to misconfigurations or insecure defaults if not carefully managed.",
+    "vector_id": 39,
+    "inspector_results": {
+      "file_path": "ginS/gins.go",
+      "language": "Golang",
+      "control_hints": [
+        "sc8"
+      ],
+      "loaded_modules": {
+        "modules": [
+          "html/template",
+          "net/http",
+          "sync",
+          "github.com/gin-gonic/gin"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/ginS/gins.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/plain.go": {
-    "summary": "The file implements a simple plain-text binding mechanism without explicit security controls such as authentication, authorization, or encryption. It reads raw request bodies and decodes them into string or byte slice types using reflection, lacking input validation or sanitization, which could pose risks if untrusted data is processed. There are no compliance-focused features like logging, auditing, or IAM role enforcement. The absence of error handling beyond basic read failures and type mismatches suggests potential robustness issues. Overall, this code is a low-level utility intended for plaintext input binding but requires additional layers for secure and compliant use, especially in environments handling sensitive data.",
-    "vector_id": 40
+  "docs/doc.md": {
+    "summary": "The file documents the Gin web framework's features emphasizing security controls such as built-in authentication via BasicAuth middleware and middleware support for authorization, recovery from panics, and input validation using the go-playground/validator library, including custom validators. It supports secure JSON responses to prevent hijacking and enforces trusted proxy settings to avoid client IP spoofing. Logging and auditing are well-covered with configurable log formats, file logging, and route logging hooks. Encryption is demonstrated in TLS support with Let's Encrypt integration. Input validation is comprehensive across various binding methods (JSON, XML, forms, headers, URI), with required fields and default values. Risks include trusting uploaded filenames without sanitization, default trusting of all proxies unless explicitly set, and the need to avoid context misuse in goroutines. No explicit TODOs are noted.",
+    "vector_id": 40,
+    "inspector_results": {
+      "file_path": "docs/doc.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/gin/docs/doc.md. This file type is not currently supported by the automated inspectors."
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/uri.go": {
-    "summary": "The file defines a URI binding mechanism that maps URI parameters to a given object and subsequently validates it. It includes input validation to ensure data integrity but lacks explicit authentication, authorization, encryption, or logging controls. There are no compliance-specific features like auditing or IAM role enforcement evident. The simplicity and absence of security context suggest this code relies on external layers for access control and secure handling. No obvious security risks or TODOs are present within this snippet, but its effectiveness depends on the robustness of the mapURI and validate functions, which are not shown.",
-    "vector_id": 41
+  "binding/query.go": {
+    "summary": "The file implements a query parameter binding mechanism that extracts URL query parameters into a target object, followed by validation. It lacks explicit authentication, authorization, or encryption controls, focusing solely on input binding and validation. The validation step provides basic input integrity but does not specify the rules, which may affect robustness. There are no logging, auditing, or IAM-related features, limiting compliance traceability. No evident error handling improvements or security hardening measures are noted, and no TODO comments suggest further enhancements. Overall, this code serves as a foundational input binding utility but requires integration with broader security and compliance frameworks to mitigate injection risks and ensure traceability.",
+    "vector_id": 41,
+    "inspector_results": {
+      "file_path": "binding/query.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "net/http"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/query.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/form.go": {
-    "summary": "The file implements form data binding for HTTP requests, focusing on parsing and mapping form inputs to Go objects with subsequent validation. It lacks explicit security controls such as authentication, authorization, or encryption mechanisms. Input validation is present but details depend on the external `validate` function, which is critical for preventing injection or malformed data risks. There are no logging or auditing capabilities, nor IAM role enforcement. The use of default memory limits for multipart forms is a positive control to mitigate resource exhaustion, but no explicit error handling or rate limiting is evident. Overall, it provides basic input handling without integrated security or compliance features, posing risks if validation or upstream controls are insufficient. No TODOs or comments indicate planned security enhancements.",
-    "vector_id": 42
+  "binding/header.go": {
+    "summary": "The file implements HTTP header binding by mapping request headers to struct fields, incorporating input validation after binding. It lacks explicit security controls such as authentication, authorization, or encryption mechanisms. No logging, auditing, or IAM role enforcement is evident, limiting compliance features. The code relies on reflection for flexible header mapping, which may introduce risks if input validation is insufficient or if malicious headers exploit struct tags. No TODOs or error handling enhancements are noted. Overall, the file focuses on data binding and validation but omits critical security and compliance controls, requiring integration with higher-level modules for secure request processing.",
+    "vector_id": 42,
+    "inspector_results": {
+      "file_path": "binding/header.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "net/http",
+          "net/textproto",
+          "reflect"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/header.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/yaml.go": {
-    "summary": "The file implements YAML data binding by decoding request bodies into objects, with no explicit security controls like authentication, authorization, or encryption. Input validation is minimally addressed through a generic `validate` function post-decoding, but its thoroughness is unclear. There are no compliance features such as logging, auditing, or IAM role enforcement. The lack of input sanitization before YAML decoding may pose risks including injection attacks or denial of service via malicious payloads. Additionally, error handling is basic, potentially allowing malformed data to propagate. Overall, the code lacks explicit security or compliance mechanisms and could benefit from enhanced input validation, logging, and protective measures against common YAML parsing vulnerabilities.",
-    "vector_id": 43
+  "binding/msgpack.go": {
+    "summary": "This file implements MsgPack data binding by decoding request bodies into Go objects using the ugorji/go/codec library. It lacks explicit security controls such as input validation beyond a generic `validate` call, and there are no authentication, authorization, or encryption measures evident. Compliance features like logging, auditing, or IAM role enforcement are absent. The primary risk is potential unsafe deserialization or inadequate validation of MsgPack inputs, which could lead to injection or denial-of-service attacks if the `validate` function is insufficient. No TODOs or error handling enhancements are noted, suggesting limited robustness against malformed or malicious data.",
+    "vector_id": 43,
+    "inspector_results": {
+      "file_path": "binding/msgpack.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "bytes",
+          "io",
+          "net/http",
+          "github.com/ugorji/go/codec"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [
+          "io"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/msgpack.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. File system access is expected using the discovered modules: ['io']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/toml.go": {
-    "summary": "The file implements TOML data binding for HTTP requests, focusing on decoding and validating input without explicit security controls such as authentication, authorization, or encryption. Input validation is partially addressed via a generic validate function after decoding, but no sanitization or schema enforcement is evident. There are no compliance-related features like logging, auditing, or IAM role checks. The code assumes trusted input and does not handle malformed or malicious TOML data beyond basic decode errors, posing potential risks if exposed to untrusted sources. No TODOs or comments indicate planned security improvements or additional controls.",
-    "vector_id": 44
+  "binding/binding_nomsgpack.go": {
+    "summary": "This file defines interfaces and implementations for binding and validating HTTP request data in various formats (JSON, XML, form data, etc.) but contains no direct security controls like authentication or encryption. It integrates with a pluggable validation engine to enforce input correctness, which helps mitigate injection risks by validating request-bound structs. There are no explicit logging, auditing, or IAM role features, limiting compliance tracking capabilities. The binding mechanism relies on content type and HTTP method to select parsers, which could pose risks if content type spoofing is not handled elsewhere. No TODOs or explicit security warnings are present, but the absence of built-in authorization or logging suggests these must be implemented at higher layers for robust security and compliance.",
+    "vector_id": 44,
+    "inspector_results": {
+      "file_path": "binding/binding_nomsgpack.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "net/http"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/binding_nomsgpack.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/json.go": {
-    "summary": "The file implements JSON binding with configurable decoding options to enhance input validation by optionally disallowing unknown fields and preserving numeric precision. It lacks explicit authentication, authorization, encryption, or logging controls, focusing solely on safe deserialization and validation of JSON input. The use of configurable decoder settings helps mitigate risks of unexpected or malformed data injection. However, there are no compliance-related features such as auditing, IAM roles, or secure handling of sensitive data. Potential risks include reliance on external validation (via `validate`) and absence of rate limiting or request origin checks, which could be exploited if used in security-critical contexts. No TODOs or comments indicate planned security improvements.",
-    "vector_id": 45
+  "binding/form_mapping.go": {
+    "summary": "The file implements a flexible form data binding mechanism converting form inputs into Go structs or maps, focusing on input parsing and type conversion without direct security controls like authentication or encryption. It supports default values, custom unmarshaling, and various collection formats, but lacks explicit input validation or sanitization, posing potential injection or data integrity risks. There are no logging, auditing, or IAM role enforcement features, which may affect compliance in regulated environments. The reflection-based setting of fields on potentially untrusted input demands careful use elsewhere to avoid security flaws. No explicit TODOs are present, but adding input validation, sanitization, and audit logging would strengthen security and compliance posture.",
+    "vector_id": 45,
+    "inspector_results": {
+      "file_path": "binding/form_mapping.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "errors",
+          "fmt",
+          "mime/multipart",
+          "reflect",
+          "strconv",
+          "strings",
+          "time",
+          "github.com/gin-gonic/gin/codec/json",
+          "github.com/gin-gonic/gin/internal/bytesconv"
+        ],
+        "network_modules": [],
+        "file_system_modules": [
+          "fmt"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/form_mapping.go is written in Golang. No networking capabilities have been detected in this file. File system access is expected using the discovered modules: ['fmt']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/multipart_form_mapping.go": {
-    "summary": "The file implements multipart form data binding with focus on setting file headers into Go struct fields using reflection. It lacks explicit security controls such as authentication, authorization, encryption, or input validation, which could expose risks if untrusted multipart data is processed without sanitization. No logging or auditing features are present, limiting compliance and traceability. The primary risk lies in handling multipart file inputs without validation or size/type checks, potentially enabling malicious file uploads or resource exhaustion. There are no IAM role considerations or error handling for security-relevant events, and no TODOs indicating planned enhancements. Overall, this code should be complemented by upstream security measures to ensure safe file handling.",
-    "vector_id": 46
+  "binding/xml.go": {
+    "summary": "The file implements XML request binding by decoding XML payloads into Go objects and performing validation afterward. It lacks explicit authentication, authorization, or encryption controls, relying on upstream components for security enforcement. Input validation is present via a generic validate call post-decoding, but no sanitization or protection against XML-specific attacks (e.g., XXE) is evident. There are no logging or auditing mechanisms to track binding operations, nor any compliance-related features like IAM role checks. The absence of error handling detail or security hardening in XML parsing represents a potential risk, especially given XML\u2019s attack surface. Overall, the code focuses solely on XML deserialization with limited security considerations and no explicit safeguards documented.",
+    "vector_id": 46,
+    "inspector_results": {
+      "file_path": "binding/xml.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "bytes",
+          "encoding/xml",
+          "io",
+          "net/http"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [
+          "io"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/xml.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. File system access is expected using the discovered modules: ['io']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/binding.go": {
-    "summary": "The file defines interfaces and implementations for binding and validating various HTTP request data formats, supporting JSON, XML, form data, protobuf, YAML, MsgPack, and others. It includes a pluggable validation mechanism relying on an external validator library to ensure data correctness, aiding input validation security. However, it lacks explicit authentication, authorization, encryption, or logging controls, focusing solely on data binding and validation. No built-in compliance features like auditing or IAM roles are present. The reliance on external validators implies trust in their correctness; improper configuration or bypass could lead to validation weaknesses. No TODOs or explicit risk notes are found, but absence of security controls beyond validation suggests this module must be complemented by other layers for full security and compliance.",
-    "vector_id": 47
+  "binding/plain.go": {
+    "summary": "The file implements a plain text binding mechanism for HTTP requests, focusing on unmarshalling request bodies into string or byte slice types using reflection. It lacks explicit security controls such as authentication, authorization, encryption, or input validation, posing risks if used with untrusted data. No logging, auditing, or IAM role management features are present, limiting compliance capabilities. The code does not sanitize or validate input, which could lead to injection or other attacks if downstream components assume safe input. There are no TODOs or error handling enhancements beyond basic error returns, suggesting potential improvements in robustness and security hardening are needed.",
+    "vector_id": 47,
+    "inspector_results": {
+      "file_path": "binding/plain.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "fmt",
+          "io",
+          "net/http",
+          "reflect",
+          "github.com/gin-gonic/gin/internal/bytesconv"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [
+          "fmt",
+          "io"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/plain.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. File system access is expected using the discovered modules: ['fmt', 'io']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/protobuf.go": {
-    "summary": "The file implements protobuf data binding for HTTP requests, focusing on unmarshalling request bodies into protobuf messages. It lacks explicit security controls such as input validation, authentication, or authorization, and does not perform payload validation beyond unmarshalling, posing a risk of processing malformed or malicious data. There are no encryption or IAM features, nor logging or auditing mechanisms to track binding operations, which could impact compliance and traceability. A commented-out TODO suggests future intent to add validation, highlighting an incomplete security posture. Overall, the code provides minimal security features and would benefit from integrating input validation, error logging, and stricter type enforcement to mitigate potential risks.",
-    "vector_id": 48
+  "binding/uri.go": {
+    "summary": "The file defines a URI binding mechanism that maps URI parameters to an object and subsequently validates it, indicating input validation is enforced. However, there are no explicit security controls such as authentication, authorization, encryption, or detailed error handling present. Compliance features like logging, auditing, or IAM role checks are absent. The code relies on external functions for mapping and validation, so their robustness is critical but not visible here. No obvious TODO comments or direct risks appear within this snippet, but the simplicity suggests potential gaps if input validation or error management is insufficient downstream.",
+    "vector_id": 48,
+    "inspector_results": {
+      "file_path": "binding/uri.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/uri.go is written in Golang. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/binding/default_validator.go": {
-    "summary": "The file implements a default struct validator using the go-playground/validator library, focusing on input validation by recursively validating structs, pointers, slices, and arrays. It ensures thread-safe lazy initialization of the validator instance but lacks explicit authentication, authorization, encryption, or logging controls. Compliance features such as detailed error aggregation are present, aiding debugging and auditing of validation failures. However, there are no built-in mechanisms for access control or audit trail generation. The design assumes trusted use since it does not address security context or role-based validation, which could pose risks if untrusted input bypasses validation or if custom validators are misconfigured. No TODOs or explicit security warnings are noted in the code.",
-    "vector_id": 49
+  "binding/form.go": {
+    "summary": "The file implements form data binding for HTTP requests, providing parsing and validation of different content types (standard form, URL-encoded, multipart). Security controls include input validation via a `validate` function after mapping form data to objects, mitigating injection risks. However, there is no explicit authentication, authorization, encryption, or sanitization shown. Compliance features like logging or auditing are absent, and no IAM role enforcement is evident. Potential risks include reliance on default memory limits without explicit size checks and no mention of rate limiting or CSRF protections, which could expose the application to denial-of-service or cross-site request forgery attacks. No TODOs or security warnings are indicated in the code.",
+    "vector_id": 49,
+    "inspector_results": {
+      "file_path": "binding/form.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "errors",
+          "net/http"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/form.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/.github/dependabot.yml": {
-    "summary": "The dependabot.yml file configures automated dependency updates for GitHub Actions and Go modules on a weekly basis, promoting timely patching of known vulnerabilities. While it supports security by reducing outdated dependencies, it lacks explicit controls for authentication, authorization, or encryption within this context. There are no logging or auditing features directly configured here, nor IAM role specifications. The file presents no obvious risks or TODOs but relies on external systems to enforce secure update application and validation, emphasizing the need for complementary security measures elsewhere in the development pipeline.",
-    "vector_id": 50
+  "binding/yaml.go": {
+    "summary": "The file provides YAML data binding functionality, converting HTTP request bodies or byte slices into Go objects using a YAML decoder, followed by validation. It lacks explicit security controls such as authentication, authorization, or encryption. Input validation is implicitly present via a generic `validate` function, though its robustness depends on its implementation elsewhere. There are no evident compliance features like logging, auditing, or IAM role checks. No error handling beyond decode failure is implemented, and no rate limiting or input size checks are visible, posing potential risks of malformed or malicious YAML input leading to denial of service or injection attacks. No TODOs or comments indicate planned security improvements.",
+    "vector_id": 50,
+    "inspector_results": {
+      "file_path": "binding/yaml.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "bytes",
+          "io",
+          "net/http",
+          "github.com/goccy/go-yaml"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [
+          "io"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/yaml.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. File system access is expected using the discovered modules: ['io']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/.github/workflows/gin.yml": {
-    "summary": "This GitHub Actions workflow focuses on code quality and testing across multiple OS and Go versions, incorporating linting and test coverage uploading. It includes no direct security controls like authentication, authorization, or encryption, nor explicit input validation. From a compliance perspective, it uses caching and version pinning for reproducibility but lacks detailed logging or audit trails within the workflow itself. Permissions are minimal (read-only for contents), reducing risk. However, there are no IAM roles or secrets management evident, and the workflow does not address security testing or vulnerability scanning, representing a potential gap. No TODOs or explicit risks are noted, but enhancing security testing and audit logging could improve compliance and risk posture.",
-    "vector_id": 51
+  "binding/toml.go": {
+    "summary": "The file implements TOML data binding for HTTP requests, focusing on decoding TOML payloads into Go structs with subsequent validation. It does not include explicit security controls such as authentication, authorization, or encryption. Input validation occurs via a generic `validate` function after decoding, but the validation logic is external and not shown. There are no compliance-related features like logging, auditing, or role management within this code. Potential risks include reliance on proper validation downstream, lack of error handling granularity, and absence of safeguards against malformed or malicious TOML payloads. No TODOs or comments indicating pending security enhancements are present.",
+    "vector_id": 51,
+    "inspector_results": {
+      "file_path": "binding/toml.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "bytes",
+          "io",
+          "net/http",
+          "github.com/pelletier/go-toml/v2"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [
+          "io"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/toml.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. File system access is expected using the discovered modules: ['io']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/.github/workflows/goreleaser.yml": {
-    "summary": "The configuration automates release processes triggered by tagged pushes, using GitHub Actions with write permissions on repository contents. It includes authentication via a GitHub token stored in secrets, ensuring secure access to repository operations during the release. However, the file lacks explicit input validation or encryption controls beyond GitHub\u2019s built-in secret management. There is no evident logging or auditing within this workflow beyond GitHub\u2019s native action logs. The limited permissions scope is appropriate, but the absence of fine-grained IAM roles or additional security checks presents a moderate risk if token leakage occurs. No explicit TODOs or security warnings are noted.",
-    "vector_id": 52
+  "binding/json.go": {
+    "summary": "The file implements JSON binding with configurable decoding options to enhance input validation, such as strict field enforcement and precise number handling, reducing risks from malformed or unexpected data. It lacks explicit authentication, authorization, or encryption controls, focusing solely on safe JSON deserialization and validation. There are no compliance-specific features like logging or auditing, nor IAM role integrations. Potential risks include reliance on external validation for security and the absence of safeguards against large payloads or denial-of-service attacks. No TODOs or comments indicate pending security improvements. Overall, it provides a foundational input validation mechanism but requires integration with broader security and compliance controls in the application.",
+    "vector_id": 52,
+    "inspector_results": {
+      "file_path": "binding/json.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "bytes",
+          "errors",
+          "io",
+          "net/http",
+          "github.com/gin-gonic/gin/codec/json"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [
+          "io"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/json.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. File system access is expected using the discovered modules: ['io']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/.github/workflows/codeql.yml": {
-    "summary": "The file defines a GitHub Actions workflow for automated CodeQL security scanning on Go code, triggered on pushes, pull requests to master, and weekly schedules. It enforces minimal permissions by granting only security-event write access, supporting compliance through automated vulnerability detection and audit logging via GitHub\u2019s security events API. Input validation and code quality are indirectly addressed through CodeQL queries, though custom queries are not specified. The workflow includes a TODO to enable JavaScript analysis, indicating incomplete language coverage. No explicit authentication, authorization, or encryption controls are implemented in the workflow itself, but it supports secure development by integrating static analysis and logging security findings, aiding compliance efforts.",
-    "vector_id": 53
+  "binding/multipart_form_mapping.go": {
+    "summary": "The file implements multipart form data binding, focusing on mapping uploaded files to Go struct fields. It lacks explicit security controls such as authentication, authorization, encryption, or input validation beyond basic type checks and length matching for file arrays. There are no compliance features like logging or auditing present. The code assumes trust in multipart form data without sanitization or size/type restrictions, posing risks of malicious file uploads or resource exhaustion. The error handling is minimal and does not cover security concerns. No TODOs or comments indicate planned security improvements, suggesting a need for enhanced validation, access control, and secure handling to mitigate potential exploitation.",
+    "vector_id": 53,
+    "inspector_results": {
+      "file_path": "binding/multipart_form_mapping.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "errors",
+          "mime/multipart",
+          "net/http",
+          "reflect"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/multipart_form_mapping.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/internal/bytesconv/bytesconv.go": {
-    "summary": "This file provides unsafe, zero-copy conversions between strings and byte slices to optimize performance, but it lacks any security controls such as input validation, authentication, or encryption. There are no compliance-related features like logging, auditing, or role-based access controls. The use of unsafe pointers introduces risks of memory corruption or data leakage if the caller modifies the underlying data concurrently, potentially leading to undefined behavior or security vulnerabilities. The file does not include any safeguards or comments addressing these risks, nor does it mention any TODOs for improving safety or compliance.",
-    "vector_id": 54
+  "binding/binding.go": {
+    "summary": "The file defines interfaces and implementations for binding HTTP request data to Go structs, supporting multiple content types (JSON, XML, YAML, MsgPack, etc.). It incorporates input validation through a customizable validator interface leveraging an external validation library, enhancing data integrity before processing. However, it lacks explicit security controls such as authentication, authorization, or encryption mechanisms. Compliance features like logging or auditing are absent, and IAM role management is not addressed. The design assumes safe usage of bound data but does not enforce or document protections against injection or malformed input beyond generic validation. No explicit TODOs or warnings are present, but security hardening around input validation and integration with authentication/authorization layers would be advisable.",
+    "vector_id": 54,
+    "inspector_results": {
+      "file_path": "binding/binding.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "net/http"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/binding.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/internal/fs/fs.go": {
-    "summary": "The file defines a simple wrapper around an HTTP file system interface, delegating file open operations without additional security controls such as authentication, authorization, input validation, or encryption. There are no logging or auditing mechanisms present, nor any compliance-related features like IAM role enforcement. The lack of input validation on the file path parameter could expose the system to path traversal or unauthorized file access if upstream components do not properly sanitize inputs. Overall, this implementation relies entirely on the underlying file system for security and lacks built-in safeguards or compliance measures.",
-    "vector_id": 55
+  "binding/protobuf.go": {
+    "summary": "The file implements protobuf data binding by deserializing request bodies into protobuf messages without built-in input validation or sanitization, posing a risk of processing malformed or malicious data. It lacks explicit authentication, authorization, encryption, or compliance features such as logging or auditing. The commented TODO indicates a missing validation step for protobuf-generated structs, which could lead to security gaps if unvalidated data is accepted. Overall, the code focuses solely on deserialization and should be augmented with input validation and integrated into a broader secure framework to meet security and compliance requirements.",
+    "vector_id": 55,
+    "inspector_results": {
+      "file_path": "binding/protobuf.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "errors",
+          "io",
+          "net/http",
+          "google.golang.org/protobuf/proto"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [
+          "io"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/protobuf.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. File system access is expected using the discovered modules: ['io']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/codec/json/sonic.go": {
-    "summary": "The file wraps the Sonics JSON library to provide standard JSON marshal/unmarshal functionality without implementing any explicit security controls such as authentication, authorization, encryption, or input validation. It lacks compliance features like logging, auditing, or IAM role enforcement. The code primarily delegates JSON processing to the underlying library without adding safeguards, which could pose risks if untrusted input is processed without validation or if sensitive data is serialized without encryption. No TODOs or comments highlight security considerations, suggesting potential gaps in secure handling of JSON data within the broader application context.",
-    "vector_id": 56
+  "binding/default_validator.go": {
+    "summary": "The file implements a default struct validator using the go-playground/validator library, focusing on input validation by recursively checking structs, pointers, slices, and arrays for compliance with defined validation tags. It ensures lazy initialization of the validator instance for efficiency. No explicit security controls like authentication, authorization, or encryption are present, nor are there compliance features such as logging or auditing. The validation mechanism strengthens input handling but lacks integration with access controls or traceability features. There are no obvious TODOs or security risks within this isolated validator logic; however, reliance solely on validation tags without contextual authorization or logging may limit its effectiveness in broader security or compliance frameworks.",
+    "vector_id": 56,
+    "inspector_results": {
+      "file_path": "binding/default_validator.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "reflect",
+          "strconv",
+          "strings",
+          "sync",
+          "github.com/go-playground/validator/v10"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/binding/default_validator.go is written in Golang. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/codec/json/jsoniter.go": {
-    "summary": "The file implements a JSON serialization wrapper using the json-iterator library, focusing solely on encoding and decoding data without incorporating any explicit security controls such as authentication, authorization, encryption, or input validation. It lacks compliance features like logging, auditing, or integration with IAM roles, which could be relevant in sensitive environments. No error handling or data sanitization is performed beyond what the underlying library provides, potentially exposing risks if untrusted input is processed without validation elsewhere. There are no TODOs or comments indicating planned security enhancements, suggesting the module relies entirely on external layers for security and compliance enforcement.",
-    "vector_id": 57
+  "examples/README.md": {
+    "summary": "The file is a brief README noting that all Gin framework examples have been relocated to a separate repository. It contains no source code or implementation details related to security controls, compliance features, or identified risks. Consequently, it provides no information on authentication, authorization, encryption, input validation, logging, auditing, or IAM roles, nor does it highlight any TODOs or security considerations.",
+    "vector_id": 57,
+    "inspector_results": {
+      "file_path": "examples/README.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/gin/examples/README.md. This file type is not currently supported by the automated inspectors."
+    }
   },
-  "/Users/chrisrimondi/Code/gin/codec/json/api.go": {
-    "summary": "The file defines interfaces for JSON encoding and decoding without implementing direct security controls such as authentication, authorization, or encryption. It includes input validation features via the Decoder interface\u2019s ability to disallow unknown fields, reducing risks from unexpected data. The Encoder can escape HTML characters to mitigate injection risks when embedding JSON in HTML contexts. There are no explicit logging, auditing, or IAM-related functionalities, and no evident TODOs or risk flags. Overall, the file provides foundational JSON handling capabilities with modest input validation but relies on higher-level components to enforce security and compliance controls.",
-    "vector_id": 58
+  "internal/bytesconv/bytesconv.go": {
+    "summary": "This file provides utility functions for zero-copy conversion between strings and byte slices using unsafe pointers, enhancing performance by avoiding memory allocations. It does not implement any security controls such as authentication, authorization, encryption, or input validation, nor does it include compliance features like logging or auditing. However, the use of unsafe operations poses risks, including potential memory corruption or data leakage if the underlying data is modified unexpectedly, which could lead to undefined behavior or security vulnerabilities. There are no explicit TODOs or mitigations noted, so careful usage and additional safeguards are advisable when integrating these functions into security-sensitive contexts.",
+    "vector_id": 58,
+    "inspector_results": {
+      "file_path": "internal/bytesconv/bytesconv.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "unsafe"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/internal/bytesconv/bytesconv.go is written in Golang. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/codec/json/go_json.go": {
-    "summary": "The file implements JSON serialization and deserialization using the third-party go-json library, providing standard marshal, unmarshal, encoding, and decoding functions. It lacks explicit security controls such as input validation, authentication, or authorization mechanisms. There are no evident encryption features or compliance-specific functionalities like logging, auditing, or IAM role integration. The code serves as a straightforward wrapper without addressing potential risks like malicious JSON payloads or data tampering. No TODOs or security warnings are present, but the absence of input validation and logging may pose risks in sensitive or compliance-heavy environments.",
-    "vector_id": 59
+  "internal/fs/fs.go": {
+    "summary": "The code provides a minimal wrapper around an HTTP file system interface, delegating file access without adding explicit security controls such as authentication, authorization, input validation, or encryption. It lacks compliance features like logging, auditing, or role-based access control, potentially exposing sensitive files if used without external safeguards. There are no apparent TODOs or error handling enhancements, implying reliance on the upstream file system for security. This design could pose risks if used in sensitive contexts without additional protective layers.",
+    "vector_id": 59,
+    "inspector_results": {
+      "file_path": "internal/fs/fs.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "io/fs",
+          "net/http"
+        ],
+        "network_modules": [
+          "net/http"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/internal/fs/fs.go is written in Golang. Discovery of networking modules shows the following being used for connectivity: ['net/http']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   },
-  "/Users/chrisrimondi/Code/gin/codec/json/json.go": {
-    "summary": "The file provides a straightforward wrapper around Go\u2019s standard JSON encoding library, implementing basic marshal and unmarshal functions without additional security controls such as input validation, authentication, or encryption. It lacks compliance features like logging, auditing, or IAM role enforcement. No explicit error handling or data sanitization is present, which could pose risks if untrusted input is processed. There are no TODOs or comments indicating planned security enhancements. Overall, this code serves as a simple JSON utility with no built-in security or compliance mechanisms, so its safe use depends entirely on how calling code manages data validation and access controls.",
-    "vector_id": 60
+  "codec/json/sonic.go": {
+    "summary": "The file implements JSON serialization using the Sonic library, focusing solely on encoding and decoding without embedded security controls like authentication, authorization, encryption, or input validation. It lacks explicit logging or auditing features and does not reference or enforce IAM roles or compliance mechanisms. Potential risks include reliance on third-party library behavior for safe handling of untrusted inputs and absence of input validation, which could expose the system to injection or deserialization attacks if not managed elsewhere. No TODOs or comments indicate planned security enhancements, suggesting a need for complementary safeguards in consuming code or higher-level modules.",
+    "vector_id": 60,
+    "inspector_results": {
+      "file_path": "codec/json/sonic.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "io",
+          "github.com/bytedance/sonic"
+        ],
+        "network_modules": [],
+        "file_system_modules": [
+          "io"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/codec/json/sonic.go is written in Golang. No networking capabilities have been detected in this file. File system access is expected using the discovered modules: ['io']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "codec/json/jsoniter.go": {
+    "summary": "The file provides a JSON serialization wrapper using the json-iterator library, focusing solely on encoding and decoding functionality without implementing security controls such as authentication, authorization, encryption, or input validation. There are no compliance features like logging, auditing, or IAM role enforcement present. The code relies on the third-party library\u2019s standard JSON handling capabilities but does not add any additional safeguards or error handling mechanisms, which could pose risks if untrusted data is processed without validation. No TODOs or explicit security considerations are indicated, suggesting potential gaps in secure input handling and auditability.",
+    "vector_id": 61,
+    "inspector_results": {
+      "file_path": "codec/json/jsoniter.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "io",
+          "jsoniter \"github.com/json-iterator/go"
+        ],
+        "network_modules": [],
+        "file_system_modules": [
+          "io"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/codec/json/jsoniter.go is written in Golang. No networking capabilities have been detected in this file. File system access is expected using the discovered modules: ['io']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "codec/json/api.go": {
+    "summary": "The file defines interfaces for JSON encoding and decoding with features supporting input validation, such as disallowing unknown fields to prevent unexpected data injection. It includes an option to escape HTML characters to mitigate cross-site scripting risks when embedding JSON in HTML contexts. However, there are no explicit security controls like authentication, authorization, encryption, or logging mechanisms present. The design focuses on safe data handling but lacks compliance-relevant features such as auditing or IAM integration. No immediate TODOs or obvious risks are noted, though the absence of security controls and logging means these must be addressed at higher application layers to ensure overall system security and compliance.",
+    "vector_id": 62,
+    "inspector_results": {
+      "file_path": "codec/json/api.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "io"
+        ],
+        "network_modules": [],
+        "file_system_modules": [
+          "io"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/codec/json/api.go is written in Golang. No networking capabilities have been detected in this file. File system access is expected using the discovered modules: ['io']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "codec/json/go_json.go": {
+    "summary": "The file wraps the \"github.com/goccy/go-json\" library to provide JSON encoding and decoding functionality but does not implement any explicit security controls such as authentication, authorization, encryption, or input validation. It lacks compliance features like logging, auditing, or IAM role enforcement. The code assumes the underlying library handles JSON parsing securely, but no additional safeguards or error handling mechanisms are evident. There are no TODOs or comments indicating future security improvements. Overall, this module serves as a thin abstraction layer without introducing notable security or compliance measures, relying entirely on the third-party JSON library for correctness and security.",
+    "vector_id": 63,
+    "inspector_results": {
+      "file_path": "codec/json/go_json.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "io",
+          "github.com/goccy/go-json"
+        ],
+        "network_modules": [],
+        "file_system_modules": [
+          "io"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/codec/json/go_json.go is written in Golang. No networking capabilities have been detected in this file. File system access is expected using the discovered modules: ['io']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "codec/json/json.go": {
+    "summary": "The file provides a simple wrapper around Go's standard JSON encoding package, offering marshal and unmarshal functions along with encoder/decoder creation. It lacks explicit security controls such as input validation, authentication, authorization, or encryption, relying entirely on the underlying library. There are no compliance-relevant features like logging, auditing, or IAM role enforcement present. The code appears low-risk but does not address potential JSON injection or malformed input handling, which should be considered at higher application layers. No TODOs or comments indicate planned security enhancements.",
+    "vector_id": 64,
+    "inspector_results": {
+      "file_path": "codec/json/json.go",
+      "language": "Golang",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "encoding/json",
+          "io"
+        ],
+        "network_modules": [],
+        "file_system_modules": [
+          "io"
+        ],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file /Users/chrisrimondi/Code/gin/codec/json/json.go is written in Golang. No networking capabilities have been detected in this file. File system access is expected using the discovered modules: ['io']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
   }
 }

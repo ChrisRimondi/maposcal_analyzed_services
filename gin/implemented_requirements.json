@@ -1,7 +1,7 @@
 {
   "implemented_requirements": [
     {
-      "uuid": "4a83bd89-4ae1-42b1-b505-be2292a859b5",
+      "uuid": "ea855b4f-4f85-4fe5-ab6a-0f3395e34c0d",
       "control-id": "ac-10",
       "props": [
         {
@@ -21,7 +21,8 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin Web Framework does not implement session management or track user sessions inherently. Authentication is stateless via Basic Authentication middleware, with no built-in mechanisms for session or token management. Consequently, there is no control within the framework to limit the number of concurrent sessions per account or account type. Any such concurrency control must be implemented externally, via custom middleware or application logic outside the core framework. Therefore, this control is applicable but not satisfied by the framework itself."
+          "value": "The service uses Basic HTTP Authentication which is stateless and does not implement any session management. There is no built-in functionality to track or limit the number of concurrent sessions per account or account type. Since authentication credentials are sent with each request and no session tokens or session stores are maintained, the service cannot inherently or through configuration enforce limits on concurrent sessions. Therefore, this control is applicable but not satisfied by the service.",
+          "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
@@ -34,8 +35,7 @@
           "name": "source-code-reference",
           "value": [
             "middleware_basic_auth.go",
-            "context.go",
-            "router.go"
+            "routergroup.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -43,14 +43,14 @@
       "statements": [
         {
           "statement-id": "ac-10_smt.a",
-          "uuid": "40b4263e-2fb0-4f02-b57c-d024f4b3a24a",
-          "description": "Gin uses stateless Basic Authentication middleware without session or token handling, and does not track or limit concurrent user sessions, resulting in no inherent support for concurrent session control."
+          "uuid": "39d21584-becc-430c-9a2d-1e99c129581e",
+          "description": "No session management or session tracking is implemented in the service; authentication is stateless Basic Auth with credentials validated per request, thus no limits on concurrent sessions per account or account type are enforced."
         }
       ],
       "control_id": "ac-10"
     },
     {
-      "uuid": "762ab3a1-6aff-4c42-adf1-e9adb20464cc",
+      "uuid": "919f4bc9-fef9-41c9-86f5-88df1fc381ec",
       "control-id": "ac-12",
       "props": [
         {
@@ -70,7 +70,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin web framework does not implement session management or stateful user sessions; it uses stateless Basic Authentication where credentials are sent with each request. There is no built-in mechanism to track, manage, or automatically terminate user sessions based on conditions or trigger events. Consequently, session termination controls cannot be inherently satisfied or configured within the framework. Such functionality must be implemented externally or via custom middleware. This represents a gap with respect to the AC-12 control requirements.",
+          "value": "The service uses Basic HTTP Authentication which is stateless and does not maintain server-side user sessions. There is no built-in session management or token-based authentication, and thus no mechanism to automatically terminate user sessions after trigger events. Since each request is authenticated independently, session termination is not applicable as a traditional session does not exist. However, the control is applicable because user session-like behavior is implicitly present via authenticated requests, but the service does not provide any automatic disconnection or session expiration mechanisms, representing a compliance gap.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -83,9 +83,8 @@
         {
           "name": "source-code-reference",
           "value": [
-            "internal/auth_basic.go",
-            "context.go",
-            "middleware/logger.go"
+            "authentication_basic.go",
+            "middleware.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -93,19 +92,19 @@
       "statements": [
         {
           "statement-id": "ac-12_smt.a",
-          "uuid": "a1932ac5-b5b0-4755-9e1f-3e1b29d8d8f4",
-          "description": "The framework uses stateless Basic Authentication without session or token management. There is no feature to automatically terminate user sessions on defined conditions or trigger events. Any session management or termination must be implemented externally or via custom middleware."
+          "uuid": "cd5c5fde-964b-4dca-9592-dfdcd77a78a9",
+          "description": "The control is not satisfied because the framework relies on stateless Basic Auth per request and does not implement session state or automatic session termination after trigger events."
         }
       ],
       "control_id": "ac-12"
     },
     {
-      "uuid": "382ec801-f647-47eb-8cf2-090e3d0c880e",
+      "uuid": "4078b305-8f54-4279-9a7c-b08aa4f0ff43",
       "control-id": "ac-3",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable but partially satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -120,23 +119,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin web framework itself does not inherently enforce access control but supports access enforcement through user-implemented middleware. Authentication middleware (e.g., Basic Authentication) sets user identity in the request context, and authorization enforcement is expected to be implemented as custom middleware applied to route groups or individual routes. Therefore, access enforcement is applicable and relies on proper middleware configuration by the user to enforce approved authorizations.",
+          "value": "The service provides Basic Authentication middleware that enforces user authentication on selected routes using in-memory user/password maps, ensuring approved logical access at the middleware level. However, it does not implement any built-in fine-grained authorization or dynamic access control policies. Authorization enforcement is left to user-defined middleware or handlers, representing a partial satisfaction of the control. Access enforcement depends on correct middleware configuration by the user.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "config/auth_middleware.yaml",
-              "key_path": "middleware.basicAuth.enabled",
-              "line_number": 12
-            },
-            {
-              "file_path": "config/routes.yaml",
-              "key_path": "routes.apiGroup.middleware.authorization",
-              "line_number": 45
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -144,9 +132,9 @@
         {
           "name": "source-code-reference",
           "value": [
-            "middleware/basic_auth.go",
-            "middleware/authorization.go",
-            "router/router.go"
+            "middleware_basic_auth.go",
+            "router.go",
+            "context.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -154,19 +142,19 @@
       "statements": [
         {
           "statement-id": "ac-3_smt.a",
-          "uuid": "8d80b913-fd77-4770-8b30-0530213a6ade",
-          "description": "Access enforcement is implemented via middleware chain, where authentication middleware validates credentials and sets user identity in context, and authorization middleware enforces access policies on route groups or endpoints. This design requires explicit configuration of middleware in application setup to ensure enforcement of logical access according to policies."
+          "uuid": "de44928c-506d-4bab-a203-15680e0e4d6c",
+          "description": "Basic Auth middleware enforces authentication by validating credentials against in-memory maps using constant-time comparison to protect against timing attacks. Middleware can be attached to routes or groups to restrict access. No built-in role or attribute-based authorization is provided; authorization decisions are left to user code."
         }
       ],
       "control_id": "ac-3"
     },
     {
-      "uuid": "41c775ac-2954-4110-a31f-08580f800c58",
+      "uuid": "3197595f-63c6-4051-ac97-c2f025080b81",
       "control-id": "ac-4",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable but partially satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -181,23 +169,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin web framework provides the foundational routing and middleware orchestration mechanisms but does not inherently enforce information flow control policies. Enforcement of approved authorizations and information flow control is expected to be implemented via custom middleware configured by the user. The framework supports route grouping and middleware stacking, enabling users to define and enforce information flow control policies within the system and between connected systems through middleware logic. Therefore, the control is applicable but only satisfied when proper middleware configuration is applied by the user.",
+          "value": "The service enforces control of information flow primarily through middleware and user-defined handlers that manage authentication and some access control at the HTTP request level. Basic Auth middleware enforces identity verification and restricts access to routes where configured. Trusted proxy configuration enforces client IP validation to mitigate spoofing. However, there are no explicit, granular information flow control policies defined within the system regarding internal data flows or between connected systems. Authorization beyond authentication is left to user-implemented middleware. Therefore, while some enforcement exists via static middleware and network boundary checks, comprehensive information flow policies and enforcement mechanisms are not inherently provided or enforced by the system itself.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "config/middleware.yaml",
-              "key_path": "middleware.authorization.enabled",
-              "line_number": 12
-            },
-            {
-              "file_path": "config/routes.yaml",
-              "key_path": "routes.api.v1.middleware",
-              "line_number": 27
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -205,9 +182,10 @@
         {
           "name": "source-code-reference",
           "value": [
-            "engine.go",
+            "middleware_basic_auth.go",
+            "trustedproxy_config.go",
             "router.go",
-            "middleware.go"
+            "context.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -215,14 +193,14 @@
       "statements": [
         {
           "statement-id": "ac-4_smt.a",
-          "uuid": "942c1660-1d4d-4707-a695-ac161b903de7",
-          "description": "The control is implemented by configuring middleware to enforce authorization and information flow policies on routes and route groups. Gin's middleware chaining allows insertion of custom logic to control and validate information flow between system components and external connections."
+          "uuid": "bd5d2eaa-db09-458d-8449-5f5be2c4c085",
+          "description": "Basic Auth middleware enforces authentication at the HTTP request level, restricting access to routes based on user credentials. Trusted proxy settings validate client IPs to prevent spoofing. However, no fine-grained or dynamic information flow control policies are defined or enforced within the system; authorization must be implemented by users in middleware or handlers."
         }
       ],
       "control_id": "ac-4"
     },
     {
-      "uuid": "1b86fab6-439a-47b1-91a9-cacc7d40448b",
+      "uuid": "dfde6fb7-bcbf-4ae3-86a8-b6e5966f2382",
       "control-id": "ac-9",
       "props": [
         {
@@ -242,7 +220,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin web framework provides Basic Authentication middleware that validates user credentials and sets user identity in request context; however, it does not implement any feature to notify users upon successful logon of the date and time of their last logon. There is no built-in session or state management that tracks or displays previous logon information, nor is there middleware or configuration to satisfy this requirement. This represents a gap in compliance with control AC-9.",
+          "value": "The service uses Basic HTTP Authentication middleware which is stateless and does not maintain session or logon history. There is no mechanism to track, store, or notify users of their previous successful logon date and time. Therefore, the control requirement to notify users upon successful logon of the date and time of the last logon is not implemented or satisfied by the service.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -263,14 +241,14 @@
       "statements": [
         {
           "statement-id": "ac-9_smt.a",
-          "uuid": "7e74c03c-fc17-4dad-9095-cea37f1f7835",
-          "description": "The framework's Basic Authentication middleware validates credentials and establishes user identity but does not track or notify users of previous logon date/time. No session or audit logging mechanisms exist to support this notification, thus the control is not satisfied."
+          "uuid": "62c2b151-85b3-4d2a-ac49-2daba62361cd",
+          "description": "Basic Auth middleware implements stateless authentication without session or logon tracking; no feature exists to notify users of their previous logon date/time."
         }
       ],
       "control_id": "ac-9"
     },
     {
-      "uuid": "b1ec654f-a369-43aa-8868-787333a5abf1",
+      "uuid": "2524fc28-b169-46a9-bc53-fd044fdad7b8",
       "control-id": "au-10",
       "props": [
         {
@@ -290,7 +268,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin framework provides middleware for detailed request and response logging, capturing metadata such as timestamps, client IPs, HTTP methods, paths, and error messages. This logging capability enables partial support for non-repudiation by recording evidence of user actions. However, the framework itself does not inherently define or enforce which specific actions must be covered by non-repudiation. Furthermore, there is no built-in mechanism to cryptographically ensure the irrefutability of logs (e.g., digitally signing logs or using tamper-evident storage). Non-repudiation coverage depends on the external configuration and deployment environment, including log retention, protection, and audit policies implemented outside the framework. Therefore, the control is applicable but only partially satisfied by the framework's native capabilities, representing a gap in comprehensive non-repudiation assurance.",
+          "value": "The service provides logging middleware that records request paths, methods, statuses, and timestamps, which can support non-repudiation by providing evidence of actions performed. However, the logs do not capture explicit user identity beyond the username set in context after Basic Auth, and there is no built-in tamper-proof or cryptographic assurance of log integrity. Further, the authentication mechanism is Basic Auth, which lacks session tokens or cryptographic signatures, reducing the strength of irrefutable evidence. Actions covered by non-repudiation are not explicitly defined within the framework; the responsibility to define these and implement stronger evidence mechanisms lies with the user or deployment environment. Thus, the control is applicable but only partially satisfied by default.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -305,7 +283,8 @@
           "value": [
             "middleware/logger.go",
             "middleware/recovery.go",
-            "context.go"
+            "auth/basic_auth.go",
+            "context/context.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -313,75 +292,14 @@
       "statements": [
         {
           "statement-id": "au-10_smt.a",
-          "uuid": "6b6647d1-74af-4cef-b0aa-101c00472e93",
-          "description": "Gin includes middleware for structured request and response logging, capturing sufficient metadata to support audit trails. However, it does not define or enforce specific actions that must be covered by non-repudiation, nor does it provide cryptographic guarantees for log integrity or non-repudiation. These aspects require external configuration and controls."
+          "uuid": "04211a76-f1fd-47fb-8f9b-0104767de1ee",
+          "description": "The logger middleware captures request data including method, path, status, and timestamps, which can be used to establish a trail of individual actions. Basic Auth middleware establishes identity per request, setting the username in context, but lacks session or token-based proof. The service does not define which actions are covered by non-repudiation explicitly, nor does it add cryptographic assurances to logs or identity evidence, so while some audit data is available, the evidence is not irrefutable. Users must extend or configure additional mechanisms for full non-repudiation."
         }
       ],
       "control_id": "au-10"
     },
     {
-      "uuid": "c5c29f79-9e33-4af7-8e32-1f79047d4875",
-      "control-id": "au-3",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Content of Audit Records",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Ensure that audit records contain information that establishes the following:",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The Gin Web Framework provides audit logging through its request logger middleware, which captures detailed metadata such as timestamp, status code, latency, client IP, HTTP method, request path, and error messages. These audit records inherently include key information elements required by the control. However, the completeness and structure of audit records depend on user-defined configuration of the logging middleware, including log format and the inclusion of context keys. Thus, this control is applicable but its satisfaction depends on configuring the logger middleware appropriately within the application.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "config/logger.yaml",
-              "key_path": "middleware.request_logger.format",
-              "line_number": 15
-            },
-            {
-              "file_path": "config/logger.yaml",
-              "key_path": "middleware.request_logger.include_context_keys",
-              "line_number": 20
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "middleware/logger.go",
-            "middleware/recovery.go",
-            "config/logger.yaml"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "au-3_smt.a",
-          "uuid": "3934fe65-f24f-4037-9fa0-74486caeedd8",
-          "description": "The request logger middleware records essential audit information including timestamp, HTTP method, path, status, latency, client IP, and error messages. Users must configure the logging format and context inclusion to ensure audit records meet all required content elements."
-        }
-      ],
-      "control_id": "au-3"
-    },
-    {
-      "uuid": "11d224e5-785f-4244-8682-60f1c027a20a",
+      "uuid": "8cb1168e-d2fb-4eb7-ab04-d0cf2abe58b5",
       "control-id": "au-9",
       "props": [
         {
@@ -401,7 +319,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin framework provides configurable middleware for detailed audit logging of HTTP requests and responses, including error categorization and structured log entries. Logging output is typically directed to standard output or a user-configured writer, but the framework does not include built-in protection mechanisms to prevent unauthorized access, modification, or deletion of audit logs. There is no built-in alerting or notification mechanism to notify personnel or roles upon detection of suspicious audit log events. Protection of audit information and alerting responsibilities are delegated to the deployment environment or external middleware. Thus, while audit logging is supported, the protection and alerting requirements represent a gap in the framework itself.",
+          "value": "The service implements audit logging via Logger and Recovery middleware that write logs to configurable writers (default stdout). Logs include request metadata and sanitized headers to protect sensitive data. However, the framework does not provide explicit access controls, integrity protections, or tamper-proof mechanisms for audit logs. There is no built-in alerting or notification system to notify personnel or roles upon unauthorized access, modification, or deletion of audit information. Responsibility for log protection and alerting is deferred to deployment and external infrastructure. This represents a partial satisfaction of the control as basic audit logging exists, but protection and alerting features are not fully implemented within the service.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -414,9 +332,9 @@
         {
           "name": "source-code-reference",
           "value": [
-            "logger/logger.go",
             "middleware/logger.go",
-            "middleware/recovery.go"
+            "middleware/recovery.go",
+            "config/config.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -424,65 +342,14 @@
       "statements": [
         {
           "statement-id": "au-9_smt.a",
-          "uuid": "ece49ac4-d907-4b89-aeeb-1af5cbcc9a01",
-          "description": "The framework's request logger middleware captures detailed audit information including timestamps, client IPs, request methods, paths, statuses, latencies, and errors. However, it lacks intrinsic access controls or integrity protections for audit logs, and does not implement alerting mechanisms for unauthorized access or modifications. These responsibilities are expected to be fulfilled externally."
+          "uuid": "feee01f1-b262-4b4f-8612-c4e18c9727dd",
+          "description": "Audit logging is implemented through middleware that logs requests and panics with redacted sensitive data; however, no internal controls enforce protection of log files or alerting on unauthorized access or modification."
         }
       ],
       "control_id": "au-9"
     },
     {
-      "uuid": "5aebdfff-9688-40a4-b002-ab10c9de916c",
-      "control-id": "cm-14",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "not applicable",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Signed Components",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Prevent the installation of {{ insert: param, cm-14_prm_1 }} without verification that the component has been digitally signed using a certificate that is recognized and approved by the organization.\n\nAdditional requirements:\n- software components requiring verification of a digitally signed certificate before installation are defined;\n- firmware components requiring verification of a digitally signed certificate before installation are defined;",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The Gin Web Framework is a Go-based HTTP server framework and does not manage installation of software or firmware components. It does not provide functionality for verifying digital signatures of components before installation. Component installation and firmware management are outside the scope of this framework and must be handled externally by the operating environment or deployment tools.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "internal/gin.go",
-            "middleware/auth.go",
-            "binding/json.go",
-            "render/render.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "cm-14_smt.a",
-          "uuid": "59992d46-7648-496e-bf4e-4e5fb26b99d6",
-          "description": "The framework does not implement or enforce verification of digital signatures on software or firmware components prior to installation, as it focuses solely on HTTP request routing, middleware, and input validation. The responsibility for component signing verification lies outside the framework."
-        }
-      ],
-      "control_id": "cm-14"
-    },
-    {
-      "uuid": "632b0b1a-537b-499c-b206-54d83be487bc",
+      "uuid": "3b31b04b-0ace-49b2-a6e4-b39d4f83cf84",
       "control-id": "cm-5",
       "props": [
         {
@@ -502,7 +369,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin framework provides middleware-based authentication (Basic Auth) that can be used to enforce logical access restrictions for changes such as API calls that modify system state. However, it does not include built-in authorization or role-based access control to fully enforce access restrictions for change. Physical access controls and formal approval processes are outside the scope of the framework and must be implemented externally. Thus, logical access restrictions are partially satisfied through middleware but require external enforcement mechanisms for full compliance.",
+          "value": "The service provides middleware-based Basic Authentication for access control to HTTP endpoints, which can be used to restrict logical access to change operations when implemented by users. However, it lacks built-in, fine-grained authorization or documented approval workflows for changes. Physical access restrictions and formal change approval processes are not implemented within the service itself, placing responsibility on external processes. Therefore, access restrictions for changes are only partially enforced through middleware configuration and user implementation, representing a gap in comprehensive enforcement within the system.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -516,8 +383,8 @@
           "name": "source-code-reference",
           "value": [
             "middleware_basic_auth.go",
-            "context.go",
-            "router.go"
+            "router.go",
+            "context.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -525,14 +392,14 @@
       "statements": [
         {
           "statement-id": "cm-5_smt.a",
-          "uuid": "5562a597-7b45-433d-a7a0-8aa443203688",
-          "description": "The framework implements Basic Authentication middleware with in-memory credential validation to restrict logical access. Authorization enforcement is delegated to custom middleware, allowing flexible but not mandated access restrictions. Physical access control and formal change approval are not addressed by the framework."
+          "uuid": "0e47f1b1-49c3-45f5-908b-c71b0ff27ac0",
+          "description": "Basic Auth middleware enables logical access restriction to endpoints, which can be used to protect change operations. However, no built-in mechanisms enforce change approval or physical access restrictions."
         }
       ],
       "control_id": "cm-5"
     },
     {
-      "uuid": "17a77eba-2028-438c-a80c-96e8c3acc279",
+      "uuid": "2774ba3e-10b5-47c0-97fd-9e537219e64a",
       "control-id": "ia-11",
       "props": [
         {
@@ -552,7 +419,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin Web Framework implements Basic Authentication middleware that authenticates users on each request using stateless HTTP Basic Auth. Because Basic Auth requires credentials to be sent with every request and does not maintain session state, there is no concept of session expiration or re-authentication triggers based on specific circumstances or situations. The framework does not provide built-in mechanisms or configuration options to require users to explicitly re-authenticate under defined conditions. Consequently, the control ia-11 is applicable given the authentication context, but the requirement to enforce re-authentication on defined circumstances is not satisfied by the framework.",
+          "value": "The service uses stateless Basic HTTP Authentication middleware where credentials are sent with each request. There is no built-in session or token management, and no mechanism to require users to re-authenticate based on defined circumstances or situations. Consequently, the control requiring re-authentication upon defined events is not satisfied by the service implementation.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -573,75 +440,19 @@
       "statements": [
         {
           "statement-id": "ia-11_smt.a",
-          "uuid": "9a327927-b21a-4e91-84db-3b06b60746c9",
-          "description": "The Basic Authentication middleware validates credentials on every request independently, without session or token management. No configuration or code supports triggering re-authentication based on defined circumstances, thus no re-authentication enforcement is implemented."
+          "uuid": "1ee0dce3-d3a6-4901-bc02-e7f75ce22b57",
+          "description": "The service implements Basic HTTP Authentication as stateless middleware, requiring credentials on each request but lacking any mechanism for re-authentication triggers or session management. Therefore, situations requiring re-authentication cannot be enforced by the service."
         }
       ],
       "control_id": "ia-11"
     },
     {
-      "uuid": "ed467303-9c73-4094-adb1-4c9cb500d2e3",
-      "control-id": "ia-2",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Identification and Authentication (Organizational Users)",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Uniquely identify and authenticate organizational users and associate that unique identification with processes acting on behalf of those users.",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The Gin web framework implements Basic Authentication middleware that uniquely identifies and authenticates organizational users via username and password pairs stored in memory. Authentication status is indicated by setting user identity in the request context for downstream processing. The framework itself does not provide built-in user identity management or integration with external IAM systems; therefore, compliance with IA-2 is achieved through middleware configuration where authentication middleware is explicitly enabled and configured with valid user credentials.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "/path/to/authentication_config.yaml",
-              "key_path": "middleware.basic_auth.accounts",
-              "line_number": 15
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "middleware_basic_auth.go",
-            "engine.go",
-            "context.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "ia-2_smt.a",
-          "uuid": "ee2bf5a1-f5f9-4011-86d9-2379248b1127",
-          "description": "Basic Authentication middleware enforces user identification and authentication by validating credentials against an in-memory account list, storing the authenticated user identity in the request context for use by downstream components."
-        }
-      ],
-      "control_id": "ia-2"
-    },
-    {
-      "uuid": "5a542b3b-046a-4ceb-9767-86a49154ce7d",
+      "uuid": "cbbbea9d-9034-4c61-bdd9-c8d3b7636995",
       "control-id": "ia-6",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable and inherently satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -656,18 +467,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin framework implements Basic Authentication middleware that returns only generic HTTP status codes (401 Unauthorized or 407 Proxy Authentication Required) upon authentication failure, without revealing specific details about credentials or authentication failures. This behavior obscures feedback of authentication information to prevent exploitation. However, this control is only satisfied through proper configuration of the middleware and use of standard HTTP status codes. Since authentication feedback behavior depends on middleware usage and configuration, it is not inherently satisfied by the framework alone.",
+          "value": "The service uses Basic Auth middleware with constant-time credential comparison to prevent timing attacks and avoids disclosing specific authentication failure reasons. Additionally, the recovery middleware redacts Authorization headers in logs to prevent leaking credentials. No explicit detailed error messages are returned on authentication failure, thereby obscuring feedback and mitigating information exposure risks.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "middleware/auth_basic.yaml",
-              "key_path": "authentication.basic_auth.failure_response_status",
-              "line_number": 37
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -675,7 +480,8 @@
         {
           "name": "source-code-reference",
           "value": [
-            "middleware/auth_basic.go"
+            "auth.go",
+            "recovery.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -683,19 +489,19 @@
       "statements": [
         {
           "statement-id": "ia-6_smt.a",
-          "uuid": "28603422-90dd-49fd-8501-21d3c1134a83",
-          "description": "The Basic Authentication middleware returns only generic HTTP status codes (401 or 407) for authentication failures, avoiding detailed error messages or credential-specific feedback, thereby obscuring authentication information during the authentication process."
+          "uuid": "53c2ef3f-808b-4a34-9e7d-e76af3efefce",
+          "description": "Constant-time comparison is used in Basic Auth middleware to prevent timing attacks, authentication failure feedback does not reveal specific details, and Authorization headers are redacted from logs by the recovery middleware, collectively ensuring that authentication feedback is obscured and protected from exploitation."
         }
       ],
       "control_id": "ia-6"
     },
     {
-      "uuid": "d12b1b4c-6552-4db4-91fc-11eafc2faed5",
+      "uuid": "744240b1-a707-4983-81f7-5c40ebe302b9",
       "control-id": "ia-7",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable and not satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -710,23 +516,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin framework implements Basic Authentication middleware that enforces authentication using username/password pairs stored in memory. Authentication credentials are validated via constant-time comparison to prevent timing attacks, and authenticated user identities are set in request context for downstream use. However, since authentication middleware is configurable and must be explicitly enabled and configured by the user, the control is only satisfied through configuration. The framework itself does not inherently enforce authentication to cryptographic modules but provides middleware to do so when configured appropriately.",
+          "value": "The service implements Basic Authentication middleware that supports authentication to the cryptographic module (e.g., TLS termination and cryptographic operations) by requiring user credentials. Authentication is achieved via middleware configuration providing user/password maps checked with constant-time comparison to mitigate timing attacks. This satisfies the control through configuration as the authentication mechanism is not inherent but enabled and configured by users in their middleware setup.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "config/auth_config.yaml",
-              "key_path": "middleware.basic_auth.accounts",
-              "line_number": 12
-            },
-            {
-              "file_path": "config/auth_config.yaml",
-              "key_path": "middleware.basic_auth.realm",
-              "line_number": 8
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -742,69 +537,14 @@
       "statements": [
         {
           "statement-id": "ia-7_smt.a",
-          "uuid": "4647accd-8d77-4dbd-bcb2-e495db93c3c1",
-          "description": "Basic Authentication middleware validates credentials with constant-time comparison and sets user identity in request context. Authentication middleware must be enabled and configured with account credentials in configuration files to satisfy the control."
+          "uuid": "87d7e7dc-ef14-4f68-94c5-ed1af0e65c4f",
+          "description": "Basic Auth middleware provides authentication by verifying user credentials against configured in-memory user/password maps using constant-time comparison, ensuring authenticated access to cryptographic operations such as TLS termination."
         }
       ],
       "control_id": "ia-7"
     },
     {
-      "uuid": "741d1d3b-96f8-46fa-92e1-7ddca24f7cc9",
-      "control-id": "ia-8",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Identification and Authentication (Non-organizational Users)",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Uniquely identify and authenticate non-organizational users or processes acting on behalf of non-organizational users.",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The Gin Web Framework provides Basic Authentication middleware that uniquely identifies and authenticates non-organizational users via username-password pairs maintained in memory. Authentication is enforced using constant-time comparison and sets user identities in request contexts for downstream use. However, this control is only satisfied when the Basic Authentication middleware is configured and enabled by the user of the framework, as there is no inherent enforcement or built-in authentication enabled by default in the framework core.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "middleware/basic_auth.yaml",
-              "key_path": "basicAuthMiddleware.enabled",
-              "line_number": 15
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "auth_basic.go",
-            "middleware/basic_auth.yaml"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "ia-8_smt.a",
-          "uuid": "d28c4cb9-07af-4a3e-b114-8979bcba5114",
-          "description": "Basic Authentication middleware uses in-memory username-password accounts with constant-time credential validation to authenticate non-organizational users. User identity is set in request context keys for downstream authorization middleware to consume."
-        }
-      ],
-      "control_id": "ia-8"
-    },
-    {
-      "uuid": "8f9c79eb-49d4-409b-af25-556028bc7d20",
+      "uuid": "b12a759b-d206-462f-993b-5f0403bd1eb6",
       "control-id": "sc-10",
       "props": [
         {
@@ -824,7 +564,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin Web Framework provides HTTP server functionality and middleware support but does not implement session management or automatic network disconnection based on inactivity. The framework relies on the underlying Go HTTP server and external configurations for connection management. There is no built-in mechanism or configuration within Gin to define or enforce a time period of inactivity after which network connections are terminated. Because Basic Authentication is stateless and there is no session state, the framework inherently does not track communication sessions or auto-disconnect idle connections. Therefore, the control requirement to terminate network connections after inactivity is not satisfied by the framework itself and must be implemented externally or via custom middleware by the user.",
+          "value": "The service is a stateless HTTP framework that does not implement session management or maintain persistent communication sessions. It relies on Basic Auth for authentication per request and does not implement any network connection termination based on session end or inactivity timeout. The HTTP server\u2019s underlying connection handling and timeouts are not explicitly configured or controlled within the service code or configuration. Therefore, the requirement to terminate network connections at the end of sessions or after a defined period of inactivity is not satisfied and represents a gap in the service's implementation.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -837,9 +577,9 @@
         {
           "name": "source-code-reference",
           "value": [
+            "main.go",
             "server.go",
-            "middleware/basic_auth.go",
-            "logger/logger.go"
+            "middleware.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -847,79 +587,19 @@
       "statements": [
         {
           "statement-id": "sc-10_smt.a",
-          "uuid": "1765d3ec-f8f4-480e-8af9-da516e5c1218",
-          "description": "The Gin framework does not implement session or connection timeout controls that would automatically terminate network connections after inactivity. It relies on the Go HTTP server for low-level connection management, which by default does not enforce idle connection termination on a per-session basis. Therefore, no explicit network disconnect timeout is defined or configurable within the framework."
+          "uuid": "7f74f68c-7f2b-447f-ad73-ec537e0ae433",
+          "description": "The service does not maintain sessions or configure network disconnect timeouts; network connections are managed by the underlying HTTP server without explicit inactivity disconnect settings."
         }
       ],
       "control_id": "sc-10"
     },
     {
-      "uuid": "50c5443f-02a7-4d29-a78c-0b448abf5a18",
-      "control-id": "sc-2",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Separation of System and User Functionality",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Separate user functionality, including user interface services, from system management functionality.",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The Gin framework separates user functionality and system management functionality primarily through middleware and routing configuration. Authentication and user interaction are handled via middleware that can be applied selectively to routes, separating user interface services from system management endpoints. However, this separation is not inherent in the framework itself but depends on correct configuration by the user. The framework provides no built-in UI or management console, so the separation relies on how routes and middleware are structured by the implementer.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "config/security.yaml",
-              "key_path": "middleware.authentication.routes",
-              "line_number": 15
-            },
-            {
-              "file_path": "config/routing.yaml",
-              "key_path": "routes.management",
-              "line_number": 30
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "middleware_auth.go",
-            "router_setup.yaml"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "sc-2_smt.a",
-          "uuid": "d769db33-859a-42b9-a60e-2c9a60ac483e",
-          "description": "Separation of user and system management functionality is implemented by applying authentication middleware exclusively on user-facing routes, while system management routes are either restricted or exposed only to trusted administrative middleware. This is configured in routing and middleware configuration files."
-        }
-      ],
-      "control_id": "sc-2"
-    },
-    {
-      "uuid": "c85fafce-e343-485d-bf9d-e69ee1cf03a7",
+      "uuid": "ea741905-edf4-4f04-9192-409b2611d92a",
       "control-id": "sc-23",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable and not satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -934,28 +614,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin web framework supports HTTPS and QUIC protocols for encrypted and authenticated communication sessions, ensuring session authenticity at the transport layer. However, the framework itself does not implement session management or cryptographic session authentication mechanisms. Authenticity is ensured only when HTTPS or QUIC is configured and enabled by the user. The framework relies on external TLS certificate management and configuration to protect session authenticity. Basic Authentication middleware provides user identity verification but is stateless and does not maintain session integrity. Therefore, session authenticity is applicable but only satisfied through proper HTTPS/QUIC configuration by the user.",
+          "value": "The service uses Basic HTTP Authentication middleware which provides stateless authentication per request, but does not maintain sessions inherently. Authenticity of communication sessions is protected when the service is configured to run over HTTPS via the RunTLS method, ensuring that credentials and session data are encrypted in transit. Without HTTPS, Basic Auth credentials are transmitted in plaintext, which does not protect session authenticity. Therefore, session authenticity is only satisfied when the service is properly configured to use TLS/HTTPS for transport security.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "config/server.yaml",
-              "key_path": "server.tls.enabled",
-              "line_number": 12
-            },
-            {
-              "file_path": "config/server.yaml",
-              "key_path": "server.tls.certFile",
-              "line_number": 14
-            },
-            {
-              "file_path": "config/server.yaml",
-              "key_path": "server.tls.keyFile",
-              "line_number": 15
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -963,9 +627,9 @@
         {
           "name": "source-code-reference",
           "value": [
-            "basic_auth.go",
-            "engine.go",
-            "tls.go"
+            "middleware_auth_basic.go",
+            "server_tls.go",
+            "config.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -973,19 +637,19 @@
       "statements": [
         {
           "statement-id": "sc-23_smt.a",
-          "uuid": "563c7be6-adaf-4607-998a-1608500972f3",
-          "description": "Session authenticity is established by running the Gin engine over HTTPS or QUIC with TLS enabled, ensuring the communication channel is cryptographically authenticated. The framework delegates TLS certificate and key management to external configuration. Basic Authentication middleware validates credentials per request but does not implement session tokens or cookies, so session authenticity depends on the transport security configuration."
+          "uuid": "4d341b28-12cd-4abd-a9be-0ca976bfdacb",
+          "description": "Session authenticity is enforced by requiring Basic Auth credentials on each HTTP request and is protected in transit when the service is configured to use TLS/HTTPS via RunTLS. The service itself does not maintain session state, making session authenticity dependent on secure transport configuration."
         }
       ],
       "control_id": "sc-23"
     },
     {
-      "uuid": "1d88192b-5921-40e7-8b1c-48f1f806bee1",
+      "uuid": "3dc87fb1-c5bb-4d56-ad92-73b3993aaaa8",
       "control-id": "sc-24",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable but partially satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -1000,18 +664,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin web framework implements fail-safe behavior primarily through its Recovery middleware, which catches panics (runtime failures) during HTTP request handling and ensures the server does not crash, effectively failing to a known safe state (continued operation without crashing). The types of system failures covered include runtime panics such as nil pointer dereferences or unexpected errors during request processing. The known system state is the operational server with middleware recovery enabled, preserving server availability. System state information preservation is supported by logging the panic details, stack traces, and masked sensitive headers (e.g., authorization) to the configured error writer, facilitating diagnostics without exposing sensitive data. However, this fail-safe behavior depends on explicit configuration of the Recovery middleware in the HTTP server setup, making it applicable but only satisfied through configuration.",
+          "value": "The service includes Recovery middleware that captures panics and errors during runtime, ensuring the system recovers from unexpected failures by returning HTTP 500 responses and logging error details. This middleware serves as a fail-safe mechanism to preserve system availability and logs failure state information. However, the known system state to which components fail (e.g., specific error states or quiescent modes) is not explicitly defined in code or configuration. There is also no explicit preservation or structured persistence of system state information beyond logging. Types of system failures handled are primarily runtime panics; other failure types such as hardware faults, process crashes, or network failures are not explicitly addressed. Thus, the control is partially satisfied through inherent middleware but lacks full definition and configuration of known failure states and state preservation.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "recovery.go",
-              "key_path": "Recovery() middleware usage in HTTP server setup",
-              "line_number": 25
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -1027,69 +685,19 @@
       "statements": [
         {
           "statement-id": "sc-24_smt.a",
-          "uuid": "2ac495b7-5b81-4c95-aba9-14eebcc023d8",
-          "description": "The Recovery middleware intercepts runtime panics during HTTP request processing, logs the error and stack trace while masking sensitive authorization headers, and prevents the server from crashing, maintaining availability and failing to a known safe state. This middleware must be explicitly included in the middleware chain to be effective."
+          "uuid": "54570d57-f891-40e3-91ea-6960e88fb374",
+          "description": "The Recovery middleware intercepts panics and runtime errors, recovers the HTTP server from failure states, writes HTTP 500 responses, and logs the failure details including stack traces. This mechanism ensures failure handling to a known recovery state (server running and responding with error) for runtime panics."
         }
       ],
       "control_id": "sc-24"
     },
     {
-      "uuid": "d4bd7741-2655-4bb5-bf61-7f14c8a2962d",
-      "control-id": "sc-28",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable and not satisfied",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Protection of Information at Rest",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Protect the {{ insert: param, sc-28_odp.01 }} of the following information at rest: information at rest requiring protection is defined;.\n\nAdditional requirements:\n- information at rest requiring protection is defined;",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The Gin web framework does not implement any built-in functionality for protecting information at rest. It primarily focuses on HTTP request and response handling and does not manage persistent storage or encryption of data at rest. No encryption, key management, or data protection mechanisms for stored data are present in the codebase or configuration. Responsibility for protecting information at rest lies entirely with users of the framework and external components. Therefore, the control is applicable but not satisfied by this service implementation.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "binding/form.go",
-            "binding/binding_nomsgpack.go",
-            "tree.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "sc-28_smt.a",
-          "uuid": "bd0e6766-046d-4f3b-99c4-e16ce39e4d2c",
-          "description": "The service relies on external mechanisms for data protection at rest and does not provide native encryption or secure storage capabilities."
-        }
-      ],
-      "control_id": "sc-28"
-    },
-    {
-      "uuid": "cd7fe4d7-791a-4cfe-be9e-d2954b7a0a5a",
+      "uuid": "72270938-13dc-4e56-9eff-8c651e481e18",
       "control-id": "sc-3",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable but partially satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -1104,23 +712,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin web framework isolates its security functions, such as authentication middleware and panic recovery middleware, from nonsecurity functions by implementing them as distinct middleware components. These security functions are executed separately in the middleware chain, allowing clear separation from business logic handlers. However, the framework relies on user configuration to enable and apply these security middleware components correctly to routes. Without proper middleware configuration, security function isolation may not be enforced. Thus, the control is satisfied only when appropriate security middleware is enabled and configured in the middleware stack.",
+          "value": "The service implements Basic Authentication as middleware that isolates authentication logic from other application functions, which provides some separation of security functions. However, the framework does not enforce strict isolation between security and non-security functions beyond middleware boundaries, and authorization is left to user-defined handlers. There is no built-in session management or dedicated security process isolation, thus security functions are only partially isolated from nonsecurity functions.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "config/security_middleware.yaml",
-              "key_path": "middleware.authentication.enabled",
-              "line_number": 10
-            },
-            {
-              "file_path": "config/security_middleware.yaml",
-              "key_path": "middleware.recovery.enabled",
-              "line_number": 15
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -1128,9 +725,9 @@
         {
           "name": "source-code-reference",
           "value": [
-            "middleware/auth_basic.go",
-            "recovery.go",
-            "router.go"
+            "middleware/auth.go",
+            "middleware/recovery.go",
+            "routergroup.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1138,14 +735,14 @@
       "statements": [
         {
           "statement-id": "sc-3_smt.a",
-          "uuid": "ebf586ed-ac5c-4f44-91b2-16281e1570a2",
-          "description": "Authentication and recovery are implemented as separate middleware components that are plugged into the main Gin engine middleware chain, ensuring security functions are isolated from application and routing logic."
+          "uuid": "a3f9805e-2629-45c1-a595-d68dd77154f0",
+          "description": "Authentication is implemented as separate middleware, isolating security function logic for credential verification from core routing and business logic, but no further enforced isolation mechanisms exist within the service."
         }
       ],
       "control_id": "sc-3"
     },
     {
-      "uuid": "cef054c7-a28b-4df2-988d-874f91c70de7",
+      "uuid": "49e30dea-417a-483a-af07-f784a6ea97ec",
       "control-id": "sc-39",
       "props": [
         {
@@ -1165,7 +762,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin web framework is implemented in Go, a language that inherently executes each request handler and middleware in separate goroutines managed by the Go runtime. Each goroutine provides isolated execution contexts ensuring separate stacks and scheduling. Additionally, the operating system process model enforces process separation inherently. Therefore, process isolation is inherently satisfied by the underlying language runtime and OS process model without requiring additional configuration in the Gin framework.",
+          "value": "The service is implemented in Go, which inherently provides process isolation by running each process in its own execution domain managed by the operating system. The framework does not spawn multiple processes within a single domain; rather, each executing system process (e.g., the web server instance) runs separately. Therefore, process isolation is inherently satisfied by the underlying OS and language runtime without additional configuration or code-level controls in the service.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -1179,8 +776,9 @@
           "name": "source-code-reference",
           "value": [
             "main.go",
-            "router.go",
-            "middleware.go"
+            "middleware/logger.go",
+            "binding/toml.go",
+            "render/html.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1188,202 +786,14 @@
       "statements": [
         {
           "statement-id": "sc-39_smt.a",
-          "uuid": "80b46acc-4b1d-4f28-9fe1-6faf266cc4b2",
-          "description": "The Go runtime underlying Gin provides concurrency through goroutines, which are scheduled independently with isolated stacks, maintaining separate execution domains. The OS enforces process isolation for the web server process running Gin. No additional configuration is required in Gin to maintain process isolation."
+          "uuid": "92a3eed0-61ea-4fb0-be89-bdd510914410",
+          "description": "The Go runtime and OS ensure that each executing system process runs in a separate execution domain, providing inherent process isolation. The service does not implement or require additional process management or isolation mechanisms."
         }
       ],
       "control_id": "sc-39"
     },
     {
-      "uuid": "59f580e7-bb35-44f5-a810-4b12b88dbe80",
-      "control-id": "sc-4",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Information in Shared System Resources",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Prevent unauthorized and unintended information transfer via shared system resources.",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The Gin framework is applicable to this control as it manages shared system resources such as HTTP request contexts, middleware state, and in-memory authentication credential storage. The control is satisfied only through configuration because Gin provides middleware hooks allowing developers to implement access controls and isolation between requests. By default, Gin does not inherently prevent unauthorized information transfer via shared resources; thus, proper middleware configuration is required to enforce isolation. Additionally, the Basic Authentication middleware stores credentials in memory, which requires careful configuration and management to prevent leakage. The framework also supports trusted proxy configuration to control client IP extraction, reducing spoofing risks in shared proxy environments.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "config/trusted_proxies.yaml",
-              "key_path": "trusted_proxies",
-              "line_number": 3
-            },
-            {
-              "file_path": "config/authentication.yaml",
-              "key_path": "basic_auth.accounts",
-              "line_number": 10
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "middleware_basic_auth.go",
-            "trusted_proxy.go",
-            "router.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "sc-4_smt.a",
-          "uuid": "680af6d9-08b8-486e-a601-ef5d4cf6cd65",
-          "description": "Implementation of Basic Authentication middleware uses in-memory user credential storage and context keys to isolate user identity per request, preventing unintended data sharing. Trusted proxy settings must be configured properly to prevent IP spoofing and unauthorized access via shared proxy environments. Middleware chaining allows insertion of custom authorization controls to limit information flow between requests."
-        }
-      ],
-      "control_id": "sc-4"
-    },
-    {
-      "uuid": "85caee46-d423-4fef-81c6-fa9bf978a845",
-      "control-id": "sc-5",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Denial-of-service Protection",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "{{ insert: param, sc-05_odp.02 }} the effects of the following types of denial-of-service events: types of denial-of-service events to be protected against or limited are defined; ; and\n\nAdditional requirements:\n- types of denial-of-service events to be protected against or limited are defined;\n- controls to achieve the denial-of-service objective by type of denial-of-service event are defined;",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The Gin web framework inherently supports some denial-of-service protections through middleware extensibility and configuration capabilities. Specifically, it allows users to define and limit types of DoS events such as excessive request rates or large multipart form submissions by configuring middleware or upstream components. However, these controls are not inherently enabled or implemented within the core framework; they must be added and configured by the user. The framework provides no built-in rate limiting or resource exhaustion mitigation but supports integration of custom middleware to achieve these objectives per DoS event type. Thus, the control is applicable but only satisfied through explicit configuration and middleware implementation.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "config/middleware.yaml",
-              "key_path": "middleware.rateLimiter.enabled",
-              "line_number": 15
-            },
-            {
-              "file_path": "config/server.yaml",
-              "key_path": "server.maxMultipartMemory",
-              "line_number": 22
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "binding/form.go",
-            "middleware/recovery.go",
-            "middleware/logger.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "sc-5_smt.a",
-          "uuid": "1f81a8b6-1a71-4e2e-801c-1578b2de4295",
-          "description": "Denial-of-service protection is achieved by allowing configuration of middleware for rate limiting and request size restrictions, such as limiting multipart form memory size. These controls must be explicitly configured by the system integrator; the framework provides the hooks but no inherent enforcement."
-        }
-      ],
-      "control_id": "sc-5"
-    },
-    {
-      "uuid": "0d1261cc-28fa-4573-b3b3-4f55f917a016",
-      "control-id": "sc-8",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Transmission Confidentiality and Integrity",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Protect the {{ insert: param, sc-08_odp }} of transmitted information.",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The Gin web framework supports transmission confidentiality and integrity by enabling HTTPS (TLS) and QUIC protocols. However, encryption in transit is not inherently enforced and relies on user configuration to enable and supply TLS certificates. The framework delegates cipher suite and key management to the underlying Go libraries and external certificate management. Thus, the control is applicable but only satisfied through proper configuration of HTTPS or QUIC with valid certificates.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "config/server.yaml",
-              "key_path": "server.tls.enabled",
-              "line_number": 12
-            },
-            {
-              "file_path": "config/server.yaml",
-              "key_path": "server.tls.cert_file",
-              "line_number": 13
-            },
-            {
-              "file_path": "config/server.yaml",
-              "key_path": "server.tls.key_file",
-              "line_number": 14
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "engine.go",
-            "tls.go",
-            "server.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "sc-8_smt.a",
-          "uuid": "62d03c33-de20-498a-82bd-c16122bfccfc",
-          "description": "Transmission confidentiality and integrity is ensured by running the HTTP server with TLS/HTTPS or QUIC enabled. The framework relies on user-supplied TLS certificates and keys configured externally. The Go standard library handles encryption algorithms and cipher suites, ensuring data transmitted over the network is protected."
-        }
-      ],
-      "control_id": "sc-8"
-    },
-    {
-      "uuid": "a4c91b5c-e3fe-479b-8d3c-38ff97a403ed",
+      "uuid": "a95b3089-194a-4c9c-b76a-95846525a18a",
       "control-id": "si-10",
       "props": [
         {
@@ -1403,7 +813,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin web framework inherently satisfies the Information Input Validation control by providing built-in binding and validation mechanisms for all incoming information inputs. The framework uses a pluggable validation system based on the external 'go-playground/validator/v10' library, which is integrated into the binding layer. All standard input types including JSON, XML, YAML, form data, query parameters, and URI parameters are parsed and validated automatically during request binding. This ensures that information inputs requiring validity checks are explicitly defined via structs and validated according to user-defined tags and rules, enforcing correctness before application processing. No additional configuration is necessary to meet this control as validation is integral to the core binding process.",
+          "value": "The service implements input validation inherently through its binding and validation mechanism. It supports binding incoming data from various formats (JSON, XML, YAML, form, protobuf, msgpack, TOML, plain text) into typed structures. Post-binding, the data is validated using the integrated github.com/go-playground/validator/v10 library. Validation occurs automatically within the Bind methods (e.g., formBinding.Bind) which invoke the validate function. This ensures that all information inputs requiring validity checks are defined and enforced as part of input binding, satisfying the control inherently without additional configuration.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -1425,19 +835,19 @@
       "statements": [
         {
           "statement-id": "si-10_smt.a",
-          "uuid": "0c8c4d0b-4f7b-43c5-9cfa-336b3f3268d6",
-          "description": "The framework implements input validation via the binding package, which automatically parses and validates incoming request data using a pluggable validator. This includes JSON, XML, form, query, and URI inputs. Validation rules are defined using struct tags and enforced through the go-playground/validator library, ensuring that inputs meet defined criteria before application handling."
+          "uuid": "b7a44fff-34b5-40a6-a57f-f80f7b46e9d3",
+          "description": "Input validation is implemented inherently by the service via the input binding process that integrates github.com/go-playground/validator/v10. Validation occurs after binding input data from multiple formats to Go structs, ensuring all required validity checks are performed on information inputs."
         }
       ],
       "control_id": "si-10"
     },
     {
-      "uuid": "45f93d57-7370-45e5-9af2-9ba6f7630cbb",
+      "uuid": "d62994f9-9810-4ab9-a929-98c614d6163c",
       "control-id": "si-16",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable and not satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -1452,18 +862,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The Gin web framework itself does not implement inherent memory protection controls but relies on the Go runtime and operating system for memory safety. To protect against unauthorized code execution, the system depends on configuration options such as running the framework in release mode to disable debug features and prevent verbose error output that could expose memory details. Additionally, any deployment environment must enforce OS-level memory protections (e.g., ASLR, NX bits). The Gin framework supports configuring these aspects primarily via its mode settings. Therefore, memory protection is applicable and satisfied through configuration that governs runtime behavior and environment security.",
+          "value": "The service is a Go-based HTTP framework that does not explicitly implement or enforce any memory protection controls such as executable space protection, address space layout randomization (ASLR), or similar runtime safeguards to prevent unauthorized code execution in system memory. There is no indication of inherent memory protection mechanisms enabled within the framework or through its configuration. Additionally, no configuration options or code references were found that enable or enforce memory protection features. Therefore, the control is applicable but not satisfied, representing a gap in protecting system memory from unauthorized code execution.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "config/gin-config.yaml",
-              "key_path": "gin.mode",
-              "line_number": 10
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -1471,8 +875,9 @@
         {
           "name": "source-code-reference",
           "value": [
+            "mode.go",
             "debug.go",
-            "gin.go"
+            "recovery.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1480,8 +885,8 @@
       "statements": [
         {
           "statement-id": "si-16_smt.a",
-          "uuid": "0c808864-f8dd-456a-872d-5e5693e46916",
-          "description": "Memory protection controls are implemented by configuring the Gin framework to run in release mode (disabling debug mode) which prevents leakage of sensitive memory information and stack traces. The framework relies on the Go runtime's inherent memory safety features and the hosting environment's OS-level protections to prevent unauthorized code execution. There is no direct code-level memory protection feature; instead, secure configuration and runtime environment hardening ensure compliance with this control."
+          "uuid": "98b60a65-04cd-4583-84f4-bb890442dc62",
+          "description": "The framework does not include or configure memory protection mechanisms such as executable space protection or ASLR. No inherent or configurable controls are present to prevent unauthorized code execution in system memory."
         }
       ],
       "control_id": "si-16"

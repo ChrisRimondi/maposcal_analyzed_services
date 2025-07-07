@@ -1,0 +1,234 @@
+{
+  "failed_controls": [
+    {
+      "control_id": "ac-4",
+      "reason": "Failed validation after 3 attempts",
+      "type": "individual_validation",
+      "timestamp": "2025-07-07 16:00:16.435681",
+      "details": [
+        {
+          "field": "root",
+          "issue": "Missing required fields: uuid, control-id",
+          "suggestion": "Add missing fields: uuid, control-id"
+        },
+        {
+          "field": "props",
+          "issue": "Missing required properties: control-description, control-explanation, control-configuration, control-name",
+          "suggestion": "Add missing properties: control-description, control-explanation, control-configuration, control-name"
+        },
+        {
+          "field": "uuid",
+          "issue": "Missing required uuid field or uuid is None",
+          "suggestion": "Add valid UUID format (e.g., 123e4567-e89b-12d3-a456-426614174000)"
+        }
+      ]
+    },
+    {
+      "control_id": "cm-14",
+      "reason": "Failed validation after 3 attempts",
+      "type": "individual_validation",
+      "timestamp": "2025-07-07 16:00:16.435700",
+      "details": [
+        {
+          "field": "root",
+          "issue": "Missing required fields: uuid, control-id",
+          "suggestion": "Add missing fields: uuid, control-id"
+        },
+        {
+          "field": "props",
+          "issue": "Missing required properties: control-description, control-explanation, control-configuration, control-name",
+          "suggestion": "Add missing properties: control-description, control-explanation, control-configuration, control-name"
+        },
+        {
+          "field": "uuid",
+          "issue": "Missing required uuid field or uuid is None",
+          "suggestion": "Add valid UUID format (e.g., 123e4567-e89b-12d3-a456-426614174000)"
+        }
+      ]
+    },
+    {
+      "control_id": "ia-11",
+      "reason": "Failed validation after 3 attempts",
+      "type": "individual_validation",
+      "timestamp": "2025-07-07 16:00:16.435704",
+      "details": [
+        {
+          "field": "root",
+          "issue": "Missing required fields: uuid, control-id",
+          "suggestion": "Add missing fields: uuid, control-id"
+        },
+        {
+          "field": "props",
+          "issue": "Missing required properties: control-description, control-explanation, control-configuration, control-name",
+          "suggestion": "Add missing properties: control-description, control-explanation, control-configuration, control-name"
+        },
+        {
+          "field": "uuid",
+          "issue": "Missing required uuid field or uuid is None",
+          "suggestion": "Add valid UUID format (e.g., 123e4567-e89b-12d3-a456-426614174000)"
+        }
+      ]
+    },
+    {
+      "control_id": "ia-2",
+      "reason": "Failed validation after 3 attempts",
+      "type": "individual_validation",
+      "timestamp": "2025-07-07 16:00:16.435707",
+      "details": [
+        {
+          "field": "root",
+          "issue": "Missing required fields: uuid, control-id",
+          "suggestion": "Add missing fields: uuid, control-id"
+        },
+        {
+          "field": "props",
+          "issue": "Missing required properties: control-description, control-explanation, control-configuration, control-name",
+          "suggestion": "Add missing properties: control-description, control-explanation, control-configuration, control-name"
+        },
+        {
+          "field": "uuid",
+          "issue": "Missing required uuid field or uuid is None",
+          "suggestion": "Add valid UUID format (e.g., 123e4567-e89b-12d3-a456-426614174000)"
+        }
+      ]
+    },
+    {
+      "control_id": "ia-7",
+      "reason": "Failed validation after 3 attempts",
+      "type": "individual_validation",
+      "timestamp": "2025-07-07 16:00:16.435710",
+      "details": [
+        {
+          "field": "root",
+          "issue": "Missing required fields: uuid, control-id",
+          "suggestion": "Add missing fields: uuid, control-id"
+        },
+        {
+          "field": "props",
+          "issue": "Missing required properties: control-description, control-explanation, control-configuration, control-name",
+          "suggestion": "Add missing properties: control-description, control-explanation, control-configuration, control-name"
+        },
+        {
+          "field": "uuid",
+          "issue": "Missing required uuid field or uuid is None",
+          "suggestion": "Add valid UUID format (e.g., 123e4567-e89b-12d3-a456-426614174000)"
+        }
+      ]
+    },
+    {
+      "control_id": "sc-10",
+      "reason": "Failed validation after 3 attempts",
+      "type": "individual_validation",
+      "timestamp": "2025-07-07 16:00:16.435713",
+      "details": [
+        {
+          "field": "root",
+          "issue": "Missing required fields: uuid, control-id",
+          "suggestion": "Add missing fields: uuid, control-id"
+        },
+        {
+          "field": "props",
+          "issue": "Missing required properties: control-description, control-explanation, control-configuration, control-name",
+          "suggestion": "Add missing properties: control-description, control-explanation, control-configuration, control-name"
+        },
+        {
+          "field": "uuid",
+          "issue": "Missing required uuid field or uuid is None",
+          "suggestion": "Add valid UUID format (e.g., 123e4567-e89b-12d3-a456-426614174000)"
+        }
+      ]
+    },
+    {
+      "control_id": "sc-2",
+      "reason": "Failed validation after 3 attempts",
+      "type": "individual_validation",
+      "timestamp": "2025-07-07 16:00:16.435715",
+      "details": [
+        {
+          "field": "root",
+          "issue": "Missing required fields: uuid, control-id",
+          "suggestion": "Add missing fields: uuid, control-id"
+        },
+        {
+          "field": "props",
+          "issue": "Missing required properties: control-description, control-explanation, control-configuration, control-name",
+          "suggestion": "Add missing properties: control-description, control-explanation, control-configuration, control-name"
+        },
+        {
+          "field": "uuid",
+          "issue": "Missing required uuid field or uuid is None",
+          "suggestion": "Add valid UUID format (e.g., 123e4567-e89b-12d3-a456-426614174000)"
+        }
+      ]
+    },
+    {
+      "control_id": "sc-28",
+      "reason": "Failed validation after 3 attempts",
+      "type": "individual_validation",
+      "timestamp": "2025-07-07 16:00:16.435718",
+      "details": [
+        {
+          "field": "root",
+          "issue": "Missing required fields: uuid, control-id",
+          "suggestion": "Add missing fields: uuid, control-id"
+        },
+        {
+          "field": "props",
+          "issue": "Missing required properties: control-description, control-explanation, control-configuration, control-name",
+          "suggestion": "Add missing properties: control-description, control-explanation, control-configuration, control-name"
+        },
+        {
+          "field": "uuid",
+          "issue": "Missing required uuid field or uuid is None",
+          "suggestion": "Add valid UUID format (e.g., 123e4567-e89b-12d3-a456-426614174000)"
+        }
+      ]
+    },
+    {
+      "control_id": "sc-5",
+      "reason": "Failed validation after 3 attempts",
+      "type": "individual_validation",
+      "timestamp": "2025-07-07 16:00:16.435721",
+      "details": [
+        {
+          "field": "root",
+          "issue": "Missing required fields: uuid, control-id",
+          "suggestion": "Add missing fields: uuid, control-id"
+        },
+        {
+          "field": "props",
+          "issue": "Missing required properties: control-description, control-explanation, control-configuration, control-name",
+          "suggestion": "Add missing properties: control-description, control-explanation, control-configuration, control-name"
+        },
+        {
+          "field": "uuid",
+          "issue": "Missing required uuid field or uuid is None",
+          "suggestion": "Add valid UUID format (e.g., 123e4567-e89b-12d3-a456-426614174000)"
+        }
+      ]
+    },
+    {
+      "control_id": "sc-8",
+      "reason": "Failed validation after 3 attempts",
+      "type": "individual_validation",
+      "timestamp": "2025-07-07 16:00:16.435723",
+      "details": [
+        {
+          "field": "root",
+          "issue": "Missing required fields: uuid, control-id",
+          "suggestion": "Add missing fields: uuid, control-id"
+        },
+        {
+          "field": "props",
+          "issue": "Missing required properties: control-description, control-explanation, control-configuration, control-name",
+          "suggestion": "Add missing properties: control-description, control-explanation, control-configuration, control-name"
+        },
+        {
+          "field": "uuid",
+          "issue": "Missing required uuid field or uuid is None",
+          "suggestion": "Add valid UUID format (e.g., 123e4567-e89b-12d3-a456-426614174000)"
+        }
+      ]
+    }
+  ]
+}

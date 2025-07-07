@@ -1,0 +1,30 @@
+[
+  {
+    "file_path": ".pre-commit-config.yaml",
+    "selection_reason": "extension",
+    "mime": "text/x-yaml",
+    "hash": "sha256:12af2675e58497ce0b4ce117ee68b8d9ff562db17b901d6df2341f77eeda9242",
+    "keys": [
+      "repos",
+      "repos[0].repo",
+      "repos[0].rev",
+      "repos[0].hooks",
+      "repos[0].hooks[0].id",
+      "repos[1].repo",
+      "repos[1].rev",
+      "repos[1].hooks",
+      "repos[1].hooks[0].id",
+      "repos[1].hooks[1].id",
+      "repos[1].hooks[2].id",
+      "repos[2].repo",
+      "repos[2].rev",
+      "repos[2].hooks",
+      "repos[2].hooks[0].id",
+      "repos[3].repo",
+      "repos[3].rev",
+      "repos[3].hooks",
+      "repos[3].hooks[0].id",
+      "repos[3].hooks[1].id"
+    ]
+  }
+]

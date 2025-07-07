@@ -3,95 +3,117 @@
 ## 1. Service Overview
 
 **Main purpose and functionality:**  
-The code implements the logging subsystem of the Caddy web server, focusing on flexible, structured logging for HTTP requests, server events, and TLS/PKI operations. It enables log formatting, filtering, field masking, and supports multiple log outputs (file, network, console, discard). The system is highly modular and extensible, allowing for integration with various encoders, writers, and filters.
+The service is a robust, production-ready HTTP server and reverse proxy with support for automatic HTTPS, dynamic configuration, distributed tracing, metrics, and a modular architecture. It features automated certificate management (including ACME, internal CA, and Encrypted ClientHello), reverse proxying with load balancing, health checks, and support for various HTTP protocols (HTTP/1.1, HTTP/2, HTTP/3).
 
 **Key architectural components:**  
-- Modular log encoders (JSON, console, filter, append, nop)
-- Log field filters for masking, hashing, deleting, or replacing fields (including redaction of sensitive data)
-- Support for pluggable log writers (file with rotation, network sockets, discard, standard output/error)
-- Middleware for appending fields to logs and enriching log entries with contextual data
-- Structured log entry marshaling for HTTP requests and TLS connection states
-- Integration with the zap logging framework for high-performance, structured logs
-- Audit-focused log field filtering and output configuration
+- HTTP server with routing, middleware, and automatic HTTPS
+- TLS management (automation, certificate loaders, session ticket service)
+- Reverse proxy module with load balancing, health checks, header manipulation, and upstream selection policies
+- PKI application for internal CA management
+- ACME server for certificate issuance
+- Distributed tracing via OpenTelemetry
+- Metrics collection (admin and HTTP endpoints)
+- Admin API for configuration and operational endpoints
 
 **Technical stack and dependencies:**  
-- Go (Golang) as the primary language
+- Go (memory-safe language)
+- [certmagic](https://github.com/caddyserver/certmagic) for certificate management
+- [libdns](https://github.com/libdns/libdns) for DNS provider integrations
+- [OpenTelemetry](https://opentelemetry.io/) for tracing
+- [prometheus/client_golang](https://github.com/prometheus/client_golang) for metrics
+- [smallstep/certificates](https://github.com/smallstep/certificates) for ACME/authority modules
+- [chi router](https://github.com/go-chi/chi) for routing in ACME server
 - [zap](https://github.com/uber-go/zap) for structured logging
-- [lumberjack](https://github.com/natefinch/lumberjack) for log file rotation
-- Prometheus client for metrics (for some modules)
-- Standard library (net/http, crypto/tls, os, etc.)
-- Support for pluggable modules via Caddy’s module system
-
-## 2. Authentication and Authorization
-
-- **Authentication mechanisms:**  
-  No direct authentication mechanisms are implemented in the logging subsystem. Some log field filters (e.g., cookie, query, header filters) are designed to redact or hash authentication tokens or credentials to protect sensitive data in logs.
-
-- **Authorization models and policies:**  
-  The logging system does not enforce authorization directly. However, file-based log writers can be configured with restrictive file modes (default 0600) to limit read/write access to the logs at the OS level. There is no built-in IAM or role-based access control for log access or configuration.
-
-- **Identity management:**  
-  The system allows for logging of user-identifying fields (such as client IP, authenticated user ID, etc.), but redaction/filtering is available to prevent accidental exposure. Identity information is propagated via log fields and can be controlled via configuration.
-
-- **Session handling:**  
-  No session management is present within the logging code, though session IDs/tokens present in HTTP requests can be redacted, hashed, or deleted via log field filters to prevent leakage.
-
-- **Access control implementation:**  
-  Access control is primarily OS-level (file permissions) for file writers. No additional in-app access control for log viewing or configuration is present.
-
-## 3. Encryption and Data Protection
-
-- **Data encryption at rest:**  
-  No native support for log encryption at rest is present. File writers rely on OS-level permissions for confidentiality. Sensitive fields (such as cookies, authorization headers, query parameters) can be redacted, hashed, or masked before logging to reduce risk if logs are accessed.
-
-- **Data encryption in transit:**  
-  For network log writers (NetWriter), logs can be sent to remote endpoints. The file does not specify use of TLS for these connections; security of data in transit depends on the configuration of the destination socket.
-
-- **Key management:**  
-  No cryptographic key management for log encryption is directly implemented. For HMAC-based cookie hashing in sticky sessions, secrets are provided via configuration.
-
-- **Secure configuration:**  
-  Log file writers support setting file permission modes, with defaults to restrictive (0600). Configuration supports robust input validation for file modes, rotation settings, and field filter parameters to prevent misconfiguration.
-
-- **Data handling and storage:**  
-  - Log files can be rotated and compressed; retention policies can be set to control disk usage and log lifetime.
-  - Sensitive fields (cookies, authorization, query parameters) are redacted by default during logging unless explicitly allowed (`ShouldLogCredentials` flag).
-  - Field filters support masking, hashing, deletion, and replacement to enable privacy and compliance (e.g., GDPR, PCI DSS).
-  - No built-in log encryption or secure erasure is implemented.
-
-## 4. Audit Logging and Monitoring
-
-- **Audit logging mechanisms:**  
-  - Structured logging with zap enables high-fidelity audit trails.
-  - Field-level filtering and redaction allow for compliance with data minimization requirements.
-  - Log entries can be enriched with additional contextual fields using append encoders/middleware.
-  - Loggers can be named and logs segregated by host, logger name, or request properties.
-
-- **Log formats and structures:**  
-  - JSON and console formats are supported.
-  - Log structure is configurable: timestamp, level, message, custom fields (including HTTP request details, TLS states, etc.).
-  - Log field filters can be applied to nested fields with precise control.
-
-- **Log retention policies:**  
-  - File writers support maximum file size, maximum number of files, and maximum retention duration.
-  - Log rotation and compression are configurable.
-
-- **Monitoring systems:**  
-  - Log writers can output to files, network sockets, or discard.
-  - No built-in log shipping or external monitoring system integration is visible in the provided code, but output to network sockets enables integration with log aggregation systems.
-  - Prometheus metrics are supported in other modules but not specifically in logging.
-
-- **Alert mechanisms:**  
-  - No direct alerting on log events is implemented within the logging module.
-  - Logging errors (e.g., failures to write, rotate, or connect to remote endpoints) are logged to stderr or fallback outputs.
-
-- **Compliance reporting:**  
-  - Configurable field-level redaction, masking, and filtering support compliance with privacy regulations.
-  - Ability to exclude or include sensitive fields in logs.
-  - Auditability is supported by structured, consistent logging, and by capturing detailed HTTP and TLS session information (when enabled).
-  - Log access is controlled via file permissions, but no application-level audit log viewing or reporting interface is included.
+- [cpuid](https://github.com/klauspost/cpuid) for hardware detection (cipher suite selection)
+- [cloudflare/circl](https://github.com/cloudflare/circl) for cryptographic primitives (ECH)
+- [Prometheus](https://prometheus.io/) for metrics exposure
 
 ---
 
-**Summary:**  
-The logging subsystem in Caddy is designed for high flexibility and modularity, supporting structured logs with customizable formatting and extensive field-level filtering and redaction. While it enables privacy and compliance through masking of sensitive fields and strict file permissions, it does not include built-in authentication, authorization, or encryption for log data. Audit and monitoring capabilities are present primarily via structured logging and configurable output options. Security and compliance depend on secure configuration, the use of field filters to redact sensitive data, and integration with secure log storage and aggregation systems.
+## 2. Authentication and Authorization
+
+**Authentication mechanisms:**  
+- HTTP Basic Authentication middleware with configurable user accounts and bcrypt password hashing.
+- Supports secure password comparison (constant-time) and mitigates timing side-channels via fake password generation.
+- Optional in-memory password hash cache to improve performance under load.
+
+**Authorization models and policies:**  
+- No built-in role-based access control or fine-grained authorization in HTTP handlers or admin endpoints.
+- Authorization logic is primarily encapsulated within authentication modules (e.g., basic auth).
+- ACME server supports issuance policies via allow/deny lists on domains and IP ranges.
+
+**Identity management:**  
+- Basic user account management via static configuration for HTTP Basic Auth.
+- User identity is available via request context placeholders after authentication.
+
+**Session handling:**  
+- TLS session resumption is managed via a session ticket service with configurable key rotation, max keys, and rotation interval.
+- Session ticket keys are generated using a secure pseudorandom source (crypto/rand). Key rotation is enabled by default.
+
+**Access control implementation:**  
+- Reverse proxy and file server endpoints do not enforce access controls by default; access control is delegated to authentication middleware if configured.
+- Admin API endpoints (including /metrics and /reverse_proxy/upstreams) do not enforce authentication or authorization checks in the code provided.
+- No explicit IAM role enforcement or endpoint whitelisting/blacklisting is present—exposure must be managed via external server configuration.
+
+---
+
+## 3. Encryption and Data Protection
+
+**Data encryption at rest:**  
+- Certificates and keys are stored using [certmagic.Storage](https://pkg.go.dev/github.com/caddyserver/certmagic#Storage), defaulting to file storage (AppDataDir).
+- Internal PKI CA supports storage module configuration for root/intermediate keys, with PEM encoding and optional custom storage backends.
+
+**Data encryption in transit:**  
+- TLS is enforced by default for all qualifying HTTP routes (automatic HTTPS).
+- Cipher suites and elliptic curves are selected based on hardware capabilities; strong defaults are used (AES-GCM, ChaCha20-Poly1305, X25519, P256, etc.).
+- TLS 1.2 and TLS 1.3 are supported; minimum version is configurable.
+- Encrypted ClientHello (ECH) is supported for SNI privacy, with DNS publication of ECH configs.
+- Session tickets use rotating random keys for secure session resumption.
+
+**Key management:**  
+- Private keys for certificates and CAs are generated using secure cryptographic libraries.
+- Session ticket ephemeral keys (STEKs) are rotated at a configurable interval and securely zeroed in memory upon rotation.
+- ECH keys are generated, stored, and (in the future) will be automatically rotated.
+- CA root/intermediate keys are generated and stored in PEM format; root keys are not cached in memory long-term.
+
+**Secure configuration:**  
+- Configuration is validated for duplicate/ambiguous automation policies, invalid listener addresses, and prohibited protocol combinations.
+- Sensitive headers (e.g., Authorization, Cookie, Set-Cookie) are redacted in logs unless explicitly allowed.
+- Secure defaults for protocol versions, cipher suites, and session ticket management.
+
+**Data handling and storage:**  
+- Request and response buffering is configurable, with warnings on unlimited buffering to prevent OOM risks.
+- File server module filters hidden files and sensitive configuration files from directory listings.
+- PKI module optionally installs root certificates into system trust stores, with checks for existing trust.
+
+---
+
+## 4. Audit Logging and Monitoring
+
+**Audit logging mechanisms:**  
+- Structured logging via zap throughout all major modules (HTTP server, TLS, PKI, reverse proxy, ACME server, tracing).
+- Loggable request and response wrappers redact sensitive information by default.
+- Debug-level logs provide detailed information for provisioning, certificate management, and proxy operations.
+
+**Log formats and structures:**  
+- JSON-structured logs with contextual fields (request, upstream, duration, status codes, errors).
+- Administrative actions and errors are logged with details for auditing.
+
+**Log retention policies:**  
+- No explicit log retention or rotation policies are defined in code; log management is the responsibility of the deployment environment.
+
+**Monitoring systems:**  
+- Prometheus metrics are exposed for both admin API and HTTP endpoints (configurable).
+- Metrics include HTTP request counts, request errors, configuration reloads, reverse proxy upstream health, and build/process information.
+
+**Alert mechanisms:**  
+- No built-in alerting (e.g., email, webhook) in code; designed for integration with external monitoring/alerting systems via metrics.
+
+**Compliance reporting:**  
+- No dedicated compliance reporting features; however, logs and metrics provide necessary data for external compliance and audit tools.
+- Input validation and operational errors are logged for post-incident analysis.
+
+---
+
+**Note:**  
+While the service demonstrates strong cryptographic practices and structured logging, critical admin and operational endpoints (such as `/metrics` and `/reverse_proxy/upstreams`) do not have built-in authentication or authorization enforcement, and access controls should be implemented at deployment (e.g., via firewall, network policies, or reverse proxy ACLs). Sensitive information in logs is redacted by default, and session ticket keys and TLS certificates are managed securely. Compliance features such as log retention and access auditing are left to external systems.

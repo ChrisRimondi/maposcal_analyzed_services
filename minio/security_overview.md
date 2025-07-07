@@ -1,119 +1,143 @@
-# Security Summary for MinIO Service
+# Security Summary
 
 ## 1. Service Overview
 
-**Main purpose and functionality:**  
-MinIO is an object storage service compatible with Amazon S3 APIs, offering high-performance, scalable storage with advanced features such as server-side encryption, identity federation, access management, and audit logging. It supports a variety of authentication and authorization mechanisms, enabling integration with corporate identity providers and external policy engines.
+### Main purpose and functionality
 
-**Key architectural components:**  
-- **Object Storage Layer:** Handles storage, retrieval, and management of objects, including erasure coding and encryption capabilities.
-- **Identity and Access Management (IAM):** Built-in and pluggable authentication/authorization mechanisms, supporting users, groups, policies, and external identity providers.
-- **Security Token Service (STS):** Issues temporary credentials via various authentication flows (OpenID Connect, LDAP/AD, TLS certificates, custom tokens).
-- **Access Management Plugin:** Delegates authorization decisions to external HTTP(S) endpoints for every API call.
-- **Encryption Engine:** Provides server-side encryption (SSE-S3, SSE-C) and integrates with external Key Management Systems (KMS).
-- **Audit and Metrics Subsystem:** Collects audit logs, operational metrics, and supports compliance monitoring.
-- **Monitoring and Metrics:** Prometheus-compatible metrics endpoints with configurable authentication.
+The service is MinIO, an object storage system built for compatibility with the Amazon S3 API. Its primary purpose is to provide scalable, high-performance storage with support for secure authentication, authorization, encryption, and compliance features. It supports identity federation, fine-grained access control, and advanced encryption for data at rest and in transit.
 
-**Technical stack and dependencies:**  
-- Written in Go, leveraging Go standard libraries and select third-party packages (e.g., `github.com/golang-jwt/jwt/v4` for JWT handling).
-- Supports integration with external systems: OpenID/OIDC providers, LDAP/AD, KMS, OPA (Open Policy Agent), Prometheus, etcd.
-- Uses cryptographic primitives from Go's crypto library for credential generation, signature validation, and data encryption.
+### Key architectural components
+
+- **Object Storage Engine:** Manages buckets, objects, multipart uploads, versioning, and replication.
+- **Identity and Access Management (IAM):** Handles users, groups, policies, and integration with external identity providers.
+- **Security Token Service (STS):** Issues temporary credentials via various authentication mechanisms (LDAP, OIDC, client certificates, custom tokens).
+- **Encryption Subsystem:** Provides server-side encryption with customer-provided keys (SSE-C), internal keys (SSE-S3), or external Key Management Service (KMS).
+- **Audit Logging and Metrics:** Tracks access, configuration changes, and compliance metrics.
+- **Access Management Plugins:** Supports external policy engines (e.g., OPA) and custom authorization via HTTP(S) webhooks.
+
+### Technical stack and dependencies
+
+- **Language:** Go
+- **Core Libraries:** Standard Go libraries, cryptographic packages, and the MinIO internal libraries (e.g., `auth`, `crypto`).
+- **Third-party integrations:** 
+  - Identity providers: Keycloak, Dex, Casdoor, LDAP/AD
+  - Policy engines: OPA (Open Policy Agent)
+  - Metrics: Prometheus
+  - KMS backends for key management
 
 ---
 
 ## 2. Authentication and Authorization
 
-**Authentication mechanisms:**  
-- **AWS Signature V4:** Supports signature-based authentication for S3-compatible APIs.
-- **STS Temporary Credentials:** Issues temporary access keys, secret keys, and session tokens via multiple flows:
-  - **AssumeRole (Signature-based):** Authenticates using existing MinIO credentials.
-  - **AssumeRoleWithWebIdentity:** Authenticates with JWTs from OIDC-compatible providers (e.g., Keycloak, Dex, Casdoor).
-  - **AssumeRoleWithClientGrants:** Authenticates via client credential grants (JWT access tokens from identity providers).
-  - **AssumeRoleWithLDAPIdentity:** Authenticates AD/LDAP users using username/password.
-  - **AssumeRoleWithCertificate:** Authenticates via client X.509/TLS certificates.
-  - **AssumeRoleWithCustomToken:** Authenticates via opaque tokens verified by a custom Identity Management Plugin webhook.
-- **Default Credentials:** Supports static access and secret keys for bootstrap and root access.
+### Authentication mechanisms
 
-**Authorization models and policies:**  
-- **MinIO IAM Policies:** Named access policies defined within MinIO and associated with users or groups.
-- **Group-based Access:** LDAP/AD group memberships influence policy assignments.
-- **Role-based Access:** Temporary credentials are associated with policies via role ARNs or claims in identity tokens.
-- **OPA Integration:** Optional use of Open Policy Agent via webhook for external, dynamic policy evaluation.
-- **Access Management Plugin:** Delegates all access control decisions to an external HTTP(S) endpoint, overriding internal IAM when enabled.
+MinIO supports multiple authentication mechanisms:
 
-**Identity management:**  
-- **Built-in Identities:** Users, groups, and service accounts managed internally (except when LDAP/AD is enabled).
-- **External Identities:** Integration with AD/LDAP, OIDC, custom identity plugins, and X.509 certificates.
-- **Automatic LDAP Sync:** Regularly synchronizes LDAP directory state, revoking credentials for removed users or altered group memberships.
+- **AWS Signature Version 4:** Used for S3-compatible API authentication (Authorization header, Query parameters, POST policies). Validates the request using HMAC and per-user access/secret keys.
+- **STS APIs:** Provides temporary credentials after authenticating via:
+  - **LDAP/AD:** Credentials verified against external directory. Temporary credentials issued upon successful authentication.
+  - **Web Identity (OIDC):** Accepts JWT tokens from OIDC-compatible identity providers. JWTs are validated as part of the STS request.
+  - **Client Grants:** Accepts access tokens from OAuth2 client grants.
+  - **Custom Token Plugin:** Delegates token validation to an external webhook. The plugin responds with user and policy information, allowing MinIO to issue temporary credentials.
+  - **TLS/X.509:** Supports client certificate-based authentication when enabled.
+- **Root and Service Accounts:** Default credentials and service accounts managed locally or via IAM.
 
-**Session handling:**  
-- **Temporary Credentials:** All STS flows issue credentials with explicit expiration (default 1 hour, configurable up to 365 days).
-- **Session Tokens:** JWTs are generated and signed per session, containing claims and expiration.
-- **Revocation:** LDAP sync and IAM policy changes can revoke or update active sessions; credentials for removed users are purged.
+### Authorization models and policies
 
-**Access control implementation:**  
-- **Policy Attachment:** Policies can be attached directly to users or groups, or inferred from JWT claims or role ARNs.
-- **Policy Evaluation:** Requests are evaluated against the union of applicable policies before granting access.
-- **External Authorization:** When Access Management Plugin is active, every authenticated request is forwarded for allow/deny decision.
+- **IAM Policies:** Access is controlled via named policies, which can be attached to users and groups.
+- **Group-Based Authorization:** For LDAP/AD, policies can be assigned at the user or group level, with group memberships synced automatically.
+- **Role Policies (STS):** Role-based policies can be attached to federated identities or roles, e.g., from OIDC providers or custom plugins.
+- **Policy Enforcement:** MinIO evaluates all applicable policies for a user (including group and direct assignments) to allow or deny requests.
+- **Access Management Plugin:** Optionally, all authorization decisions can be delegated to an external webhook, such as OPA, for centralized policy management.
+
+### Identity management
+
+- **Internal IAM:** Manages users, groups, and policies unless external identity sources are configured.
+- **External Integration:** When LDAP/AD is configured, only external users (plus root) are allowed; internal user/group management is disabled except for information queries.
+- **Identity Federation:** Supports OIDC, OAuth2, and custom token providers for federated access, with policy mapping based on role policies or token claims.
+
+### Session handling
+
+- **Temporary Credentials:** All STS-based authentications issue temporary credentials, consisting of access key, secret key, session token, and expiration timestamp.
+- **Expiration:** Default credential lifetime is 1 hour, configurable between 15 minutes and 365 days for client grants.
+- **Session Tokens:** JWT-based tokens signed using secret keys, containing claims such as access key, groups, and expiration.
+- **Session Revocation:** For LDAP/AD, MinIO synchronizes group and user membership changes and revokes credentials if a user is deleted or removed from groups.
+
+### Access control implementation
+
+- **Policy Evaluation:** Policies are evaluated on every request using the IAM engine or delegated to the Access Management Plugin (e.g., OPA).
+- **API Authorization:** Each API call checks the applicable policies to allow or deny the requested action, including for bucket and object operations.
+- **Metrics Access:** Prometheus metrics endpoints can be configured for public or JWT-authenticated access.
 
 ---
 
 ## 3. Encryption and Data Protection
 
-**Data encryption at rest:**  
-- **Server-Side Encryption (SSE):** Supports SSE-S3 (with master key or KMS) and SSE-C (client-provided keys).
-- **Per-Object Keys:** Each object is encrypted with a unique, randomly generated object key.
-- **Key Wrapping:** Object keys are never stored in plaintext; they are encrypted (sealed) with a key encryption key (KEK).
-- **KMS Integration:** For SSE-S3, MinIO integrates with external KMS for key generation and unsealing.
-- **Config/IAM Encryption:** Supports encrypting configuration and IAM assets using KMS-provided keys if enabled; otherwise, these are stored in plaintext.
+### Data encryption at rest
 
-**Data encryption in transit:**  
-- **TLS Enforcement:** All management and API endpoints support TLS; client certificate authentication is available for STS.
-- **Minimum TLS Version:** Defaults to TLS 1.2 or higher for secure communications.
-- **Cipher Suite Preferences:** Can be configured for secure cipher suite selection.
+- **Server-Side Encryption (SSE):** All objects can be encrypted with unique, randomly generated keys (ObjectKey).
+  - **SSE-C:** Uses client-provided keys to derive the encryption key for each object.
+  - **SSE-S3:** Uses a master key or an external KMS. Object keys are derived from the master key or KMS-provided key.
+- **Key Wrapping:** Object keys are never stored in plaintext. They are sealed (encrypted) with a Key Encryption Key (KEK) derived from either the client key (SSE-C) or the master/KMS key (SSE-S3).
+- **Metadata:** Encrypted object keys, initialization vectors (IVs), and other relevant information are stored in object metadata.
+- **IAM and Config Encryption:** MinIO supports encrypting configuration and IAM assets using KMS-provided keys; if KMS is disabled, this data is stored as plaintext.
 
-**Key management:**  
-- **Key Hierarchy:** Supports master keys, key encryption keys (KEK), and object encryption keys (OEK).
-- **KMS APIs:** Expects KMS to provide key generation and unsealing functions for encrypted objects.
-- **Key Rotation and Storage:** Details of key rotation depend on KMS implementation; MinIO does not store plaintext keys.
+### Data encryption in transit
 
-**Secure configuration:**  
-- **Environment Variables & APIs:** Sensitive configuration (e.g., plugin endpoints, auth tokens, KMS settings) can be set via environment or admin API.
-- **Config Integrity:** Configuration files are saved with SHA-256 hashes to ensure integrity.
-- **Validation:** Strict input validation for encryption parameters, policy assignments, and endpoint configurations.
+- **TLS/SSL:** All network communication can be secured using TLS. Client certificate authentication is supported for mutual TLS (mTLS).
+- **External Plugin Communications:** Webhooks and KMS endpoints can be configured to use HTTPS for secure communication.
 
-**Data handling and storage:**  
-- **Erasure Coding:** Provides redundancy and protection against data loss.
-- **Input Validation:** Strong validation on object sizes, multipart uploads, versioning, and encryption headers.
-- **Metadata Protection:** Encryption metadata (IVs, sealed keys) stored alongside objects; never exposes raw keys.
+### Key management
+
+- **KMS Integration:** For SSE-S3, MinIO integrates with external KMS systems for key generation, sealing, and unsealing operations.
+- **Key Lifecycle:** Object keys are generated per object and never stored unencrypted. Sealed keys are only decryptable with the appropriate KEK from KMS or client input.
+- **Key Metadata:** For KMS-backed encryption, object metadata stores the key ID and encrypted key from the KMS.
+
+### Secure configuration
+
+- **Sensitive Parameters:** Sensitive configuration parameters (e.g., webhook tokens, KMS credentials) are handled via environment variables or secure configuration APIs.
+- **Parameter Validation:** Input validation is performed for user keys, tokens, and session credentials (minimum and maximum length checks, presence of reserved characters).
+- **Default Credentials:** Default access and secret keys are defined but can be overridden and should be secured appropriately.
+
+### Data handling and storage
+
+- **Integrity:** Checksums and hash algorithms are used for data and metadata integrity.
+- **Versioning and Replication:** Object versioning, replication status, and delete markers are tracked for compliance and forensic analysis.
+- **Erasure Coding:** Supports data redundancy and healing, with atomic updates to object metadata and audit logging for healing events.
 
 ---
 
 ## 4. Audit Logging and Monitoring
 
-**Audit logging mechanisms:**  
-- **Audit Logs:** Captures all API requests and authorization events, including user claims and policy actions.
-- **Audit Metrics:** `/audit` endpoint exposes metrics related to audit functionality.
-- **Message Queue Stats:** Collects metrics on audit log delivery (e.g., failed, total, pending messages).
+### Audit logging mechanisms
 
-**Log formats and structures:**  
-- **Structured Logs:** Logs include contextual information such as user claims, actions, and outcomes.
-- **Log Destinations:** Supports file and console log outputs; log configuration is part of the server config.
+- **Action Auditing:** All access to sensitive operations (e.g., bucket encryption configuration, healing, policy changes) is logged, including user identity and request context.
+- **Audit Metrics:** Dedicated metrics (e.g., `/audit`) track audit-related events and are exposed for monitoring.
 
-**Log retention policies:**  
-- **Configurable Retention:** Log retention is configurable via server settings; not detailed in the available context.
+### Log formats and structures
 
-**Monitoring systems:**  
-- **Prometheus Integration:** Provides metrics endpoints for Prometheus, with authentication modes (`jwt` or `public`).
-- **IAM Metrics:** Exposes IAM sync durations, successes, and failures as metrics.
-- **Operational Metrics:** Exposes audit and object storage metrics for performance and compliance monitoring.
+- **Structured Logging:** Logs include request identifiers, user identities, and contextual metadata for traceability.
+- **Audit Event Fields:** For sensitive operations, logs capture before/after states, error codes, and external plugin responses when relevant.
 
-**Alert mechanisms:**  
-- **Metric-based Alerts:** Prometheus metrics can be used to configure external alerting.
-- **Audit Failures:** Failures in audit log delivery are tracked via metrics.
+### Log retention policies
 
-**Compliance reporting:**  
-- **Audit Trail:** Comprehensive audit log and metrics support traceability and compliance verification.
-- **Policy/Config Changes:** Changes to IAM policies, group memberships, and relevant config settings are logged.
+- **Retention:** Log retention policies are not detailed in code, but audit logs are structured to support external log management systems for compliance.
+- **Configurability:** Log verbosity and retention may be controlled via server configuration or external log aggregation tools.
+
+### Monitoring systems
+
+- **Prometheus Integration:** MinIO exports rich metrics for Prometheus, including IAM sync stats, audit metrics, and operational health.
+- **Metric Authentication:** Prometheus endpoints can require JWT authentication or be made public, configurable via environment variable.
+
+### Alert mechanisms
+
+- **Error Logging:** Internal and upstream errors are logged with high severity, supporting alerting when audit or security events occur.
+- **Audit Event Exposure:** Audit events and metrics can be used by external monitoring and SIEM solutions for alerting and compliance enforcement.
+
+### Compliance reporting
+
+- **Audit Trails:** Detailed and structured audit logs support compliance with regulatory requirements for data access and change tracking.
+- **Policy Enforcement Logs:** Integration with external policy engines (e.g., OPA) and management plugins allows for externalized compliance reporting and attestation.
+- **Access Revocation Logging:** Changes in user/group memberships and credential revocations (especially for LDAP/AD) are logged for auditability.
 
 ---

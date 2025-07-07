@@ -1,0 +1,147 @@
+{
+  "unvalidated_requirements": [
+    {
+      "name": "control-status",
+      "value": "applicable but only satisfied through configuration",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-1",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    },
+    {
+      "name": "control-status",
+      "value": "applicable but only satisfied through configuration",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-2",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    },
+    {
+      "name": "control-status",
+      "value": "applicable but only satisfied through configuration",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-4",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    },
+    {
+      "name": "control-status",
+      "value": "applicable but only satisfied through configuration",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-5",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    },
+    {
+      "name": "control-status",
+      "value": "applicable but only satisfied through configuration",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-7",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    },
+    {
+      "name": "control-status",
+      "value": "applicable but only satisfied through configuration",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-8",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    },
+    {
+      "name": "control-status",
+      "value": "applicable but only satisfied through configuration",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    },
+    {
+      "name": "control-status",
+      "value": "applicable but only satisfied through configuration",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-17",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    },
+    {
+      "name": "control-status",
+      "value": "applicable but only satisfied through configuration",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-18",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    },
+    {
+      "name": "control-status",
+      "value": "applicable but only satisfied through configuration",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-23",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    },
+    {
+      "name": "control-status",
+      "value": "applicable but only satisfied through configuration",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-28",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    }
+  ]
+}

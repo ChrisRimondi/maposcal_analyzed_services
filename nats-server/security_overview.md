@@ -2,138 +2,123 @@
 
 ## 1. Service Overview
 
-**Main Purpose and Functionality**  
-The service is a messaging server (NATS Server) supporting publish/subscribe and streaming paradigms, with features for clustering, client connections, monitoring, and JetStream persistence. It is designed for high performance and supports protocols such as MQTT and HTTP monitoring endpoints.
+- **Main Purpose and Functionality**
+  - The service is a high-performance messaging system supporting publish/subscribe, queue groups, streaming, and MQTT interoperability.
+  - It includes advanced features such as JetStream (streaming and persistence), clustering, and multi-tenant accounts.
+  - The service is designed for reliability, extensibility, and secure communication between distributed systems.
 
-**Key Architectural Components**
-- Core message broker with support for clustering, gateways, leafnodes, and JetStream (streaming and persistence).
-- Authentication and authorization modules with support for multiple mechanisms (JWT, Nkey, username/password, tokens, TLS certificate mapping).
-- Monitoring and observability endpoints exposing server, connection, and JetStream metrics via HTTP.
-- Internal subsystems for event/advisory publishing, audit logging, and system statistics.
-- Pluggable storage backends, including file and memory, with support for encryption at rest.
-- Security audit completed by Trail of Bits and commissioned by OSTIF (April 2025).
+- **Key Architectural Components**
+  - **Core Server**: Manages client connections, message routing, authorization, and clustering.
+  - **JetStream**: Provides persistent streams, consumers, and advanced message delivery guarantees.
+  - **Account System**: Supports multi-tenant isolation and scoped permissions.
+  - **Websocket/HTTP2 Layer**: Allows access via WebSockets and plans for HTTP2 support.
+  - **TLS/Certificate Store Integration**: Provides secure transport using standard files and OS certificate stores (notably Windows).
+  - **Audit and Advisory System**: Publishes internal events and advisories for monitoring and compliance.
 
-**Technical Stack and Dependencies**
-- Implemented in Go.
-- Utilizes Go’s standard crypto, TLS, HTTP, and syscall libraries.
-- Integrates with external authentication services (callouts).
-- Supports bcrypt for password hashing.
-- Uses pseudo-random number generation and secure nonce creation.
-- Optional TPM support for key management (on Windows).
-- JetStream storage with optional encryption (AES/ChaCha).
+- **Technical Stack and Dependencies**
+  - **Language**: Go (multiple files under Apache License 2.0).
+  - **Crypto Libraries**: Standard Go crypto, `golang.org/x/crypto`, nkeys, JWT.
+  - **HTTP/WS**: Go standard library, with WebSocket frame handling and compression.
+  - **Compression**: `github.com/klauspost/compress/flate` for websocket compression.
+  - **Other Dependencies**: `github.com/nats-io/jwt/v2`, `github.com/nats-io/nkeys`, `github.com/nats-io/nats.go`.
+  - **Operating System Integration**: Windows certificate store support; utilities for BSD/macOS process stats.
+  - **Third-party Audit**: Security audit performed by Trail of Bits (April 2025).
 
 ---
 
 ## 2. Authentication and Authorization
 
-**Authentication Mechanisms**
-- Username/password (with bcrypt hash support).
-- Token-based authentication.
-- Nkey authentication (public/private key pairs).
-- JWT-based authentication for users and operators, supporting claim-based access and account scoping.
-- TLS client certificate authentication with support for pinned certificates and subject mapping.
-- External authentication via configurable callouts.
-- Nonce-based challenge-response to prevent replay attacks, with cryptographically secure random nonces.
+- **Authentication Mechanisms**
+  - **JWT-Based Authentication**: Uses ed25519-signed JWTs for operators, accounts, and users. JWTs are parsed and validated for each connection.
+  - **NKEY Authentication**: Supports NKEYs for cryptographic identity (ed25519 key pairs).
+  - **Username/Password**: Supports both plaintext and bcrypt-hashed passwords.
+  - **Token Authentication**: Accepts tokens as an authentication mechanism.
+  - **TLS Client Certificates**: Integrates with OS certificate stores (Windows) to authenticate using X.509 certificates.
+  - **Websocket Authentication**: JWT and credential cookies supported for websocket clients.
 
-**Authorization Models and Policies**
-- Role-based access control (RBAC) specified in configuration files, supporting fine-grained publish/subscribe permissions with allow/deny lists.
-- Scoped permissions for JetStream APIs and MQTT operations.
-- JWT claims enforce account-level limits (connections, subscriptions, payload sizes) and temporal access constraints.
-- Cluster and route authentication/authorization with separate credentials.
-- Import/export rules for streams and services with cycle detection and token-based approvals.
+- **Authorization Models and Policies**
+  - **Account-based Authorization**: Each account is isolated with its own permissions and subject space.
+  - **User/Role Permissions**: Users can have granular publish/subscribe allow/deny lists.
+  - **Resource Limits**: Enforces limits on connections, subscriptions, payload sizes, and more.
+  - **Multi-Tenant Isolation**: Subject spaces and streams are isolated per account.
+  - **Cluster and Route Authorization**: Cluster and leaf node connections are authenticated and authorized using credentials or tokens.
 
-**Identity Management**
-- Users defined in configuration files, JWTs, or external sources.
-- JWT user and operator claims validated and parsed at connection time, including issuer, audience, subject, and expiration checks.
-- TLS certificate subject mapping allows for identity linkage.
-- Nkey and JWT credentials support for signing and proof of identity.
-- Revocation and expiration checks on JWTs and activation tokens.
-- Secure wiping of sensitive JWT data from memory after use.
+- **Identity Management**
+  - **JWT Claims Validation**: Parses and validates claims for operator, account, and user identities.
+  - **NKEY Seed Management**: Seeds and keys for users are treated as sensitive and must be protected.
+  - **Certificate Identity**: X.509 subject and issuer matching, OCSP support for peer validation.
 
-**Session Handling**
-- Session management for MQTT with persisted records in JetStream streams.
-- Session restoration and duplicate detection for MQTT QoS 1/2.
-- Timeouts for authentication, authorization, and idle connections.
-- Nonce state managed with mutexes for thread safety.
-- Explicit timers for authentication, session expiration, and ping/pong liveness checks.
+- **Session Handling**
+  - **Session Persistence**: MQTT and streaming sessions are persisted in streams with per-session records.
+  - **Session Policies**: Session limits (e.g., MaxMsgsPer) are defined for MQTT streams.
+  - **Connection Tracking**: Activity time and connection metadata (start time, uptime, total connections) are tracked.
 
-**Access Control Implementation**
-- Permissions enforced at connection and per-operation (publish/subscribe, API calls).
-- Authorization filters support wildcards, allow/deny lists, and dynamic reply tracking.
-- JetStream APIs and monitoring endpoints enforce account checks and subject validation.
-- Configuration supports default and per-user permissions with inheritance.
-- Advisory events and logging for permission violations and authentication failures.
+- **Access Control Implementation**
+  - **Permission Enforcement**: Publish/subscribe permissions enforced per user/account.
+  - **Dynamic Access Checks**: On each operation, access is checked against current permissions and account status.
+  - **Connection Closure on Violation**: Protocol escalations and permission violations can result in connection closure (see TODOs).
+  - **Clustered Authorization**: Cluster and gateway connections verify peer identity and permissions.
 
 ---
 
 ## 3. Encryption and Data Protection
 
-**Data Encryption at Rest**
-- JetStream file storage supports encryption using server-configured keys (AES/ChaCha).
-- Optional TPM integration (on Windows) for secure key storage and management.
-- Sensitive JWT and credential data securely wiped from memory.
+- **Data Encryption at Rest**
+  - **JetStream Persistence**: Message data, session state, and retained messages are stored, with no explicit mention of encryption at rest in the provided context.
+  - **Sensitive Material Handling**: NKEY seeds and JWTs are recommended to be treated as secrets.
 
-**Data Encryption in Transit**
-- TLS support for all client, cluster, and monitoring endpoints, with configurable minimum TLS versions.
-- Configurable cipher suites and curve preferences.
-- Mutual TLS enforcement with client certificate verification, OCSP stapling, and revocation checking.
-- Certificate pinning and subject/issuer mapping for enhanced trust.
+- **Data Encryption in Transit**
+  - **TLS Support**: Full support for SSL/TLS, with configurable ciphers and curve preferences.
+  - **Websocket TLS**: Websocket endpoints require TLS by default unless explicitly disabled.
+  - **Certificate Store Integration**: Can use OS-backed certificate stores for private key and certificate management (notably on Windows).
+  - **Cipher Suite Management**: Explicit cipher suite and curve preference configuration is available for TLS connections.
 
-**Key Management**
-- Support for loading server keys from files or TPM modules (Windows only).
-- Certificate and key files specified per endpoint; CA files and verification options configurable.
-- OCSP-based revocation checks with cache management and logging.
-- Cryptographically secure random number generation for nonces and tokens.
+- **Key Management**
+  - **NKEY and JWT Management**: Strong cryptographic keys for JWTs and NKEYs, with routines for secure seed wiping.
+  - **OS Certificate Store**: On Windows, the service can retrieve and use private keys securely from the system store, not requiring direct access to key files.
+  - **Certificate Matching**: Supports certificate selection via subject, issuer, or thumbprint.
+  - **Error Handling**: Robust error reporting for key management failures (e.g., inability to extract private key, unsupported algorithms).
 
-**Secure Configuration**
-- Strict configuration parsing with input validation for permissions, subject patterns, and security options.
-- Detection and warning for duplicate or conflicting user/account definitions.
-- Extensive option validation for deprecated or conflicting security fields.
-- Secure defaults for TLS and authorization timeouts.
-- Panic recovery in configuration parsing to avoid partial/insecure states.
+- **Secure Configuration**
+  - **Configuration Validation**: Extensive config validation to prevent conflicts, enforce correct types, and ensure proper setup of authentication and authorization.
+  - **TLS Options**: Enforces the use of TLS for websocket endpoints unless explicitly allowed.
+  - **Blacklist/ERR Escalation**: TODOs indicate planned features for escalating permission errors to connection termination.
 
-**Data Handling and Storage**
-- In-memory and persistent storage of connection metadata, session state, and advisory logs.
-- JetStream state and configuration versioning to prevent unauthorized or stale data propagation.
-- Secure handling of sensitive data in logs (e.g., password redaction).
-- Internal memory structures guarded with atomic operations or mutexes where appropriate.
+- **Data Handling and Storage**
+  - **Stream Policies**: Streams have limits and retention policies (e.g., limits on retained messages, maximum messages per subject).
+  - **Session and State Storage**: Session and retained messages are managed in dedicated streams.
+  - **Input Validation**: Subject, payload, and protocol validation are enforced during client operations.
 
 ---
 
 ## 4. Audit Logging and Monitoring
 
-**Audit Logging Mechanisms**
-- Comprehensive event/advisory publishing for authentication, authorization, connection lifecycle, JetStream/stream/consumer events, and system errors.
-- Detailed logging of authentication failures, permission violations, and validation issues.
-- Structured log formats for advisory and trace events, including timestamps, event types, and metadata.
-- Internal tracking of closed client connections and connection history for forensic analysis.
-- Warnings for plaintext passwords and insecure configurations.
+- **Audit Logging Mechanisms**
+  - **Advisory Events**: Publishes JetStream advisories and metrics (e.g., stream/consumer actions, message acknowledgments, leader elections) as internal messages.
+  - **Connection and Activity Tracking**: Tracks and exposes connection activity, dropped messages, and resource usage via monitoring endpoints.
 
-**Log Formats and Structures**
-- JSON marshaling for structured audit/advisory events.
-- Per-connection and per-account logs including authentication details, JWT claims, and TLS info.
-- Trace and debug logs for MQTT, JetStream, and protocol parsing with sampling controls.
+- **Log Formats and Structures**
+  - **Structured JSON**: Advisories and metrics are marshaled as JSON objects with typed event schemas.
+  - **Metrics and State**: Monitoring endpoints expose connection, stream, and server stats in a structured format.
 
-**Log Retention Policies**
-- Configurable logging output to file, syslog, or stdout with size limits and rotation support.
-- PID and log file management for process auditing.
-- No explicit log retention duration specified in code, but persistent log files and advisory streams for JetStream.
+- **Log Retention Policies**
+  - **Stream Retention**: Advisory and metric events are published into streams and are subject to stream retention and limits policies.
+  - **No Explicit Log Rotation**: No mention of file-based log retention or rotation in provided context.
 
-**Monitoring Systems**
-- HTTP monitoring endpoints exposing connection, route, account, subscription, JetStream, gateway, and health stats with filtering, pagination, and query parameter validation.
-- Metrics on resource usage (CPU, memory), connection/authentication status, and OCSP cache stats.
-- JetStream API access and cluster state monitoring via advisories and internal events.
-- System events for OCSP validation failures and certificate issues.
+- **Monitoring Systems**
+  - **Internal Monitoring Endpoints**: `/varz`, `/connz`, `/routez` endpoints for live state and metrics.
+  - **Metrics Tracking**: Tracks server uptime, connection count, dropped messages, and more.
 
-**Alert Mechanisms**
-- Advisory events for critical authentication failures, certificate revocation, JetStream/stream/consumer events, and cluster changes.
-- Internal rate-limiting of advisories to prevent alert flooding.
-- Log-based alerts for warnings and errors related to security and compliance.
+- **Alert Mechanisms**
+  - **Advisory Publication**: Internal advisories can be consumed by monitoring or alerting systems.
+  - **Resource Limit Alerts**: Events are published when resource limits are hit (e.g., API queue limit, server out of space).
+  - **Error and Warning Logging**: Warnings and errors are logged for failed advisories and configuration issues.
 
-**Compliance Reporting**
-- System and account audits through monitoring endpoints and advisory logs.
-- Support for structured event publishing to external monitoring/audit systems.
-- Compliance with certificate revocation checking (OCSP), secure credential handling, and audit-friendly logging.
-- Third-party security audit conducted with published results (Trail of Bits, April 2025).
+- **Compliance Reporting**
+  - **Third-party Audit**: A security review was performed by Trail of Bits (April 2025) and is publicly available.
+  - **Structured Event History**: JetStream advisories and metrics provide an auditable event history for compliance.
+  - **Configuration Validation**: Strict validation and error reporting for security-sensitive configuration errors.
 
 ---
+
+**Note:** All information is derived from the provided code and documentation context; no external assumptions are made.

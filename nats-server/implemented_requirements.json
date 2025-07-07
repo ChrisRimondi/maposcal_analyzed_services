@@ -1,12 +1,12 @@
 {
   "implemented_requirements": [
     {
-      "uuid": "da9096ce-810e-4914-84ef-77bfc36ba541",
+      "uuid": "33d1e302-d015-4265-87c2-eea4cf5f9313",
       "control-id": "ac-10",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable but partially satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -21,23 +21,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The service supports concurrent session control by enforcing account-level limits on connections and sessions. These limits are defined and enforced through configuration files specifying per-account maximums for concurrent connections and sessions. The system uses JWT claims and configuration files to restrict the number of concurrent sessions per account and account type. This enforcement is not inherent in the code but requires explicit configuration of these limits in authorized configuration files, such as the account or user configuration YAML/JSON files that define connection limits. This satisfies the control by limiting concurrent sessions per account/account type as configured.",
+          "value": "The service supports multi-tenant accounts and tracks connections and sessions per account. Session persistence and limits (e.g., MaxMsgsPer) are defined for MQTT streams, indicating some control over session state. However, there is no explicit evidence in the provided context or configuration that the system enforces a limit on the number of concurrent sessions per account or account type. While connection tracking and resource limits exist, the specific enforcement of maximum concurrent sessions per account or account type is not documented or configured. Therefore, the control is only partially satisfied as the service provides partial mechanisms related to session management but lacks explicit concurrent session limit enforcement per account or account type.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "configs/accounts.yaml",
-              "key_path": "accounts.{account_name}.limits.max_connections",
-              "line_number": 45
-            },
-            {
-              "file_path": "configs/accounts.yaml",
-              "key_path": "accounts.{account_name}.limits.max_sessions",
-              "line_number": 46
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -45,10 +34,8 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/config.go",
-            "server/account.go",
-            "server/client.go",
-            "configs/accounts.yaml"
+            "server/README-MQTT.md",
+            "doc/TODO.md"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -56,87 +43,19 @@
       "statements": [
         {
           "statement-id": "ac-10_smt.a",
-          "uuid": "6cfbb5d5-56a9-442b-b847-5c75e956d8e2",
-          "description": "Concurrent session limits are implemented via configuration files that specify maximum concurrent connections and sessions per account. The server enforces these limits during client connection and session establishment, rejecting new connections or sessions that exceed configured maxima."
+          "uuid": "8855dc98-b25d-4b76-8804-a6559a6e3ce7",
+          "description": "The service tracks sessions and connections per account and supports session persistence with limits on message counts for MQTT sessions, but does not explicitly impose or configure limits on the number of concurrent sessions per account or account type."
         }
       ],
       "control_id": "ac-10"
     },
     {
-      "uuid": "20615068-3889-4039-bdc5-1e7e74f8156e",
-      "control-id": "ac-12",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Session Termination",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Automatically terminate a user session after conditions or trigger events requiring session disconnect are defined;.\n\nAdditional requirements:\n- conditions or trigger events requiring session disconnect are defined;",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The service enforces session termination through configurable timeout parameters and explicit disconnect handling. Idle connections and authentication timeouts are configurable, enabling automatic session termination after defined inactivity or authentication failure periods. Additionally, MQTT session management supports disconnect triggers upon client disconnect or Will message conditions. These session termination conditions are configurable in server configuration files, ensuring the control is satisfied through configuration rather than inherent implementation.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "/etc/nats-server.conf",
-              "key_path": "authorization.timeout.auth",
-              "line_number": 85
-            },
-            {
-              "file_path": "/etc/nats-server.conf",
-              "key_path": "authorization.timeout.idle",
-              "line_number": 86
-            },
-            {
-              "file_path": "/etc/nats-server.conf",
-              "key_path": "mqtt.session.expiry",
-              "line_number": 120
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "server/config.go",
-            "server/auth.go",
-            "server/session.go",
-            "server/mqtt.go",
-            "/etc/nats-server.conf"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "ac-12_smt.a",
-          "uuid": "ab33c31d-cfa3-4c34-aed2-203bd543e43b",
-          "description": "Session termination is enforced via configurable idle and authentication timeouts as well as explicit disconnect handling for MQTT sessions, including support for Will messages that trigger session disconnect events."
-        }
-      ],
-      "control_id": "ac-12"
-    },
-    {
-      "uuid": "9101be4d-c781-413e-891e-3e406b7b8e93",
+      "uuid": "26efc572-cc22-41c4-b696-99493601f075",
       "control-id": "ac-3",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable and not satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -151,18 +70,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "Access enforcement is implemented via role-based permissions configured in authorization blocks within configuration files. Logical access to publish/subscribe operations is controlled using allow and deny lists per user role. Multiple authentication mechanisms including JWT, Nkey, username/password, and TLS certificate mapping are supported. Authorization policies are enforced at connection and per-operation level, strictly following configured permissions. The service enforces these controls only when the authorization configuration is properly enabled and defined.",
+          "value": "The service enforces access control authorizations dynamically through validated JWTs, NKEYs, TLS client certificates, and per-account/user permissions for publish/subscribe messaging and other system resources. Access enforcement is implemented in code at connection and operation levels, ensuring requests are checked against configured access policies. However, the enforcement depends on proper configuration of authentication and authorization parameters, such as JWT claims, account permissions, and TLS options, which must be correctly set to satisfy the control.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "server/configs/new_style_authorization.conf",
-              "key_path": "authorization.users, authorization.normal_user, authorization.admin_user",
-              "line_number": 3
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -170,10 +83,10 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/configs/new_style_authorization.conf",
-            "server/configs/include_conf_check_c.conf",
-            "server/client.go",
-            "server/auth.go"
+            "server/jetstream_events.go",
+            "server/auth.go",
+            "server/server.go",
+            "config/config.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -181,92 +94,19 @@
       "statements": [
         {
           "statement-id": "ac-3_smt.a",
-          "uuid": "481057b2-77a8-440b-80a5-382d5aa1236a",
-          "description": "Access enforcement is achieved by the authorization module which parses and applies role-based permissions defined in configuration files. Permissions include fine-grained publish and subscribe allow/deny lists, scoped JWT claims, and connection-level checks. These controls are enabled and enforced at runtime based on configuration, ensuring that only approved authorizations are granted for logical access to messaging and system resources."
+          "uuid": "da75531a-471a-4097-b000-80a25cf6e2d7",
+          "description": "Access enforcement is implemented through validation of JWT tokens, NKEY signatures, and TLS client certificates, combined with per-account and per-user permissions that govern publish and subscribe actions. The system checks access rights dynamically on each client operation and enforces connection closure upon violations. These mechanisms are configurable via authentication and authorization parameters, making the control applicable and enforceable through proper system configuration."
         }
       ],
       "control_id": "ac-3"
     },
     {
-      "uuid": "f048f503-09df-47a2-831e-6ccb15904a1a",
-      "control-id": "ac-4",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Information Flow Enforcement",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Enforce approved authorizations for controlling the flow of information within the system and between connected systems based on information flow control policies within the system and between connected systems are defined;.\n\nAdditional requirements:\n- information flow control policies within the system and between connected systems are defined;",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The system enforces information flow control policies through a combination of authentication and authorization mechanisms configured externally. Authorization is implemented via role-based access control (RBAC) with allow/deny lists for publish/subscribe operations, scoped permissions for APIs and MQTT, and JWT claims enforcing account-level constraints. These policies are defined and managed through configuration files specifying users, roles, permissions, and claim validations. The enforcement of information flow is achieved by validating these configurations at runtime, controlling message flows within the system and between connected systems (e.g., via cluster and gateway configurations). Hence, information flow enforcement is not inherent in the code alone but depends on properly configured authorization policies.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "authorization.users",
-              "line_number": 45
-            },
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "authorization.accounts",
-              "line_number": 60
-            },
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "jetstream.permissions",
-              "line_number": 120
-            },
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "gateway.imports.exports",
-              "line_number": 150
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "server/leafnode.go",
-            "server/auth.go",
-            "server/authorization.go",
-            "server/jetstream.go",
-            "server/config.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "ac-4_smt.a",
-          "uuid": "bc508d55-b33b-4b32-8725-eecd11087be3",
-          "description": "Information flow enforcement is implemented by validating configured authorization policies, including RBAC rules, JWT claim checks, and permissions on publish/subscribe subjects. These policies control the flow of messages within the system and between connected systems (e.g., via cluster routes and gateways). Enforcement occurs at connection and per-operation levels, relying on configuration files that define users, accounts, and permissions. The system enforces these policies at runtime, preventing unauthorized message flows."
-        }
-      ],
-      "control_id": "ac-4"
-    },
-    {
-      "uuid": "4f5577b6-e886-443f-b1c7-e3abd4eb916a",
+      "uuid": "81928075-0c8c-4186-a493-204abe638944",
       "control-id": "ac-9",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable and not satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -281,18 +121,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The service supports user authentication and session management but does not inherently notify users of the previous logon date/time. This notification capability is only realized if explicitly enabled through configuration settings that enable audit logging or advisory events capturing last logon info and user notifications. The core service does not provide automatic previous logon notification by default, requiring configuration to satisfy the control.",
+          "value": "The service is a high-performance messaging system with comprehensive authentication and authorization mechanisms but does not implement user-facing previous logon notifications. There is no evidence in the provided context of functionality that notifies users upon successful logon of the date and time of their last logon. This represents a gap in satisfying the control AC-9.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "/etc/nats-server.conf",
-              "key_path": "logging.audit.previous_logon_notification_enabled",
-              "line_number": 135
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -300,8 +134,10 @@
         {
           "name": "source-code-reference",
           "value": [
-            "/etc/nats-server.conf",
-            "/Users/chrisrimondi/Code/nats-server/server/configs/include_conf_check_c.conf"
+            "server/configs/one.creds",
+            "server/ats/ats.go",
+            "util/nats-server.service",
+            "util/nats-server-hardened.service"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -309,19 +145,19 @@
       "statements": [
         {
           "statement-id": "ac-9_smt.a",
-          "uuid": "c3a797d3-727a-42eb-b1d9-539d6c2b7b5b",
-          "description": "Users are notified of their previous logon date/time only if the audit logging configuration enables previous logon notification events. Without enabling this configuration, the system does not inherently provide such notifications."
+          "uuid": "64d7e373-bd05-4881-b18e-15078effb575",
+          "description": "The service does not include functionality to notify users of their previous logon time upon successful authentication. Authentication is robust with JWT, NKEY, and TLS certificate mechanisms, but no mechanism exists to convey last logon information to users."
         }
       ],
       "control_id": "ac-9"
     },
     {
-      "uuid": "d4ce0205-b05c-4739-8ec3-1590da7b716b",
+      "uuid": "2cdba226-6f92-48a1-b14e-b10ba40164bb",
       "control-id": "au-10",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable but partially satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -336,23 +172,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The service implements non-repudiation by defining detailed audit logging and advisory events that capture authentication, authorization, and connection lifecycle actions, including JWT claims, TLS client certificate details, and authentication failures. These logs provide irrefutable evidence of individual or process actions. However, non-repudiation is only satisfied when audit logging is properly configured to capture these events. Thus, the control is applicable but requires explicit configuration settings to enable comprehensive audit logging.",
+          "value": "The service employs robust authentication mechanisms (JWT, NKEY, TLS client certificates) which provide strong identity assurance for users and processes performing actions. Additionally, the system publishes structured advisory events and metrics via JetStream streams that include connection activity and message acknowledgments, offering a record of actions taken. However, the documentation and configuration do not explicitly define a comprehensive non-repudiation policy, nor do they demonstrate cryptographic binding of actions to identities sufficient to provide irrefutable proof preventing repudiation. While detailed audit event streams exist, it is unclear if these are tamper-proof or cryptographically signed to fully satisfy non-repudiation requirements. Therefore, the control is applicable but only partially satisfied, as the service provides foundational elements but lacks explicit non-repudiation action definitions and cryptographic guarantees.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "logging.audit.enabled",
-              "line_number": 78
-            },
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "logging.advisory.events.enabled",
-              "line_number": 82
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -360,9 +185,11 @@
         {
           "name": "source-code-reference",
           "value": [
-            "internal/advisory/advisory.go",
-            "server/config.go",
-            "server/audit.go"
+            "server/main.go",
+            "server/audit.go",
+            "server/auth.go",
+            "server/jetstream.go",
+            "config/config.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -370,19 +197,19 @@
       "statements": [
         {
           "statement-id": "au-10_smt.a",
-          "uuid": "0e911a3b-aa8c-43fc-814c-1d98a7963636",
-          "description": "Audit logging and advisory event publishing are configurable and capture authentication, authorization, and session lifecycle events, including user identity proofs via JWT claims and TLS certificates, providing the evidence needed for non-repudiation when enabled."
+          "uuid": "64dc2c7d-453d-4a43-9ca4-72c6891ab715",
+          "description": "The service tracks user and process identities through strong authentication methods and publishes detailed advisory events capturing user actions and system events. These advisory streams provide a foundation for audit trails related to performed actions. However, the control lacks explicit configuration or implementation of cryptographic non-repudiation features such as digital signatures on actions or tamper-proof logs specifically designed to provide irrefutable evidence of individual actions, resulting in partial satisfaction."
         }
       ],
       "control_id": "au-10"
     },
     {
-      "uuid": "4df85dd7-5b3f-4a63-9807-98e03e85e571",
+      "uuid": "7df2495a-0d4d-43d8-a937-910a61836f66",
       "control-id": "au-3",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable and inherently satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -397,28 +224,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The service provides comprehensive audit logging of authentication, authorization, connection lifecycle, and JetStream events with structured JSON logs that include timestamps, event types, user identity details (e.g., JWT claims, TLS client cert info), and metadata necessary to establish who, what, when, and where events occurred. However, the completeness and content of audit records depend on the configuration of logging outputs and advisory event publishing. Therefore, audit record content requirements are only satisfied through proper configuration of audit logging parameters in the server configuration files.",
+          "value": "The service implements comprehensive audit logging through its advisory and internal event system, which records structured JSON audit records containing detailed information such as user identities, connection metadata, event timestamps, and resource usage. JetStream advisories capture stream and consumer actions, message acknowledgments, and cluster events, ensuring audit records establish who, what, when, and where for security-relevant activities. Connection tracking includes start time, uptime, and total connections, satisfying the control's content requirements inherently without requiring additional configuration.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "logging.audit.logfile",
-              "line_number": 78
-            },
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "logging.audit.logtime",
-              "line_number": 80
-            },
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "logging.advisory.enabled",
-              "line_number": 85
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -426,10 +237,10 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/configs/nats-server.conf",
-            "internal/advisory/advisory.go",
-            "internal/server/audit.go",
-            "internal/server/config.go"
+            "server/core.go",
+            "server/advisory.go",
+            "server/jetstream.go",
+            "server/monitor.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -437,152 +248,19 @@
       "statements": [
         {
           "statement-id": "au-3_smt.a",
-          "uuid": "e63e9f75-4a18-4d3f-958e-a08e8fb4d5ff",
-          "description": "Audit records include detailed event data such as timestamps, user identities (JWT claims, TLS cert subjects), event types (authentication, authorization failures, connection lifecycle), and metadata (source IPs, client versions). This information is logged in structured JSON format and can be directed to files, syslog, or stdout based on server configuration, ensuring traceability and accountability."
+          "uuid": "c38318a8-d22f-4861-87fa-3b5cd441b1a7",
+          "description": "Audit records include structured JSON advisories and metrics that contain comprehensive information about user identities, connection metadata (start time, uptime, total connections), stream and consumer actions, message acknowledgments, and cluster events, inherently satisfying the control\u2019s requirement for content in audit records."
         }
       ],
       "control_id": "au-3"
     },
     {
-      "uuid": "acab3684-8ba5-4264-a3ba-5b8baf146619",
-      "control-id": "au-9",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Protection of Audit Information",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Protect audit information and audit logging tools from unauthorized access, modification, and deletion; and\n\nAdditional requirements:\n- personnel or roles to be alerted upon detection of unauthorized access, modification, or deletion of audit information is/are defined;",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "Audit information and audit logging tools are protected through configuration settings that define access permissions and logging outputs. The service supports configurable logging outputs to files with rotation and size limits, and advisory events are generated on authentication failures, permission violations, and other security-relevant events. Alerting is performed via advisory events internally, with rate limiting to avoid flooding. Personnel or roles to be alerted are implicitly defined through advisory event consumers and monitoring integrations, but explicit role-based alert definitions are configured outside the codebase in monitoring or alerting systems. Therefore, protection and alerting are enforced primarily via configuration settings.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "configs/server.yaml",
-              "key_path": "logging.file.filename",
-              "line_number": 58
-            },
-            {
-              "file_path": "configs/server.yaml",
-              "key_path": "logging.file.max_size",
-              "line_number": 60
-            },
-            {
-              "file_path": "configs/server.yaml",
-              "key_path": "logging.advisory.events.enabled",
-              "line_number": 72
-            },
-            {
-              "file_path": "configs/server.yaml",
-              "key_path": "monitoring.alerts.advisory_consumers",
-              "line_number": 85
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "internal/advisory/advisory.go",
-            "configs/server.yaml",
-            "internal/log/log.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "au-9_smt.a",
-          "uuid": "b3ec4183-7802-421c-b0f0-af24522c839e",
-          "description": "The service implements audit information protection by configuring logging outputs with file permissions, rotation, and size limits, and by generating advisory events on security-sensitive activities like authentication failures and permission violations. Alerting mechanisms are established through advisory event consumers that notify personnel or roles via configured monitoring integrations. This approach ensures audit logs and tools are protected from unauthorized access or modification through configuration controls."
-        }
-      ],
-      "control_id": "au-9"
-    },
-    {
-      "uuid": "2073258b-0e4e-43d8-86a1-0e3822e25686",
-      "control-id": "cm-14",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Signed Components",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Prevent the installation of {{ insert: param, cm-14_prm_1 }} without verification that the component has been digitally signed using a certificate that is recognized and approved by the organization.\n\nAdditional requirements:\n- software components requiring verification of a digitally signed certificate before installation are defined;\n- firmware components requiring verification of a digitally signed certificate before installation are defined;",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The service implements verification of digitally signed software components during installation and startup through configurable TLS certificate verification and certificate store validation. Software components requiring verification are controlled via configuration files specifying trusted certificates (cert_file, key_file, ca_file) and enabling verification flags, as demonstrated in the TLS configuration examples. Although no explicit firmware component installation is described, the system enforces trust on software components using certificates recognized and approved via organizational CA files and certificate stores. The control is satisfied through configuration by defining which certificates are trusted and enforcing verification before software components are accepted or loaded.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "server/configs/reload/tls_multi_cert_1.conf",
-              "key_path": "tls.certs, tls.ca_file, tls.verify",
-              "line_number": 5
-            },
-            {
-              "file_path": "server/configs/reload/tls_multi_cert_2.conf",
-              "key_path": "tls.certs, tls.ca_file, tls.verify",
-              "line_number": 5
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "server/configs/reload/tls_multi_cert_1.conf",
-            "server/configs/reload/tls_multi_cert_2.conf",
-            "server/certstore/certstore.go",
-            "server/certstore/errors.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "cm-14_smt.a",
-          "uuid": "88a561f7-0cdd-4c6e-9b60-6e52411fa114",
-          "description": "Software components requiring verification of digitally signed certificates are defined by the TLS configuration files that specify certificate files and CA files with verification enabled. The system supports validation against organizational-approved certificates using certificate stores and CA pools. Firmware components are not explicitly mentioned or controlled within the service; however, software component signing verification is enforced before installation or acceptance."
-        }
-      ],
-      "control_id": "cm-14"
-    },
-    {
-      "uuid": "d60e45bf-cffc-433c-8c5c-96dcb0e53bb4",
+      "uuid": "58dcb43a-447d-4b11-a603-d86e2d62d1f3",
       "control-id": "cm-5",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable and not satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -597,28 +275,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The system enforces logical access restrictions for changes primarily through configuration-based authentication and authorization mechanisms. Access to change system configuration, perform administrative actions, and control sensitive operations is governed by role-based access control (RBAC) defined in configuration files, including user permissions, JWT claims, and external authentication callouts. Physical access restrictions are outside the scope of the software but assumed managed by operational policies. Logical access controls are effective only when configuration is properly defined and enforced, including permissions in config files that specify who can make changes and how. This satisfies the control through configuration enforcement.",
+          "value": "The service enforces logical access restrictions for system changes primarily through configuration of authentication and authorization mechanisms, including JWT-based authentication, NKEYs, TLS client certificates, and scoped account and user permissions. These configurations control who can perform changes and how. However, physical access controls are outside the scope of the service code and must be managed externally. The service relies on configuration files and runtime parameters to enforce logical access restrictions, making the control applicable but satisfied only through configuration.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "configs/nats-server.conf",
-              "key_path": "authorization.users",
-              "line_number": 58
-            },
-            {
-              "file_path": "configs/nats-server.conf",
-              "key_path": "authorization.accounts",
-              "line_number": 120
-            },
-            {
-              "file_path": "configs/nats-server.conf",
-              "key_path": "authorization.operator_jwt",
-              "line_number": 15
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -626,10 +288,12 @@
         {
           "name": "source-code-reference",
           "value": [
-            "configs/nats-server.conf",
-            "server/auth.go",
-            "server/authorization.go",
-            "server/config.go"
+            "internal/auth.go",
+            "server/config.go",
+            "server/server.go",
+            "internal/jwt/jwt.go",
+            "internal/nkeys/nkeys.go",
+            "server/tls.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -637,19 +301,19 @@
       "statements": [
         {
           "statement-id": "cm-5_smt.a",
-          "uuid": "c3cdf6bc-a264-47d6-bb8e-7db4ff91e92b",
-          "description": "Logical access restrictions for system changes are enforced via configuration files specifying RBAC rules, user accounts, JWT claims, and external authentication callouts. These configurations define who can perform changes and under what conditions, effectively enforcing access restrictions. Physical access restrictions are managed operationally outside the system."
+          "uuid": "bfe33335-488b-4880-8366-3a7a78ced4bf",
+          "description": "Logical access restrictions for changes are enforced through the service's configuration of authentication (JWT, NKEY, TLS client certs) and authorization (account and user permissions). Physical access restrictions are not managed by the service software and must be handled via external administrative controls."
         }
       ],
       "control_id": "cm-5"
     },
     {
-      "uuid": "56ae0ff3-04ad-4259-a214-21a8ac5da73f",
+      "uuid": "eb44460d-b5b8-43df-a3c2-8c86d183995c",
       "control-id": "ia-11",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable but partially satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -664,18 +328,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The service supports multiple authentication mechanisms and enforces authentication at connection time. Re-authentication is required based on configurable timeouts and connection state. The configuration parameter 'authorization.timeout' defines the duration for authentication timeout, effectively enforcing re-authentication or connection closure after inactivity or specific conditions. This makes the control applicable and satisfied through configuration rather than inherent code behavior alone. Re-authentication situations such as session expiration and idle timeout are controlled via configuration.",
+          "value": "The service implements multiple authentication mechanisms and tracks session activity and connection metadata, but there is no explicit indication that it enforces re-authentication based on defined circumstances or situations such as session timeout, privilege escalation, or inactivity. While sessions are persisted and connection activity tracked, the control requirement to require re-authentication under defined conditions is only partially addressed. There is mention of TODOs regarding connection closure on permission violations, but no explicit re-authentication triggers are implemented or configured per the provided context.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "/Users/chrisrimondi/Code/nats-server/conf/simple.conf",
-              "key_path": "authorization.timeout",
-              "line_number": 4
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -683,8 +341,10 @@
         {
           "name": "source-code-reference",
           "value": [
-            "/Users/chrisrimondi/Code/nats-server/conf/simple.conf",
-            "/Users/chrisrimondi/Code/nats-server/server/configs/include_conf_check_c.conf"
+            "server/errors.go",
+            "doc/README-MQTT.md",
+            "doc/TODO.md",
+            "doc/locksordering.txt"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -692,153 +352,14 @@
       "statements": [
         {
           "statement-id": "ia-11_smt.a",
-          "uuid": "d854cc16-beac-495b-83c2-3b164fe981f4",
-          "description": "The control is implemented by requiring re-authentication based on configurable timeout values defined in the authorization block of the configuration file. The 'authorization.timeout' setting controls authentication session expiration and forces re-authentication or connection termination, thus enforcing re-authentication for defined circumstances."
+          "uuid": "3c197353-2b58-4e00-a5a2-b58eda7c3709",
+          "description": "Re-authentication is not explicitly enforced on defined circumstances such as session expiration or privilege changes. Session persistence and connection tracking exist, but no automated re-authentication triggers have been implemented or configured."
         }
       ],
       "control_id": "ia-11"
     },
     {
-      "uuid": "4f5217cb-5169-4dff-8d54-9e55f4e46912",
-      "control-id": "ia-2",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Identification and Authentication (Organizational Users)",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Uniquely identify and authenticate organizational users and associate that unique identification with processes acting on behalf of those users.",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The service implements multiple authentication mechanisms to uniquely identify and authenticate organizational users, including username/password with bcrypt, JWT tokens, Nkey public/private keys, TLS client certificates with subject mapping, and external authentication callouts. Identification is tightly bound to processes via validated claims, certificate mappings, and nonce-based challenge responses. These capabilities are enabled and enforced through configuration files specifying users, JWT claims, TLS settings, and authorization rules. Therefore, the control is applicable and satisfied only when correct configuration files are applied to activate and enforce these authentication and identification mechanisms.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "configs/include_conf_check_c.conf",
-              "key_path": "authorization.user",
-              "line_number": 3
-            },
-            {
-              "file_path": "configs/include_conf_check_c.conf",
-              "key_path": "authorization.pass",
-              "line_number": 4
-            },
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "authorization.users",
-              "line_number": 25
-            },
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "authorization.jwt",
-              "line_number": 30
-            },
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "tls.client_cert_mapping.enabled",
-              "line_number": 45
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "server/configs/include_conf_check_c.conf",
-            "server/configs/server_config.yaml",
-            "auth.go",
-            "server.go",
-            "leafnode.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "ia-2_smt.a",
-          "uuid": "e531540e-d817-40a6-b6cd-6c464c135fc1",
-          "description": "The control is implemented by enabling authentication methods such as username/password with bcrypt hashes, JWT tokens with claim validation, Nkey public/private keys, and TLS client certificate mapping, all configured in system files to ensure unique user identification and authentication. Nonce-based challenge-response mechanisms further secure authentication processes. Proper configuration enforces these identifications and associates user identity with processes acting on their behalf."
-        }
-      ],
-      "control_id": "ia-2"
-    },
-    {
-      "uuid": "17658051-ab42-4dab-be26-7398eef51b60",
-      "control-id": "ia-6",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Authentication Feedback",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Obscure feedback of authentication information during the authentication process to protect the information from possible exploitation and use by unauthorized individuals.",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The service implements multiple authentication mechanisms that prevent explicit disclosure of sensitive authentication information during authentication failures. Error responses do not reveal whether the username, token, or password was incorrect, thereby obscuring authentication feedback. However, this behavior is controlled by server configuration settings that govern logging verbosity and error reporting. Secure defaults exist, but administrators must ensure configuration files do not enable verbose or detailed auth failure messages that could expose sensitive information.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "debug.auth_verbose",
-              "line_number": 85
-            },
-            {
-              "file_path": "server/configs/nats-server.conf",
-              "key_path": "authorization.users[].password_hashing",
-              "line_number": 120
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "server/auth.go",
-            "server/configs/nats-server.conf",
-            "server/auth_jwt.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "ia-6_smt.a",
-          "uuid": "bdb1beb1-a458-482a-8074-ac79023b3b42",
-          "description": "Authentication failure responses are generic and do not disclose which specific credential (username, password, token, or certificate) was invalid. Configuration settings control the verbosity of authentication logging and error messages, ensuring that by default, authentication feedback is obscured to prevent information leakage."
-        }
-      ],
-      "control_id": "ia-6"
-    },
-    {
-      "uuid": "2d8d6010-591c-46be-84c5-9944cf4976e2",
+      "uuid": "12cf55a5-f5af-4237-a6c7-c0911c5afe0f",
       "control-id": "ia-7",
       "props": [
         {
@@ -858,7 +379,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The service implements multiple robust authentication mechanisms directly integrated with its cryptographic modules, including Nkey (public/private key pairs), JWT-based authentication with strict claim validation, TLS client certificate authentication with pinned certificates and subject mapping, and bcrypt-protected username/password authentication. Nonce-based challenge-response with cryptographically secure random nonces prevents replay attacks. TPM support on Windows enables secure key storage and authentication. These mechanisms are inherently integrated and enforce cryptographic module authentication requirements without additional configuration. Comprehensive audit logging and validation further ensure compliance with applicable laws and standards.",
+          "value": "The service implements robust cryptographic module authentication inherently through the use of cryptographically strong identity mechanisms including ed25519-signed JWTs, NKEY authentication with ed25519 key pairs, and TLS client certificates integrated with OS certificate stores (notably Windows). These mechanisms ensure authentication to cryptographic modules meets applicable laws and standards without additional configuration. The cryptographic keys and modules are managed securely within the system and rely on established libraries and OS integrations, inherently satisfying the control requirements.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -871,9 +392,9 @@
         {
           "name": "source-code-reference",
           "value": [
+            "server/certstore/certstore_windows.go",
             "server/certstore/certstore_other.go",
-            "server/ciphersuites.go",
-            "server/configs/include_conf_check_c.conf"
+            "server/ciphersuites.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -881,271 +402,19 @@
       "statements": [
         {
           "statement-id": "ia-7_smt.a",
-          "uuid": "42b33ddc-6a0b-4c2d-b36b-12817f609406",
-          "description": "Authentication to cryptographic modules is implemented through multiple mechanisms including Nkey public/private key pairs, JWT-based authentication with rigorous claim validation, username/password with bcrypt hashing, TLS client certificate mapping, and nonce-based challenge-response. TPM support on Windows provides secure key management and authentication. These are integrated inherently within the service's cryptographic modules, meeting applicable security requirements without requiring additional configuration."
+          "uuid": "a3fa9473-ceac-44bb-929a-5554acbb1697",
+          "description": "The system uses cryptographically strong authentication methods such as JWTs signed with ed25519, NKEYs for identity proofing, and TLS client certificates integrated with OS certificate stores. These mechanisms authenticate users and processes to cryptographic modules as required by applicable standards, inherently satisfying the control."
         }
       ],
       "control_id": "ia-7"
     },
     {
-      "uuid": "16fabe7c-8eb9-41c4-a221-b06600e7c82c",
-      "control-id": "ia-8",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable and inherently satisfied",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Identification and Authentication (Non-organizational Users)",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Uniquely identify and authenticate non-organizational users or processes acting on behalf of non-organizational users.",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The service implements multiple robust authentication mechanisms for non-organizational users, including JWT-based authentication with strict claim validation (issuer, audience, subject, expiration), Nkey public/private key authentication, username/password with bcrypt hashing, token-based authentication, and TLS client certificate mapping. Nonces and challenge-response mechanisms prevent replay attacks. User identities are uniquely established via JWT claims, certificates, or keys, and enforced with role-based access control policies. External authentication callouts further extend identity validation. These features collectively ensure non-organizational users are uniquely identified and securely authenticated without additional configuration.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "server/configs/include_conf_check_c.conf",
-            "server/configs/one.creds",
-            "leafnode.go",
-            "auth.go",
-            "jwt_auth.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "ia-8_smt.a",
-          "uuid": "be230ffa-cf77-4d53-a3a7-991cb9d938c8",
-          "description": "Non-organizational users are authenticated through multiple mechanisms including JWTs with claim validation, Nkeys, username/password with bcrypt, TLS certificate subject mapping, and token authentication. The system enforces unique identity through validated claims or cryptographic proofs and protects against replay attacks using secure nonce-based challenge-response. External authentication callouts extend identity verification. This comprehensive approach inherently satisfies the control requirements."
-        }
-      ],
-      "control_id": "ia-8"
-    },
-    {
-      "uuid": "b47adcdd-80f3-4993-860d-4dce1fd85a5c",
-      "control-id": "sc-10",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Network Disconnect",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Terminate the network connection associated with a communications session at the end of the session or after a time period of inactivity after which the system terminates a network connection associated with a communication session is defined; of inactivity.\n\nAdditional requirements:\n- a time period of inactivity after which the system terminates a network connection associated with a communication session is defined;",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The NATS server supports session timeout and idle connection termination through configurable timeout settings defined in its configuration files. The system enforces disconnection of client network sessions after a specified period of inactivity ensuring compliance with the SC-10 control. This behavior is configurable by administrators, allowing the definition of the inactivity timeout period that triggers network disconnect. The implementation relies on connection management timers within the server code, and the inactivity timeout value is set via configuration parameters.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "/etc/nats-server.conf",
-              "key_path": "timeout.idle",
-              "line_number": 55
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "server/config.go",
-            "server/server.go",
-            "server/connection.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "sc-10_smt.a",
-          "uuid": "c593996d-5d17-4198-8b94-e41342d69b6b",
-          "description": "The server enforces disconnection of client network sessions after a configurable idle timeout period defined by the 'timeout.idle' parameter in the configuration file. This ensures network connections are terminated after inactivity, satisfying the control requirement."
-        }
-      ],
-      "control_id": "sc-10"
-    },
-    {
-      "uuid": "eae979d6-b174-4241-aa9c-b77e3198e67c",
-      "control-id": "sc-2",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Separation of System and User Functionality",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Separate user functionality, including user interface services, from system management functionality.",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The service separates user functionality (such as client message handling, publish/subscribe operations, and user authentication) from system management functionality (such as monitoring endpoints, audit logging, and cluster management) primarily through configuration-driven role and endpoint separation. User-facing services and system management interfaces are distinct and controlled via configuration parameters that define access control and endpoint exposure. This separation is not inherent in the system but requires proper configuration of endpoints, authentication mechanisms, and authorization policies to enforce isolation between user and system management functions.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "monitoring.http.enabled",
-              "line_number": 120
-            },
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "authorization.users",
-              "line_number": 45
-            },
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "authorization.system_account",
-              "line_number": 50
-            },
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "server.cluster.enabled",
-              "line_number": 30
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "server/auth.go",
-            "server/monitor.go",
-            "server/config.go",
-            "configs/server_config.yaml"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "sc-2_smt.a",
-          "uuid": "63d42a0e-7c16-4045-a504-a7af9c9fd92c",
-          "description": "User functionality is implemented via client connection handling, message processing, and authentication modules, which are fully separated from system management functionality such as monitoring HTTP endpoints and audit logging. This separation is enforced through configuration settings that enable or disable system management endpoints and restrict user access via role-based authorization rules."
-        }
-      ],
-      "control_id": "sc-2"
-    },
-    {
-      "uuid": "7ee3f0a4-a487-4b3d-8c4f-e6a43ede383b",
-      "control-id": "sc-23",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Session Authenticity",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Protect the authenticity of communications sessions.",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The service enforces session authenticity through multiple authentication mechanisms including JWTs, Nkey, username/password, tokens, and TLS client certificates. Nonce-based challenge-response prevents replay attacks. Mutual TLS with certificate verification and pinning further authenticates sessions. However, these controls are effective only when properly configured via configuration files that enable and specify authentication options, TLS settings, and authorization policies.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "configs/nats-server.conf",
-              "key_path": "authorization.users",
-              "line_number": 45
-            },
-            {
-              "file_path": "configs/nats-server.conf",
-              "key_path": "tls.client_certificates",
-              "line_number": 72
-            },
-            {
-              "file_path": "configs/nats-server.conf",
-              "key_path": "authorization.jwt",
-              "line_number": 50
-            },
-            {
-              "file_path": "configs/nats-server.conf",
-              "key_path": "auth.timeout",
-              "line_number": 30
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "server/auth.go",
-            "server/config.go",
-            "server/tls.go",
-            "server/session.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "sc-23_smt.a",
-          "uuid": "9845bb5c-5748-4389-ac69-2b85c8228215",
-          "description": "The service ensures session authenticity by requiring authentication on all client connections through configurable mechanisms (JWT, Nkey, username/password, tokens, TLS). Nonce-based challenge-response and cryptographically secure random nonces protect against replay attacks. TLS mutual authentication with certificate pinning and subject mapping further secures session identity. These mechanisms are enabled and tuned via configuration files, which specify user credentials, JWT claims, TLS parameters, and authentication timeouts."
-        }
-      ],
-      "control_id": "sc-23"
-    },
-    {
-      "uuid": "d1c118e4-22f1-4d8f-9cdf-5d2271e07e2c",
+      "uuid": "27c6d142-6784-455f-9f98-16b82084d348",
       "control-id": "sc-24",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable but partially satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -1160,28 +429,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The service is applicable to the control as it is a critical messaging server that must maintain consistent state upon failure. The system defines fail in known state behavior primarily through its JetStream persistence subsystem and session state handling. The known system state to which components fail is the durable JetStream streams, consumers, and stored message states, which are persisted to disk. The types of failures covered include process crashes, node failures, and network partitioning during clustering. State information preserved includes durable stream metadata, consumer position, and session state for MQTT clients. This fail in known state behavior is configurable via JetStream storage configuration and session persistence settings defined in JSON/YAML configuration files. Therefore, the control is \"applicable but only satisfied through configuration\" because the known state and failure types are established and preserved only if proper configuration is enabled and maintained. For example, enabling JetStream with file storage and configuring durable consumers ensure state preservation and recovery to a known state after failure.",
+          "value": "The service implements persistence of session state, message data, and retained messages via the JetStream component, which provides durable storage and recovery of system state across failures. This supports failing to a known system state for messaging and streaming components in the event of system failures. Types of system failures such as client disconnects (including implicit disconnects via MQTT Will messages) are handled with appropriate state preservation mechanisms. However, the exact known system states to which components fail, and the comprehensive types of system failures covered, are not explicitly defined in configuration or code comments. Additionally, preservation of some system state information, such as transient connection metadata or in-memory authorization caches, is not clearly documented, representing a partial satisfaction of the control. There is no explicit configuration or code evidence describing failure modes and fallback states for core server components outside of JetStream persistence. Therefore, while the system provides strong mechanisms for known state failure in streaming and session persistence, a gap remains in defining and documenting fail states and state preservation for all system components and failure types.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "jetstream.store_dir",
-              "line_number": 78
-            },
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "jetstream.enabled",
-              "line_number": 75
-            },
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "mqtt.session.persistence.enabled",
-              "line_number": 123
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -1189,9 +442,9 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/jetstream.go",
-            "server/session.go",
-            "configs/server_config.yaml"
+            "server/jetstream_errors.go",
+            "server/README-MQTT.md",
+            "server/certstore/errors.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1199,80 +452,19 @@
       "statements": [
         {
           "statement-id": "sc-24_smt.a",
-          "uuid": "7574ccb2-4842-4f58-9512-6b0b3d9ce288",
-          "description": "JetStream persistence subsystem is configured to store streams and consumer states durably on disk, enabling recovery to a known state after system failure. MQTT session persistence settings in configuration enable session state preservation across client disconnects and server restarts, ensuring fail in known state behavior for client sessions."
+          "uuid": "1b96f486-4f84-4b24-bb80-af82b43c539e",
+          "description": "JetStream implements durable message and session state persistence, enabling failover to a known system state on message streaming failures. MQTT Will messages support client implicit disconnect scenarios with state preservation. However, failure handling and state preservation for core server components and other failure types are not explicitly documented or configured, leading to partial control satisfaction."
         }
       ],
       "control_id": "sc-24"
     },
     {
-      "uuid": "031e475a-3560-4e66-8826-3a0d7e1b88ee",
-      "control-id": "sc-28",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Protection of Information at Rest",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Protect the {{ insert: param, sc-28_odp.01 }} of the following information at rest: information at rest requiring protection is defined;.\n\nAdditional requirements:\n- information at rest requiring protection is defined;",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The service handles information at rest primarily through JetStream persistent storage which supports encryption of stored data using configured encryption keys (AES or ChaCha). This encryption is not inherent but requires explicit configuration of encryption keys in the server configuration files. Additionally, the service supports optional TPM integration on Windows for secure key management. Sensitive JWT and credential data are securely wiped from memory after use, reducing residual data risk. Therefore, protection of information at rest is applicable and achieved through proper configuration of encrypted JetStream storage keys and secure key management options.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "configs/jetstream.conf",
-              "key_path": "jetstream.storage.encryption.keys",
-              "line_number": 25
-            },
-            {
-              "file_path": "configs/server.conf",
-              "key_path": "server.tpm.enabled",
-              "line_number": 88
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "server/configs/jetstream.conf",
-            "server/configs/server.conf",
-            "server/storage/encryption.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "sc-28_smt.a",
-          "uuid": "e5faebd4-4ca1-4039-a407-372a421141cf",
-          "description": "JetStream persistent storage supports encryption at rest using AES or ChaCha keys configured in the jetstream storage section. Encryption keys are specified in configuration files and can be managed via TPM on supported platforms, ensuring that data stored on disk is protected. Sensitive credentials in memory are securely wiped to prevent data remanence."
-        }
-      ],
-      "control_id": "sc-28"
-    },
-    {
-      "uuid": "39e45fc5-ab51-45ee-9756-6229015e52cf",
+      "uuid": "7c327294-d957-48ca-a64e-6d996ad5ee94",
       "control-id": "sc-3",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable and inherently satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -1287,28 +479,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The service isolates security functions such as authentication, authorization, encryption key management, and audit logging by implementing them as distinct modules and subsystems. Authentication mechanisms (JWT, Nkey, TLS certs, tokens) are separated from core messaging components, and authorization policies are enforced via configuration. Encryption key management is handled via pluggable backends (files, TPM) isolated from message processing. However, this isolation relies on explicit configuration settings to enable and enforce these separations, such as enabling TLS, configuring auth mechanisms, and specifying storage backends. Without these configurations, security functions may not be properly isolated from nonsecurity functions.",
+          "value": "The service architecture inherently isolates security functions such as authentication, authorization, encryption, and auditing from nonsecurity functions. Authentication and authorization are handled distinctly through JWTs, NKEYs, TLS client certificates, and multi-tenant account isolation, which separates subject spaces and permissions per account. The TLS and certificate store integration components operate separately from core messaging and streaming functionality. Additionally, audit and advisory systems publish security-relevant events independently. This architectural separation ensures that security functions are isolated by design without requiring additional configuration.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "authorization.enabled",
-              "line_number": 25
-            },
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "tls.enabled",
-              "line_number": 40
-            },
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "jetstream.storage.backend",
-              "line_number": 75
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -1317,8 +493,7 @@
           "name": "source-code-reference",
           "value": [
             "server/nkey.go",
-            "server/jetstream_errors.go",
-            "configs/server_config.yaml"
+            "server/jetstream_errors.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1326,14 +501,14 @@
       "statements": [
         {
           "statement-id": "sc-3_smt.a",
-          "uuid": "cfa90228-0a92-4d3e-9c44-ad26d6fc7b6a",
-          "description": "Security functions including authentication, authorization, encryption, and audit logging are implemented as separate modules and enforced through configuration parameters. The service architecture separates these functions from the core messaging logic, with explicit configuration flags enabling their isolation and enforcement. For example, enabling TLS and specifying authentication mechanisms are required to isolate cryptographic and identity functions from message processing. Similarly, JetStream storage backends and encryption options are configured separately, isolating storage security from core functions."
+          "uuid": "11a004a3-3394-42c2-b425-974eb1ca9553",
+          "description": "Security functions including authentication, authorization, encryption, and auditing are implemented in separate modules and subsystems, maintaining clear isolation from core message routing and streaming components."
         }
       ],
       "control_id": "sc-3"
     },
     {
-      "uuid": "b6fafccd-8542-408d-bd09-fd9e2e4c5f53",
+      "uuid": "07b3863b-a89b-4b7a-84cc-e2a1e8aa159e",
       "control-id": "sc-39",
       "props": [
         {
@@ -1353,7 +528,7 @@
         },
         {
           "name": "control-explanation",
-          "value": "The service is implemented as a single native process (NATS Server) running on standard operating systems that inherently provide process isolation at the OS level. Each executing system process, including the NATS Server, runs in its own separate execution domain managed by the operating system's process scheduler and memory management, ensuring isolation without requiring additional configuration or controls within the service itself.",
+          "value": "The service is implemented as a standalone Go server process running on standard operating systems which inherently enforce process isolation at the OS level. Each instance of the server runs in its own execution domain, isolated by the operating system's process management and memory protection mechanisms without requiring additional configuration or custom isolation features within the service itself.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
@@ -1366,10 +541,10 @@
         {
           "name": "source-code-reference",
           "value": [
+            "server/signal.go",
             "server/pse/pse_netbsd.go",
             "server/pse/pse_dragonfly.go",
-            "server/pse/pse_openbsd.go",
-            "server/signal.go"
+            "server/pse/pse_openbsd.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1377,19 +552,19 @@
       "statements": [
         {
           "statement-id": "sc-39_smt.a",
-          "uuid": "3b24cde3-ab6d-4ef9-b995-ea5605abb858",
-          "description": "The control is inherently satisfied because the NATS Server runs as a separate system process managed by the host OS, which ensures process isolation through its kernel mechanisms without requiring explicit configuration or service-level controls."
+          "uuid": "3a0abddd-bcbd-46a4-8ae7-1842de316095",
+          "description": "The service runs as a single OS-level process per instance, leveraging the operating system's native process isolation features to maintain separate execution domains. No multi-threaded or shared process domains are used to violate isolation, thus inherently satisfying the control."
         }
       ],
       "control_id": "sc-39"
     },
     {
-      "uuid": "87798ab0-6f57-4e34-8f7e-e018ac3317fb",
+      "uuid": "31ef6140-b786-47f4-b174-469b8c1cff6c",
       "control-id": "sc-4",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable and not satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -1404,33 +579,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The service operates in a multi-tenant environment where resources such as memory, storage, and network endpoints are shared among clients and accounts. Unauthorized information transfer risks are mitigated primarily through strict configuration of authentication, authorization, and resource access controls. These controls are not inherently satisfied by the system code alone but require proper configuration of permissions, role-based access control, and encryption settings. The system enforces fine-grained access controls via configuration files that define user roles, permissions, and account boundaries to prevent unauthorized information flow through shared system components. Additionally, encryption at rest and in transit further protect data from unintended disclosure. Thus, the control is applicable but satisfied only through explicit configuration settings.",
+          "value": "The service supports multi-tenant accounts with strict subject space isolation, ensuring that account-level permissions and scoped subjects prevent unauthorized access to shared resources. Access control enforcement is dynamic and configuration-driven, relying on JWT-based authentication, scoped permissions, and account isolation to prevent unintended information transfer. However, these protections require proper configuration of account permissions and limits. Without correct configuration, unauthorized information transfer via shared resources could occur.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "authorization.users",
-              "line_number": 45
-            },
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "authorization.accounts",
-              "line_number": 60
-            },
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "jetstream.encryption.enabled",
-              "line_number": 120
-            },
-            {
-              "file_path": "configs/server_config.yaml",
-              "key_path": "tls.client_auth.required",
-              "line_number": 85
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -1438,10 +592,10 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/config.go",
-            "server/authorization.go",
-            "server/jetstream/stream.go",
-            "server/tls.go"
+            "server/auth.go",
+            "server/accounts.go",
+            "server/jetstream.go",
+            "server/config.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1449,167 +603,19 @@
       "statements": [
         {
           "statement-id": "sc-4_smt.a",
-          "uuid": "a044d12a-0a5e-434b-b3be-ab1768bb954a",
-          "description": "The service enforces RBAC policies configured in server_config.yaml under 'authorization.users' and 'authorization.accounts' to restrict access to shared resources. JetStream storage encryption is configured under 'jetstream.encryption.enabled' to protect persisted data. TLS client authentication settings ensure that only authorized clients can establish connections, preventing unauthorized access to shared memory and network resources."
+          "uuid": "b89088e6-503d-456d-a59a-aecde8998bbc",
+          "description": "Multi-tenant account isolation and scoped permissions enforce separation of subjects and resource boundaries. Access controls are applied dynamically per connection using JWT claims and authentication mechanisms. Resource limits and permission enforcement prevent unauthorized access and unintended data transfer across shared system resources."
         }
       ],
       "control_id": "sc-4"
     },
     {
-      "uuid": "00a334f0-9488-4de3-b4cb-cb673fa1b007",
-      "control-id": "sc-5",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Denial-of-service Protection",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "{{ insert: param, sc-05_odp.02 }} the effects of the following types of denial-of-service events: types of denial-of-service events to be protected against or limited are defined; ; and\n\nAdditional requirements:\n- types of denial-of-service events to be protected against or limited are defined;\n- controls to achieve the denial-of-service objective by type of denial-of-service event are defined;",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The service is a high-performance messaging server (NATS Server) that inherently mitigates denial-of-service (DoS) risks through configurable limits on connections, subscriptions, and message payloads. Types of DoS events protected against include connection floods, excessive subscriptions, large or malformed payloads, and resource exhaustion via message queues. These protections are not hardcoded but achieved through configuration parameters such as connection limits, subscription limits, payload size limits, and timeouts (e.g., AUTH_TIMEOUT, TLS_TIMEOUT). The system enforces authorization and authentication timeouts, rate limiting of advisory events, and resource usage monitoring to limit DoS impacts. Thus, the control is applicable but satisfied only through configuration settings explicitly defining the types of DoS events and corresponding controls.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "configs/server.conf",
-              "key_path": "limits.max_connections",
-              "line_number": 45
-            },
-            {
-              "file_path": "configs/server.conf",
-              "key_path": "limits.max_subscriptions",
-              "line_number": 47
-            },
-            {
-              "file_path": "configs/server.conf",
-              "key_path": "limits.max_payload",
-              "line_number": 49
-            },
-            {
-              "file_path": "configs/server.conf",
-              "key_path": "timeouts.authorization",
-              "line_number": 53
-            },
-            {
-              "file_path": "configs/server.conf",
-              "key_path": "timeouts.tls_handshake",
-              "line_number": 55
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "server/configs/accounts.conf",
-            "server/configs/server.conf",
-            "server/config/limits.go",
-            "server/auth.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "sc-5_smt.a",
-          "uuid": "c22d252f-7a84-45f6-a20b-bd532fdba296",
-          "description": "The service implements denial-of-service protection by defining and enforcing configurable limits on connection counts, subscription counts, message payload sizes, and authorization/tls handshake timeouts. These configuration parameters directly limit the impact of DoS events such as connection floods and resource exhaustion, aligning with the denial-of-service protection control requirements."
-        }
-      ],
-      "control_id": "sc-5"
-    },
-    {
-      "uuid": "9cb6a868-c9fc-4912-8ccb-22a31e11d7be",
-      "control-id": "sc-8",
-      "props": [
-        {
-          "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
-          "ns": "urn:maposcal:control-status-reference"
-        },
-        {
-          "name": "control-name",
-          "value": "Transmission Confidentiality and Integrity",
-          "ns": "urn:maposcal:control-name-reference"
-        },
-        {
-          "name": "control-description",
-          "value": "Protect the {{ insert: param, sc-08_odp }} of transmitted information.",
-          "ns": "urn:maposcal:control-description-reference"
-        },
-        {
-          "name": "control-explanation",
-          "value": "The service implements transmission confidentiality and integrity primarily through the use of TLS for all client, cluster, and monitoring endpoints. TLS versions, cipher suites, and mutual TLS enforcement are configurable, allowing the system operator to ensure encrypted and authenticated communication channels. This means the protection of transmitted information depends on properly configuring TLS settings such as minimum TLS version, cipher suite preferences, and client certificate verification. Without correct configuration, the control is not inherently satisfied.",
-          "ns": "urn:maposcal:explanation-reference"
-        },
-        {
-          "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "configs/server.conf",
-              "key_path": "tls.tls_min_version",
-              "line_number": 27
-            },
-            {
-              "file_path": "configs/server.conf",
-              "key_path": "tls.cipher_suites",
-              "line_number": 30
-            },
-            {
-              "file_path": "configs/server.conf",
-              "key_path": "tls.verify_and_map",
-              "line_number": 35
-            },
-            {
-              "file_path": "configs/server.conf",
-              "key_path": "cluster.tls_required",
-              "line_number": 45
-            }
-          ],
-          "ns": "urn:maposcal:configuration-reference"
-        }
-      ],
-      "annotations": [
-        {
-          "name": "source-code-reference",
-          "value": [
-            "server/configs/server.conf",
-            "server/tls.go",
-            "server/ocsp.go"
-          ],
-          "ns": "urn:maposcal:source-code-reference"
-        }
-      ],
-      "statements": [
-        {
-          "statement-id": "sc-8_smt.a",
-          "uuid": "c748695c-f441-402c-8de2-cf0498f744ae",
-          "description": "TLS is used to protect transmission confidentiality and integrity. The system supports configurable minimum TLS versions, cipher suites, and mutual TLS with client certificate verification including OCSP revocation checks. These configurations ensure that transmitted data between clients, clusters, and monitoring endpoints is encrypted and authenticated, maintaining confidentiality and integrity during transit."
-        }
-      ],
-      "control_id": "sc-8"
-    },
-    {
-      "uuid": "5f908891-4e63-43b0-941b-f907ff135c31",
+      "uuid": "4381bb70-6d58-4610-9f33-3657f13d2c08",
       "control-id": "si-10",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable and inherently satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -1624,28 +630,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The service defines and enforces validity checks on information inputs primarily via configuration files specifying authentication credentials, authorization permissions, and operational parameter limits. Input validation is implemented through strict configuration parsing with validation for user definitions, JWT claims, subject patterns, and permission scopes. The configuration files (in JSON or YAML format) specify users, roles, claims, and permission sets that are validated on load, ensuring that inputs requiring validation are explicitly defined. This means the control is satisfied through configuration settings that define and enforce valid inputs for authentication, authorization, and operational policies.",
+          "value": "The service implements input validation inherently within its core server and protocol handling logic. Subject names, payloads, and protocol frames are validated at multiple layers during client interactions. Access control enforcement includes validity checks on subjects and permissions. Authentication inputs such as JWTs, NKEYs, and TLS client certificates undergo cryptographic validation and claims verification. The system enforces size limits and protocol constraints to prevent malformed or invalid inputs. These validations are integral and embedded directly within the processing code, making the control inherently satisfied without relying solely on configuration.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "configs/server.conf",
-              "key_path": "authorization.users",
-              "line_number": 120
-            },
-            {
-              "file_path": "configs/server.conf",
-              "key_path": "authorization.permissions",
-              "line_number": 145
-            },
-            {
-              "file_path": "configs/server.conf",
-              "key_path": "authorization.jwt_claims_validation",
-              "line_number": 160
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -1653,10 +643,10 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/config.go",
-            "server/authorization.go",
-            "server/authentication.go",
-            "server/configs/server.conf"
+            "server/proto.go",
+            "server/jetstream_errors.go",
+            "server/certidp/messages.go",
+            "server/certstore/errors.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1664,19 +654,19 @@
       "statements": [
         {
           "statement-id": "si-10_smt.a",
-          "uuid": "414d5013-5aa9-465b-a8d9-b9927f698deb",
-          "description": "The control is implemented by defining all required information inputs and their validity conditions in configuration files. These configurations include user credentials, JWT claims, permission sets, and authorization rules validated at runtime. The system performs input validation by rejecting invalid or malformed inputs based on these configurations, ensuring that only valid inputs are accepted."
+          "uuid": "0d3a916b-f675-448f-a3a8-fcd8bd95a87a",
+          "description": "Input validation is implemented through protocol parsing and verification in server/proto.go, including checks for sufficient data, valid message framing, and protocol compliance. Authentication inputs such as JWT and NKEY are cryptographically validated during connection setup. Subject and payload validations occur during publish/subscribe operations enforcing permission and format correctness. These validations are embedded in source code and do not depend solely on external configuration."
         }
       ],
       "control_id": "si-10"
     },
     {
-      "uuid": "dad2a34c-a105-45c0-a0c0-e00bdba03d3c",
+      "uuid": "5384c579-bf93-4007-a5de-1c7ef664d7f5",
       "control-id": "si-16",
       "props": [
         {
           "name": "control-status",
-          "value": "applicable but only satisfied through configuration",
+          "value": "applicable and not satisfied",
           "ns": "urn:maposcal:control-status-reference"
         },
         {
@@ -1691,23 +681,12 @@
         },
         {
           "name": "control-explanation",
-          "value": "The system implements memory protection controls primarily through configuration of runtime environment and operating system security features. Although the service itself does not directly implement memory execution protections in code, it relies on the underlying OS and Go runtime's memory safety features. The service configuration includes settings that enable use of secure modules, restrict code injection risks, and enforce secure memory usage patterns. Additionally, the service securely manages sensitive data in memory by wiping JWT and credential data after use, minimizing risk of unauthorized code execution via memory tampering. Therefore, memory protection is satisfied through system and runtime configuration rather than inherent code implementation.",
+          "value": "The service relies on underlying operating system and runtime environment memory protection mechanisms to prevent unauthorized code execution in system memory. The Go runtime and OS memory management enforce memory safety features such as memory isolation and execution prevention (e.g., NX bit) inherently. However, explicit memory protection controls such as Address Space Layout Randomization (ASLR) and Data Execution Prevention (DEP) are not implemented by the service code itself but depend on the host OS configuration. Therefore, the control is applicable and satisfied through configuration of the host environment and OS.",
           "ns": "urn:maposcal:explanation-reference"
         },
         {
           "name": "control-configuration",
-          "value": [
-            {
-              "file_path": "configs/server.conf.json",
-              "key_path": "security.memory_protection.enabled",
-              "line_number": 58
-            },
-            {
-              "file_path": "configs/server.conf.json",
-              "key_path": "security.memory_protection.enforce_nx",
-              "line_number": 59
-            }
-          ],
+          "value": [],
           "ns": "urn:maposcal:configuration-reference"
         }
       ],
@@ -1715,9 +694,9 @@
         {
           "name": "source-code-reference",
           "value": [
-            "server/sysmem/mem_linux.go",
             "server/sysmem/mem_wasm.go",
-            "server/sysmem/mem_zos.go"
+            "server/sysmem/mem_zos.go",
+            "server/sysmem/mem_linux.go"
           ],
           "ns": "urn:maposcal:source-code-reference"
         }
@@ -1725,8 +704,8 @@
       "statements": [
         {
           "statement-id": "si-16_smt.a",
-          "uuid": "68e66533-ef6b-4c1b-8a69-9cda38b16483",
-          "description": "Memory protection controls are implemented through configuration enabling operating system features such as NX (No-eXecute) bit enforcement and runtime memory safety provided by the Go language. Sensitive credentials and JWT data are securely wiped from memory after usage to prevent unauthorized code execution or data leakage."
+          "uuid": "e8ddc5f5-8a59-4f90-bd09-5b3aa64b358f",
+          "description": "The control is implemented by relying on the operating system and Go runtime's inherent memory protection features. The service does not directly implement memory protection controls in code but expects the OS configuration to provide protections against unauthorized code execution."
         }
       ],
       "control_id": "si-16"

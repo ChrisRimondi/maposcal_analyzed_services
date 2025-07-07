@@ -1,174 +1,55 @@
 {
   "evaluation_results": [
     {
-      "control-id": "sc-1",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 1,
-        "overall_consistency": 2
-      },
-      "total_score": 7,
-      "justifications": {
-        "status_alignment": "The control-status 'applicable but partially satisfied' aligns well with the explanation that policy management is supported organizationally but lacks explicit, automated enforcement in configuration files, accurately reflecting partial satisfaction.",
-        "explanation_quality": "The explanation is clear, detailed, and grounded in the specifics of the MinIO service implementation, explicitly describing what is present and absent in terms of policy documentation, roles, and review processes.",
-        "configuration_support": "The control-configuration section is empty, which is valid given the explanation that explicit configuration items for dissemination and review frequencies do not exist; however, referencing some configuration files without specifying excerpts or settings weakens the support somewhat.",
-        "overall_consistency": "All parts\u2014the status, explanation, configuration, and statement\u2014coherently reinforce each other without contradictions, consistently portraying partial implementation with organizational reliance rather than automated configuration."
-      },
-      "recommendation": "Include specific excerpts or examples from the referenced configuration files (e.g., iam/policy.json or config.yaml) that demonstrate how roles or versioning are implemented to strengthen configuration support. Additionally, clarify in the explanation or statement that the lack of explicit configuration is the reason for partial satisfaction to maintain transparency."
-    },
-    {
-      "control-id": "sc-2",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 0,
-        "overall_consistency": 2
-      },
-      "total_score": 6,
-      "justifications": {
-        "status_alignment": "The status 'applicable and inherently satisfied' is appropriate because the explanation clearly states that the architectural separation inherently satisfies the control, requiring no additional configuration.",
-        "explanation_quality": "The explanation is detailed, clearly describing how separation is achieved via distinct subsystems and interfaces, and grounding the rationale in specific architectural features and authentication methods.",
-        "configuration_support": "No configuration is provided; while the control is inherently satisfied, some minimal configuration references (e.g., specific settings in configmap.yaml) could reinforce the explanation, but currently the configuration section is empty.",
-        "overall_consistency": "All parts\u2014status, explanation, and statement\u2014align well without contradictions, consistently describing the architectural separation as the basis for inherent satisfaction."
-      },
-      "recommendation": "Add minimal configuration details or references to configuration parameters in configmap.yaml that support or enforce the separation, even if inherent, to strengthen evidence. This will improve traceability and provide concrete validation beyond architectural description."
-    },
-    {
       "control-id": "sc-3",
       "scores": {
         "status_alignment": 2,
         "explanation_quality": 2,
-        "configuration_support": 1,
-        "overall_consistency": 2
-      },
-      "total_score": 7,
-      "justifications": {
-        "status_alignment": "The control-status 'applicable and inherently satisfied' correctly aligns with the explanation that the isolation is achieved inherently by the software architecture without requiring additional configuration.",
-        "explanation_quality": "The explanation clearly describes the modular architecture and separation of security functions from nonsecurity functions, providing a sound rationale grounded in the design.",
-        "configuration_support": "No configuration is provided or required to satisfy this control, which is consistent with the 'inherently satisfied' status, but the empty array could be more explicitly justified or documented to improve clarity.",
-        "overall_consistency": "All parts\u2014the status, explanation, configuration (empty), and statement\u2014consistently reinforce the notion that security function isolation is inherent and does not require configuration, with no contradictions."
-      },
-      "recommendation": "Include a brief note or comment explicitly stating that no configuration is needed due to the inherent design, to clarify why the control-configuration is empty and to strengthen the rationale for the 'inherently satisfied' status."
-    },
-    {
-      "control-id": "sc-4",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 1,
-        "overall_consistency": 2
-      },
-      "total_score": 7,
-      "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' aligns well with the explanation and statement emphasizing the control is met via configuration settings like IAM policies and encryption.",
-        "explanation_quality": "The explanation clearly describes the context of shared resources, the risks, and how the control is addressed through specific configuration mechanisms, showing a good understanding and accurate grounding in the implementation.",
-        "configuration_support": "The configuration references key files and relevant parameters related to IAM policies and encryption, but some key paths (e.g., 'identity_ldap.enable') seem only tangentially related to preventing information leakage via shared resources and lack detail on isolation settings; more precise and descriptive config evidence would strengthen this.",
-        "overall_consistency": "All parts\u2014the status, explanation, configuration references, and statement\u2014are coherent and mutually reinforcing without contradictions."
-      },
-      "recommendation": "Enhance the configuration references by including more precise and explicit configuration settings that directly relate to isolation and enforcement mechanisms preventing information leakage, and clarify the role of each referenced configuration item in the control's implementation."
-    },
-    {
-      "control-id": "sc-5",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
         "configuration_support": 2,
         "overall_consistency": 2
       },
       "total_score": 8,
       "justifications": {
-        "status_alignment": "The control status 'applicable but only satisfied through configuration' precisely matches the explanation that MinIO relies on configuration settings to enforce DoS protections and does not include inherent network-level protections.",
-        "explanation_quality": "The explanation is clear, detailed, and accurately describes how denial-of-service protections are implemented, specifying which attack types are covered and the reliance on configuration files, aligning well with the control description.",
-        "configuration_support": "The configuration references are specific, correct, and valid, pointing to exact YAML file locations and keys that control connection limits and timeouts, which directly support the stated mitigation strategies.",
-        "overall_consistency": "All parts\u2014status, explanation, configuration, and statement\u2014are coherent and reinforce each other without contradiction, providing a consistent narrative on how DoS protection is achieved through configuration."
+        "status_alignment": "The control status 'applicable and inherently satisfied' aligns well with the explanation that the isolation is built into the modular design and requires no additional configuration, thus correctly reflecting the implementation.",
+        "explanation_quality": "The explanation is detailed, clearly describes how security functions are isolated via modular architecture, and references specific security components, demonstrating a strong understanding grounded in the implementation.",
+        "configuration_support": "Though no explicit configuration is required, the explicit statement of empty configuration is appropriate and valid, matching the rationale that isolation is inherent and not dependent on configuration.",
+        "overall_consistency": "All parts of the control \u2014 status, explanation, configuration, and statement \u2014 consistently describe inherent modular isolation without contradictions, reinforcing the mapping's accuracy."
       },
-      "recommendation": "No significant improvements are necessary; however, adding brief examples or values of the configuration settings could further strengthen evidence clarity and assist reviewers in quickly understanding the mitigation parameters."
-    },
-    {
-      "control-id": "sc-7",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The control status 'applicable but only satisfied through configuration' is fully appropriate given the explanation that boundary protection depends on specific network policy and TLS configurations, rather than inherent system enforcement.",
-        "explanation_quality": "The explanation clearly and accurately describes how boundary protection is achieved via Kubernetes Network Policies and TLS, emphasizing the need for correct configurations, which aligns well with the control requirements.",
-        "configuration_support": "The provided configuration references are specific, relevant, and valid, pointing directly to Kubernetes network policies and TLS ingress settings that enforce boundary protection as described.",
-        "overall_consistency": "All parts of the control, including status, explanation, configuration, and statement, consistently reinforce that boundary protection relies on explicit configuration without contradiction."
-      },
-      "recommendation": "No major improvements are necessary; however, adding explicit mention of the specific ports or namespaces involved in the network policies could further enhance the clarity and traceability of the configuration references."
-    },
-    {
-      "control-id": "sc-8",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 1,
-        "overall_consistency": 2
-      },
-      "total_score": 7,
-      "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' aligns well with the explanation that TLS protections depend on proper configuration, accurately reflecting the control's implementation.",
-        "explanation_quality": "The explanation clearly describes how TLS/HTTPS ensures confidentiality and integrity, mentions optional mTLS, and correctly notes the dependency on configuration, demonstrating accuracy and clarity.",
-        "configuration_support": "The configuration references relevant TLS-related keys in the main config file, but lacks details about the actual values or settings (e.g., whether TLS is indeed enabled or properly configured), and includes 'tls.skip_verify' which may weaken security if enabled, without explanation.",
-        "overall_consistency": "All parts of the control consistently emphasize the requirement of TLS configuration for satisfying the control, with no contradictions between status, explanation, configuration, or statement."
-      },
-      "recommendation": "Enhance the configuration evidence by including specific values or examples demonstrating that TLS and mTLS are enabled and properly configured to enforce confidentiality and integrity. Clarify the role of 'tls.skip_verify' and whether it is disabled to avoid weakening security. This will strengthen the configuration support and provide a more complete mapping."
-    },
-    {
-      "control-id": "sc-10",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 1,
-        "overall_consistency": 2
-      },
-      "total_score": 7,
-      "justifications": {
-        "status_alignment": "The control-status correctly reflects that the control is applicable and satisfied exclusively through configuration, which aligns with the explanation and statement describing token expiration as the enforcement mechanism.",
-        "explanation_quality": "The explanation is detailed, clearly describing how session inactivity timeouts are achieved via token expiration for both privileged and user sessions, accurately reflecting the control requirements and observed implementation.",
-        "configuration_support": "The configuration reference identifies the relevant parameter (sts.DurationSeconds) and file, but lacks explicit detail such as the actual configured values or how privileged vs user sessions are differentiated, making it only partially supportive.",
-        "overall_consistency": "All parts of the control \u2014 status, explanation, configuration, and statement \u2014 consistently describe enforcement via token expiration timeouts without contradiction."
-      },
-      "recommendation": "Enhance the configuration section by including explicit configuration values or examples for both privileged (600 seconds) and user (900 seconds) session timeouts to provide stronger evidence and clearer support for the explanation and control statement."
+      "recommendation": "No significant improvements needed; however, including a brief note in the explanation about the lack of configuration necessity could further clarify why the configuration section is empty, enhancing reviewer confidence."
     },
     {
       "control-id": "sc-12",
       "scores": {
         "status_alignment": 2,
         "explanation_quality": 2,
-        "configuration_support": 2,
+        "configuration_support": 1,
         "overall_consistency": 2
       },
-      "total_score": 8,
+      "total_score": 7,
       "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' accurately reflects that the control is implemented via configuration settings tied to external KMS integrations, as detailed in the explanation and configuration references.",
-        "explanation_quality": "The explanation is clear, detailed, and accurately describes how key management is enforced through integration with external KMS, supported by specific cryptographic processes and configuration reliance, matching the control requirements.",
-        "configuration_support": "The configuration references are specific, valid, and relevant, pointing to actual configuration files and keys (kms.provider, kms.masterKeyID, encryption.serverSide.enabled) that enable and govern the key management functionality as described.",
-        "overall_consistency": "All elements\u2014the status, explanation, configuration, and statement\u2014align well without contradictions, consistently describing key management enforcement through configuration-driven KMS integration."
+        "status_alignment": "The status 'applicable and inherently satisfied' is correct because the explanation details how cryptographic key management is built into the system and satisfies federal requirements without additional configuration.",
+        "explanation_quality": "The explanation is thorough, clearly describing key generation, sealing, distribution, access control, and destruction, referencing federal standards and integration with external KMS providers, thus well grounded in the implementation.",
+        "configuration_support": "No explicit configuration is provided or required as the control is inherently satisfied; however, the empty configuration array lacks any minimal pointers or examples that would strengthen validation or auditability.",
+        "overall_consistency": "All parts (status, explanation, configuration, and statement) align and reinforce the inherent satisfaction of the control with no contradictions or gaps."
       },
-      "recommendation": "No major changes needed; to further improve clarity, consider adding brief comments in the control-configuration section that summarize how each configuration item contributes to satisfying the control, enhancing traceability for reviewers."
+      "recommendation": "Include minimal configuration references or examples, such as default settings or documented integration points with external KMS, to improve auditability and evidence support, even if the control is inherently satisfied without user action."
     },
     {
       "control-id": "sc-13",
       "scores": {
         "status_alignment": 2,
         "explanation_quality": 2,
-        "configuration_support": 2,
+        "configuration_support": 1,
         "overall_consistency": 2
       },
-      "total_score": 8,
+      "total_score": 7,
       "justifications": {
-        "status_alignment": "The control-status 'applicable but only satisfied through configuration' perfectly matches the explanation and configuration details, which emphasize that cryptographic protections are defined and enforced entirely via configuration settings.",
-        "explanation_quality": "The explanation is clear, detailed, and accurately describes the cryptographic uses for both data at rest and in transit, referencing specific algorithms and key management integrations consistent with the control requirements.",
-        "configuration_support": "The configuration references are specific, clearly linked to relevant cryptographic features such as SSE, KMS endpoint, TLS enablement, and client authentication, supporting the explanation fully and validly.",
-        "overall_consistency": "All components including status, explanation, configuration, and the control statement reinforce each other without contradiction, providing a coherent and comprehensive mapping."
+        "status_alignment": "The control status 'applicable and inherently satisfied' aligns well with the explanation and statement indicating that cryptographic protections are built into the system design and require no additional configuration.",
+        "explanation_quality": "The explanation is detailed, clearly describing specific cryptographic uses, methods, and key management, grounded in the observed implementation, supporting the inherent satisfaction claim.",
+        "configuration_support": "No explicit configuration is provided, which aligns with the 'inherently satisfied' status, but the absence of any configuration details leaves some ambiguity about how these cryptographic features are enabled or verified in practice.",
+        "overall_consistency": "All parts of the control\u2014status, explanation, configuration, and statement\u2014are consistent and reinforce that the control is inherently satisfied through built-in cryptographic mechanisms without additional configuration."
       },
-      "recommendation": "No significant improvements are needed; however, including brief excerpts or sample values from the configuration files could further strengthen the evidence and clarity of the configuration references."
+      "recommendation": "Include minimal configuration references or evidence, such as default settings or documented system behavior, to substantiate the inherent satisfaction claim and provide clearer audit trails, thereby improving confidence in the control mapping."
     },
     {
       "control-id": "sc-15",
@@ -180,83 +61,15 @@
       },
       "total_score": 7,
       "justifications": {
-        "status_alignment": "The control-status 'applicable and inherently satisfied' is appropriate given the explanation that the system architecture inherently excludes collaborative computing devices and remote activation features, thus satisfying the control by design.",
-        "explanation_quality": "The explanation is clearly written, accurate, and well-grounded in the implementation details describing MinIO's architecture and strict access controls that prevent remote activation of collaborative computing devices or applications.",
-        "configuration_support": "The control-configuration is empty, which is acceptable for an inherently satisfied control; however, providing explicit configuration snippets or settings confirming no such remote activation features exist would strengthen the evidence.",
-        "overall_consistency": "All parts of the control\u2014status, explanation, configuration, and statement\u2014are aligned and reinforce the position that the control is inherently satisfied without contradiction."
+        "status_alignment": "The status 'applicable and inherently satisfied' is appropriate because the explanation clearly states the control is met by design without exceptions or additional implementation.",
+        "explanation_quality": "The explanation is clear, detailed, and logically grounded in the system\u2019s architecture and capabilities, explicitly addressing both the lack of remote activation and the IAM controls.",
+        "configuration_support": "The configuration section is empty, which is acceptable since the control is inherently satisfied by design; however, including at least a statement or artifact confirming no remote activation capability would strengthen evidence.",
+        "overall_consistency": "All parts\u2014status, explanation, configuration, and statement\u2014are aligned and reinforce the conclusion that the control is inherently satisfied without contradiction."
       },
-      "recommendation": "Include explicit configuration artifacts or architectural documentation references that demonstrate the absence of collaborative computing devices or remote activation features to better support the inherently satisfied status and improve evidentiary strength."
-    },
-    {
-      "control-id": "sc-17",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' correctly reflects that MinIO does not issue certificates itself but enforces certificate policies via configuration, matching the explanation and statement.",
-        "explanation_quality": "The explanation clearly describes how MinIO relies on external certificate authorities and enforces certificate policies indirectly through configuration, accurately reflecting the control's intent and observed implementation.",
-        "configuration_support": "The configuration references are specific and valid, pointing to enablement of TLS client authentication and specification of trusted client CA certificates, which directly support the rationale given.",
-        "overall_consistency": "The status, explanation, configuration, and statement are fully aligned without contradictions, each reinforcing the others to present a coherent control implementation narrative."
-      },
-      "recommendation": "No major improvements needed; consider adding a brief note on how the external certificate policies are approved or validated to strengthen assurance that policy enforcement is adequate."
-    },
-    {
-      "control-id": "sc-18",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The control-status 'applicable but only satisfied through configuration' aligns well with the explanation and configuration references, which emphasize that enforcement is achieved solely through configuration settings.",
-        "explanation_quality": "The explanation clearly and accurately describes how mobile code is controlled by restricting execution environments and configuring allowed types, directly referencing the system's reliance on configuration for enforcement.",
-        "configuration_support": "The configuration references are specific, valid, and relevant, pointing to concrete keys in config.yaml that govern mobile code enablement and allowed types, supporting the explanation and statement.",
-        "overall_consistency": "All parts\u2014the status, explanation, configuration, and statement\u2014are coherent and reinforce the same enforcement mechanism without contradiction, presenting a unified and consistent view of control implementation."
-      },
-      "recommendation": "No significant improvements are needed; however, including example values from the configuration files and briefly clarifying the role of source code files mentioned in the annotations could further enhance traceability and completeness."
+      "recommendation": "Include a minimal configuration artifact or reference (e.g., a statement or documentation excerpt) explicitly confirming the absence of remote activation capabilities to provide stronger evidence supporting the inherent satisfaction claim."
     },
     {
       "control-id": "sc-20",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The status 'applicable and not satisfied' correctly reflects the explanation and evidence that the system does not implement required cryptographic verification for DNS responses, indicating the control is relevant but not met.",
-        "explanation_quality": "The explanation clearly describes the lack of cryptographic authentication and integrity verification in the DNS resolution process, accurately capturing the security gap based on the described implementation.",
-        "configuration_support": "Although no positive configuration is provided (correctly, since the control is not satisfied), the empty configuration array properly supports the rationale, indicating no relevant configuration exists to satisfy the control.",
-        "overall_consistency": "All components\u2014the status, explanation, configuration, and statement\u2014align without contradictions, reinforcing the conclusion that the control is applicable but unmet."
-      },
-      "recommendation": "No changes are necessary as the mapping is thorough and internally consistent. To enhance audit clarity, consider adding explicit statements confirming the absence of DNSSEC or similar cryptographic mechanisms in the configuration section."
-    },
-    {
-      "control-id": "sc-21",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The control status 'applicable and not satisfied' is appropriate given the explanation and the absence of DNSSEC or similar protections, indicating the control is relevant but currently unmet.",
-        "explanation_quality": "The explanation clearly and accurately describes the lack of data origin authentication and integrity verification in MinIO's DNS resolver, grounding the rationale in security risks like spoofing and poisoning.",
-        "configuration_support": "Though no configuration is provided, the explicit statement that no configuration or code supports DNSSEC or equivalent mechanisms is precise and valid, effectively supporting the control status.",
-        "overall_consistency": "All parts\u2014the status, explanation, configuration, and statement\u2014are aligned and reinforce each other without contradiction, presenting a coherent and complete picture of the control implementation gap."
-      },
-      "recommendation": "No immediate changes are needed; the mapping is comprehensive and well justified. For further clarity, consider adding explicit references to any relevant documentation or external standards to strengthen evidence and traceability."
-    },
-    {
-      "control-id": "sc-22",
       "scores": {
         "status_alignment": 2,
         "explanation_quality": 2,
@@ -265,15 +78,32 @@
       },
       "total_score": 7,
       "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' is correct because the explanation clearly states that MinIO relies on external DNS services and addresses fault tolerance and role separation through configuration of those external systems.",
-        "explanation_quality": "The explanation is clear, accurate, and grounded in the implementation context. It acknowledges MinIO's reliance on external infrastructure and explains how fault tolerance and role separation are addressed, matching the control's intent.",
-        "configuration_support": "The configuration references relevant file paths and keys related to network endpoints and DNS resolvers, but it lacks detail on how these configurations specifically ensure fault tolerance or role separation, making it somewhat vague.",
-        "overall_consistency": "All parts of the control, including status, explanation, configuration, and statement, are aligned and reinforce each other without contradiction."
+        "status_alignment": "The control-status 'applicable but partially satisfied' correctly reflects that MinIO relies on external DNS infrastructure and does not fully implement the control requirements internally, consistent with the explanation and statement.",
+        "explanation_quality": "The control-explanation is well-written, clear, and accurately describes the system's reliance on external authoritative DNS services, justifying why the control is only partially satisfied.",
+        "configuration_support": "The control-configuration is empty, which is appropriate given that the system does not implement the control internally; however, some reference to configuration settings related to external DNS or comments explaining the absence of internal config could improve clarity.",
+        "overall_consistency": "All elements\u2014the status, explanation, configuration (empty), and statement\u2014are aligned with no contradictions, reinforcing the partial satisfaction of the control."
       },
-      "recommendation": "Enhance the control-configuration by including explicit details or excerpts showing how multiple endpoints and DNS resolvers are configured to achieve fault tolerance, and clarify if any configurations enforce role separation or if this is solely external. This will strengthen the evidence supporting the explanation and status."
+      "recommendation": "Include a brief note in the control-configuration section explaining the absence of internal authoritative DNS configuration and possibly reference the reliance on external DNS settings to strengthen traceability and completeness."
     },
     {
-      "control-id": "sc-23",
+      "control-id": "sc-21",
+      "scores": {
+        "status_alignment": 1,
+        "explanation_quality": 2,
+        "configuration_support": 0,
+        "overall_consistency": 1
+      },
+      "total_score": 4,
+      "justifications": {
+        "status_alignment": "The control-status is marked as 'applicable and not satisfied' but the explanation states the control is satisfied through environmental configuration, which contradicts the status. This partial misalignment results in a score of 1.",
+        "explanation_quality": "The explanation clearly and accurately describes how MinIO depends on external DNS resolvers and the security implications, providing appropriate rationale grounded in the implementation.",
+        "configuration_support": "No configuration details are provided, despite the explanation emphasizing reliance on environment-level DNS resolver configuration, which is critical for demonstrating control satisfaction.",
+        "overall_consistency": "There is a contradiction between the stated control-status and the explanation/statement describing the control as satisfied through external configuration, reducing overall consistency."
+      },
+      "recommendation": "Update the control-status to reflect that the control is satisfied if the environment is properly configured, or provide concrete configuration evidence demonstrating lack of satisfaction. Additionally, include specific configuration details or references to the environment's DNS resolver settings to support the explanation and status. This will align all parts and improve the mapping quality."
+    },
+    {
+      "control-id": "sc-22",
       "scores": {
         "status_alignment": 2,
         "explanation_quality": 2,
@@ -282,81 +112,64 @@
       },
       "total_score": 8,
       "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' accurately reflects that session authenticity depends on enabling and managing specific configurations, as clearly stated in the explanation and supported by the detailed configuration keys.",
-        "explanation_quality": "The explanation is clear, specific, and well-grounded in the observed implementation, detailing multiple authentication mechanisms and their reliance on proper configuration to satisfy the control.",
-        "configuration_support": "The configuration references are specific, correct, and valid, pointing to precise file paths, keys, and line numbers that correspond directly to the mechanisms described in the explanation and statement.",
-        "overall_consistency": "All parts of the control\u2014status, explanation, configuration, and statement\u2014are coherent and reinforce each other without contradiction, providing a unified and complete depiction of how session authenticity is achieved."
+        "status_alignment": "The control-status is set to 'not applicable' which aligns perfectly with the explanation that MinIO does not implement name/address resolution services, making the control irrelevant to this system.",
+        "explanation_quality": "The explanation clearly states the rationale, accurately describing MinIO\u2019s scope and reliance on external infrastructure, providing a solid foundation for the applicability decision.",
+        "configuration_support": "No configuration is necessary because the control does not apply; the empty configuration section correctly reflects this.",
+        "overall_consistency": "All elements\u2014the status, explanation, configuration, and statement\u2014are coherent and reinforce the rationale that the control is outside the system\u2019s scope without contradiction."
       },
-      "recommendation": "No significant improvements are necessary. To further enhance clarity, consider briefly noting in the explanation or statement that these configurations must be actively maintained over time to ensure ongoing compliance."
+      "recommendation": "No improvements needed; the mapping is clear, accurate, and appropriately documented. For completeness, consider adding references to external network infrastructure policies or controls if available to further contextualize reliance on external name/address resolution."
     },
     {
       "control-id": "sc-24",
       "scores": {
         "status_alignment": 2,
         "explanation_quality": 2,
-        "configuration_support": 2,
+        "configuration_support": 1,
         "overall_consistency": 2
       },
-      "total_score": 8,
+      "total_score": 7,
       "justifications": {
-        "status_alignment": "The control-status 'applicable but only satisfied through configuration' accurately reflects the explanation and configuration details, which clearly state that the fail-in-known-state behavior is implemented via configurable settings.",
-        "explanation_quality": "The explanation is thorough and clearly describes the fail-in-known-state concept, the types of failures addressed, and how MinIO implements these through configuration-driven mechanisms, matching the control statement and configuration.",
-        "configuration_support": "The configuration references are specific, valid, and clearly linked to the fail-in-known-state behavior, referencing exact keys and lines in the configuration file that govern failure handling.",
-        "overall_consistency": "All elements\u2014the status, explanation, configuration, and statement\u2014are well aligned, reinforcing each other without contradiction or ambiguity."
+        "status_alignment": "The control-status 'applicable but partially satisfied' accurately reflects the explanation that the system implements fail in known state partially, with some features implemented but no comprehensive coverage or documentation.",
+        "explanation_quality": "The explanation is detailed, clear, and grounded in the observed implementation, describing specific features like object retention and legal hold states that support partial satisfaction and noting missing elements such as full failure type definitions and in-memory state preservation.",
+        "configuration_support": "The control-configuration is empty, which is somewhat reasonable given the nature of the control focusing on system behavior rather than explicit configuration settings; however, the lack of any configuration references or parameters reduces the evidentiary support for the partial implementation claim.",
+        "overall_consistency": "All parts - the status, explanation, configuration (empty but plausible), and statement - align well without contradictions and consistently describe a partial implementation of the control."
       },
-      "recommendation": "No significant improvements needed; however, including example configuration snippets or explicit value examples from the referenced config keys could enhance clarity and evidence strength."
-    },
-    {
-      "control-id": "sc-28",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' is accurate and aligns perfectly with the explanation that the control is satisfied via configuring encryption settings in MinIO.",
-        "explanation_quality": "The explanation clearly and accurately describes how MinIO protects information at rest using server-side encryption with details on encryption modes, key management, and the role of configuration, demonstrating a grounded understanding of the implementation.",
-        "configuration_support": "The configuration references are specific and relevant, pointing to exact file paths, key paths, and line numbers within 'config.json' that directly relate to enabling and managing encryption, thus valid and supportive of the control explanation.",
-        "overall_consistency": "All components\u2014the status, explanation, configuration, and the control statement\u2014are coherent and reinforce each other without any contradictions, creating a consistent and well-supported control mapping."
-      },
-      "recommendation": "No immediate improvements are necessary; however, adding a brief note about validation or monitoring mechanisms that verify the encryption configurations at runtime could further strengthen the control rationale."
+      "recommendation": "Include specific configuration parameters or settings if any exist that relate to fail-safe features or failure handling to strengthen evidence. Additionally, consider referencing documentation or runtime settings that define or limit system failure states to improve configuration support and provide clearer traceability."
     },
     {
       "control-id": "sc-39",
       "scores": {
         "status_alignment": 2,
         "explanation_quality": 2,
-        "configuration_support": 2,
+        "configuration_support": 1,
         "overall_consistency": 2
       },
-      "total_score": 8,
+      "total_score": 7,
       "justifications": {
-        "status_alignment": "The 'applicable and inherently satisfied' status is appropriate because the explanation clearly states that process isolation is guaranteed by the Go runtime and OS-level process separation without requiring additional controls or configuration.",
-        "explanation_quality": "The control explanation is detailed, accurate, and grounded in the implementation, explicitly describing how process isolation is achieved inherently by the runtime and OS, with no indication of shared memory or execution overlap.",
-        "configuration_support": "No configuration is required or provided, consistent with the explanation that process isolation is fundamental and inherent, making the absence of configuration appropriate and correct.",
-        "overall_consistency": "All parts\u2014the control status, explanation, configuration, and statement\u2014are aligned and reinforce the inherent nature of process isolation without contradiction or ambiguity."
+        "status_alignment": "The status 'applicable and inherently satisfied' accurately reflects that process isolation is provided by the OS rather than the application itself, which aligns well with the explanation and statement.",
+        "explanation_quality": "The explanation clearly and accurately describes how process isolation is achieved via the OS and Go runtime, providing a solid rationale grounded in the observed implementation.",
+        "configuration_support": "No explicit configuration is provided, which is understandable given the control is inherently satisfied by the OS. However, the empty configuration array could be improved by referencing relevant OS or runtime settings to strengthen the evidence.",
+        "overall_consistency": "All parts consistently reinforce that process isolation is inherently provided by the OS environment and that MinIO leverages this without internal implementation, with no contradictions present."
       },
-      "recommendation": "No changes are necessary; the control mapping is well-documented, coherent, and correctly reflects the inherent process isolation property of the system."
+      "recommendation": "Include references to specific OS-level configurations or runtime parameters that govern process isolation (e.g., OS security policies or Go runtime settings) in the configuration section to provide stronger evidence, even if the control is inherently satisfied."
     },
     {
       "control-id": "sc-45",
       "scores": {
-        "status_alignment": 2,
+        "status_alignment": 1,
         "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
+        "configuration_support": 0,
+        "overall_consistency": 1
       },
-      "total_score": 8,
+      "total_score": 4,
       "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' accurately reflects that MinIO itself does not handle time synchronization but relies entirely on the host OS configuration, consistent with the explanation and statement.",
-        "explanation_quality": "The explanation clearly states that MinIO depends on the host OS for time sync, referencing the importance of synchronized clocks for security features like token expiration and auditing, which aligns well with the control's intent.",
-        "configuration_support": "The configuration section is specific and valid, citing concrete file paths and keys (/etc/ntp.conf server at line 12 and /etc/systemd/timesyncd.conf NTP at line 8) that demonstrate how time synchronization is configured on the host system.",
-        "overall_consistency": "All parts\u2014the status, explanation, configuration, and statement\u2014are coherent and reinforce each other without contradiction, providing a unified understanding of how the control is implemented and satisfied."
+        "status_alignment": "The status 'applicable and not satisfied' partially fits because the control is applicable; however, the explanation states satisfaction is achieved via host-level configuration, implying the control may actually be satisfied indirectly. This creates ambiguity in status correctness.",
+        "explanation_quality": "The explanation clearly and accurately describes that MinIO relies on host-level time sync mechanisms and does not implement its own, providing appropriate context grounded in the service\u2019s implementation.",
+        "configuration_support": "No configuration is provided to demonstrate how the control is implemented or satisfied, which is important here since the control depends entirely on host-level settings; thus, configuration support is missing.",
+        "overall_consistency": "The parts mostly align in describing the service\u2019s lack of built-in time sync and reliance on host-level mechanisms, but the control-status conflicts somewhat with the explanation\u2019s implication that the control could be satisfied externally, creating inconsistency."
       },
-      "recommendation": "Consider including brief evidence excerpts or summaries from the specified configuration files to strengthen traceability and demonstrate the actual configuration values in use; additionally, clarifying the frequency or monitoring of time synchronization could improve completeness."
+      "recommendation": "Clarify the control-status to reflect that the control is applicable and satisfied via host-level configuration if applicable, or provide explicit evidence that host-level synchronization is configured and verified. Include configuration details or references to host system settings (e.g., NTP or chrony configuration) to support the control implementation and resolve ambiguity."
     }
   ],
-  "evaluation_timestamp": "2025-06-21 18:16:51.259774"
+  "evaluation_timestamp": "2025-07-07 15:25:14.742600"
 }

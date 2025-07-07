@@ -1,0 +1,21 @@
+[
+  {
+    "file_path": "codecov.yml",
+    "selection_reason": "extension",
+    "mime": "text/x-yaml",
+    "hash": "sha256:df650cae989815f092d27a1c3ae456f653554d924ff07b0613218ae5d5e99904",
+    "keys": [
+      "coverage",
+      "coverage.require_ci_to_pass",
+      "coverage.status",
+      "coverage.status.project",
+      "coverage.status.project.default",
+      "coverage.status.project.default.target",
+      "coverage.status.project.default.threshold",
+      "coverage.status.patch",
+      "coverage.status.patch.default",
+      "coverage.status.patch.default.target",
+      "coverage.status.patch.default.threshold"
+    ]
+  }
+]

@@ -5,68 +5,34 @@
       "scores": {
         "status_alignment": 2,
         "explanation_quality": 2,
-        "configuration_support": 2,
+        "configuration_support": 0,
         "overall_consistency": 2
       },
-      "total_score": 8,
+      "total_score": 6,
       "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' accurately reflects the explanation that enforcement is via configuration files rather than inherent code controls, matching the described implementation.",
-        "explanation_quality": "The explanation clearly details how concurrent session limits are enforced through configuration files using JWT claims and account-level settings, providing a well-grounded and specific rationale tied to the implementation.",
-        "configuration_support": "The configuration references are specific and valid, pointing to exact file paths, key paths, and line numbers in the YAML configuration that define max connections and sessions per account, supporting the explanation well.",
-        "overall_consistency": "All elements\u2014the status, explanation, configuration references, and statement\u2014align without contradiction, reinforcing the narrative that control enforcement is configuration-driven and correctly implemented."
+        "status_alignment": "The status 'applicable but partially satisfied' accurately reflects the explanation that partial session management mechanisms exist but explicit concurrent session limits are not implemented.",
+        "explanation_quality": "The explanation clearly details what is present (session tracking, message limits) and what is missing (explicit concurrent session limits), making it accurate and grounded in the observed implementation.",
+        "configuration_support": "No configuration evidence is provided to support enforcement of concurrent session limits, despite the control requiring such configuration; the empty configuration array indicates a lack of supporting evidence.",
+        "overall_consistency": "The status, explanation, and statement are well-aligned, consistently describing partial satisfaction due to missing explicit enforcement, with no contradictions."
       },
-      "recommendation": "To further improve clarity, consider refining the control-description to remove redundancy and improve readability. Additionally, linking the explanation more explicitly to the source code files referenced could strengthen traceability."
-    },
-    {
-      "control-id": "ac-12",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' accurately reflects the explanation and configuration details indicating that session termination is enforced through configurable parameters rather than hardcoded behavior.",
-        "explanation_quality": "The explanation clearly and specifically describes how session termination is implemented via configurable timeout parameters and MQTT session management, grounding the rationale in the observed implementation and configuration files.",
-        "configuration_support": "The configuration references are precise, naming specific configuration file paths, keys, and line numbers that directly support the explanation and demonstrate how the control is satisfied through configuration.",
-        "overall_consistency": "All elements\u2014the control status, explanation, configuration, and statement\u2014are aligned and reinforce each other without contradiction, presenting a coherent and accurate mapping."
-      },
-      "recommendation": "No immediate changes are necessary; however, consider including snippets or sample values of the configuration parameters to further strengthen evidence and clarity for reviewers."
+      "recommendation": "Include specific configuration evidence or references demonstrating enforcement of concurrent session limits per account or account type if available. If such enforcement is not implemented, explicitly document this gap and consider updating the control description to reflect the current system capabilities more precisely."
     },
     {
       "control-id": "ac-3",
       "scores": {
         "status_alignment": 2,
         "explanation_quality": 2,
-        "configuration_support": 2,
+        "configuration_support": 0,
         "overall_consistency": 2
       },
-      "total_score": 8,
+      "total_score": 6,
       "justifications": {
-        "status_alignment": "The control-status 'applicable but only satisfied through configuration' accurately reflects the explanation and statement that enforcement depends on the configuration being enabled and correctly defined.",
-        "explanation_quality": "The explanation clearly and accurately describes how access enforcement is implemented via role-based permissions, various authentication mechanisms, and configuration-based authorization, aligning well with the control requirements.",
-        "configuration_support": "The configuration is specific and valid, referencing exact paths in configuration files that define authorization users and roles, which directly support the described enforcement mechanisms.",
-        "overall_consistency": "All parts\u2014the status, explanation, configuration, and statement\u2014are well aligned and reinforce each other without contradictions, presenting a coherent picture of control implementation."
+        "status_alignment": "The status 'applicable and not satisfied' aligns well with the explanation noting that enforcement depends on proper configuration, implying the control is relevant but not fully met.",
+        "explanation_quality": "The explanation is clear, detailed, and accurately describes how access enforcement is implemented and the dependencies on configuration parameters.",
+        "configuration_support": "No configuration details are provided despite the explanation emphasizing that correct configuration of authentication and authorization parameters is required to satisfy the control.",
+        "overall_consistency": "The status, explanation, and statement consistently describe dynamic access enforcement with dependencies on configuration, without contradictions."
       },
-      "recommendation": "No major improvements needed; to further enhance clarity, consider providing brief examples or excerpts of critical configuration entries to demonstrate enforcement specifics and improve audit traceability."
-    },
-    {
-      "control-id": "ac-4",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' aligns perfectly with the explanation and configuration showing enforcement depends on external authorization policies, not solely inherent code.",
-        "explanation_quality": "The explanation is clear, detailed, and accurately describes how information flow enforcement is achieved through RBAC, JWT claims, and configuration-driven policies, matching the control's intent.",
-        "configuration_support": "The configuration references specific, relevant configuration file paths and keys that define users, accounts, permissions, and gateway rules, providing concrete evidence supporting the control implementation.",
-        "overall_consistency": "All parts\u2014the status, explanation, configuration, and statement\u2014cohesively reinforce the control implementation without contradiction, presenting a consistent picture of enforcement via configuration."
-      },
-      "recommendation": "No major improvements needed; however, consider adding brief examples or excerpts from the configuration files to further strengthen the evidence and enhance clarity for reviewers unfamiliar with the specific configuration structure."
+      "recommendation": "Include specific configuration evidence detailing the authentication and authorization parameters (e.g., JWT claims, account permissions, TLS options) to support the control implementation and provide clear traceability for the 'not satisfied' status."
     },
     {
       "control-id": "ac-9",
@@ -78,29 +44,29 @@
       },
       "total_score": 8,
       "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' correctly reflects that the control is not natively enforced by the system but requires explicit configuration to be met, which aligns well with the explanation and configuration details.",
-        "explanation_quality": "The explanation clearly states the system's lack of inherent notification and the necessity of configuration to enable this feature, providing an accurate and detailed rationale grounded in the observed implementation.",
-        "configuration_support": "The configuration reference is specific and valid, pointing to a precise file, key path, and line number where the relevant setting to enable previous logon notifications is located, supporting the explanation thoroughly.",
-        "overall_consistency": "All elements\u2014status, explanation, configuration, and statement\u2014are coherent and mutually reinforcing without contradictions, presenting a unified and logical representation of the control implementation."
+        "status_alignment": "The control-status 'applicable and not satisfied' correctly reflects the explanation and statement that the system lacks previous logon notification functionality, indicating the control is relevant but unmet.",
+        "explanation_quality": "The explanation is clearly written, accurate, and grounded in the assessment of the system's capabilities, stating the absence of user-facing previous logon notifications and the authentication methods present.",
+        "configuration_support": "Although the control-configuration is empty, this is appropriate here because the control requires absence of a feature rather than a specific configuration setting; the provided source code references support the claim of no implementation.",
+        "overall_consistency": "All components\u2014the status, explanation, configuration, and statement\u2014align and reinforce each other without contradiction, presenting a coherent and consistent mapping for the control."
       },
-      "recommendation": "No major improvements needed; however, including the actual configuration value (e.g., 'true' or 'enabled') and a brief note on how this setting impacts user notification could further strengthen clarity and evidence support."
+      "recommendation": "No changes are necessary for this mapping. To further strengthen evidence, consider adding explicit comments or excerpts from the referenced source code that demonstrate the absence of previous logon notification functionality."
     },
     {
       "control-id": "au-10",
       "scores": {
         "status_alignment": 2,
         "explanation_quality": 2,
-        "configuration_support": 2,
+        "configuration_support": 1,
         "overall_consistency": 2
       },
-      "total_score": 8,
+      "total_score": 7,
       "justifications": {
-        "status_alignment": "The control status 'applicable but only satisfied through configuration' correctly reflects the explanation that audit logging must be explicitly enabled for non-repudiation to be satisfied.",
-        "explanation_quality": "The explanation clearly and accurately describes how non-repudiation is achieved via detailed audit logging capturing relevant events, and it notes the dependency on proper configuration, demonstrating a solid rationale.",
-        "configuration_support": "The configuration references are specific, valid, and directly related to enabling audit and advisory logging, which supports the explanation and status.",
-        "overall_consistency": "All parts\u2014the status, explanation, configuration, and statement\u2014are coherent and mutually reinforcing without contradiction."
+        "status_alignment": "The control-status 'applicable but partially satisfied' accurately reflects the explanation that foundational elements exist but cryptographic non-repudiation features are not fully implemented, matching the described partial implementation.",
+        "explanation_quality": "The control-explanation is detailed, clearly written, and grounded in the implementation, outlining both what is present (strong authentication, audit streams) and what is missing (non-repudiation policies, cryptographic guarantees).",
+        "configuration_support": "The control-configuration is empty, which is partially acceptable since some implementation evidence is drawn from source code references and explanation, but explicit configuration details supporting the rationale are missing.",
+        "overall_consistency": "All parts of the control\u2014status, explanation, configuration (or lack thereof), and statement\u2014are aligned and reinforce the partial satisfaction conclusion without contradictions."
       },
-      "recommendation": "No significant improvements needed; however, enhancing the control-explanation by explicitly referencing the configuration keys could improve traceability and clarity for auditors."
+      "recommendation": "Include specific configuration evidence or examples (e.g., configuration snippets or settings) demonstrating the current audit logging and authentication mechanisms to strengthen the configuration support. Additionally, clarify if any plans exist to implement cryptographic non-repudiation features to provide a roadmap for full satisfaction."
     },
     {
       "control-id": "au-3",
@@ -112,114 +78,46 @@
       },
       "total_score": 8,
       "justifications": {
-        "status_alignment": "The control-status clearly states that compliance is achieved only through proper configuration, which aligns well with the explanation and configuration references provided.",
-        "explanation_quality": "The explanation is detailed and accurately describes the audit record contents and the dependency on configuration for completeness, providing a clear rationale grounded in the implementation.",
-        "configuration_support": "The listed configuration settings are specific, relevant, and directly tied to the audit logging functionality described, providing strong evidence of control implementation.",
-        "overall_consistency": "All elements including status, explanation, configuration, and statement are aligned and reinforce each other without contradictions, presenting a coherent and complete mapping."
+        "status_alignment": "The 'applicable and inherently satisfied' status is appropriate given the explanation that the control's requirements are met inherently by the system's built-in audit logging, requiring no additional configuration.",
+        "explanation_quality": "The explanation is clear, detailed, and directly references specific audit record contents\u2014such as JSON advisories and connection tracking\u2014that fulfill the control's content requirements, showing a solid understanding of the implementation.",
+        "configuration_support": "Although no additional configuration is needed, the empty configuration array correctly reflects this fact, aligning with the explanation that the control is inherently satisfied without extra settings.",
+        "overall_consistency": "All elements\u2014the status, explanation, configuration, and statement\u2014are coherent and reinforce each other without contradiction, presenting a unified rationale that the control is inherently satisfied."
       },
-      "recommendation": "No major improvements are needed. To further strengthen the mapping, consider adding brief excerpts or example values from the configuration files to demonstrate the exact settings used, enhancing traceability and clarity."
-    },
-    {
-      "control-id": "au-9",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The control-status indicating the control is 'applicable but only satisfied through configuration' aligns perfectly with the explanation and configuration details describing protection and alerting enforced primarily via configuration settings.",
-        "explanation_quality": "The control-explanation is clearly written, detailed, and accurately describes how audit information and tools are protected through configuration, including logging outputs, advisory events, and alerting mechanisms, with clear mention of role definitions outside the codebase.",
-        "configuration_support": "The configuration references are specific, pointing to exact file paths, key paths, and line numbers that support the explanation, such as logging file settings and advisory event enabling, effectively grounding the rationale in observed implementation.",
-        "overall_consistency": "All parts of the control\u2014status, explanation, configuration, and statement\u2014are fully aligned and reinforce each other without contradiction, presenting a coherent and supported mapping."
-      },
-      "recommendation": "No major improvements needed; however, adding explicit evidence or references for the external monitoring or alerting system configurations that define personnel or roles to be alerted could further strengthen the rationale and provide clearer traceability."
-    },
-    {
-      "control-id": "cm-14",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The control-status 'applicable but only satisfied through configuration' accurately reflects the explanation and the provided configuration files that demonstrate how the control is enforced via settings, not code changes or other mechanisms.",
-        "explanation_quality": "The explanation is clearly written, detailed, and grounded in the observed implementation, describing how digital signature verification is enforced through TLS certificate verification and trusted certificate stores, aligning well with the control requirements.",
-        "configuration_support": "The configuration references are specific, valid, and correctly point to TLS configuration files with relevant keys and line numbers that illustrate enforcement of certificate-based verification, directly supporting the explanation and control statement.",
-        "overall_consistency": "All parts (status, explanation, configuration, and statement) align and reinforce each other without contradiction; they consistently articulate that software component signature verification is enforced through configuration, while firmware verification is not addressed."
-      },
-      "recommendation": "No major changes needed; however, to improve completeness, consider explicitly noting the absence of firmware verification as a control gap or future consideration, and verify that configuration files explicitly define the trusted certificates and verification flags in detail to further strengthen evidence."
+      "recommendation": "No changes are necessary; the mapping is well-documented and internally consistent. For further improvement, consider adding brief references or excerpts from the source code files to strengthen traceability and evidence."
     },
     {
       "control-id": "cm-5",
       "scores": {
-        "status_alignment": 2,
+        "status_alignment": 1,
         "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
+        "configuration_support": 0,
+        "overall_consistency": 1
       },
-      "total_score": 8,
+      "total_score": 4,
       "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' is fully supported by the explanation and configuration details which emphasize logical access enforcement via configuration files and explicitly exclude physical access enforcement, aligning status to rationale and evidence.",
-        "explanation_quality": "The control explanation is detailed, clearly describing the logical access restrictions implemented via RBAC, JWT claims, and external authentication mechanisms in configuration, while correctly noting physical access is outside software scope, showing accuracy and grounding in implementation.",
-        "configuration_support": "The configuration references are specific and relevant, pointing to exact files, key paths, and line numbers within the configuration file that implement the RBAC and authorization mechanisms described, providing concrete evidence supporting the control implementation.",
-        "overall_consistency": "All parts (status, explanation, configuration, and statement) consistently reinforce that logical access restrictions are enforced through configuration, with physical access out of scope, without contradictions or gaps."
+        "status_alignment": "The status is marked 'applicable and not satisfied' but the explanation states that logical access restrictions are enforced through configuration, implying at least partial satisfaction. This creates a mismatch between the status and the explanation.",
+        "explanation_quality": "The explanation is clear, detailed, and accurately describes the enforcement of logical access restrictions and the exclusion of physical controls, grounded in the observed implementation.",
+        "configuration_support": "No specific configuration artifacts or parameters are provided despite the explanation stating the control is satisfied through configuration, leaving the configuration support absent and incomplete.",
+        "overall_consistency": "There is a contradiction between the control status and the explanation/configuration sections, reducing overall consistency. The statement aligns with the explanation but does not resolve the status inconsistency."
       },
-      "recommendation": "No major improvements needed; however, to further strengthen the mapping, consider including sample snippets or summaries of the critical configuration entries referenced to provide clearer evidence of enforcement. Additionally, explicitly stating the operational policy for physical access in a separate control or document could clarify scope boundaries."
+      "recommendation": "Update the control-status to reflect partial or full satisfaction based on the logical access enforcement described, or provide concrete configuration evidence to justify the 'not satisfied' status. Additionally, include specific configuration details or references to demonstrate how the control is satisfied through configuration."
     },
     {
       "control-id": "ia-11",
       "scores": {
         "status_alignment": 2,
         "explanation_quality": 2,
-        "configuration_support": 2,
+        "configuration_support": 0,
         "overall_consistency": 2
       },
-      "total_score": 8,
+      "total_score": 6,
       "justifications": {
-        "status_alignment": "The control-status clearly states the control is applicable and satisfied solely through configuration, which aligns well with the explanation and configuration referencing the 'authorization.timeout' parameter.",
-        "explanation_quality": "The explanation is detailed, clearly describing how re-authentication is enforced via configuration parameters and linking it directly to the control requirement, showing a good understanding of the mechanism.",
-        "configuration_support": "The configuration is specific and valid, pointing to an actual config file and key ('authorization.timeout') that enforces session expiration and re-authentication, supporting the explanation and status.",
-        "overall_consistency": "All parts (status, explanation, configuration, and statement) are coherent and mutually reinforcing, with no contradictions, collectively supporting that re-authentication is enforced through configuration-driven timeouts."
+        "status_alignment": "The control-status 'applicable but partially satisfied' accurately reflects the explanation that re-authentication is only partially addressed and no explicit triggers are implemented, aligning well with the observed implementation.",
+        "explanation_quality": "The explanation clearly describes the current state of the implementation, noting existing authentication mechanisms and session tracking, while explicitly stating the lack of enforced re-authentication under defined circumstances, making it accurate and grounded.",
+        "configuration_support": "No control-configuration is provided despite the control requiring configuration to enforce re-authentication triggers; the absence of any configuration details results in a score of zero.",
+        "overall_consistency": "All parts\u2014the status, explanation, configuration absence, and statement\u2014are consistent and reinforce the partial implementation without contradictions."
       },
-      "recommendation": "No significant improvements needed; however, including the actual configured timeout value or sample configuration snippet would enhance clarity and strengthen evidence. Additionally, clarifying any default behavior if the parameter is absent could improve completeness."
-    },
-    {
-      "control-id": "ia-2",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' accurately reflects the explanation and configuration, emphasizing that the control is met only when the specified configuration files are correctly applied.",
-        "explanation_quality": "The explanation clearly and thoroughly describes the multiple authentication mechanisms, their binding to user identity and processes, and ties these capabilities explicitly to configuration enforcement, demonstrating a strong understanding and accurate rationale.",
-        "configuration_support": "The configuration references are specific and relevant, pointing to exact file paths, key paths, and line numbers that enable and enforce the described authentication mechanisms, thus adequately supporting the rationale.",
-        "overall_consistency": "All parts of the control\u2014including status, explanation, configuration, and statement\u2014are coherent and reinforce each other without contradiction, presenting a unified and complete mapping."
-      },
-      "recommendation": "No major improvements are needed; however, including a brief mention of how the nonce-based challenge-response is represented or enforced in the configuration files would further strengthen the configuration support and clarity."
-    },
-    {
-      "control-id": "ia-6",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 1,
-        "overall_consistency": 2
-      },
-      "total_score": 7,
-      "justifications": {
-        "status_alignment": "The control-status correctly reflects that the control is applicable and satisfied primarily through configuration settings, consistent with the explanation and evidence.",
-        "explanation_quality": "The explanation is clearly written, detailed, and accurately describes how the control is implemented and what aspects are controlled by configuration, reflecting the observed behavior.",
-        "configuration_support": "The configuration references are relevant and appropriate but lack detail on the exact values or settings that ensure compliance; for example, the specific value for 'debug.auth_verbose' enabling obscured feedback is not stated.",
-        "overall_consistency": "All parts (status, explanation, configuration, and statement) consistently describe that the control is implemented via configuration controlling feedback obscurity, with no contradictions."
-      },
-      "recommendation": "Enhance the configuration section by specifying the expected or compliant values for the referenced keys (e.g., 'debug.auth_verbose' set to false) to make the evidence more concrete and verifiable."
+      "recommendation": "Include specific configuration evidence or references showing attempts or partial implementations of re-authentication triggers if available; otherwise, explicitly document that no such configurations exist. This will strengthen the configuration support and provide a fuller picture of compliance status."
     },
     {
       "control-id": "ia-7",
@@ -231,15 +129,15 @@
       },
       "total_score": 7,
       "justifications": {
-        "status_alignment": "The 'applicable and inherently satisfied' status is appropriate given the explanation that the authentication mechanisms are integrated within the service and do not require additional configuration, aligning well with the statement and rationale provided.",
-        "explanation_quality": "The control explanation is detailed, clearly describing multiple robust authentication mechanisms and how they meet requirements inherently. It is accurate and grounded in the observed implementation as reflected in the statement and source references.",
-        "configuration_support": "The control-configuration is empty, which is consistent with the 'inherently satisfied' status, but providing some minimal configuration evidence or references (e.g., enabling flags or documented defaults) would strengthen the mapping and provide tangible proof of implementation.",
-        "overall_consistency": "All parts\u2014the status, explanation, configuration (empty but justified), and statement\u2014are coherent and reinforce each other without contradiction."
+        "status_alignment": "The control-status of 'applicable and inherently satisfied' aligns well with the explanation describing built-in cryptographic authentication mechanisms that require no additional configuration, indicating the control is met inherently.",
+        "explanation_quality": "The explanation is clear, detailed, and accurately grounded in the described implementation using ed25519-signed JWTs, NKEY authentication, and TLS client certificates integrated with OS certificate stores, demonstrating strong cryptographic module authentication.",
+        "configuration_support": "Although the control-configuration is empty as expected for an inherently satisfied control, the absence of explicit configuration details means this section provides limited direct evidence; more specifics or references to configuration artifacts could improve confidence.",
+        "overall_consistency": "All parts\u2014the status, explanation, configuration (or lack thereof), and statement\u2014are coherent and reinforce the inherent satisfaction of the control without contradictions."
       },
-      "recommendation": "Include minimal configuration details or references to default enabled settings or build-time options to better support the inherently satisfied claim and provide concrete evidence, enhancing confidence in the control mapping."
+      "recommendation": "Include minimal configuration references or documentation excerpts that confirm the presence and enforcement of these cryptographic mechanisms to strengthen the evidence, even if the control is inherently satisfied. This would improve the configuration support score and provide clearer traceability."
     },
     {
-      "control-id": "ia-8",
+      "control-id": "sc-24",
       "scores": {
         "status_alignment": 2,
         "explanation_quality": 2,
@@ -248,114 +146,29 @@
       },
       "total_score": 6,
       "justifications": {
-        "status_alignment": "The control-status 'applicable and inherently satisfied' aligns well with the explanation and statement, which describe a comprehensive authentication approach that inherently meets the control requirements without additional configuration.",
-        "explanation_quality": "The control-explanation is detailed, clearly written, and accurately describes multiple specific authentication mechanisms and protections, grounding the rationale in observed implementation features.",
-        "configuration_support": "No explicit configuration artifacts or snippets are provided to support or verify the explanation, and the configuration array is empty, which is a missing element for full validation despite the 'inherently satisfied' status.",
-        "overall_consistency": "The status, explanation, and statement consistently affirm that the control is inherently satisfied by existing mechanisms, with no contradictions among them."
+        "status_alignment": "The control-status 'applicable but partially satisfied' correctly matches the explanation and statement which describe strong implementation in some areas (JetStream persistence) but gaps in other system components and failure types.",
+        "explanation_quality": "The control-explanation is detailed, clearly written, and accurately describes what is implemented and what is missing with respect to the control requirements, grounding the rationale in the observed implementation and documentation.",
+        "configuration_support": "There is no control-configuration information provided, which is a significant gap given the explanation references lack of explicit configuration or code comments for key failure modes; thus, no configuration evidence supports the partial satisfaction claim.",
+        "overall_consistency": "All parts\u2014the status, explanation, and statement\u2014are aligned and consistent, reinforcing the partial satisfaction due to incomplete documentation and configuration of fail states and state preservation outside of JetStream."
       },
-      "recommendation": "Include specific configuration details or code snippets that demonstrate how the described authentication mechanisms are implemented and enforced, even if the control is inherently satisfied, to strengthen evidence and auditability."
-    },
-    {
-      "control-id": "sc-10",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The control-status 'applicable but only satisfied through configuration' correctly reflects that the control is implemented via configurable timeout settings, consistent with the explanation and configuration provided.",
-        "explanation_quality": "The control-explanation is clear, detailed, and accurately describes how the system enforces the network disconnect through configurable idle timeout parameters within the server, grounded in the observed implementation.",
-        "configuration_support": "The configuration reference to the specific file path and key ('/etc/nats-server.conf', 'timeout.idle') is specific, correct, and valid, directly supporting the implementation described.",
-        "overall_consistency": "All parts of the control\u2014status, explanation, configuration, and statement\u2014are aligned and mutually reinforce that the control is implemented via configuration settings without contradiction."
-      },
-      "recommendation": "No substantive improvements needed; consider adding the actual configured timeout value in the configuration section or explanation for even greater specificity and auditability."
-    },
-    {
-      "control-id": "sc-2",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The control status 'applicable but only satisfied through configuration' aligns well with the explanation that separation depends on configuration settings rather than inherent system design.",
-        "explanation_quality": "The explanation clearly details how user and system management functions are separated through specific configuration-driven means, citing role and endpoint separation, which matches the control's intent.",
-        "configuration_support": "The configuration references are specific, relevant, and point to keys that control monitoring, authorization, and clustering features, which directly support the rationale for configuration-based separation.",
-        "overall_consistency": "All parts\u2014status, explanation, configuration, and statement\u2014coherently describe a separation enforced through configuration without contradiction."
-      },
-      "recommendation": "No significant improvements are necessary; however, including a brief note on how these configurations are validated during audits or automated checks could further strengthen the mapping."
-    },
-    {
-      "control-id": "sc-23",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The control-status accurately reflects that the control is applicable and satisfied only through configuration, which matches the explanation and configurations provided.",
-        "explanation_quality": "The explanation clearly and comprehensively describes the authentication mechanisms and the dependency on proper configuration, demonstrating a solid understanding grounded in the observed implementation.",
-        "configuration_support": "The configuration references are specific and relevant, pointing to exact files, keys, and line numbers that support the mechanisms described in the explanation.",
-        "overall_consistency": "All parts\u2014the status, explanation, configuration, and control statement\u2014are aligned and reinforce the same narrative without contradiction."
-      },
-      "recommendation": "No immediate improvements are necessary; however, including sample configuration snippets or explicitly referencing the configuration values set at the specified lines could further strengthen the evidence and improve traceability."
-    },
-    {
-      "control-id": "sc-24",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The 'applicable but only satisfied through configuration' status accurately reflects the explanation that fail-in-known-state behavior depends on enabling and correctly configuring JetStream persistence and MQTT session persistence.",
-        "explanation_quality": "The explanation clearly and specifically describes the fail-in-known-state behavior, the relevant system components, failure types, and how configuration enables the control, matching the control statement and configuration references.",
-        "configuration_support": "The configuration references are specific, valid, and appropriate, pointing to exact keys and lines in the YAML config files that enable JetStream persistence and MQTT session state preservation, directly supporting the control rationale.",
-        "overall_consistency": "All parts of the control (status, explanation, configuration, and statement) align well without contradictions, reinforcing the narrative that fail-in-known-state is achievable only through proper configuration."
-      },
-      "recommendation": "No significant improvements needed; however, including a brief excerpt or snippet of the actual configuration values (e.g., 'jetstream.enabled: true') would further strengthen evidence clarity and reviewer confidence."
-    },
-    {
-      "control-id": "sc-28",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' correctly reflects that encryption protection depends entirely on explicit configuration settings rather than a default inherent feature.",
-        "explanation_quality": "The explanation clearly and accurately describes the protection mechanism, emphasizing that encryption requires configuration of keys and TPM integration as optional secure key management, matching the observed implementation.",
-        "configuration_support": "The configuration references are specific and valid, pointing to exact files, key paths, and line numbers where encryption keys and TPM enablement are defined, adequately supporting the control explanation.",
-        "overall_consistency": "All components\u2014the status, explanation, configuration, and statement\u2014are aligned without contradiction, reinforcing that protection of information at rest is achieved solely through proper configuration."
-      },
-      "recommendation": "No major changes are needed; however, to improve clarity, consider refining the control-description for better readability by removing placeholder text and correcting minor grammar issues."
+      "recommendation": "Add specific configuration artifacts or code excerpts that explicitly define fail states and state preservation mechanisms across all relevant system components and failure types. If such configuration does not exist, document this gap clearly and consider improving configuration management to better support this control."
     },
     {
       "control-id": "sc-3",
       "scores": {
         "status_alignment": 2,
         "explanation_quality": 2,
-        "configuration_support": 2,
+        "configuration_support": 1,
         "overall_consistency": 2
       },
-      "total_score": 8,
+      "total_score": 7,
       "justifications": {
-        "status_alignment": "The control-status 'applicable but only satisfied through configuration' aligns well with the explanation and configuration references, which emphasize that isolation depends on explicit configuration settings.",
-        "explanation_quality": "The control-explanation is detailed, clearly describing how security functions are isolated architecturally and how configuration parameters enable and enforce this isolation, providing concrete examples.",
-        "configuration_support": "The configuration section specifies precise file paths, key paths, and line numbers for relevant configuration parameters that support the stated isolation mechanisms, demonstrating concrete evidence.",
-        "overall_consistency": "The status, explanation, configuration, and statement all consistently reinforce that security function isolation is implemented via distinct modules and enforced through specific configuration settings without contradiction."
+        "status_alignment": "The control status of 'applicable and inherently satisfied' is fully supported by the explanation that architectural design inherently isolates security functions without additional configuration, making the status appropriate.",
+        "explanation_quality": "The explanation is clearly written, detailed, and accurately grounded in the architectural separation of security functions, referencing specific mechanisms and subsystems that justify inherent satisfaction.",
+        "configuration_support": "The control-configuration is empty, which aligns with the 'inherently satisfied' status, but it would be stronger if minimal configuration references or examples of architectural enforcement were included to demonstrate this assertion concretely.",
+        "overall_consistency": "All parts (status, explanation, configuration, and statement) reinforce each other without contradiction, presenting a coherent narrative of architectural isolation."
       },
-      "recommendation": "No significant improvements needed; however, adding brief excerpts or values of the configuration settings could further strengthen evidence clarity and facilitate audit verification."
+      "recommendation": "Include minimal configuration artifacts or references that demonstrate the architectural separation, such as configuration files or system diagrams, to strengthen the evidence base and provide tangible proof of inherent satisfaction."
     },
     {
       "control-id": "sc-39",
@@ -367,63 +180,29 @@
       },
       "total_score": 8,
       "justifications": {
-        "status_alignment": "The 'applicable and inherently satisfied' status is appropriate given that process isolation is provided by the underlying OS without need for additional controls or configurations at the service level, matching the explanation and statement.",
-        "explanation_quality": "The explanation clearly and accurately describes the inherent nature of process isolation via the OS scheduler and memory management, grounding the rationale in the observed implementation of the single native process (NATS Server).",
-        "configuration_support": "Although no additional configuration is required, this is explicitly stated and justified, making the empty configuration valid and correct for this inherently satisfied control.",
-        "overall_consistency": "The status, explanation, configuration, and statement form a coherent and mutually reinforcing narrative with no contradictions."
+        "status_alignment": "The 'applicable and inherently satisfied' status is appropriate because the explanation and statement confirm that process isolation is enforced inherently by the OS without additional controls or configurations.",
+        "explanation_quality": "The explanation clearly and accurately describes how the service's architecture and OS features provide process isolation without requiring extra measures, matching the control's intent.",
+        "configuration_support": "No additional configuration is required or provided, which aligns correctly with the rationale that the OS inherently provides the needed isolation, thus the empty configuration is valid and appropriate.",
+        "overall_consistency": "All parts\u2014the status, explanation, configuration, and statement\u2014consistently reinforce the rationale that OS-level process isolation inherently satisfies the control without contradiction."
       },
-      "recommendation": "No changes are necessary; the mapping is clear, accurate, and well supported. For further clarity, consider explicitly noting that OS-level process isolation is a well-established baseline control to preempt any reviewer questions about lack of additional configuration."
+      "recommendation": "Consider including a brief mention or reference to specific OS process isolation mechanisms or security features (e.g., memory protection, process separation) in the explanation to further strengthen the technical grounding and provide more concrete evidence."
     },
     {
       "control-id": "sc-4",
       "scores": {
-        "status_alignment": 2,
+        "status_alignment": 1,
         "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
+        "configuration_support": 0,
+        "overall_consistency": 1
       },
-      "total_score": 8,
+      "total_score": 4,
       "justifications": {
-        "status_alignment": "The control-status 'applicable but only satisfied through configuration' aligns perfectly with the explanation that system code alone does not satisfy the control and that explicit configuration is required.",
-        "explanation_quality": "The explanation is clear, detailed, and accurately describes how the control is implemented via configuration settings, including RBAC, encryption, and TLS client authentication.",
-        "configuration_support": "The configuration references are specific, relevant, and directly support the explanation and statement by pointing to exact files, keys, and lines where access controls and encryption settings are defined.",
-        "overall_consistency": "All parts\u2014status, explanation, configuration, and statement\u2014are coherent and reinforce each other without contradiction, providing a consistent narrative of control implementation."
+        "status_alignment": "The control-status is 'applicable and not satisfied,' which aligns with the explanation cautioning that protections require proper configuration. However, without evidence of misconfiguration or explicit indication that the control is currently failing, the status is partially supported but not definitively confirmed.",
+        "explanation_quality": "The explanation is clear, well-written, and detailed, accurately describing the multi-tenant isolation, JWT-based access control, and the dynamic enforcement mechanisms grounded in the implementation references and statement.",
+        "configuration_support": "The control-configuration is empty, providing no specific configuration evidence to support the explanation or status. This is a critical omission, especially given the explanation's emphasis on configuration correctness.",
+        "overall_consistency": "The explanation and statement reinforce each other well, but the lack of configuration evidence and only partially justified status creates some inconsistency in fully validating the control's unsatisfied status."
       },
-      "recommendation": "No significant improvements are needed; however, adding brief descriptions of the expected configuration values or examples within the control-configuration section could further strengthen clarity and auditability."
-    },
-    {
-      "control-id": "sc-5",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The control-status 'applicable but only satisfied through configuration' accurately reflects the explanation and configuration, which emphasize that DoS protections are achieved solely via configurable parameters rather than hardcoded mechanisms.",
-        "explanation_quality": "The control-explanation is detailed, clearly describing the types of DoS events addressed and how the service leverages configuration settings to mitigate those risks, directly supporting the control requirements.",
-        "configuration_support": "The control-configuration is specific, referencing exact configuration files, key paths, and line numbers that correspond to parameters controlling connection limits, subscription limits, payload sizes, and timeouts, which are central to the stated DoS protections.",
-        "overall_consistency": "All parts\u2014the status, explanation, configuration references, and the statement\u2014are perfectly aligned, with no contradictions, reinforcing that the control is implemented solely through these configuration settings."
-      },
-      "recommendation": "Consider expanding the control-explanation to explicitly mention how these configuration settings are monitored and maintained over time to ensure continued effectiveness. Additionally, linking to actual configuration excerpts or validated parameter values would further strengthen evidence and traceability."
-    },
-    {
-      "control-id": "sc-8",
-      "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
-      },
-      "total_score": 8,
-      "justifications": {
-        "status_alignment": "The control-status 'applicable but only satisfied through configuration' accurately reflects that the control depends on proper TLS configuration rather than being inherently satisfied by the system itself.",
-        "explanation_quality": "The explanation clearly describes how TLS and its configurable parameters (versions, cipher suites, mutual TLS) are used to achieve transmission confidentiality and integrity, explicitly stating the dependency on correct configuration.",
-        "configuration_support": "The configuration section provides specific, valid references to configuration file paths, keys, and line numbers that directly relate to TLS settings, supporting the explanation and demonstrating concrete evidence of control implementation.",
-        "overall_consistency": "All elements\u2014the status, explanation, configuration, and statement\u2014are aligned and reinforce each other without contradictions, providing a coherent and comprehensive mapping of the control."
-      },
-      "recommendation": "No major improvements needed. Consider enhancing the explanation to explicitly mention OCSP revocation checks as noted in the statement, to fully align all details in the explanation and provide even stronger evidence linkage."
+      "recommendation": "Include specific configuration evidence demonstrating the current state of account permissions and resource limits to substantiate the control status of 'not satisfied.' This will strengthen the status alignment and overall consistency. Additionally, consider clarifying or providing examples of misconfigurations or monitoring results that justify the control being 'not satisfied.'"
     },
     {
       "control-id": "si-10",
@@ -435,30 +214,30 @@
       },
       "total_score": 8,
       "justifications": {
-        "status_alignment": "The status 'applicable but only satisfied through configuration' aligns well with the explanation and configuration details, which emphasize input validation achieved solely via configuration files without code changes.",
-        "explanation_quality": "The explanation is detailed, clear, and accurately describes how input validation is enforced through configuration files defining users, JWT claims, and permissions, directly grounding the rationale in observed implementation.",
-        "configuration_support": "The configuration references are specific and relevant, pointing to concrete file paths, key paths, and line numbers in configuration files that define validation parameters supporting the control.",
-        "overall_consistency": "All components \u2014 status, explanation, configuration, and statement \u2014 consistently reinforce that the control is satisfied entirely by configuration-based input validation without contradictions or vagueness."
+        "status_alignment": "The status 'applicable and inherently satisfied' aligns well with the explanation that validation is embedded in code rather than relying on configuration, indicating the control is fully implemented and not dependent on external settings.",
+        "explanation_quality": "The explanation clearly and specifically describes multiple layers and mechanisms of input validation, referencing cryptographic checks and protocol constraints consistent with inherent satisfaction.",
+        "configuration_support": "Although no explicit configuration is provided (empty array), this is appropriate given the inherent nature of the control implementation, and the source code references support the claim of embedded validation.",
+        "overall_consistency": "All elements\u2014the status, explanation, lack of configuration, and detailed statement\u2014are coherent and reinforce the inherent satisfaction of the control without contradictions."
       },
-      "recommendation": "No major improvements needed; however, consider clarifying the control-description to remove redundant phrasing and improve readability, and optionally include brief examples of key validation rules from the configuration to further strengthen evidence."
+      "recommendation": "No configuration is needed given inherent satisfaction; however, adding brief comments or summaries linking specific code files to described validations could further strengthen traceability and clarity."
     },
     {
       "control-id": "si-16",
       "scores": {
-        "status_alignment": 2,
-        "explanation_quality": 2,
-        "configuration_support": 2,
-        "overall_consistency": 2
+        "status_alignment": 0,
+        "explanation_quality": 1,
+        "configuration_support": 0,
+        "overall_consistency": 1
       },
-      "total_score": 8,
+      "total_score": 2,
       "justifications": {
-        "status_alignment": "The control-status 'applicable but only satisfied through configuration' matches the explanation that memory protection is achieved via configuration of OS and runtime features rather than direct code implementation, making the status correct and well-aligned.",
-        "explanation_quality": "The explanation is clear, detailed, and accurately describes how memory protection is achieved through configuration of runtime and OS security features, including secure data wiping, directly supporting the control intent.",
-        "configuration_support": "The provided configuration references specific keys ('security.memory_protection.enabled' and 'security.memory_protection.enforce_nx') in a relevant config file with line numbers provided, which concretely supports the explanation and control requirements.",
-        "overall_consistency": "All parts (status, explanation, configuration, and statement) consistently indicate memory protection is accomplished via configuration of OS/runtime features and secure handling of sensitive memory data, with no contradictions present."
+        "status_alignment": "The control-status is marked as 'applicable and not satisfied,' which contradicts the explanation stating the control is satisfied through host OS configuration. This inconsistency makes the status incorrect.",
+        "explanation_quality": "The explanation provides a reasonable rationale that memory protection is provided by the OS and Go runtime, but it lacks specifics about how or whether the host OS configuration is verified or controlled, making it somewhat vague.",
+        "configuration_support": "No configuration details or evidence are provided to demonstrate that the host OS or runtime memory protections (like ASLR, DEP) are actually implemented or enforced, which is critical for supporting the explanation and status.",
+        "overall_consistency": "The parts partially reinforce each other; the explanation and statement align, but the status conflicts with them, and the lack of configuration evidence weakens the overall consistency."
       },
-      "recommendation": "No major changes needed; however, consider expanding the control-configuration to include explicit values or examples of the configuration settings to increase clarity and verifiability. Additionally, enhancing the control-description to remove redundant phrasing would improve readability."
+      "recommendation": "Update the control-status to 'applicable and satisfied' to reflect the explanation or provide concrete configuration evidence demonstrating that OS-level memory protections are configured and enforced. Additionally, enhance the explanation with specific references to verified OS settings or runtime configurations that ensure memory protection, and include corresponding configuration artifacts or documentation."
     }
   ],
-  "evaluation_timestamp": "2025-06-24 10:02:36.811102"
+  "evaluation_timestamp": "2025-07-07 15:03:35.676966"
 }
