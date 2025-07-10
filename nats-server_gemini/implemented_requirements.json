@@ -1,0 +1,1011 @@
+{
+  "implemented_requirements": [
+    {
+      "uuid": "7a3e742c-2936-4076-880c-e366e6375005",
+      "control-id": "ac-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Concurrent Session Control",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Limit the number of concurrent sessions for each accounts and/or account types for which to limit the number of concurrent sessions is defined; to the number of concurrent sessions to be allowed for each account and/or account type is defined;.\n\nAdditional requirements:\n- accounts and/or account types for which to limit the number of concurrent sessions is defined;\n- the number of concurrent sessions to be allowed for each account and/or account type is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service implements concurrent session control through account-level policies that enforce resource limits on connections. When a configured limit is exceeded for an account, the system enforces this by generating an `ErrTooManyConnections` error. While the capability to define and enforce these limits is present, specific configuration details such as file paths, keys, or values for setting these limits were not provided in the available context.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "ac-10_smt.a",
+          "uuid": "ce4c7853-4310-410a-8671-b851357c91c3",
+          "description": "The system limits the number of concurrent sessions for accounts based on configured account-level policies. These policies define the maximum number of connections allowed for each account, and the system enforces this limit by rejecting new connections and issuing an `ErrTooManyConnections` error when the threshold is reached."
+        }
+      ],
+      "control_id": "ac-10"
+    },
+    {
+      "uuid": "2a4d3e7b-c9d2-4f1a-8c7e-1f2e3d4c5b6a",
+      "control-id": "ac-12",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Session Termination",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Automatically terminate a user session after conditions or trigger events requiring session disconnect are defined;. Additional requirements: - conditions or trigger events requiring session disconnect are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service defines and handles conditions for session termination. Session handling includes a configurable `AuthTimeout` that automatically terminates user sessions after a defined period. The system also detects `AuthExpired` states, leading to session disconnects. For MQTT, implicit disconnections, which occur when a client disconnects not by sending a DISCONNECT packet (e.g., due to timeout), trigger 'Will Messages', indicating that the service defines conditions for such events.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "ac-12_smt.a",
+          "uuid": "8b7c6a5d-4e3f-2b1a-0d9c-8e7f6d5c4b3a",
+          "description": "The service automatically terminates user sessions based on defined conditions and trigger events, such as a configurable `AuthTimeout` period and the detection of `AuthExpired` states. This ensures that sessions do not remain active indefinitely, reducing the risk of unauthorized access."
+        }
+      ],
+      "control_id": "ac-12"
+    },
+    {
+      "uuid": "69e25066-3bdf-4f31-8f86-8d9e6aff8b23",
+      "control-id": "ac-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Access Enforcement",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service implements granular, subject-based authorization for message flow, stream/service imports, and enforces account-level resource limits for connections, subscriptions, and data usage. It utilizes specific error types to indicate various authorization failures (e.g., ErrSubscribePermissionViolation, ErrTooManyConnections). WebSocket connections also enforce origin checks. However, the enforcement is partially satisfied due to an undefined strategy for connection termination upon authorization failures, which could allow unauthorized sessions to persist or misbehave after a violation is detected. Additionally, while account-level resource limits are enforced, client-specific resource limits are currently absent, which could lead to resource exhaustion by individual clients within a permitted account.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "ac-3_smt.a",
+          "uuid": "ecc3c779-8e76-4cea-8bb8-ca96752dcaf3",
+          "description": "The service enforces approved authorizations through granular, subject-based controls for message exports/imports and explicit authorization for stream/service imports. Account-level policies enforce resource limits on connections, subscriptions, and data. Specific error types signal authorization violations. WebSocket connections enforce origin checks based on configured lists. However, a defined strategy for connection termination on authorization failures is missing, and client-specific resource limits are not yet implemented."
+        }
+      ],
+      "control_id": "ac-3"
+    },
+    {
+      "uuid": "c31ce5df-ce00-4bb1-a40e-3e22fb2a626a",
+      "control-id": "ac-4",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information Flow Enforcement",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Enforce approved authorizations for controlling the flow of information within the system and between connected systems based on information flow control policies within the system and between connected systems are defined;. Additional requirements: - information flow control policies within the system and between connected systems are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service inherently enforces information flow based on defined policies. This is achieved through granular, subject-based authorization for message exports and imports, requiring explicit authorization for stream and service imports. Multi-tenant accounts enforce strict isolation of subject spaces, preventing unauthorized information flow between tenants. Account-level policies define and enforce resource limits on connections, subscriptions, and data usage, serving as a form of flow control. Additionally, WebSocket connections enforce origin checks via `SameOrigin` and `AllowedOrigins` lists to control external information flow. The system generates specific error types (e.g., `ErrSubscribePermissionViolation`, `ErrStreamImportAuthorization`) upon policy violations, demonstrating active enforcement.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "server/jetstream_cluster.go",
+            "server/consumer.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-4_smt.a",
+          "uuid": "54af071f-d559-4e70-ad64-da06551294e3",
+          "description": "Information flow control policies are comprehensively defined through the service's robust authorization model. These include granular, subject-based rules governing message exports and imports, explicit authorization requirements for stream and service imports, and account-level resource limits that control usage and prevent excessive flow. Furthermore, multi-tenant accounts are isolated via distinct subject spaces, and WebSocket connections define origin-based access rules, all contributing to clearly defined information flow policies."
+        }
+      ],
+      "control_id": "ac-4"
+    },
+    {
+      "uuid": "f94fae35-ae72-4c46-8779-fb1a4324b3ab",
+      "control-id": "ac-9",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Previous Logon Notification",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Notify the user, upon successful logon to the system, of the date and time of the last logon.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service persists session records (e.g., for MQTT sessions in the $MQTT_sess stream) and provides internal monitoring endpoints (/connz) that report connection statistics, including the 'last activity time per connection.' However, the provided documentation does not describe a mechanism or feature that actively notifies the user directly upon successful logon of their previous logon date and time. This capability is not indicated as being implemented from a user-facing perspective.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "ac-9_smt.a",
+          "uuid": "0557d6a3-dd32-4d60-b26f-db568dcdfe59",
+          "description": "The service does not provide a mechanism to notify the user upon successful logon of the date and time of their last logon. While internal connection statistics include 'last activity time', this is not exposed to the user as a notification."
+        }
+      ],
+      "control_id": "ac-9"
+    },
+    {
+      "uuid": "482921a6-03ac-4c61-a5ca-ab35137f0549",
+      "control-id": "au-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Non-repudiation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Provide irrefutable evidence that an individual (or process acting on behalf of an individual) has performed actions to be covered by non-repudiation are defined;.\n\nAdditional requirements:\n- actions to be covered by non-repudiation are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service inherently satisfies this control by defining and capturing actions for non-repudiation through its robust identity management and comprehensive audit logging. User and operator identities are strongly authenticated using JWTs signed with NKEYs, establishing a cryptographically verifiable link to performed actions. Administrative actions, stream and consumer lifecycle events, and message delivery activities are captured as structured JSON advisories (e.g., JSAPIAudit). These advisories are published to internal system subjects and persisted reliably by JetStream, which provides a durable and replicated storage layer, ensuring the integrity and availability of these records. Furthermore, message tracing supporting W3C Trace Context provides detailed audit logs of message flow, enhancing the ability to non-repudiably attribute actions to specific entities.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "au-10_smt.a",
+          "uuid": "ac85d45e-5f82-464e-95f1-4e18dedd9098",
+          "description": "Actions to be covered by non-repudiation are defined through the service's robust audit logging and identity mechanisms. Key actions, including administrative operations, stream and consumer lifecycle events, and message delivery activities, are captured as structured JSON advisories (e.g., JSAPIAudit). These advisories are linked to authenticated user and operator identities (via JWTs signed with NKEYs) and are persistently stored within JetStream, which provides a replicated and durable log, making these records suitable for non-repudiation."
+        }
+      ],
+      "control_id": "au-10"
+    },
+    {
+      "uuid": "2553cb4c-5ac2-4ebf-8856-605d2ca0cc7d",
+      "control-id": "au-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Content of Audit Records",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Ensure that audit records contain information that establishes the following:",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service's audit logging mechanisms inherently include detailed information in its records. Structured JSON advisories (e.g., JSAPIAudit, stream/consumer lifecycle, message delivery, cluster events, server health) capture the event type, timestamp, originating component, and outcome. For user-initiated actions, the system's robust authentication and authorization (JWTs, NKEYs, IAM-like roles) ensure that the identity of the actor can be associated with the audit record. Message tracing, leveraging W3C Trace Context, further provides comprehensive flow details including timestamps and service identification. These combined features ensure that audit records contain sufficient information to establish what, when, where, who, and the outcome of audited events.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "au-3_smt.a",
+          "uuid": "29b3fa67-0bd5-48a1-b756-c1836df58262",
+          "description": "Structured JSON advisories explicitly define event types for administrative actions, lifecycle events, message delivery, clustering, and server health, ensuring that 'what event occurred' is captured."
+        },
+        {
+          "statement-id": "au-3_smt.b",
+          "uuid": "a7b8c9d0-e1f2-4321-9876-543210fedcba",
+          "description": "All structured JSON advisories and W3C Trace Context inherently include timestamps, establishing 'when the event occurred'."
+        },
+        {
+          "statement-id": "au-3_smt.c",
+          "uuid": "b2c3d4e5-f6a7-8901-2345-67890abcdef0",
+          "description": "Audit records identify the originating system or component (e.g., JetStream, core server, specific cluster nodes), and W3C Trace Context includes service names, establishing 'where the event occurred'."
+        },
+        {
+          "statement-id": "au-3_smt.d",
+          "uuid": "c3d4e5f6-a7b8-9012-3456-7890abcdef12",
+          "description": "For actions involving user or operator interaction, audit records leverage the system's JWT, NKEY, and IAM-like role mechanisms to identify the responsible user, account, or process, establishing 'who or what caused the event'."
+        },
+        {
+          "statement-id": "au-3_smt.e",
+          "uuid": "d4e5f6a7-b8c9-0123-4567-890abcdef234",
+          "description": "Message delivery advisories explicitly track acknowledgements (success) and NAKs/delivery exceeding limits (failure). Server health events (e.g., out-of-storage, API limit reach) also indicate outcomes, establishing 'the outcome of the event'."
+        },
+        {
+          "statement-id": "au-3_smt.f",
+          "uuid": "e5f6a7b8-c9d0-1234-5678-90abcdef3456",
+          "description": "As described, audit records identify the source component or system, ensuring proper 'identification of the system or component'."
+        }
+      ],
+      "control_id": "au-3"
+    },
+    {
+      "uuid": "cbc05943-ec95-481a-87e8-6b33fa9dc1d0",
+      "control-id": "au-9",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Protection of Audit Information",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect audit information and audit logging tools from unauthorized access, modification, and deletion; and\n\nAdditional requirements:\n- personnel or roles to be alerted upon detection of unauthorized access, modification, or deletion of audit information is/are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service generates comprehensive audit information through structured JSON advisories (e.g., JSAPIAudit, stream/consumer lifecycle events, server health) published to internal subjects (_SYS.>) and supports Syslog for external integration. Protection of this audit information and logging tools is largely addressed by the service's robust, inherent authentication and authorization mechanisms (JWTs, NKEYs, subject-based authorization, multi-tenant account isolation), which restrict unauthorized access to internal data streams. JetStream's replication (up to 3 replicas) also enhances the durability of persisted audit data.\n\nHowever, the documentation does not explicitly define specific personnel or roles responsible for receiving alerts upon the detection of unauthorized access, modification, or deletion of *audit information itself*. While the system generates advisories for various critical events and authentication/authorization failures, the process for monitoring these events specifically for audit information integrity and subsequently alerting predefined roles is not detailed.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "au-9_smt.a",
+          "uuid": "a762d80d-a3e4-40e5-bc26-41167428ca04",
+          "description": "Audit information is generated as structured JSON advisories for administrative actions, lifecycle events, and server health. These advisories are published to internal subjects (e.g., _SYS.>) and syslog support is available for external logging. Protection of this audit information leverages the service's inherent authentication and authorization mechanisms, including JWTs, NKEYs, subject-based authorization, and multi-tenant account isolation, which secure access to internal data streams. JetStream's replication (up to 3 replicas) provides durability for persisted audit data. The service generates advisories for critical events, including authentication and authorization failures, which could be used as triggers for alerting. However, there is no explicit definition of personnel or roles to be alerted upon detection of unauthorized access, modification, or deletion of audit information."
+        }
+      ],
+      "control_id": "au-9"
+    },
+    {
+      "uuid": "d3bf48ef-4c15-49a3-b06e-425f470d225d",
+      "control-id": "cm-5",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Access Restrictions for Change",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Define, document, approve, and enforce physical and logical access restrictions associated with changes to the system.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service inherently satisfies access restrictions for changes through its robust authentication, granular authorization, audit logging, and formal code contribution process. Logical access to modify system configurations or deploy new versions is restricted via multi-faceted authentication (JWTs, NKEYs, passwords) and granular, subject-based authorization models, which define and enforce who can perform administrative actions. Operators, as the top-level identity, control accounts and users, establishing a clear hierarchy for change approval. Internal lock ordering (`reloadMu`) helps manage concurrent configuration changes. All administrative actions and lifecycle events, including changes, are extensively audited through structured JSON advisories (`JSAPIAudit`), providing a comprehensive trail for accountability and enforcement. Furthermore, changes to the system's source code are documented and approved through a formal contribution process requiring Apache-2.0 sign-offs with legal names, ensuring an auditable trail of all code modifications.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "cm-5_smt.a",
+          "uuid": "49c092b8-72ab-48e1-84ef-9963f19fde50",
+          "description": "Access restrictions for changes to the system are defined, documented, approved, and enforced through the service's robust identity and access management (IAM) features, including JWT and NKEY-based authentication, granular subject-based authorization, and an operator-account-user hierarchy. Administrative actions, which constitute changes, are subject to these access controls and are extensively audited via JetStream API Audit advisories. The system's code contributions are formally documented and approved via Apache-2.0 sign-offs, ensuring an auditable trail for all code changes."
+        }
+      ],
+      "control_id": "cm-5"
+    },
+    {
+      "uuid": "7107f775-4c61-44ca-ba48-7e78d8875623",
+      "control-id": "ia-11",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Re-authentication",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Require users to re-authenticate when circumstances or situations requiring re-authentication are defined;. Additional requirements: - circumstances or situations requiring re-authentication are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service requires users to re-authenticate when defined circumstances or situations occur. Specifically, the system includes configurable 'AuthTimeout' and detects 'AuthExpired' states. When a user's session reaches its configured timeout or is detected as expired, re-authentication is required. This ensures that sessions are not maintained indefinitely and users are prompted to re-authenticate under defined conditions.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "ia-11_smt.a",
+          "uuid": "a4d389f7-44af-4a02-a2ea-7b2eea4d3a3e",
+          "description": "The service defines circumstances requiring re-authentication, such as session expiration, through configurable authentication timeouts and detection of expired authentication states. Users are required to re-authenticate when these conditions are met."
+        }
+      ],
+      "control_id": "ia-11"
+    },
+    {
+      "uuid": "81fe5073-bfd5-49be-9f0f-1327a8ae7731",
+      "control-id": "ia-2",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Identification and Authentication (Organizational Users)",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Uniquely identify and authenticate organizational users and associate that unique identification with processes acting on behalf of those users.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service provides robust and multi-faceted authentication mechanisms for organizational users, including JWTs, NKEYs, password-based authentication (with bcrypt support), and direct tokens. Users are uniquely identified through a hierarchy of operators, accounts, and users, with NKEYs used for signing JWTs as identity secrets. The system supports subject-based authorization and account-level policies that associate actions and resource limits with these unique, authenticated identities. Features like configurable authentication timeouts and credential revocation further support secure identification and authentication. While the core capabilities are present, their effective implementation and security posture are dependent on appropriate configuration, such as enabling these authentication methods, properly configuring user accounts, and avoiding insecure options like 'NoAuthUser' in production environments, as indicated by the dependency on `/etc/nats-server.conf` for robust implementation.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "ia-2_smt.a",
+          "uuid": "c391fe1f-7b9e-42ea-b795-bd386b1f7b30",
+          "description": "Organizational users are uniquely identified through a hierarchy of operators, accounts, and users, leveraging JWTs and NKEYs as identity secrets. Authentication is robust, supporting JWTs, NKEYs, bcrypt-hashed passwords, and direct tokens. The system associates these unique, authenticated identities with processes through granular, subject-based authorization models and account-level policies that enforce resource limits and control message flow based on the user's identity. Configurable authentication timeouts and credential revocation mechanisms are in place to manage user sessions and access."
+        }
+      ],
+      "control_id": "ia-2"
+    },
+    {
+      "uuid": "a4dd6072-0cb1-4d89-a607-e4869f4921f4",
+      "control-id": "ia-6",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Authentication Feedback",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Obscure feedback of authentication information during the authentication process to protect the information from possible exploitation and use by unauthorized individuals.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service handles authentication via multiple methods including JWTs, NKEYs, and password-based authentication. To obscure feedback and prevent information leakage during the authentication process, the system employs generic error messages such as ErrAuthentication for credential-related failures. This prevents an attacker from discerning specific details, such as whether a username exists or if a password was merely incorrect, thereby protecting authentication information from potential exploitation.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "ia-6_smt.a",
+          "uuid": "683104f6-6478-4b39-81ec-96617d98f743",
+          "description": "During the authentication process, the service provides generic feedback for authentication failures, indicated by error types like ErrAuthentication, which prevents the disclosure of specific details about the validity of credentials (e.g., distinguishing between an invalid username and an incorrect password). This obscuration protects authentication information from exploitation."
+        }
+      ],
+      "control_id": "ia-6"
+    },
+    {
+      "uuid": "bae680fa-5c6c-45dd-8343-53abf76dd331",
+      "control-id": "ia-7",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Cryptographic Module Authentication",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Implement mechanisms for authentication to a cryptographic module that meet the requirements of applicable laws, executive orders, directives, policies, regulations, standards, and guidelines for such authentication.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service integrates with the Windows Certificate Store to retrieve TLS certificates and private keys. Authentication to this cryptographic module is implicitly handled by the underlying operating system's inherent access control mechanisms, which ensure that only authorized processes (e.g., the service running under a specific service account with appropriate permissions) can access the store. This leverages the OS's secure environment for cryptographic key management.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "server/certstore/certstore_windows.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-7_smt.a",
+          "uuid": "a09eaee3-dc84-4cb9-8bf4-202b390b5eb0",
+          "description": "The service integrates with the Windows Certificate Store to retrieve TLS certificates and private keys. Access to this cryptographic module is controlled by the underlying operating system's security mechanisms, such as service account permissions, which ensure that the service process is appropriately authorized to access the store. This satisfies the requirement by leveraging the platform's trusted authentication for cryptographic module access."
+        }
+      ],
+      "control_id": "ia-7"
+    },
+    {
+      "uuid": "b4d73d3a-301f-4db5-bb39-7c561856503c",
+      "control-id": "ia-8",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Identification and Authentication (Non-organizational Users)",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Uniquely identify and authenticate non-organizational users or processes acting on behalf of non-organizational users.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service provides robust and multi-faceted authentication mechanisms for users, including JWTs, NKEYs, password-based authentication (with bcrypt), and direct tokens. These methods ensure unique identification and authentication of connecting clients, which are typically non-organizational users of the message broker. However, the service includes a `NoAuthUser` option that allows a specific user to bypass authentication for WebSocket connections. To fully satisfy this control, it is critical that this `NoAuthUser` option is not enabled or configured for any non-organizational users, ensuring all such users are uniquely identified and authenticated.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-8_smt.a",
+          "uuid": "3c119d80-ee2e-4b14-b654-1897426de6dd",
+          "description": "The system leverages JWTs, NKEYs, and password-based (bcrypt) or token authentication methods to uniquely identify and authenticate non-organizational users or processes acting on their behalf. This includes support for source IP and time range restrictions for JWT validity, and credential revocation. The presence of a `NoAuthUser` option necessitates careful configuration to ensure all non-organizational users are subject to authentication."
+        }
+      ],
+      "control_id": "ia-8"
+    },
+    {
+      "uuid": "b6029682-3eca-4f17-8510-86c96742ce59",
+      "control-id": "sc-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Network Disconnect",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Terminate the network connection associated with a communications session at the end of the session or after a time period of inactivity after which the system terminates a network connection associated with a communication session is defined; of inactivity.\n\nAdditional requirements:\n- a time period of inactivity after which the system terminates a network connection associated with a communication session is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service implements network disconnect functionality for communication sessions based on inactivity. The 'Authentication and Authorization' section explicitly states that 'Session handling includes configurable `AuthTimeout` and detection of `AuthExpired` states.' This directly addresses the requirement to define a time period of inactivity after which the system terminates a network connection. Furthermore, a 'ping timer ensures connection liveness,' which contributes to detecting inactive connections that may then be terminated. For MQTT clients, the system supports 'Will Messages' which are sent upon implicit disconnection, indicating the system's capability to terminate sessions not explicitly closed by the client. The `AuthTimeout` parameter requires configuration to define the specific inactivity period.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "sc-10_smt.a",
+          "uuid": "68a15f40-c7f4-4ecd-9469-c5520391f314",
+          "description": "The system defines a time period of inactivity through a configurable `AuthTimeout` setting. When a communication session remains inactive for this configured duration, the system terminates the associated network connection. The service also utilizes a ping timer mechanism to actively check for connection liveness, which helps in identifying inactive sessions for termination."
+        }
+      ],
+      "control_id": "sc-10"
+    },
+    {
+      "uuid": "cc9db94e-a018-4577-8d6d-5374e4941536",
+      "control-id": "sc-2",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Separation of System and User Functionality",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Separate user functionality, including user interface services, from system management functionality.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service inherently separates user functionality from system management functionality. This is achieved through a multi-tenant account model that isolates user subject spaces, distinct roles for 'operators' (system management) and 'users' (client interactions), and the use of reserved system subjects (e.g., `_SYS.>`) for server events and administrative advisories. This architectural design ensures logical segregation between user-facing services and core system management operations.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "TODO.md",
+            "locksordering.txt"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-2_smt.a",
+          "uuid": "d8305231-b2e1-4b17-8394-af3203d3b429",
+          "description": "User functionality, including client interactions and message routing, is separated from system management functionality. This separation is implemented through distinct identity roles (operators for system management, users for client interactions) and a multi-tenant account model providing isolated subject spaces for users. Additionally, server events and administrative actions are published to reserved system subjects (e.g., `_SYS.>`), ensuring their logical segregation from user-generated message traffic."
+        }
+      ],
+      "control_id": "sc-2"
+    },
+    {
+      "uuid": "c748d0df-591c-4a80-9882-549c60f5ccc4",
+      "control-id": "sc-23",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Session Authenticity",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the authenticity of communications sessions.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service inherently protects the authenticity of communication sessions. Sessions are established using robust authentication mechanisms such as JWTs, NKEYs, password-based authentication, or direct tokens. For WebSocket connections, authentication can leverage HTTP cookies carrying these credentials. TLS is enforced by default for WebSocket connections to protect the integrity and confidentiality of session data during transit. Session authenticity is further maintained through configurable AuthTimeout and AuthExpired states, which invalidate stale sessions, and ping timers that ensure connection liveness. Additionally, WebSocket connections enforce origin checks (SameOrigin and AllowedOrigins) to prevent unauthorized cross-origin requests, ensuring sessions originate from legitimate sources.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-23_smt.a",
+          "uuid": "4cbfb151-e88f-4ca6-a777-b812c7479103",
+          "description": "The service implements session authenticity by requiring strong authentication (JWTs, NKEYs, passwords, tokens) for session establishment. Communication channels, particularly WebSocket connections, are secured using TLS by default, protecting session credentials and data in transit. Session management features, including AuthTimeout, AuthExpired states, and ping timers, are utilized to manage session liveness and invalidate stale sessions. Furthermore, WebSocket connections incorporate origin checks (SameOrigin and AllowedOrigins) to validate the source of connection requests, thereby enhancing session authenticity."
+        }
+      ],
+      "control_id": "sc-23"
+    },
+    {
+      "uuid": "860c0e49-3fc3-40ac-a16b-038188350705",
+      "control-id": "sc-24",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Fail in Known State",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Fail to a known system state to which system components fail in the event of a system failure is defined; for the following failures on the indicated components while preserving system state information to be preserved in the event of a system failure is defined; in failure: types of system failures for which the system components fail to a known state are defined;. Additional requirements: - types of system failures for which the system components fail to a known state are defined; - known system state to which system components fail in the event of a system failure is defined; - system state information to be preserved in the event of a system failure is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service is designed with inherent mechanisms to ensure it fails to a known state and preserves critical information during failures. Types of system failures for which components fail to a known state are defined through explicit error handling, resource limit enforcement, and cluster-level event detection. The system defines various error types (e.g., authentication failures, resource exhaustion, certificate store issues) and identifies server health events such as 'out-of-storage conditions,' 'server removal,' and 'API limit reach.' Critical cluster failures like 'quorum loss' are detected, triggering 'leader elections.' For MQTT, implicit client disconnections are handled by the 'Will message' feature, demonstrating a defined response to client-side failures. Robust input validation for configurations (e.g., network addresses, TLS settings) ensures that malformed inputs lead to a predictable failure state, such as the service failing to start, rather than an indeterminate operational state. The known system state to which components fail is defined by the system's high-availability architecture. In case of a node failure, the clustering capabilities, including leader election and replica management, ensure the system converges to a consistent, operational state with a new leader and synchronized replicas. When resource limits are reached, the system transitions to a constrained but stable state, rejecting new connections or messages to prevent further degradation. For configuration errors, the service is designed to fail gracefully, typically by not starting or by operating in a secure, degraded default mode. For MQTT clients, an implicit disconnect results in the sending of a 'Will message' and the session state being handled as disconnected, a defined outcome. System state information to be preserved in the event of a system failure is explicitly defined. JetStream streams are configured for replication (up to 3 replicas), ensuring the preservation of message data, QoS 1 and 2 messages, and retained messages across node failures. MQTT session records are specifically persisted in the '$MQTT_sess' stream. Furthermore, the system generates structured JSON advisories for critical events (e.g., JSAPIAudit, leader elections, quorum loss, server health events), providing preserved information about the system's state and the nature of the failure for auditing and recovery.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "sc-24_smt.a",
+          "uuid": "a9fb9dea-93cb-4309-8809-169837da93ad",
+          "description": "The service defines various error types and health events that constitute system failures, such as authentication failures, resource exhaustion (e.g., TooManyConnections, MaxPayload), certificate store errors, server out-of-storage conditions, server removal, API limit reach, quorum loss, and implicit client disconnections (handled by MQTT Will messages). These definitions allow the system to identify and react predictably to different failure scenarios."
+        }
+      ],
+      "control_id": "sc-24"
+    },
+    {
+      "uuid": "897950cc-2736-48a7-a056-8adf9e46b524",
+      "control-id": "sc-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Security Function Isolation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Isolate security functions from nonsecurity functions.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service's security functions, including authentication, authorization, and message routing, are described as integral responsibilities of the 'core server.' While there may be logical separation within the codebase (e.g., distinct Go packages for security logic), the provided context does not indicate a strong form of isolation (e.g., separate processes, containers, or virtual machines) for these security functions from the main application logic and non-security functions like client interactions and message routing. This co-location within the same core component means that security functions are not isolated as per the intent of the control.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "sc-3_smt.a",
+          "uuid": "39ef7a5e-3aae-4d5c-bf4c-89cb15f5353b",
+          "description": "The core server integrates security functions such as authentication, authorization, and message routing directly with non-security functions like client interactions. There is no evidence of strong isolation mechanisms (e.g., separate processes or containers) for these security functions from the main application logic within the provided architectural overview."
+        }
+      ],
+      "control_id": "sc-3"
+    },
+    {
+      "uuid": "6a38c85d-25d6-452e-b341-cecc6593490b",
+      "control-id": "sc-39",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Process Isolation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Maintain a separate execution domain for each executing system process.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service is implemented in Go and runs as one or more operating system processes. Modern operating systems (such as Linux, Windows, and various BSDs, as indicated by the presence of platform-specific `pse_*.go` files and calls to `os.Getpid()`) inherently provide strong process isolation. This fundamental OS feature ensures that each executing system process operates within its own distinct and protected execution domain, including separate virtual memory spaces, resources, and execution contexts. This design prevents unauthorized access or interference between processes, thereby satisfying the requirement for process isolation.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "server/signal.go",
+            "server/pse/pse_netbsd.go",
+            "server/pse/pse_dragonfly.go",
+            "server/pse/pse_openbsd.go",
+            "TODO.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-39_smt.a",
+          "uuid": "13b94796-0c4f-4d12-8445-a29db6a5963e",
+          "description": "The service, implemented in Go, runs as one or more operating system processes. The underlying operating system (e.g., Linux, Windows, BSD, as indicated by platform-specific `pse_*.go` files and the use of `os.Getpid()`) inherently enforces process isolation. This means each process is allocated its own distinct memory space, resources, and execution context, preventing direct unauthorized access or interference from other processes. The service relies on and benefits from this fundamental OS-level security mechanism, ensuring that its components and any spawned child processes operate within their isolated domains."
+        }
+      ],
+      "control_id": "sc-39"
+    },
+    {
+      "uuid": "3ef1b626-1772-4fb4-8562-096587e6f1c7",
+      "control-id": "sc-4",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information in Shared System Resources",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Prevent unauthorized and unintended information transfer via shared system resources.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service inherently prevents unauthorized and unintended information transfer via shared memory resources for sensitive data. Specifically, a `wipeSlice` function is utilized to clear sensitive NKEY seeds from memory after use. This ensures that cryptographic material is not left in deallocated or reused memory regions, thereby preventing potential disclosure to other processes or subsequent users of the same memory. While the provided context does not detail explicit sanitization for all types of shared resources (e.g., disk space after JetStream data deletion), the critical handling of sensitive cryptographic keys in memory directly addresses a core aspect of this control.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "sc-4_smt.a",
+          "uuid": "87529e41-4496-44cc-b4d1-87182828cf82",
+          "description": "The service prevents unauthorized and unintended information transfer via shared memory resources by employing a `wipeSlice` function to clear sensitive NKEY seeds from memory after they are no longer needed. This ensures that sensitive cryptographic material is not inadvertently exposed through memory reuse."
+        }
+      ],
+      "control_id": "sc-4"
+    },
+    {
+      "uuid": "2a9f5d3e-8c7a-4b11-9e2c-3f4d6a7b8c90",
+      "control-id": "si-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information Input Validation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Check the validity of the following information inputs: information inputs to the system requiring validity checks are defined;. Additional requirements: - information inputs to the system requiring validity checks are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service inherently defines information inputs requiring validity checks. This is evidenced by explicit statements such as 'Secure configuration includes extensive input validation for various options, such as network addresses and certificate store parameters.' and 'It also checks for conflicting security configurations'. Furthermore, the service defines and enforces resource limits like 'maximum payload size, maximum control line size, and limits on connections and subscriptions per client or account'. For specific authentication methods, JWTs include defined fields like 'Src' (source IP ranges) and 'Times' (time ranges) that are subject to validity checks, and WebSocket connections enforce origin checks based on 'SameOrigin' and 'AllowedOrigins' lists. These examples demonstrate that the system's design incorporates the definition of inputs requiring validation.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "si-10_smt.a",
+          "uuid": "4c1b7a2e-5d6f-4e9a-8b0c-1d2e3f4a5b6c",
+          "description": "The service's design and implementation explicitly define the information inputs that require validity checks. This includes network addresses, certificate store parameters, JWT claims (e.g., Src, Times), WebSocket origins, and various resource limits (e.g., payload size, connection counts). The system's secure configuration and enforcement mechanisms are built upon these defined input requirements."
+        }
+      ],
+      "control_id": "si-10"
+    },
+    {
+      "uuid": "637305f5-e66b-4e96-a09a-a5ae2d752c79",
+      "control-id": "si-16",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Memory Protection",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Implement the following controls to protect the system memory from unauthorized code execution: controls to be implemented to protect the system memory from unauthorized code execution are defined;. Additional requirements: - controls to be implemented to protect the system memory from unauthorized code execution are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service is developed in Go, a memory-safe language. The Go runtime inherently provides robust memory protection mechanisms, such as automatic garbage collection, bounds checking for array and slice access, and type safety. These features significantly mitigate common memory-related vulnerabilities (e.g., buffer overflows, use-after-free) that are frequently exploited for unauthorized code execution. Furthermore, sensitive data, specifically NKEY seeds, are explicitly cleared from memory using a `wipeSlice` function after use, reducing the risk of sensitive information exposure.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "si-16_smt.a",
+          "uuid": "08adbf22-51ff-45ef-a269-8204e68d179a",
+          "description": "The service leverages the Go programming language, which provides built-in memory safety features. These include automatic memory management through garbage collection, array and slice bounds checking, and strong type enforcement, all of which are fundamental in preventing memory corruption vulnerabilities that could lead to unauthorized code execution. Additionally, the service employs specific practices, such as clearing sensitive NKEY seed data from memory using a `wipeSlice` function, to further protect memory contents."
+        }
+      ],
+      "control_id": "si-16"
+    }
+  ]
+}

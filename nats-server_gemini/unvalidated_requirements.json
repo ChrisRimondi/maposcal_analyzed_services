@@ -1,0 +1,98 @@
+{
+  "unvalidated_requirements": [
+    {
+      "name": "control-status",
+      "value": "not applicable",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "cm-14",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    },
+    {
+      "uuid": "01234567-89ab-cdef-0123-456789abcdef",
+      "name": "control-status",
+      "value": "applicable but partially satisfied",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-28",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        },
+        {
+          "name": "control-name",
+          "value": "Protection of Information at Rest",
+          "ns": "https://fedramp.gov/ns/oscal"
+        },
+        {
+          "name": "control-description",
+          "value": "The organization protects the confidentiality and integrity of [Assignment: organization-defined information] at rest.",
+          "ns": "https://fedramp.gov/ns/oscal"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service stores persistent data, such as MQTT session records, QoS 1 and 2 messages, and retained messages, within JetStream streams. These streams are configured for durability with up to 3 replicas. While data is persistently stored and replicated, the provided documentation does not detail any explicit encryption mechanisms for data at rest. Therefore, confidentiality and integrity of information at rest are not demonstrably protected via encryption.",
+          "ns": "https://fedramp.gov/ns/oscal"
+        },
+        {
+          "name": "control-configuration",
+          "value": "JetStream streams are configured to store data persistently with replica values up to 3. Examples include $MQTT_sess for session records and $MQTT_msgs for QoS messages. Retention policies (limits or interest) are configurable for these streams. No specific configuration for data encryption at rest is provided or implemented.",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    },
+    {
+      "name": "control-status",
+      "value": "applicable and inherently satisfied",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-5",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    },
+    {
+      "uuid": "d2b0a1c3-e4f5-6a7b-8c9d-0e1f2a3b4c5d",
+      "name": "control-status",
+      "value": "applicable but only satisfied through configuration",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-8",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The service implements robust in-transit data protection using TLS 1.2+ with strong cipher suites (e.g., AES-128 GCM, X25519, CurveP256), OCSP for certificate revocation, and TLS pinning. WebSocket connections enforce TLS and origin checks. Resource limits are applied to protect against denial-of-service attacks. However, explicit encryption of data at rest for JetStream persistent data is not detailed or implemented by the service itself.",
+          "ns": "https://fedramp.gov/ns/oscal"
+        },
+        {
+          "name": "control-configuration",
+          "value": "TLS is enabled via `cert_file` and `key_file` or integration with Windows Certificate Store. Cipher suites and elliptic curves are configured with strong defaults. Origin checks for WebSockets are configured via `SameOrigin` and `AllowedOrigins` lists. Resource limits (e.g., max payload, max connections) are configurable.",
+          "ns": "https://fedramp.gov/ns/oscal"
+        },
+        {
+          "name": "control-name",
+          "value": "System and Communications Protection",
+          "ns": "https://fedramp.gov/ns/oscal"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the information system and its communications: (i) at rest; and (ii) in transit.",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    }
+  ]
+}

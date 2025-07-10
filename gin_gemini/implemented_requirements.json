@@ -1,0 +1,1066 @@
+{
+  "implemented_requirements": [
+    {
+      "uuid": "7a36c1cd-50f8-4f7c-9cac-c34180f6c0cc",
+      "control-id": "ac-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Concurrent Session Control",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Limit the number of concurrent sessions for each accounts and/or account types for which to limit the number of concurrent sessions is defined; to the number of concurrent sessions to be allowed for each account and/or account type is defined;.\n\nAdditional requirements:\n- accounts and/or account types for which to limit the number of concurrent sessions is defined;\n- the number of concurrent sessions to be allowed for each account and/or account type is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework, as described, primarily supports HTTP Basic Authentication, which is a stateless mechanism. The provided context explicitly states that the framework does not detail any explicit session management mechanisms. Therefore, Gin does not inherently provide the functionality to track or limit the number of concurrent sessions for accounts or account types. This control would need to be implemented by the application developer using Gin, potentially through custom middleware, an external session management system, or a database to track active user sessions.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "ac-10_smt.a",
+          "uuid": "33bbfd91-28fa-45e4-9bca-8b2969e149ce",
+          "description": "The Gin framework does not natively support or provide mechanisms for concurrent session control. Its reliance on stateless HTTP Basic Authentication means it does not track or manage user sessions in a way that would allow for limiting concurrency. Application-level implementation is required if this control is to be satisfied."
+        }
+      ],
+      "control_id": "ac-10"
+    },
+    {
+      "uuid": "dd0d10ab-8694-42f5-b954-3f2fad172d68",
+      "control-id": "ac-12",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Session Termination",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Automatically terminate a user session after conditions or trigger events requiring session disconnect are defined;.\n\nAdditional requirements:\n- conditions or trigger events requiring session disconnect are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework primarily uses HTTP Basic Authentication, which is inherently stateless and does not manage persistent user sessions. As such, the concept of 'user session termination' after specific conditions or trigger events is not applicable to the framework's built-in authentication mechanisms. Any session management and associated termination logic would need to be implemented externally or by the application developer, outside the scope of Gin's core features.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [],
+      "control_id": "ac-12"
+    },
+    {
+      "uuid": "f3b4c5d6-e7f8-49a0-b1c2-d3e4f5a6b7c8",
+      "control-id": "ac-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Access Enforcement",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework inherently satisfies AC-3 by providing built-in middleware, specifically `BasicAuth` and `BasicAuthForRealm`, which enables applications to enforce logical access to information and system resources. This middleware validates user credentials against a configured in-memory store (an `Accounts` map) provided during initialization. Authorization policies are enforced by applying this middleware to specific routes or groups of routes. If authentication or authorization fails, the framework aborts the request with an HTTP `401 Unauthorized` or `407 Proxy Authentication Required` status, thereby directly enforcing approved authorizations. The use of `crypto/subtle.ConstantTimeCompare` for password comparison within the Basic Auth middleware further strengthens this enforcement against timing-based side-channel attacks.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "github.com/gin-gonic/gin/auth.go",
+            "github.com/gin-gonic/gin/middleware/basic_auth.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-3_smt.a",
+          "uuid": "1a2b3c4d-5e6f-4789-90ab-cdef01234567",
+          "description": "The Gin framework's `BasicAuth` middleware enforces approved authorizations by validating user credentials (username/password) against a pre-configured in-memory `Accounts` map. This middleware can be applied to specific routes or groups, ensuring that only authenticated and authorized users gain logical access to the corresponding resources. Requests failing authentication are rejected with `401 Unauthorized` or `407 Proxy Authentication Required` responses, directly enforcing access control policies."
+        }
+      ],
+      "control_id": "ac-3"
+    },
+    {
+      "uuid": "2c96c16a-825d-4d6b-bd60-0726d3f79db8",
+      "control-id": "ac-4",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information Flow Enforcement",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Enforce approved authorizations for controlling the flow of information within the system and between connected systems based on information flow control policies within the system and between connected systems are defined;. Additional requirements: - information flow control policies within the system and between connected systems are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework facilitates the definition and enforcement of information flow control policies through various configurable mechanisms and middleware. Information flow policies regarding access to resources are defined and enforced via the `BasicAuth` middleware, which uses a configurable `Accounts` map to authorize users, thereby controlling what information they can access. Policies governing the flow of data within the system and to external systems are configured through options like `EnableJsonDecoderDisallowUnknownFields` for strict input validation, `SecureJSON` for mitigating JSON hijacking, and `JsonpJSON` for XSS prevention in JSONP callbacks. These configurations dictate how information is processed and rendered. Internal information flow policies are supported by features like `maskAuthorization` in the recovery middleware, which redacts sensitive `Authorization` headers from logs, preventing their exposure. While Gin itself does not inherently enforce TLS/SSL, it is designed to be compatible with Go's `net/http` server, allowing applications to configure and enforce secure communication channels (e.g., HTTPS, QUIC) for information flow between systems. The framework provides the underlying cryptographic and networking capabilities for this to be configured by the developer.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "ac-4_smt.a",
+          "uuid": "9dac5bb5-65db-4d72-a912-88f969ff4c8b",
+          "description": "The Gin framework enforces approved authorizations for controlling information flow via its middleware and configuration options. For instance, the `BasicAuth` middleware enforces access control policies by validating user credentials against a configured `Accounts` map, preventing unauthorized information access. Furthermore, configurations such as `EnableJsonDecoderDisallowUnknownFields` enforce policies on incoming data flow by rejecting requests that do not adhere to defined schemas, while `SecureJSON` and `JsonpJSON` enforce policies on outgoing data flow by mitigating vulnerabilities like JSON hijacking and XSS. The `maskAuthorization` function in the recovery middleware enforces a policy to prevent sensitive credential information from flowing into logs."
+        }
+      ],
+      "control_id": "ac-4"
+    },
+    {
+      "uuid": "505b52a7-1112-4c70-a3bf-a5ccba4b2d7f",
+      "control-id": "ac-9",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Previous Logon Notification",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Notify the user, upon successful logon to the system, of the date and time of the last logon.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework is a stateless HTTP framework designed for building web applications and APIs. It provides basic authentication mechanisms (like HTTP Basic Auth) which are inherently stateless and do not manage persistent user sessions or track individual user logon history. The framework itself does not store or process information about a user's previous logon date and time, nor does it have a built-in mechanism to notify users of such information upon successful authentication. This functionality is typically implemented at the application layer, within an identity management system, or by the underlying operating system, not within the web framework's core responsibilities.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [],
+      "control_id": "ac-9"
+    },
+    {
+      "uuid": "9aedfbed-2e79-481f-8c1f-98e8832ff440",
+      "control-id": "au-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Non-repudiation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Provide irrefutable evidence that an individual (or process acting on behalf of an individual) has performed actions to be covered by non-repudiation are defined;. Additional requirements: - actions to be covered by non-repudiation are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin framework provides foundational capabilities that enable non-repudiation, specifically HTTP Basic Authentication for user identification and the `gin.Logger()` middleware for general request logging. Upon successful authentication, the user's identity is stored in the Gin context (`AuthUserKey`), allowing for the association of actions with a specific individual. Request logs include timestamps, HTTP method, and path. However, the framework itself does not define *which specific application-level actions* are critical for non-repudiation (e.g., administrative changes, financial transactions), nor does it inherently provide mechanisms to ensure the *irrefutability* of these logs (e.g., cryptographic signing of log entries, tamper-proof log storage beyond directing to standard output/error streams). The responsibility for defining these critical actions and ensuring the integrity and non-repudiation of associated evidence lies with the application built using the Gin framework, leveraging its provided authentication and logging functionalities.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "au-10_smt.a",
+          "uuid": "8a95ac86-d427-4f5f-8418-6f1c1cb8611d",
+          "description": "The Gin framework provides mechanisms for user identification via HTTP Basic Authentication, storing the authenticated user's ID in the request context. It also offers a request logging middleware (`gin.Logger()`) that captures details such as timestamps, HTTP methods, and paths. While these components facilitate the recording of actions by identified individuals, the framework itself does not define the scope of actions requiring non-repudiation within an application, nor does it provide built-in mechanisms to ensure the cryptographic irrefutability or tamper-proof storage of log entries. These aspects must be implemented by the application developer using the framework's capabilities."
+        }
+      ],
+      "control_id": "au-10"
+    },
+    {
+      "uuid": "8c4d2e7a-3f1b-4c9d-8e7f-0a1b2c3d4e5f",
+      "control-id": "au-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Content of Audit Records",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Ensure that audit records contain information that establishes the following:",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework inherently provides audit record content through its built-in logging mechanisms. The `gin.Logger()` middleware produces general request logs that typically include timestamps, HTTP methods, request paths, and response status codes. The `gin.Recovery()` middleware captures and logs panics, generating detailed audit records that include timestamps, relevant HTTP request information (with sensitive `Authorization` headers masked by the `maskAuthorization` function), and stack traces. Additionally, debug logging functions output specific details about routes, loaded templates, and errors. These standardized formats ensure that key information required for auditability, such as what event occurred, when and where it occurred, its source, and its outcome, is present in the generated logs. While the framework allows for custom log formatting and the inclusion of additional context (like authenticated user IDs stored in the Gin context), a foundational set of audit record content is provided by default by the framework's core components.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "gin/logger.go",
+            "gin/recovery.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "au-3_smt.a",
+          "uuid": "f2e1d0c9-8b7a-6f5e-4d3c-2b1a09876543",
+          "description": "The Gin web framework's `gin.Logger()` and `gin.Recovery()` middleware, along with its debug logging capabilities, inherently ensure that audit records contain essential information. These records include timestamps, HTTP methods, request paths, handler names, and for panics, stack traces, establishing what event occurred, when and where it occurred, its source, and its outcome."
+        }
+      ],
+      "control_id": "au-3"
+    },
+    {
+      "uuid": "730c3bc1-f96a-4acb-a9b3-9988f6119963",
+      "control-id": "au-9",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Protection of Audit Information",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect audit information and audit logging tools from unauthorized access, modification, and deletion; and\n\nAdditional requirements:\n- personnel or roles to be alerted upon detection of unauthorized access, modification, or deletion of audit information is/are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework generates audit information through its `Logger()` and `Recovery()` middleware, directing logs to standard output/error streams (`os.Stdout`, `os.Stderr`). While the `maskAuthorization` function helps protect sensitive credential data within panic logs by redacting Authorization headers, the framework itself does not provide built-in mechanisms for protecting the stored audit information or the logging tools (i.e., the log files/streams) from unauthorized access, modification, or deletion. The management and security of persistent audit logs, including access controls and retention policies, are external concerns that rely on the underlying operating system, container environment, or integrated logging solutions. Furthermore, the framework does not include any built-in alert mechanisms or definitions for personnel/roles to be notified upon detection of unauthorized access, modification, or deletion of audit information. These capabilities would require integration with external monitoring and alerting systems.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/doc.md",
+            "mode.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "au-9_smt.a",
+          "uuid": "4aa104b3-dff8-4621-a33f-1e3744440f37",
+          "description": "The Gin framework generates audit logs to standard output/error, but does not provide inherent mechanisms to protect these logs from unauthorized access, modification, or deletion once generated. This responsibility falls to the underlying operating system or external logging infrastructure. No built-in alert mechanisms for unauthorized access to audit information are provided."
+        }
+      ],
+      "control_id": "au-9"
+    },
+    {
+      "uuid": "667329a4-1072-41af-aa04-18fff81d7156",
+      "control-id": "cm-5",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Access Restrictions for Change",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Define, document, approve, and enforce physical and logical access restrictions associated with changes to the system.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The control pertains to defining, documenting, approving, and enforcing physical and logical access restrictions for changes made to the Gin web framework itself. The provided context primarily details the security features and capabilities *within* the Gin framework that it offers to applications built by its users (e.g., HTTP Basic Authentication, secure JSON rendering, logging). It does not explicitly describe the specific physical and logical access restrictions, approval processes, or technical enforcement mechanisms associated with changes to the Gin source code, configuration, or deployment by its maintainers and contributors. While the `CODE_OF_CONDUCT.md` indicates that project maintainers have the responsibility to manage contributions and can reject code, implying a human-driven process for change control and approval, the technical details regarding the enforcement of logical access restrictions (e.g., role-based access control for source repositories, secure CI/CD pipeline access) and any physical access restrictions for the development and build environments of Gin are not provided. Therefore, based on the available information, the control is applicable but only partially satisfied, as the 'enforce physical and logical access restrictions' aspect for changes to the framework itself is not detailed.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "cm-5_smt.a",
+          "uuid": "c5d13118-7b45-4911-b806-d10005513179",
+          "description": "The `CODE_OF_CONDUCT.md` indicates that project maintainers are responsible for clarifying acceptable behavior and have the right to remove, edit, or reject contributions (including comments, commits, and code) that are not aligned with the Code of Conduct. This implies a defined and documented process for reviewing and approving changes to the framework's codebase, which serves as a form of logical access restriction and approval for changes. However, the technical implementation of enforcing these logical access restrictions (e.g., specific permissions on version control systems) and any associated physical access restrictions for the development environment are not detailed in the provided context."
+        }
+      ],
+      "control_id": "cm-5"
+    },
+    {
+      "uuid": "d278f0ea-fbc4-4552-96e1-f9a0ba61fe14",
+      "control-id": "ia-11",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Re-authentication",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Require users to re-authenticate when circumstances or situations requiring re-authentication are defined;. Additional requirements: - circumstances or situations requiring re-authentication are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin framework's built-in HTTP Basic Authentication middleware (e.g., BasicAuth) is inherently stateless. This design requires clients to provide authentication credentials with every request to routes protected by this middleware. Consequently, re-authentication effectively occurs with each relevant request, as there is no persistent session state maintained by the framework itself that would allow authentication to persist without re-submission of credentials. The 'circumstances or situations requiring re-authentication' are thus defined by the stateless nature of HTTP Basic Authentication, which necessitates credentials for every protected request.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "auth.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [],
+      "control_id": "ia-11"
+    },
+    {
+      "uuid": "7f0e9b2c-3d1a-4e5f-8b7c-6a9d0f1e2b3c",
+      "control-id": "ia-2",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Identification and Authentication (Organizational Users)",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Uniquely identify and authenticate organizational users and associate that unique identification with processes acting on behalf of those users.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework inherently supports the unique identification and authentication of organizational users through its built-in BasicAuth and BasicAuthForRealm middleware. These components are designed to verify user credentials against a configured in-memory Accounts map. Upon successful authentication, the unique username is stored within the Gin context under the AuthUserKey, thereby establishing an association between the authenticated user's identity and subsequent processes and handlers acting on their behalf. The framework also employs crypto/subtle.ConstantTimeCompare for password verification, mitigating timing-based side-channel attacks.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "gin/auth.go",
+            "gin/context.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-2_smt.a",
+          "uuid": "8c1d0e3a-4f2b-5c6d-7e8f-9a0b1c2d3e4f",
+          "description": "The Gin framework facilitates the unique identification and authentication of organizational users through its BasicAuth and BasicAuthForRealm middleware. These middleware components are configured with an Accounts map for credential verification, ensuring that each authenticated user is uniquely identified by their username. Upon successful authentication, the framework stores this unique username in the Gin context under the AuthUserKey, thereby associating the user's identity with subsequent HTTP request processing and application logic executed on their behalf. The use of crypto/subtle.ConstantTimeCompare for password validation further enhances the security of the authentication process."
+        }
+      ],
+      "control_id": "ia-2"
+    },
+    {
+      "uuid": "f292c3af-7a40-4fa2-ad13-1112f07c1b29",
+      "control-id": "ia-6",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Authentication Feedback",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Obscure feedback of authentication information during the authentication process to protect the information from possible exploitation and use by unauthorized individuals.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework inherently satisfies this control by utilizing `crypto/subtle.ConstantTimeCompare` for password comparisons within its HTTP Basic Authentication middleware. This mechanism prevents timing-based side-channel attacks that could reveal information about authentication credentials during the validation process. Furthermore, the `maskAuthorization` function in the recovery middleware automatically redacts `Authorization` headers from panic logs, preventing the exposure of sensitive authentication information in debug output.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "auth.go",
+            "recovery.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-6_smt.a",
+          "uuid": "abe7b5cd-7c90-4383-852c-d77715fb2882",
+          "description": "The Gin web framework ensures that authentication feedback is obscured. It uses `crypto/subtle.ConstantTimeCompare` for password comparison within its BasicAuth middleware, which helps mitigate timing attacks by ensuring that the comparison time is independent of the input password's correctness. Additionally, the `maskAuthorization` function is used to redact `Authorization` headers from panic logs, preventing the accidental exposure of sensitive authentication credentials in log output."
+        }
+      ],
+      "control_id": "ia-6"
+    },
+    {
+      "uuid": "88559e5f-ea32-45b1-9fd7-2345dd7c212b",
+      "control-id": "ia-7",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Cryptographic Module Authentication",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Implement mechanisms for authentication to a cryptographic module that meet the requirements of applicable laws, executive orders, directives, policies, regulations, standards, and guidelines for such authentication.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework's built-in HTTP Basic Authentication mechanism inherently incorporates cryptographic security for credential verification. Specifically, the `BasicAuth` middleware utilizes `crypto/subtle.ConstantTimeCompare` for comparing provided passwords against stored ones. This function, part of Go's standard cryptographic library, ensures that the comparison operation executes in constant time, thereby mitigating timing-based side-channel attacks that could potentially reveal sensitive password information. This integration of a cryptographic primitive within the authentication process means the mechanism itself relies on and is secured by a cryptographic module, satisfying the control's intent without requiring specific user configuration.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "auth.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-7_smt.a",
+          "uuid": "e35fefce-20bc-4121-9cc5-af5396a4f6ad",
+          "description": "The Gin web framework implements authentication mechanisms that leverage cryptographic modules. The `BasicAuth` middleware uses `crypto/subtle.ConstantTimeCompare` to securely compare user credentials, preventing timing attacks and ensuring cryptographic integrity of the authentication process."
+        }
+      ],
+      "control_id": "ia-7"
+    },
+    {
+      "uuid": "7c1d3c0a-4a2b-4e0f-9c8d-1a2b3c4d5e6f",
+      "control-id": "ia-8",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Identification and Authentication (Non-organizational Users)",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Uniquely identify and authenticate non-organizational users or processes acting on behalf of non-organizational users.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework provides built-in middleware, such as `gin.BasicAuth()`, that enables applications to implement unique identification and authentication for non-organizational users. This middleware allows developers to configure an in-memory credential store (an `Accounts` map of usernames to passwords) and apply authentication to specific routes or groups. The framework facilitates the secure comparison of credentials using `crypto/subtle.ConstantTimeCompare` and stores the authenticated user's identifier in the request context. However, the actual implementation of user accounts and the application of this authentication mechanism is dependent on the specific configuration and code written by the application developer, rather than being an inherent feature of the framework itself.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [
+        {
+          "statement-id": "ia-8_smt.a",
+          "uuid": "e8f7d6c5-b4a3-2d1c-0e9f-8a7b6c5d4e3f",
+          "description": "The Gin framework offers the `gin.BasicAuth()` middleware, which can be configured by the application developer to uniquely identify and authenticate non-organizational users. This middleware takes a map of user accounts (username and password) and validates incoming requests against these credentials. Upon successful authentication, the user's unique identifier (username) is made available within the Gin context (e.g., via `c.GetString(gin.AuthUserKey)`), allowing subsequent handlers to recognize the authenticated non-organizational user. The framework's use of `crypto/subtle.ConstantTimeCompare` for password verification contributes to the security of the authentication process."
+        }
+      ],
+      "control_id": "ia-8"
+    },
+    {
+      "uuid": "43e2f5b4-7e04-4e20-9a3d-4c570b209d7e",
+      "control-id": "sc-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Network Disconnect",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Terminate the network connection associated with a communications session at the end of the session or after a time period of inactivity after which the system terminates a network connection associated with a communication session is defined; of inactivity.\n\nAdditional requirements:\n- a time period of inactivity after which the system terminates a network connection associated with a communication session is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework, by default, handles HTTP requests in a stateless manner (e.g., with HTTP Basic Authentication, where credentials are sent with each request, effectively terminating the application-level 'session' per request). However, the control requires that a time period of inactivity after which the system terminates a network connection associated with a communication session is defined. The provided security overview for the Gin framework does not indicate that such an inactivity timeout period for network connections is defined, configured, or enforced by the framework itself as a security control. While the underlying Go `net/http` library allows for configuring connection `IdleTimeout` on the `http.Server` instance, this is not a feature or configuration explicitly provided or recommended within the Gin framework's security context. Therefore, the requirement to terminate network connections after a defined period of inactivity is not satisfied based on the provided information.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [],
+      "control_id": "sc-10"
+    },
+    {
+      "uuid": "f4e567a8-1b2c-4d3e-9f01-a2b3c4d5e6f7",
+      "control-id": "sc-2",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Separation of System and User Functionality",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Separate user functionality, including user interface services, from system management functionality.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework inherently supports the separation of user functionality from system management functionality through its architectural design. Key features like the middleware system allow developers to define and apply cross-cutting concerns (e.g., logging, panic recovery, authentication, authorization) separately from the core user-facing application logic. The framework's distinct operational modes (e.g., ReleaseMode) are designed to suppress debug and system-level output in production environments, preventing the exposure of internal details to end-users. The `gin.Context` object encapsulates the HTTP request and response, isolating user-specific data and actions within the context of a request, distinct from the framework's internal operational state. Furthermore, security features like the `maskAuthorization` function in the recovery middleware prevent sensitive user credentials from being exposed in system logs, reinforcing this separation.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [],
+      "control_id": "sc-2"
+    },
+    {
+      "uuid": "a8ae96e7-fde7-475d-84af-3a93a466bb16",
+      "control-id": "sc-23",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Session Authenticity",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the authenticity of communications sessions.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework does not provide built-in mechanisms for stateful session management. Its primary authentication feature, HTTP Basic Authentication, is inherently stateless, requiring credentials for each request. Therefore, the control related to protecting the authenticity of communications sessions (in the context of stateful sessions) is not applicable to the core functionality of the Gin framework. Any session management and its associated authenticity protection would be implemented by the application developer using external libraries or custom code.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [],
+      "control_id": "sc-23"
+    },
+    {
+      "uuid": "55e1b2c9-b154-4725-b769-fa1644d51778",
+      "control-id": "sc-24",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Fail in Known State",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Fail to a known system state to which system components fail in the event of a system failure is defined; for the following failures on the indicated components while preserving system state information to be preserved in the event of a system failure is defined; in failure: types of system failures for which the system components fail to a known state are defined;. Additional requirements: - types of system failures for which the system components fail to a known state are defined; - known system state to which system components fail in the event of a system failure is defined; - system state information to be preserved in the event of a system failure is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework inherently satisfies this control through its `gin.Recovery()` middleware. This middleware automatically intercepts and recovers from panics, which are critical system failures within the application. Upon a panic, the system transitions to a defined \"known state\" where: 1) The application does not crash, ensuring continued service availability. 2) An HTTP 500 Internal Server Error is returned for the affected request, signaling the failure to the client. 3) Relevant system state information, including the HTTP request details (method, path) and the panic's stack trace, is preserved by being logged to `DefaultErrorWriter`. Crucially, sensitive data like `Authorization` headers are automatically masked during this logging to prevent information exposure. This mechanism defines the type of system failure (panic) and the resulting known operational state, along with the information preserved for post-mortem analysis.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "recovery.go",
+            "errors.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-24_smt.a",
+          "uuid": "3f6858fd-2433-4b72-9b88-42f2620fab29",
+          "description": "Gin's `Recovery` middleware ensures that in the event of a panic (a critical system failure), the application does not crash but rather returns an HTTP 500 error for the affected request while logging the panic details. This allows the application to remain in an operational, albeit error, state, which serves as a defined \"known state\" of continued availability."
+        },
+        {
+          "statement-id": "sc-24_smt.b",
+          "uuid": "9c12e9b0-a7d1-4f81-8b22-8e33c7f9d0c1",
+          "description": "The primary type of system failure for which Gin components fail to a known state is a \"panic.\" The `Recovery` middleware specifically targets and handles panics to prevent application termination."
+        },
+        {
+          "statement-id": "sc-24_smt.c",
+          "uuid": "5d2f6e7c-b3a4-4e1a-8c77-4f11d2e3c8b9",
+          "description": "For panics, the known system state is that the Gin application remains operational, logs the panic details, and returns an HTTP 500 Internal Server Error for the specific request that caused the panic. This prevents service outages due to unhandled exceptions."
+        },
+        {
+          "statement-id": "sc-24_smt.d",
+          "uuid": "8e4a1b0c-d5e6-4f7b-9c01-2a3d4f5e6b7a",
+          "description": "During panic recovery, Gin's `Recovery` middleware preserves and logs relevant HTTP request information, including the request method, path, and stack trace. Crucially, sensitive `Authorization` headers are automatically masked by the `maskAuthorization` function to prevent information leakage, ensuring that preserved state information is handled securely."
+        }
+      ],
+      "control_id": "sc-24"
+    },
+    {
+      "uuid": "d21fad3c-c534-4adb-8428-fd88d5789ac2",
+      "control-id": "sc-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Security Function Isolation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Isolate security functions from nonsecurity functions.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gin's architecture inherently isolates security functions from non-security functions primarily through its robust middleware system. Security-specific functionalities such as authentication (e.g., BasicAuth), authorization, panic recovery (Recovery with sensitive data redaction like maskAuthorization), and logging (Logger) are implemented as distinct middleware components. These middleware functions encapsulate security logic and are applied independently to routes or groups of routes, ensuring a clear separation from the application's core business logic handlers. Furthermore, input validation and secure data handling features (e.g., EnableJsonDecoderDisallowUnknownFields, SecureJSON renderer) are contained within dedicated binding and rendering modules. Cryptographic operations leverage separate Go standard library packages (e.g., crypto/subtle), reinforcing the isolation of sensitive primitives. This modular and layered design inherently promotes the isolation of security functions.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "recovery.go",
+            "routergroup.go",
+            "binding/json.go",
+            "debug.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-3_smt.a",
+          "uuid": "d47cf47b-67be-46a4-b2b7-4b78a5283709",
+          "description": "Security functions, including authentication, authorization, logging, panic recovery, and secure data handling, are isolated through Gin's middleware architecture and dedicated modules. Middleware components encapsulate security logic, allowing them to be applied distinctly from core business logic handlers. Cryptographic operations are handled by separate, specialized Go packages."
+        }
+      ],
+      "control_id": "sc-3"
+    },
+    {
+      "uuid": "424a768d-015c-4629-ae5e-5bca01d6e73a",
+      "control-id": "sc-39",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Process Isolation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Maintain a separate execution domain for each executing system process.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework is a Go application that compiles into a single executable. When deployed, it operates as a single operating system process. Its internal concurrency (e.g., handling multiple requests simultaneously) is managed using Go goroutines, which are lightweight, user-space threads that share the same memory space within the single OS process. The control sc-39, \"Process Isolation,\" refers to maintaining separate execution domains for distinct operating system processes. Since Gin itself is designed to function as a single system process and does not manage or isolate other distinct system processes as part of its core functionality, this control is not applicable to the framework itself. The responsibility for ensuring OS-level process isolation for different applications or services on a host lies with the underlying operating system or containerization/virtualization platform, not the web framework.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [],
+      "statements": [],
+      "control_id": "sc-39"
+    },
+    {
+      "uuid": "d8c3f4e2-a1b2-4c5d-9e0f-1a2b3c4d5e6f",
+      "control-id": "sc-4",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information in Shared System Resources",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Prevent unauthorized and unintended information transfer via shared system resources.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin framework implements several mechanisms to prevent unauthorized information transfer. It defaults to preventing directory listings for static file serving through `OnlyFilesFS` and `neutralizedReaddirFile`, mitigating information disclosure via the file system. Additionally, the `maskAuthorization` function in the recovery middleware redacts sensitive Authorization headers from panic logs, preventing their unintended exposure in shared logging resources. The design using the `Context` object helps isolate request-specific data in memory. However, the framework's use of `unsafe` operations in `github.com/gin-gonic/gin/internal/bytesconv` for zero-copy conversions introduces potential memory safety risks (e.g., use-after-free, data corruption) if not handled with extreme care, which could lead to unintended information transfer in shared memory. Furthermore, while multipart form parsing can write large files to disk, the provided context does not detail specific secure temporary file handling mechanisms (e.g., secure deletion, permissions), which could lead to information persistence or unauthorized access on shared disk resources.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-4_smt.a",
+          "uuid": "f9e8d7c6-b5a4-3d2c-1b0a-9f8e7d6c5b4a",
+          "description": "The Gin framework prevents directory listings for static file serving by disabling `Readdir` functionality through `OnlyFilesFS` and `neutralizedReaddirFile`, thereby mitigating information disclosure of file system structure. The `maskAuthorization` function in the recovery middleware automatically redacts `Authorization` headers from panic logs, preventing sensitive credential exposure in shared debug output. The framework's `Context` object encapsulates request and response data, promoting isolation of information between concurrent requests. However, the use of `unsafe` operations in the `bytesconv` utility package for zero-copy conversions, while performance-optimized, introduces potential memory safety risks that could lead to unintended information transfer if not meticulously managed. Additionally, for multipart form parsing, the context notes that larger files may be written to disk, but specific secure temporary file handling (e.g., secure deletion, access controls) is not detailed, representing a potential avenue for unintended information persistence or access."
+        }
+      ],
+      "control_id": "sc-4"
+    },
+    {
+      "uuid": "114a7b8c-447e-45be-9e0f-97369a0cca3d",
+      "control-id": "sc-8",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Transmission Confidentiality and Integrity",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the confidentiality and integrity of transmitted information.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin framework provides compatibility with Go's standard `net/http` server, which supports TLS/SSL for transmission confidentiality and integrity. It also supports the QUIC protocol, which includes built-in encryption. However, the framework does not inherently enforce TLS/SSL; applications using Gin must explicitly configure HTTPS to secure transmitted information. Additionally, Gin's default behavior of trusting all proxies is noted as unsafe and requires explicit configuration of trusted proxies to prevent IP spoofing and ensure the integrity of connection information. Features like `SecureJSON` and `JsonpJSON` renderers contribute to the integrity of transmitted JSON data by mitigating specific vulnerabilities like JSON hijacking and XSS when properly utilized.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "gin.go",
+            "ginS/gins.go"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-8_smt.a",
+          "uuid": "788deac0-5bd6-4af2-8160-81140d38ead3",
+          "description": "The Gin framework supports secure transmission protocols like HTTPS (via Go's `net/http` compatibility) and QUIC, both of which provide confidentiality and integrity for transmitted data. Applications are responsible for enabling and configuring TLS/SSL for HTTPS endpoints. Furthermore, to maintain the integrity of connection information and prevent IP spoofing, applications must explicitly configure trusted proxies, as the framework's default setting trusts all proxies, which is an insecure default. Gin also includes features such as `SecureJSON` and `JsonpJSON` renderers that help protect the integrity of transmitted JSON content against specific attacks."
+        }
+      ],
+      "control_id": "sc-8"
+    },
+    {
+      "uuid": "bcd3be6a-37f7-401b-9315-e7338611a1d9",
+      "control-id": "si-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information Input Validation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Check the validity of the following information inputs: information inputs to the system requiring validity checks are defined;.\n\nAdditional requirements:\n- information inputs to the system requiring validity checks are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin web framework inherently supports the definition of information inputs requiring validity checks. It integrates with `github.com/go-playground/validator/v10` as its default validation engine. During the data binding process for various input formats (e.g., JSON, form, XML, YAML), Gin invokes a `validate` function on the bound Go struct. This `validate` function, typically calls `binding.Validator.ValidateStruct(obj)`, where `binding.Validator` is an instance of the integrated validator. Application developers define the specific validity checks for their information inputs by using struct tags (e.g., `validate:\"required,email,min=5\"`) on the fields of their Go structs. This robust, built-in mechanism ensures that the system has a well-defined way to specify and enforce validity rules for incoming data as a core part of its functionality.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "binding/form.go",
+            "binding/default_validator.go",
+            "docs/doc.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "si-10_smt.a",
+          "uuid": "73a30d93-ce0b-4606-9225-3cdfefa66296",
+          "description": "Gin utilizes `github.com/go-playground/validator/v10` to define and enforce input validity checks. The framework's binding process includes a call to a `validate` function which, if a validator is configured, executes validation rules defined by the application developer using struct tags on their data structures. This allows for clear definition of expected input formats and constraints."
+        }
+      ],
+      "control_id": "si-10"
+    },
+    {
+      "uuid": "1950df4c-e36e-49a9-8848-16038db16e75",
+      "control-id": "si-16",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Memory Protection",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Implement the following controls to protect the system memory from unauthorized code execution: controls to be implemented to protect the system memory from unauthorized code execution are defined;. Additional requirements: - controls to be implemented to protect the system memory from unauthorized code execution are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Gin framework is developed in Go, a memory-safe language that provides inherent protection against many common memory corruption vulnerabilities (e.g., buffer overflows, use-after-free) through its garbage collection and type safety. This significantly reduces the risk of unauthorized code execution stemming from such issues. However, the `bytesconv` utility package within the framework explicitly uses `unsafe` operations for performance optimization. While these operations are designed to be used carefully, they bypass Go's standard memory safety mechanisms. This introduces potential memory safety risks that, if not rigorously managed and reviewed, could lead to data corruption or, in severe scenarios, enable unauthorized code execution. Therefore, while the language provides strong foundational protection, this specific implementation detail represents a partial satisfaction of the control, indicating a need for defined controls or mitigations around these `unsafe` code sections.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "si-16_smt.a",
+          "uuid": "89a4ff7f-385a-48ce-a354-cb4703c110e1",
+          "description": "The Go language provides robust memory protection, preventing many common memory corruption vulnerabilities. However, the Gin framework's use of `unsafe` operations in the `bytesconv` package introduces a specific area where memory safety is not inherently guaranteed by the language runtime, requiring careful implementation and review to prevent potential unauthorized code execution."
+        }
+      ],
+      "control_id": "si-16"
+    }
+  ],
+  "_metadata": {
+    "generation_info": {
+      "model": "gemini-2.5-flash",
+      "provider": "gemini",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
+      "start_time": "2025-07-09T12:15:54.090446",
+      "command": "generate",
+      "config_file": "config/gin.yaml",
+      "version": "1.0.0"
+    }
+  }
+}

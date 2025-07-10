@@ -1,0 +1,79 @@
+{
+  "failed_controls": [
+    {
+      "control_id": "cm-14",
+      "reason": "Failed validation after 3 attempts",
+      "type": "individual_validation",
+      "timestamp": "2025-07-09 12:31:21.553961",
+      "details": [
+        {
+          "field": "root",
+          "issue": "Missing required fields: control-id, uuid",
+          "suggestion": "Add missing fields: control-id, uuid"
+        },
+        {
+          "field": "props",
+          "issue": "Missing required properties: control-explanation, control-name, control-configuration, control-description",
+          "suggestion": "Add missing properties: control-explanation, control-name, control-configuration, control-description"
+        },
+        {
+          "field": "uuid",
+          "issue": "Missing required uuid field or uuid is None",
+          "suggestion": "Add valid UUID format (e.g., 123e4567-e89b-12d3-a456-426614174000)"
+        }
+      ]
+    },
+    {
+      "control_id": "sc-28",
+      "reason": "Failed validation after 3 attempts",
+      "type": "individual_validation",
+      "timestamp": "2025-07-09 12:31:21.553974",
+      "details": [
+        {
+          "field": "root",
+          "issue": "Missing required fields: control-id, uuid",
+          "suggestion": "Add missing fields: control-id, uuid"
+        },
+        {
+          "field": "props",
+          "issue": "Missing required properties: control-explanation, control-name, control-configuration, control-description",
+          "suggestion": "Add missing properties: control-explanation, control-name, control-configuration, control-description"
+        },
+        {
+          "field": "uuid",
+          "issue": "Missing required uuid field or uuid is None",
+          "suggestion": "Add valid UUID format (e.g., 123e4567-e89b-12d3-a456-426614174000)"
+        }
+      ]
+    },
+    {
+      "control_id": "sc-5",
+      "reason": "Failed validation after 3 attempts",
+      "type": "individual_validation",
+      "timestamp": "2025-07-09 12:31:21.553976",
+      "details": [
+        {
+          "field": "root",
+          "issue": "Missing required fields: control-id",
+          "suggestion": "Add missing fields: control-id"
+        },
+        {
+          "field": "props",
+          "issue": "Missing required properties: control-explanation, control-name, control-configuration, control-description",
+          "suggestion": "Add missing properties: control-explanation, control-name, control-configuration, control-description"
+        }
+      ]
+    }
+  ],
+  "_metadata": {
+    "generation_info": {
+      "model": "gemini-2.5-flash",
+      "provider": "gemini",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
+      "start_time": "2025-07-09T12:15:54.090446",
+      "command": "generate",
+      "config_file": "config/gin.yaml",
+      "version": "1.0.0"
+    }
+  }
+}

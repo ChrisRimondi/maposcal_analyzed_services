@@ -1,0 +1,396 @@
+{
+  "evaluation_results": [
+    {
+      "control-id": "ac-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'applicable and not satisfied' status is perfectly aligned with the explanation, which clearly states that while the capability exists, specific configuration details required for verification were not provided.",
+        "explanation_quality": "The explanation is clear, accurate, and grounded in the observed (or claimed) capability, explicitly identifying the critical missing information (configuration details) that prevents full satisfaction.",
+        "configuration_support": "The empty `control-configuration` is directly supported and justified by the `control-explanation`, which explicitly states that specific configuration details were not provided, thereby reinforcing the 'not satisfied' status.",
+        "overall_consistency": "All components\u2014status, explanation, empty configuration, and the statement describing the system's capability\u2014are highly consistent, collectively presenting a coherent picture of the control's applicability and current non-satisfaction due to lack of specific configuration evidence."
+      },
+      "recommendation": "To transition this control to a 'satisfied' status, the automated mapping output must be updated to include the specific `control-configuration` details (e.g., file paths, keys, values) that demonstrate the actual concurrent session limits implemented and verified."
+    },
+    {
+      "control-id": "ac-12",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 0,
+        "overall_consistency": 1
+      },
+      "total_score": 5,
+      "justifications": {
+        "status_alignment": "The explanation clearly describes automated mechanisms (`AuthTimeout`, `AuthExpired`, MQTT Will Messages for implicit disconnections) that directly support the 'inherently satisfied' status by detailing how session termination conditions are defined and handled.",
+        "explanation_quality": "The explanation is clear, specific, and provides concrete examples of how session termination is handled (e.g., `AuthTimeout`, `AuthExpired`, MQTT implicit disconnections), directly addressing the control's requirements for defining conditions and automatic termination.",
+        "configuration_support": "The `control-configuration` field is empty, which is a critical omission. The explanation explicitly mentions a 'configurable AuthTimeout', implying that specific configuration details should be provided as evidence.",
+        "overall_consistency": "While the explanation strongly supports the status, the complete absence of configuration evidence, despite the explanation mentioning a 'configurable' element, creates a gap in the overall consistency and weakens the claim of inherent satisfaction without supporting details."
+      },
+      "recommendation": "To significantly improve this mapping, provide specific configuration details for the `AuthTimeout` and any other defined conditions or trigger events in the `control-configuration` field. This would substantiate the claim of 'configurable' and provide concrete evidence for the 'inherently satisfied' status."
+    },
+    {
+      "control-id": "ac-3",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 0,
+        "overall_consistency": 1
+      },
+      "total_score": 5,
+      "justifications": {
+        "status_alignment": "The `control-explanation` clearly articulates both the implemented features and the identified deficiencies, precisely justifying the 'applicable but partially satisfied' status.",
+        "explanation_quality": "The `control-explanation` is well-written, specific, and accurately describes the current state of access enforcement, detailing both strengths and areas needing improvement.",
+        "configuration_support": "The `control-configuration` is empty, providing no concrete, verifiable evidence (e.g., configuration snippets, policy references) to support the claims of implemented access controls.",
+        "overall_consistency": "While the status, explanation, and statement are consistent in describing the partial satisfaction, the complete lack of configuration evidence creates a significant gap, undermining the claims of implemented features."
+      },
+      "recommendation": "Populate the `control-configuration` with specific, verifiable evidence, such as configuration snippets or links to system settings, that demonstrate the implemented granular authorization, resource limits, and WebSocket origin checks. This will provide necessary proof for the 'satisfied' aspects of the control."
+    },
+    {
+      "control-id": "ac-4",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 1
+      },
+      "total_score": 6,
+      "justifications": {
+        "status_alignment": "The detailed explanation of built-in mechanisms like granular authorization, multi-tenant isolation, and origin checks strongly supports the 'inherently satisfied' status, implying these controls are fundamental to the service's design.",
+        "explanation_quality": "The explanation is highly detailed, uses specific technical terms, and describes multiple distinct mechanisms (e.g., granular authorization, multi-tenant isolation, origin checks, error types) that clearly demonstrate active enforcement of information flow.",
+        "configuration_support": "While `[]` is syntactically valid, the explanation mentions 'account-level policies' and 'defined policies' without clarifying if these are user-configurable. If they are, the configuration is missing; if not, this should be explicitly stated.",
+        "overall_consistency": "While the status, explanation, and statement are largely consistent in describing inherent enforcement, the empty `control-configuration` creates a slight inconsistency, particularly when the explanation refers to 'account-level policies' and 'defined policies' without clarifying if these are configurable or hard-coded."
+      },
+      "recommendation": "To improve clarity and consistency, if the 'account-level policies' or other 'defined policies' are user-configurable, include relevant configuration details in `control-configuration`. If these policies are hard-coded or non-configurable aspects of the service's inherent design, explicitly state this in the `control-explanation`."
+    },
+    {
+      "control-id": "ac-9",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'applicable and not satisfied' status is perfectly aligned with the explanation and statement, which clearly articulate the absence of the required user-facing notification.",
+        "explanation_quality": "The explanation is clear, accurate, and provides specific details about existing internal data while precisely identifying the missing user-facing notification capability, directly addressing the control's intent.",
+        "configuration_support": "The empty configuration is appropriate and valid for a control marked as 'not satisfied,' accurately reflecting the absence of an implemented configuration for the required functionality.",
+        "overall_consistency": "All components\u2014status, explanation, configuration, and statement\u2014are entirely consistent, reinforcing the assessment that the control is applicable but not satisfied due to the lack of user notification."
+      },
+      "recommendation": "This control mapping is exceptionally well-documented and serves as a strong example for how to clearly articulate a 'not satisfied' control. No specific improvements are recommended for this entry."
+    },
+    {
+      "control-id": "au-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The explanation clearly details how fundamental design elements of the service provide non-repudiation, fully supporting the 'inherently satisfied' status. The empty configuration array is also consistent with an inherent satisfaction.",
+        "explanation_quality": "The explanation is clear, detailed, and uses specific technical examples (JWTs, NKEYs, JetStream, JSAPIAudit, W3C Trace Context) to demonstrate how non-repudiation is achieved. It directly addresses the definition and capture of actions for non-repudiation.",
+        "configuration_support": "The empty `control-configuration` array is appropriate and valid for a control marked as 'inherently satisfied,' indicating that the control is met by the system's fundamental design rather than specific configurable parameters.",
+        "overall_consistency": "The control status, detailed explanation, empty configuration, and the specific statement all consistently describe how non-repudiation is inherently achieved through the service's design and robust logging capabilities."
+      },
+      "recommendation": "The current control mapping is robust, comprehensive, and well-aligned across all components. No significant improvements are identified for this specific mapping."
+    },
+    {
+      "control-id": "au-3",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'applicable and inherently satisfied' status is strongly supported by the explanation which details built-in system features providing the required audit content, and the empty configuration aligns with its inherent nature.",
+        "explanation_quality": "The explanation is highly clear, accurate, and specific, directly referencing technical components (e.g., JSON advisories, JWTs, W3C Trace Context) that demonstrate the inherent satisfaction of the control.",
+        "configuration_support": "An empty `control-configuration` is appropriate for a control marked as 'inherently satisfied,' as it correctly indicates that no specific additional configuration is required to meet this control.",
+        "overall_consistency": "All elements\u2014the status, detailed explanation, empty configuration, and specific statements\u2014are perfectly aligned and consistently reinforce the claim that the control is inherently satisfied by the system's design."
+      },
+      "recommendation": "This is an exemplary control mapping. Maintain this level of detail and specificity for future automated control outputs, particularly in linking inherent system features to compliance requirements."
+    },
+    {
+      "control-id": "au-9",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 0,
+        "overall_consistency": 1
+      },
+      "total_score": 5,
+      "justifications": {
+        "status_alignment": "The 'control-status' of 'applicable but partially satisfied' is perfectly aligned with the 'control-explanation' which clearly details both the implemented protective measures and a specific, identified gap regarding alerting roles.",
+        "explanation_quality": "The 'control-explanation' is highly clear, accurate, and specific, detailing the existing protective mechanisms (e.g., JWTs, NKEYs, JetStream replication) and precisely articulating the identified gap regarding alerting personnel.",
+        "configuration_support": "The 'control-configuration' field is empty, which completely lacks specific evidence (e.g., configuration snippets, file paths) to support the described technical implementations and the 'partially satisfied' status.",
+        "overall_consistency": "While the 'control-status', 'control-explanation', and 'statements' are highly consistent and mutually reinforcing, the complete absence of 'control-configuration' prevents full reinforcement of the claimed satisfied aspects of the control."
+      },
+      "recommendation": "Populate the 'control-configuration' field with specific configuration snippets or references (e.g., policy definitions, replication settings, or access controls for audit streams) that demonstrate the described authentication, authorization, and data durability mechanisms. This would provide concrete evidence for the 'partially satisfied' status and strengthen the overall mapping."
+    },
+    {
+      "control-id": "cm-5",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The detailed explanation of built-in features like robust authentication, granular authorization, audit logging, and a formal code contribution process fully supports the 'applicable and inherently satisfied' status.",
+        "explanation_quality": "The explanation is clear, specific, and accurate, detailing multiple technical mechanisms (e.g., JWTs, NKEYs, JSAPIAudit, Apache-2.0 sign-offs) that directly address the control's requirements for access restrictions on changes.",
+        "configuration_support": "The `control-configuration` is empty, which is appropriate given the 'inherently satisfied' status; the control is met by the component's design and built-in features rather than explicit, user-applied configurations.",
+        "overall_consistency": "All elements\u2014status, explanation, an empty configuration, and the statement\u2014are mutually reinforcing, providing a coherent and consistent narrative about how the control is satisfied by the inherent design of the component."
+      },
+      "recommendation": "For future mappings of 'inherently satisfied' controls, if there are any immutable default settings or policies that explicitly demonstrate this inherent satisfaction, consider briefly documenting them in the `control-configuration` field for even greater clarity."
+    },
+    {
+      "control-id": "ia-11",
+      "scores": {
+        "status_alignment": 1,
+        "explanation_quality": 1,
+        "configuration_support": 0,
+        "overall_consistency": 1
+      },
+      "total_score": 3,
+      "justifications": {
+        "status_alignment": "The 'not satisfied' status is plausible due to the missing configuration evidence. However, the explanation describes a functioning mechanism as if the control *is* met, creating a narrative misalignment with the 'not satisfied' status.",
+        "explanation_quality": "The explanation is clear and describes the re-authentication mechanism but lacks specificity regarding the actual 'defined circumstances' (e.g., specific timeout values or other conditions) that the control requires.",
+        "configuration_support": "The `control-configuration` is an empty array, providing no specific evidence (e.g., configured timeout values, conditions for 'AuthExpired' states) to support the claims made in the explanation.",
+        "overall_consistency": "There is a contradiction between the `control-explanation`, which describes a seemingly complete and satisfied implementation, and the 'not satisfied' `control-status`. The missing `control-configuration` supports the 'not satisfied' status but creates inconsistency with the explanation's narrative."
+      },
+      "recommendation": "Populate the `control-configuration` with specific evidence (e.g., configured timeout values, defined circumstances) to support the explanation. If evidence remains unavailable, revise the `control-explanation` to explicitly state why the control is 'not satisfied' and what is missing or incomplete, ensuring alignment with the `control-status`."
+    },
+    {
+      "control-id": "ia-2",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 0,
+        "overall_consistency": 2
+      },
+      "total_score": 6,
+      "justifications": {
+        "status_alignment": "The `control-status` 'not satisfied' is accurately aligned with the `control-explanation` which explicitly states that while core capabilities exist, their effective implementation and security posture are dependent on configuration, and no configuration evidence is provided.",
+        "explanation_quality": "The `control-explanation` is comprehensive, clearly describes the implemented features for identification and authentication, and accurately identifies the critical dependency on specific configuration for effective and secure implementation.",
+        "configuration_support": "The `control-configuration` is empty, failing to provide any specific, correct, or valid evidence for the configurations explicitly stated as necessary for robust implementation in the `control-explanation`.",
+        "overall_consistency": "All components (status, explanation, and the lack of configuration) are internally consistent, collectively conveying that while the system has the capabilities, the control is not fully satisfied without proper configuration, for which no evidence is provided."
+      },
+      "recommendation": "Populate the `control-configuration` field with specific, verifiable configuration snippets (e.g., from `/etc/nats-server.conf` or relevant API calls/declarations) that demonstrate the enabled authentication methods, proper user account configurations, and the avoidance of insecure options like 'NoAuthUser' in production environments. This evidence is crucial to move the control status towards 'satisfied' by proving the dependencies mentioned in the explanation are met."
+    },
+    {
+      "control-id": "ia-6",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 0,
+        "overall_consistency": 1
+      },
+      "total_score": 5,
+      "justifications": {
+        "status_alignment": "The 'applicable and inherently satisfied' status correctly reflects that the control is met through a design choice (generic error messages) rather than specific external configuration, as described in the explanation.",
+        "explanation_quality": "The explanation is clear, accurately describes how the control is met with a specific example (ErrAuthentication), and articulates the security benefit of this implementation.",
+        "configuration_support": "The 'control-configuration' field is empty, providing no specific evidence, code snippets, or references to design documents to support the claim of inherent satisfaction.",
+        "overall_consistency": "While the status, explanation, and statement are conceptually consistent, the absence of concrete evidence in the 'control-configuration' field weakens the overall verifiability and reinforcement of the 'inherently satisfied' claim."
+      },
+      "recommendation": "For controls marked 'inherently satisfied', the 'control-configuration' property should include specific references to design documents, code locations (e.g., file paths, line numbers), or internal API specifications that demonstrate the inherent implementation of the control, rather than being empty."
+    },
+    {
+      "control-id": "ia-7",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 1,
+        "configuration_support": 1,
+        "overall_consistency": 2
+      },
+      "total_score": 6,
+      "justifications": {
+        "status_alignment": "The explanation clearly describes how the control is satisfied by leveraging underlying OS mechanisms, which strongly supports the 'applicable and inherently satisfied' status. The lack of specific component configuration is consistent with this inherent satisfaction.",
+        "explanation_quality": "The explanation clearly describes the integration with the Windows Certificate Store and reliance on OS access control. However, it implicitly assumes that OS process access control satisfies the 'cryptographic module authentication' requirement rather than detailing an explicit authentication mechanism to the module itself.",
+        "configuration_support": "The empty configuration is consistent with the 'inherently satisfied' status and the explanation's reliance on the OS. However, it could be improved by explicitly stating that no component-level configuration is applicable for this aspect, rather than just being an empty array.",
+        "overall_consistency": "All elements (status, explanation, configuration, and statement) consistently convey that the control is satisfied by leveraging underlying OS capabilities, with no direct contradictions."
+      },
+      "recommendation": "To enhance clarity and auditability, refine the `control-explanation` to explicitly state how the operating system's process authentication and access control mechanisms directly fulfill the 'cryptographic module authentication' requirement. Additionally, consider adding a specific value or comment to the `control-configuration` property, even if empty, to explicitly declare that no component-level configuration is applicable due to reliance on OS-managed authentication."
+    },
+    {
+      "control-id": "ia-8",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 0,
+        "overall_consistency": 2
+      },
+      "total_score": 6,
+      "justifications": {
+        "status_alignment": "The status 'applicable and not satisfied' is accurately supported by the explanation, which details both the existing mechanisms and a specific critical vulnerability (NoAuthUser) that prevents full satisfaction without further configuration or evidence.",
+        "explanation_quality": "The explanation is clear, accurate, and specific, detailing the authentication methods used and precisely identifying a configuration flaw (`NoAuthUser` option) that prevents full control satisfaction.",
+        "configuration_support": "The `control-configuration` field is empty, despite the explanation explicitly identifying a critical configuration (`NoAuthUser` option) that must be verified to ensure control satisfaction. Without this evidence, the mapping is incomplete.",
+        "overall_consistency": "The status, detailed explanation, and lack of configuration evidence are all internally consistent, reinforcing the assessment that the control is applicable but not yet fully satisfied due to a critical unverified configuration."
+      },
+      "recommendation": "The `control-configuration` field should be populated with evidence demonstrating the current configuration of the `NoAuthUser` option, such as a snippet from the relevant configuration file or a command output showing its status (e.g., disabled or restricted). This evidence is crucial to verify that non-organizational users are indeed uniquely identified and authenticated, thereby moving towards full control satisfaction."
+    },
+    {
+      "control-id": "sc-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 0,
+        "overall_consistency": 2
+      },
+      "total_score": 6,
+      "justifications": {
+        "status_alignment": "The 'not satisfied' status is consistent with the explanation explicitly stating that the 'AuthTimeout' parameter requires configuration to define the specific inactivity period, and the 'control-configuration' field being empty.",
+        "explanation_quality": "The explanation clearly describes the mechanisms ('AuthTimeout', 'ping timer', 'Will Messages') that contribute to network disconnect functionality and directly addresses the requirement to define an inactivity period.",
+        "configuration_support": "The 'control-configuration' is empty, failing to provide the specific 'AuthTimeout' value that the explanation states is required to define the inactivity period, which is the core requirement of the control.",
+        "overall_consistency": "All components (status, explanation, configuration, and statement) are consistent. The explanation highlights a configurable parameter, the empty configuration confirms it's not yet defined/satisfied, and the status reflects this non-satisfied state."
+      },
+      "recommendation": "Populate the 'control-configuration' field with the specific value of the 'AuthTimeout' parameter (e.g., '\"AuthTimeout\": \"300 seconds\"') to demonstrate that the inactivity period has been defined. This would allow the control status to be updated to 'satisfied'."
+    },
+    {
+      "control-id": "sc-2",
+      "scores": {
+        "status_alignment": 0,
+        "explanation_quality": 1,
+        "configuration_support": 0,
+        "overall_consistency": 0
+      },
+      "total_score": 1,
+      "justifications": {
+        "status_alignment": "The 'control-status' of 'applicable and inherently satisfied' is directly contradicted by the 'source-code-reference' annotation pointing to 'TODO.md,' which implies incomplete work or placeholder evidence.",
+        "explanation_quality": "The explanation is clear and describes plausible mechanisms for separation, but without specific 'control-configuration' or valid 'source-code-reference' evidence, it is not demonstrably grounded in an 'observed' implementation.",
+        "configuration_support": "The 'control-configuration' field is empty, providing no specific, correct, or valid evidence (e.g., links to architectural diagrams, code snippets, or design documents) to support the detailed architectural claims made in the explanation.",
+        "overall_consistency": "The 'source-code-reference' annotation (specifically 'TODO.md') creates a significant contradiction with the 'control-status' of 'inherently satisfied' and undermines the credibility of the entire mapping."
+      },
+      "recommendation": "To improve this mapping, replace the 'TODO.md' reference with actual architectural documentation or code paths that demonstrate the inherent separation. Additionally, populate the 'control-configuration' field with specific configuration elements or references to design artifacts that directly support the claims made in the 'control-explanation'."
+    },
+    {
+      "control-id": "sc-23",
+      "scores": {
+        "status_alignment": 1,
+        "explanation_quality": 2,
+        "configuration_support": 0,
+        "overall_consistency": 0
+      },
+      "total_score": 3,
+      "justifications": {
+        "status_alignment": "The status 'applicable and inherently satisfied' is weakened by the explanation's mention of 'configurable AuthTimeout and AuthExpired states.' This suggests user-configurable aspects, which contradicts 'inherently satisfied' if no configuration is needed or provided.",
+        "explanation_quality": "The explanation is comprehensive, clearly written, and provides detailed mechanisms for how session authenticity is achieved, aligning well with the control's purpose.",
+        "configuration_support": "The `control-configuration` is empty, which directly contradicts the `control-explanation` that explicitly mentions 'configurable AuthTimeout and AuthExpired states.' If these are configurable, their details should be present.",
+        "overall_consistency": "There is a significant contradiction between the 'inherently satisfied' status, the mention of 'configurable' elements in the explanation, and the empty `control-configuration`. These elements do not reinforce each other."
+      },
+      "recommendation": "Clarify the nature of 'configurable AuthTimeout and AuthExpired states.' If these are user-configurable, the control status should be 'applicable and satisfied,' and the `control-configuration` property must be populated with relevant details (e.g., default values, ranges, or actual deployed values). If these are managed solely by the service provider and not exposed to users, the explanation should explicitly state this to justify the 'inherently satisfied' status and the empty configuration."
+    },
+    {
+      "control-id": "sc-24",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 2
+      },
+      "total_score": 7,
+      "justifications": {
+        "status_alignment": "The 'applicable and inherently satisfied' status is well-supported by the explanation, which details how the control is met through the system's fundamental design, high-availability architecture, and built-in mechanisms rather than user-configurable settings.",
+        "explanation_quality": "The explanation is exceptionally detailed, clearly written, and accurately addresses all three components of the control's requirements (types of failures, known state, preserved information) with specific examples like MQTT Will messages, JetStream replication, and JSON advisories.",
+        "configuration_support": "The 'control-configuration' field is empty. While the control is 'inherently satisfied,' the explanation mentions 'JetStream streams are configured for replication' and 'MQTT session records are specifically persisted,' suggesting that some configuration exists that could be referenced or exemplified here, even if it's default or non-modifiable.",
+        "overall_consistency": "All components\u2014the control status, detailed explanation, and the specific statement\u2014are highly consistent and reinforce each other. The explanation fully supports the claims made by the status and the control's requirements."
+      },
+      "recommendation": "To improve 'configuration_support,' consider adding high-level configuration principles, references to design documents, or examples of default/inherent configurations (e.g., JetStream replication settings) to the `control-configuration` field, even for 'inherently satisfied' controls. This would provide more concrete evidence for the architectural claims made in the explanation."
+    },
+    {
+      "control-id": "sc-3",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 2
+      },
+      "total_score": 7,
+      "justifications": {
+        "status_alignment": "The `control-status` of 'applicable and not satisfied' is perfectly aligned with the detailed explanation and supporting statement, which clearly articulate the lack of strong security function isolation.",
+        "explanation_quality": "The `control-explanation` is exceptionally clear, specific, and accurate, providing a well-reasoned assessment grounded in the described system architecture and clearly explaining why the observed implementation does not meet the control's intent.",
+        "configuration_support": "While the empty `control-configuration` technically reflects the absence of specific isolation configurations, it provides no concrete evidence or references to architectural documents that could further substantiate the explanation for a 'not satisfied' status.",
+        "overall_consistency": "All components\u2014status, explanation, and statement\u2014are fully consistent and reinforce the assessment that the control is not satisfied due to the lack of strong security function isolation; the empty configuration does not contradict this."
+      },
+      "recommendation": "For controls identified as 'not satisfied' due to architectural design or the absence of specific configurations, populate the `control-configuration` field with a concise statement or reference (e.g., 'No dedicated configuration for security function isolation exists as functions are co-located within the core server, as detailed in [Architecture Document X].') to provide explicit evidence of the non-existence of the required configuration."
+    },
+    {
+      "control-id": "sc-39",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'applicable and inherently satisfied' status is accurately justified by the explanation, which details how the service relies on fundamental operating system features for process isolation.",
+        "explanation_quality": "The explanation is clear, technically accurate, and well-grounded in the observed implementation by referencing Go language features and OS-specific files.",
+        "configuration_support": "An empty 'control-configuration' is appropriate for a control that is 'inherently satisfied' by the underlying operating system, indicating no specific application-level configuration is required.",
+        "overall_consistency": "All components\u2014status, explanation, empty configuration, and statement\u2014consistently reinforce the claim that process isolation is inherently provided by the underlying operating system, with supporting evidence from source code references."
+      },
+      "recommendation": "The current mapping for SC-39 is highly effective and well-supported. No significant improvements are required for this specific control."
+    },
+    {
+      "control-id": "sc-4",
+      "scores": {
+        "status_alignment": 1,
+        "explanation_quality": 2,
+        "configuration_support": 0,
+        "overall_consistency": 1
+      },
+      "total_score": 4,
+      "justifications": {
+        "status_alignment": "The 'applicable and inherently satisfied' status overstates the coverage, as the explanation explicitly notes that only a subset of shared resources (memory for sensitive keys) is addressed, not all types.",
+        "explanation_quality": "The explanation is clear, specific about the `wipeSlice` function and its purpose, and transparently acknowledges the scope limitations regarding other shared resources.",
+        "configuration_support": "The `control-configuration` is empty, providing no specific evidence (e.g., code snippets, configuration files, or design references) to validate the claimed `wipeSlice` function or its application.",
+        "overall_consistency": "While the explanation and statement align well, the 'inherently satisfied' status contradicts the explanation's admitted limitations, and the absence of configuration evidence undermines the technical claims."
+      },
+      "recommendation": "Adjust the `control-status` to reflect the partial implementation, perhaps 'partially satisfied' or 'satisfied for specific scope (memory)'. Additionally, populate the `control-configuration` with specific evidence, such as a code snippet or a link to the relevant source code, to substantiate the claim of the `wipeSlice` function's utilization."
+    },
+    {
+      "control-id": "si-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'applicable and inherently satisfied' status is well-justified by the explanation, which describes how the system's design and features inherently define inputs requiring validity checks, and by the lack of specific configuration evidence, implying it's not a configurable element.",
+        "explanation_quality": "The explanation is very clear, provides multiple specific and relevant examples of defined inputs requiring validation (e.g., network addresses, JWT fields, WebSocket origins, resource limits), and directly supports the claim that the service inherently defines these.",
+        "configuration_support": "Given the 'inherently satisfied' status and the nature of the control (defining inputs as part of design, rather than configuring specific validation rules), an empty 'control-configuration' is appropriate. The evidence for the definition of inputs is provided narratively in the 'control-explanation'.",
+        "overall_consistency": "All components\u2014the 'inherently satisfied' status, the detailed explanation, the empty configuration, and the control statement\u2014coherently reinforce the assertion that the system's design inherently defines the inputs requiring validity checks."
+      },
+      "recommendation": "This control mapping is exceptionally well-done. No specific recommendations for improvement are necessary as all elements are clear, consistent, and well-justified."
+    },
+    {
+      "control-id": "si-16",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 1
+      },
+      "total_score": 6,
+      "justifications": {
+        "status_alignment": "The explanation clearly outlines how Go's inherent features (garbage collection, bounds checking, type safety) satisfy the memory protection requirements, aligning well with the 'inherently satisfied' status.",
+        "explanation_quality": "The explanation is clear, accurate, and provides specific details (Go's features, `wipeSlice` for NKEY seeds) that ground it in the component's implementation.",
+        "configuration_support": "While the control is 'inherently satisfied' by language features, the explanation also references a specific implementation (`wipeSlice` function) that is not supported by any configuration or source code evidence, making the evidence incomplete.",
+        "overall_consistency": "While the textual elements (status, explanation, statement) are consistent, the empty `control-configuration` and `source-code-reference` annotations fail to provide supporting evidence for the specific `wipeSlice` implementation mentioned in the explanation and statement."
+      },
+      "recommendation": "Enhance the evidence by including specific configuration details or source code references for the `wipeSlice` function. For instance, populate the `control-configuration` with a path to the file containing `wipeSlice` or provide a `source-code-reference` annotation pointing to its definition. This would provide concrete evidence for the specific implementation mentioned, strengthening the mapping for the non-inherent aspects."
+    }
+  ],
+  "evaluation_timestamp": "2025-07-09 11:48:48.231332"
+}

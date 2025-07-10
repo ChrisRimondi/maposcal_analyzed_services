@@ -1,0 +1,66 @@
+{
+  "unvalidated_requirements": [
+    {
+      "name": "control-status",
+      "value": "not applicable",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "cm-14",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    },
+    {
+      "name": "control-status",
+      "value": "applicable but partially satisfied",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-28",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    },
+    {
+      "uuid": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+      "name": "control-status",
+      "value": "applicable and inherently satisfied",
+      "ns": "urn:maposcal:control-status-reference",
+      "control_id": "sc-5",
+      "description": "The Gin web framework contributes to denial of service protection by enhancing service availability and resilience against high traffic. Its `Recovery` middleware prevents application crashes from panics, ensuring continuous operation, and its high-performance design supports efficient request handling.",
+      "statements": [
+        {
+          "statement-id": "sc-5_stmt1",
+          "description": "The `gin.Recovery()` middleware is configured to intercept panics during request processing. Upon detecting a panic, it logs the error (with sensitive `Authorization` headers masked) and prevents the application from terminating, thereby contributing to the service's availability and resilience against unexpected runtime errors that could lead to a denial of service."
+        },
+        {
+          "statement-id": "sc-5_stmt2",
+          "description": "As a high-performance web framework built on Go's `net/http` library, Gin is designed for efficient request routing and handling. This inherent performance characteristic aids in processing a high volume of requests without degradation, contributing to an increased capacity to resist certain forms of denial of service attacks based on traffic volume."
+        }
+      ],
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "https://fedramp.gov/ns/oscal"
+        }
+      ]
+    }
+  ],
+  "_metadata": {
+    "generation_info": {
+      "model": "gemini-2.5-flash",
+      "provider": "gemini",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
+      "start_time": "2025-07-09T12:15:54.090446",
+      "command": "generate",
+      "config_file": "config/gin.yaml",
+      "version": "1.0.0"
+    }
+  }
+}
