@@ -1,0 +1,475 @@
+{
+  "evaluation_results": [
+    {
+      "control-id": "ac-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'not applicable' status is fully justified by the detailed explanation and supporting statement, which clearly articulate why Gunicorn's functionality does not align with the control's requirements.",
+        "explanation_quality": "The explanation is exceptionally clear, accurate, and directly references Gunicorn's architectural design and stated limitations regarding application-level session management.",
+        "configuration_support": "The empty configuration array is appropriate and valid given the 'not applicable' status, as the component does not implement the functionality required by the control.",
+        "overall_consistency": "All elements\u2014status, explanation, configuration, and the detailed statement\u2014are perfectly consistent and mutually reinforcing, providing a comprehensive and coherent justification for the 'not applicable' assessment."
+      },
+      "recommendation": "This control mapping is exemplary. To further enhance robustness, consider including a direct URL or citation to the specific Gunicorn security overview documentation mentioned in the explanation."
+    },
+    {
+      "control-id": "ac-12",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'not applicable' status is perfectly justified by the comprehensive explanation, which clearly states that session handling is outside Gunicorn's scope and delegated to the application.",
+        "explanation_quality": "The explanation is exceptionally clear, accurate, and precisely defines Gunicorn's architectural boundaries regarding session management, directly supporting why the control is not applicable.",
+        "configuration_support": "For a 'not applicable' control, an empty configuration array is the correct and valid representation, indicating that there is no relevant configuration for this component regarding the control.",
+        "overall_consistency": "All components (status, detailed explanation, empty configuration, and reinforcing statement) are in complete alignment, consistently and logically demonstrating why AC-12 is not applicable to Gunicorn."
+      },
+      "recommendation": "This is an exceptionally well-crafted mapping for a 'not applicable' control. To further enhance its robustness, consider including a direct URL or specific section reference to Gunicorn's official documentation that explicitly outlines its architectural scope and delegation of application-level concerns like session management, if available."
+    },
+    {
+      "control-id": "ac-3",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 0,
+        "overall_consistency": 1
+      },
+      "total_score": 5,
+      "justifications": {
+        "status_alignment": "The status 'applicable but partially satisfied' accurately reflects the detailed explanation, which clearly delineates Gunicorn's direct access enforcement capabilities from those it explicitly delegates.",
+        "explanation_quality": "The explanation is highly clear, accurate, and well-grounded, thoroughly describing Gunicorn's internal and network-level access controls and explicitly identifying the scope limitation for application-level user access.",
+        "configuration_support": "The 'control-configuration' field is empty, despite the explanation referencing specific configuration parameters (e.g., `proxy_allow_ips`, `FORWARDED_ALLOW_IPS`) and operational settings (e.g., UIDs/GIDs, umask) that constitute relevant configuration evidence.",
+        "overall_consistency": "While the control status, explanation, and statement are highly consistent in their narrative, the empty 'control-configuration' field represents a significant gap in providing the specific evidence mentioned, thus weakening the overall consistency of the mapping."
+      },
+      "recommendation": "Populate the `control-configuration` field with specific configuration snippets (e.g., `proxy_allow_ips`, `FORWARDED_ALLOW_IPS` settings) and clear descriptions of how other elements like UID/GID and `umask` are configured or programmatically enforced within Gunicorn's operational environment, referencing specific lines or sections of the source code or documentation mentioned in the explanation."
+    },
+    {
+      "control-id": "ac-4",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 1
+      },
+      "total_score": 6,
+      "justifications": {
+        "status_alignment": "The 'applicable but partially satisfied' status accurately reflects the explanation, which details both strong implemented controls and a critical identified vulnerability that prevents full satisfaction.",
+        "explanation_quality": "The explanation is highly detailed, clearly written, and accurately describes multiple implemented controls and a significant vulnerability with specific technical references and impacts.",
+        "configuration_support": "The provided configuration is specific and valid for one aspect of the control (trusted proxies) but does not include configuration or evidence for the other positive implementations or the identified vulnerability mentioned in the explanation.",
+        "overall_consistency": "While the status, explanation, and statement are highly consistent, the provided configuration only supports one aspect of the control, leading to a partial alignment with the comprehensive details provided elsewhere."
+      },
+      "recommendation": "To improve the mapping, provide additional `control-configuration` evidence for all described information flow enforcement mechanisms, such as privilege separation and secure file descriptor handling, and ideally a specific code reference for the identified `MemoryWatch` vulnerability to fully substantiate the 'partially satisfied' status."
+    },
+    {
+      "control-id": "ac-9",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'not applicable' status is fully justified by the comprehensive explanation that clearly outlines Gunicorn's architectural role and lack of user authentication or session management capabilities.",
+        "explanation_quality": "The explanation is clear, accurate, and provides a strong, technically sound rationale for the control's non-applicability, precisely identifying the delegation of user management to higher application layers.",
+        "configuration_support": "For a control marked 'not applicable,' an empty `control-configuration` is appropriate and valid, as it correctly indicates the absence of relevant configuration within the component for this specific control.",
+        "overall_consistency": "All components of the control mapping\u2014status, explanation, configuration, and the detailed statement\u2014are perfectly aligned and reinforce the conclusion that the control is not applicable to Gunicorn, without any contradictions."
+      },
+      "recommendation": "The mapping is exceptionally well-structured and justified. For future 'not applicable' controls where source code is referenced as evidence, consider explicitly stating *what* the referenced code *lacks* (e.g., 'Inspection of the referenced source files confirms the absence of user authentication or session management mechanisms') to further strengthen the justification for non-applicability."
+    },
+    {
+      "control-id": "au-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable and not satisfied' is perfectly aligned with the detailed explanation stating Gunicorn does not implement the necessary application-level capabilities for non-repudiation.",
+        "explanation_quality": "The explanation is exceptionally clear, accurate, and thoroughly grounded in Gunicorn's architecture and limitations regarding application-level security and non-repudiation requirements.",
+        "configuration_support": "The empty `control-configuration` is entirely appropriate and supportive of the 'not satisfied' status, as the explanation clearly states Gunicorn lacks the inherent functionality to provide this control.",
+        "overall_consistency": "All elements \u2013 status, explanation, empty configuration, and the detailed statement \u2013 are fully consistent and reinforce the conclusion that Gunicorn does not satisfy this control."
+      },
+      "recommendation": "This is an exemplary control mapping for a 'not satisfied' status due to inherent component limitations. No specific improvements are needed for this particular mapping. Consider using this as a model for similar controls where a component does not provide the required functionality and responsibility lies with another layer."
+    },
+    {
+      "control-id": "au-3",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 1
+      },
+      "total_score": 6,
+      "justifications": {
+        "status_alignment": "The explanation clearly articulates both the aspects of the control that are met and those that are not, fully supporting the 'applicable but partially satisfied' status.",
+        "explanation_quality": "The explanation is exceptionally clear, accurately describes Gunicorn's logging capabilities and limitations, and is well-grounded in the architectural role of the component.",
+        "configuration_support": "The `control-configuration` property is empty, despite the explanation and statement referencing specific Gunicorn settings like `syslog_facility` that could be presented as evidence for the partial satisfaction.",
+        "overall_consistency": "While the status, explanation, and statement are highly consistent, the empty `control-configuration` property creates a gap, as specific settings mentioned in the explanation are not provided as concrete evidence."
+      },
+      "recommendation": "Populate the `control-configuration` property with specific configuration snippets or references (e.g., for `syslog_facility` or log formats) that demonstrate how Gunicorn's partial compliance with AU-3 is implemented."
+    },
+    {
+      "control-id": "au-9",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 0,
+        "overall_consistency": 1
+      },
+      "total_score": 5,
+      "justifications": {
+        "status_alignment": "The `control-status` accurately reflects the detailed explanation, which outlines both implemented security measures for audit log protection and specific identified gaps/delegations, justifying the 'partially satisfied' state.",
+        "explanation_quality": "The explanation is highly detailed, clearly distinguishes between implemented controls and identified gaps, and directly references specific Gunicorn features and documentation, demonstrating a strong understanding of the component's capabilities.",
+        "configuration_support": "The `control-configuration` is empty, providing no specific, verifiable configuration snippets or direct evidence to support the claims made in the explanation regarding file/process protections or syslog setup.",
+        "overall_consistency": "While the explanation, statement, and status are highly consistent and reinforce each other, the complete absence of any `control-configuration` creates a significant gap, as the description of configured behaviors lacks direct, verifiable evidence."
+      },
+      "recommendation": "Populate the `control-configuration` field with specific configuration snippets, code references, or relevant system outputs that directly demonstrate the described protections (e.g., umask settings, syslog configuration directives, or how privilege separation impacts log handling). If direct configuration is not applicable (e.g., hardcoded behavior), state this explicitly and provide alternative verifiable evidence or design rationale."
+    },
+    {
+      "control-id": "cm-14",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The explanation clearly articulates why the control's requirements (digital signature verification of installed components) fall outside the scope and functionality of Gunicorn, making 'not applicable' the correct status.",
+        "explanation_quality": "The explanation is precise in defining Gunicorn's scope and accurately distinguishes its SSL/TLS certificate handling from the control's focus on component installation verification.",
+        "configuration_support": "As the control is correctly deemed 'not applicable' to Gunicorn's functionality, an empty configuration array appropriately indicates no relevant configuration evidence exists for this control.",
+        "overall_consistency": "All elements\u2014status, explanation, configuration, and statement\u2014coherently support the determination that CM-14 is not applicable to Gunicorn, with no contradictions."
+      },
+      "recommendation": "This control mapping is exemplary in its clarity, accuracy, and consistency, effectively justifying the 'not applicable' status. No improvements are needed for this specific control."
+    },
+    {
+      "control-id": "cm-5",
+      "scores": {
+        "status_alignment": 1,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 1
+      },
+      "total_score": 6,
+      "justifications": {
+        "status_alignment": "The `control-status` of 'applicable and inherently satisfied' is an overstatement. While the component inherently satisfies the logical access aspects, the explanation explicitly defers the physical access restrictions to an external hosting platform, meaning the component itself does not inherently satisfy this part of the control.",
+        "explanation_quality": "The `control-explanation` is exceptionally clear, detailed, and accurate. It effectively maps the control requirements (define, document, approve, enforce) to the Gunicorn project's PR workflow and `CONTRIBUTING.md` for logical access, and appropriately addresses the physical access aspect as external to the component.",
+        "configuration_support": "An empty `control-configuration` is appropriate as this control is primarily satisfied by a documented process and workflow, rather than a specific technical configuration parameter within the software component itself. Relevant evidence is provided via the `source-code-reference` annotation.",
+        "overall_consistency": "While the explanation and statement are highly consistent in detailing the satisfaction of logical access and the deferral of physical access, the `control-status` of 'inherently satisfied' for the entire control is inconsistent with the explicit statement that the component does not cover the physical aspect."
+      },
+      "recommendation": "The `control-status` should be refined to accurately reflect the component's scope. Consider changing the status to 'applicable and partially satisfied' or adding an `applicability` property to explicitly state that the physical aspect of the control is out of scope for this component's direct implementation. This would align the status with the excellent explanation provided."
+    },
+    {
+      "control-id": "ia-11",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The explanation and statement clearly articulate that re-authentication is outside the scope of Gunicorn's functionality, making 'not applicable' the correct status for this component.",
+        "explanation_quality": "The explanation clearly defines Gunicorn's architectural scope, explicitly states its lack of re-authentication functionality, and references supporting documentation and code evidence.",
+        "configuration_support": "An empty configuration array correctly reflects that Gunicorn does not implement re-authentication functionality, aligning perfectly with the 'not applicable' status and explanation.",
+        "overall_consistency": "The control status, explanation, configuration (or lack thereof), and statement all consistently assert that re-authentication is not a function of Gunicorn, providing a coherent and well-supported mapping."
+      },
+      "recommendation": "This is a well-structured and highly accurate control mapping. No significant improvements are needed as the rationale, evidence, and status are perfectly aligned."
+    },
+    {
+      "control-id": "ia-2",
+      "scores": {
+        "status_alignment": 1,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 1
+      },
+      "total_score": 5,
+      "justifications": {
+        "status_alignment": "The 'applicable and inherently satisfied' status contradicts the explanation's explicit statement that Gunicorn relies on the underlying operating system for authentication, which is a core part of the IA-2 control. 'Inherently satisfied' implies the component fully addresses the control without external dependencies.",
+        "explanation_quality": "The explanation is clear, accurate, and specific, detailing Gunicorn's mechanisms for identification and association (UID/GID, initgroups) while transparently noting its reliance on the OS for authentication.",
+        "configuration_support": "The `control-configuration` only points to the `initgroups` setting, omitting the more fundamental `set_owner_process` function in `gunicorn/util.py` which is central to the explanation's claim of unique identification and privilege dropping.",
+        "overall_consistency": "The primary inconsistency lies between the 'inherently satisfied' status and the explanation's clear statement that Gunicorn defers the authentication requirement of IA-2 to the operating system."
+      },
+      "recommendation": "The mapping provides a strong technical explanation of Gunicorn's role in user identification and process association. However, the `control-status` should be revised to accurately reflect Gunicorn's reliance on the operating system for authentication, moving away from 'inherently satisfied' to a status that indicates shared responsibility or reliance (e.g., 'satisfied via inheritance'). Additionally, the `control-configuration` should be expanded to include references to all critical code paths and functions (like `set_owner_process`) that are central to the explanation's claims, ensuring comprehensive evidence."
+    },
+    {
+      "control-id": "ia-6",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'not applicable' status is perfectly justified by the detailed explanation that Gunicorn's architectural design delegates authentication, making the control's focus irrelevant to its core functionality.",
+        "explanation_quality": "The explanation is clearly written, accurate, and effectively grounds the 'not applicable' status in Gunicorn's observed implementation and design as a low-level WSGI server.",
+        "configuration_support": "The empty `control-configuration` is correct and valid given the `not applicable` status, as there is no relevant configuration for a function not implemented by the component.",
+        "overall_consistency": "All elements of the control mapping\u2014status, explanation, empty configuration, and the detailed statement\u2014are perfectly consistent and mutually reinforce the justification for the 'not applicable' determination."
+      },
+      "recommendation": "This mapping is exceptionally well-done and effectively justifies the 'not applicable' status. For future enhancements, consider providing more granular evidence, such as specific line numbers or sections within the referenced source code files (e.g., SECURITY.md), to further strengthen the direct link to the observed implementation."
+    },
+    {
+      "control-id": "ia-7",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The explanation thoroughly justifies why the control's requirements (authentication *to* a cryptographic module) fall outside Gunicorn's scope and design, making 'not applicable' the correct status.",
+        "explanation_quality": "The explanation is detailed, accurate, and provides a strong rationale for why the control is not applicable, clearly differentiating between using cryptographic functions and authenticating to a cryptographic module.",
+        "configuration_support": "An empty configuration is appropriate here, as the control is deemed 'not applicable' due to the component's design not including the specified functionality. The source code references in annotations provide context for the code base reviewed.",
+        "overall_consistency": "The `control-status`, `control-explanation`, `control-configuration`, and `statements` are perfectly aligned, consistently demonstrating why the control is not applicable to Gunicorn."
+      },
+      "recommendation": "This is an exemplary control mapping. No specific improvements are needed; it serves as a strong example of how to document a 'not applicable' control."
+    },
+    {
+      "control-id": "ia-8",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'not applicable' status is fully justified by the explanation, which clearly articulates why the control's scope falls outside the component's inherent functionality.",
+        "explanation_quality": "The explanation is clear, accurate, and provides a strong rationale for the control's applicability status, referencing the component's design and delegation of responsibility. It is well-grounded in the expected behavior of a WSGI server.",
+        "configuration_support": "The empty configuration array correctly indicates that there are no relevant configuration options within the component for this control, which perfectly aligns with its 'not applicable' status.",
+        "overall_consistency": "All elements\u2014status, explanation, configuration, and statement\u2014are perfectly aligned and reinforce the determination that IA-8 is not applicable to Gunicorn due to its architectural design and delegated responsibilities."
+      },
+      "recommendation": "The mapping is of high quality. To make it even more robust, consider briefly expanding within the `control-explanation` on the specific 'code evidence' that reinforces Gunicorn's lack of application-level authentication, possibly by referencing the absence of relevant patterns in the provided source files."
+    },
+    {
+      "control-id": "sc-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'inherently satisfied' status is fully supported by the explanation, which details Gunicorn's default behavior and internal timeout mechanism, and the empty configuration.",
+        "explanation_quality": "The explanation is clear, accurate, and specifically references Gunicorn's default 'keepalive' setting and a relevant code snippet, directly addressing the control's requirements.",
+        "configuration_support": "The empty 'control-configuration' is appropriate and valid for a control status of 'inherently satisfied,' as the explanation correctly relies on default behavior rather than explicit configuration.",
+        "overall_consistency": "All components (status, explanation, empty configuration, and detailed statement) are perfectly aligned, consistently demonstrating how the control is satisfied by the inherent, default behavior of the component."
+      },
+      "recommendation": "This is an excellent example of a well-documented and consistent automated control mapping; no specific recommendations for improvement are needed."
+    },
+    {
+      "control-id": "sc-2",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The explanation and statement clearly articulate that the separation of functionality is a fundamental architectural design principle of Gunicorn, making the 'applicable and inherently satisfied' status accurate and well-justified.",
+        "explanation_quality": "The explanation is detailed, accurate, and effectively describes how Gunicorn's inherent design satisfies the control, referencing specific architectural components and code examples (e.g., `User` setting, `BaseApplication` class).",
+        "configuration_support": "An empty configuration is appropriate here because the control is stated to be 'inherently satisfied' by Gunicorn's architectural design, meaning no specific configuration setting is necessary to demonstrate compliance.",
+        "overall_consistency": "All components\u2014the status, explanation, empty configuration, and detailed statement\u2014coherently support the claim that the control is inherently satisfied by Gunicorn's architectural design without contradiction."
+      },
+      "recommendation": "The current mapping is exemplary for an 'inherently satisfied' control. For future enhancements, consider if the OSCAL schema allows for more granular linking or embedding of specific architectural artifacts (e.g., key interface definitions, illustrative code snippets) directly within `control-configuration` or as richer `annotations`, to further bolster the 'inherent' claim with more direct structural evidence."
+    },
+    {
+      "control-id": "sc-23",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The explanation provides a robust and well-reasoned argument for why application-level session authenticity is outside Gunicorn's scope, explicitly stating it's delegated, which perfectly aligns with the 'not applicable' status.",
+        "explanation_quality": "The explanation is exceptionally clear, detailed, and accurate. It effectively distinguishes between transport and application-level concerns, cites specific textual evidence, and links to code examples to support its claim of delegation and non-applicability.",
+        "configuration_support": "An empty configuration array is appropriate and correct for a control explicitly marked as 'not applicable' due to the component's design delegating the functionality. There is no relevant configuration within Gunicorn for this delegated responsibility.",
+        "overall_consistency": "All components\u2014the 'not applicable' status, the detailed explanation, the empty configuration, and the supporting statement\u2014are perfectly aligned and reinforce the core argument that Gunicorn delegates this control. There are no contradictions."
+      },
+      "recommendation": "This is an exemplary mapping for a 'not applicable' control. Maintain this high standard for future mappings, particularly the detailed explanation that clearly distinguishes responsibilities and provides concrete evidence for delegation or non-applicability."
+    },
+    {
+      "control-id": "sc-24",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 2
+      },
+      "total_score": 7,
+      "justifications": {
+        "status_alignment": "The explanation and detailed statement effectively demonstrate how Gunicorn's core design (config validation, systemd integration) aligns with the control's requirements for failing to a known state and preserving system state information. The 'inherently satisfied' status is well-justified by the described built-in mechanisms.",
+        "explanation_quality": "The explanation is well-written, clearly articulating how Gunicorn's internal mechanisms and systemd integration address the control's objectives. It provides specific examples (ConfigCheck, ConfigError, sd_notify) that directly support the claims.",
+        "configuration_support": "While the core 'inherent' mechanisms (config validation, exit codes) may not require specific configuration, the explanation mentions logging and systemd integration as contributing to preserving system state information. Common configurations for Gunicorn logging (e.g., `--error-log`) or a sample systemd unit file that leverages `sd_notify` could have been included or referenced to more completely demonstrate the control's satisfaction, rather than leaving `control-configuration` empty.",
+        "overall_consistency": "All components\u2014the status, explanation, and detailed statement\u2014coherently describe how Gunicorn's inherent design features satisfy the control. There are no contradictions between the different parts of the mapping."
+      },
+      "recommendation": "To improve the mapping, consider adding relevant Gunicorn configuration parameters (e.g., for logging, such as `--error-log` or `--log-level`) to the `control-configuration` property. This would strengthen the evidence for how the component contributes to 'preserving system state information,' even if the primary failure mechanisms are inherent. Additionally, while not a direct Gunicorn configuration, referencing the typical systemd service file configuration (e.g., `Type=notify`) that leverages Gunicorn's `sd_notify` capability could enhance clarity on how the inherent feature is put into practice."
+    },
+    {
+      "control-id": "sc-28",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'not applicable' status is strongly supported by the detailed explanation that Gunicorn does not manage data at rest and thus has no relevant configuration.",
+        "explanation_quality": "The explanation is clear, accurate, and provides a logical, architectural reason for the control's inapplicability, referencing the component's design philosophy.",
+        "configuration_support": "An empty configuration is entirely appropriate and valid for a control explicitly marked as 'not applicable', as no evidence of implementation is expected or required.",
+        "overall_consistency": "All elements \u2013 the 'not applicable' status, the detailed explanation, the empty configuration, and the control statement \u2013 are in complete alignment and reinforce each other without contradiction."
+      },
+      "recommendation": "This control mapping is exemplary. No specific recommendations are needed as it thoroughly and accurately justifies the 'not applicable' status."
+    },
+    {
+      "control-id": "sc-3",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'inherently satisfied' status is strongly supported by the explanation, which details Gunicorn's fundamental architectural design and internal mechanisms for isolation, and by the empty configuration, indicating no external setup is required.",
+        "explanation_quality": "The explanation is clear, accurate, and provides specific details about Gunicorn's master-worker model, privilege separation, and relevant internal utility functions (`set_owner_process`, `chown` in `gunicorn/util.py`), grounding the claim in the component's design.",
+        "configuration_support": "The `control-configuration` is correctly empty, aligning with the `inherently satisfied` status, as the control is met by the component's default design rather than requiring specific user-defined settings.",
+        "overall_consistency": "All elements\u2014status, explanation, empty configuration, and the detailed statement\u2014coherently reinforce each other, providing a consistent and well-supported claim for the inherent satisfaction of the control. The source code references also align with the explanation."
+      },
+      "recommendation": "This control mapping is well-structured and highly effective. No improvements are needed."
+    },
+    {
+      "control-id": "sc-39",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'applicable and inherently satisfied' status is perfectly aligned with the explanation, which details how process isolation is a fundamental, non-configurable architectural feature of Gunicorn.",
+        "explanation_quality": "The explanation is exceptionally clear, accurate, and grounded in specific implementation details, referencing `os.fork()`, specific Gunicorn files (`arbiter.py`, `gtornado.py`), and design principles.",
+        "configuration_support": "The empty `control-configuration` is appropriate and valid for a control inherently satisfied by the system's design, indicating no specific configuration is required to demonstrate compliance.",
+        "overall_consistency": "All components\u2014status, detailed explanation, empty configuration, and reinforcing statement\u2014cohesively support the claim that Gunicorn inherently satisfies process isolation through its fundamental architecture."
+      },
+      "recommendation": "This is an exemplary control mapping. No improvements are needed; the rationale, evidence, and status alignment are all of high quality."
+    },
+    {
+      "control-id": "sc-4",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The explanation clearly describes architectural design and default behaviors that inherently satisfy the control, aligning perfectly with the 'inherently satisfied' status.",
+        "explanation_quality": "The explanation is highly detailed, clearly describes how Gunicorn's design and specific code elements contribute to meeting the control, and provides concrete examples including code references and line numbers.",
+        "configuration_support": "The empty `control-configuration` is appropriate as the control is described as 'inherently satisfied' by architectural design and default behaviors, rather than by specific user-set configuration parameters that would need to be mapped.",
+        "overall_consistency": "All components\u2014status, explanation, the empty configuration, and the detailed statement\u2014are perfectly aligned and consistently reinforce the claim that the control is inherently satisfied by Gunicorn's fundamental design."
+      },
+      "recommendation": "No specific recommendations are needed for this control mapping. It is a strong example of a well-documented 'inherently satisfied' control."
+    },
+    {
+      "control-id": "sc-5",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'applicable and inherently satisfied' status is correctly justified by the explanation, which details Gunicorn's built-in architectural design and default behaviors for DoS protection.",
+        "explanation_quality": "The explanation is exceptionally clear, detailed, and accurate, directly referencing specific Gunicorn features, configuration settings (with their default values), and relevant documentation, demonstrating a strong grounding in the observed implementation.",
+        "configuration_support": "The empty `control-configuration` is appropriate and valid for a control marked as 'inherently satisfied', as the protection is described as stemming from the component's default design rather than explicit user-defined configuration.",
+        "overall_consistency": "All components\u2014status, explanation, empty configuration, and detailed statements\u2014are highly consistent, reinforcing the clear message that Gunicorn inherently provides DoS protection through its core design and default operational characteristics."
+      },
+      "recommendation": "This is an exemplary control mapping. No specific recommendations for improvement are needed as it fully meets the assessment criteria."
+    },
+    {
+      "control-id": "sc-8",
+      "scores": {
+        "status_alignment": 0,
+        "explanation_quality": 0,
+        "configuration_support": 0,
+        "overall_consistency": 0
+      },
+      "total_score": 0,
+      "justifications": {
+        "status_alignment": "The 'applicable and not satisfied' status is completely unsupported, as both the explanation and configuration fields are empty, providing no basis for verification.",
+        "explanation_quality": "The 'control-explanation' field is empty, providing no rationale, context, or details whatsoever regarding the control's status or implementation.",
+        "configuration_support": "The 'control-configuration' field is an empty array, which means there is no specific, verifiable evidence provided to support the control's status or state.",
+        "overall_consistency": "With critical fields like explanation and configuration being empty, there is no information to establish consistency or reinforcement between the stated status and any actual implementation details."
+      },
+      "recommendation": "Populate the 'control-explanation' field with a clear and concise reason for why the control is 'not satisfied', detailing the specific gaps or deficiencies. Subsequently, provide concrete and specific evidence in the 'control-configuration' field that supports this explanation, such as specific configuration settings or lack thereof. Also, populate the 'statement-id' description."
+    },
+    {
+      "control-id": "si-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 0,
+        "overall_consistency": 1
+      },
+      "total_score": 5,
+      "justifications": {
+        "status_alignment": "The explanation clearly details both the presence of some validation mechanisms and a critical absence for other inputs, directly supporting the 'partially satisfied' status.",
+        "explanation_quality": "The explanation is detailed, names specific files/functions, and clearly describes both implemented controls and a significant identified gap, making it accurate and grounded.",
+        "configuration_support": "The `control-configuration` field is empty, providing no specific evidence or parameters to support the control's implementation, despite the explanation referencing specific code.",
+        "overall_consistency": "While the narrative elements (status, explanation, statements) are highly consistent in describing partial implementation, the empty `control-configuration` field creates a significant gap in the overall evidence chain."
+      },
+      "recommendation": "Populate the `control-configuration` field with specific evidence such as relevant code snippets, configuration file entries, or detailed references (e.g., file paths and line ranges) that directly demonstrate the described input validation mechanisms."
+    },
+    {
+      "control-id": "si-16",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'applicable and inherently satisfied' status is strongly supported by the explanation, which details architectural and default code-level mechanisms that fulfill the control, and by the empty configuration, indicating no specific user action is required.",
+        "explanation_quality": "The explanation is clear, accurate, and highly specific, detailing Gunicorn's design principles (process isolation, privilege separation, input validation) and referencing specific functions and files, providing excellent grounding for the claimed satisfaction.",
+        "configuration_support": "The empty configuration is appropriate and valid for a control identified as 'inherently satisfied,' as it correctly indicates that the control's fulfillment does not rely on specific user-defined settings or parameters.",
+        "overall_consistency": "All components\u2014the control status, detailed explanation, lack of specific configuration, and reinforcing statement\u2014are coherent and mutually supportive, creating a consistent and strong argument for the control's implementation."
+      },
+      "recommendation": "This is an exceptionally strong mapping. For future enhancements, consider refining the `source-code-reference` to point exclusively to files containing the most direct implementation of the described security mechanisms, potentially including line numbers or function names where feasible, to further bolster evidence."
+    }
+  ],
+  "evaluation_timestamp": "2025-07-11 11:31:11.829612",
+  "_metadata": {
+    "generation_info": {
+      "model": "gemini-2.5-flash",
+      "provider": "gemini",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
+      "start_time": "2025-07-11T11:26:08.770149",
+      "command": "evaluate",
+      "config_file": "config/gunicorn.yaml",
+      "version": "0.1.0"
+    }
+  }
+}

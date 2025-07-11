@@ -1,0 +1,61 @@
+[
+  {
+    "file_path": "tox.ini",
+    "selection_reason": "extension",
+    "mime": "text/x-ini",
+    "hash": "sha256:03b087fa1fb0569b32852f2ce9ef8987be5272b92640e4e59c82b418f63ede78",
+    "keys": [
+      "[tox]",
+      "[tox].envlist",
+      "[testenv]",
+      "[testenv].package",
+      "[testenv].commands",
+      "[testenv].deps",
+      "[testenv:run-entrypoint]",
+      "[testenv:run-entrypoint].package",
+      "[testenv:run-entrypoint].deps",
+      "[testenv:run-entrypoint].commands",
+      "[testenv:run-module]",
+      "[testenv:run-module].package",
+      "[testenv:run-module].deps",
+      "[testenv:run-module].commands",
+      "[testenv:lint]",
+      "[testenv:lint].no_package",
+      "[testenv:lint].commands",
+      "[testenv:lint].deps",
+      "[testenv:docs-lint]",
+      "[testenv:docs-lint].no_package",
+      "[testenv:docs-lint].allowlist_externals",
+      "[testenv:docs-lint].deps",
+      "[testenv:docs-lint].commands",
+      "[testenv:pycodestyle]",
+      "[testenv:pycodestyle].no_package",
+      "[testenv:pycodestyle].commands",
+      "[testenv:pycodestyle].deps",
+      "[pycodestyle]",
+      "[pycodestyle].max-line-length",
+      "[pycodestyle].ignore"
+    ]
+  },
+  {
+    "file_path": "examples/supervisor.conf",
+    "selection_reason": "extension",
+    "mime": "text/plain",
+    "hash": "sha256:281262acab04e874bfd87c3476cbcd6dccdddfe2885920362c38a633dec52c64",
+    "keys": [
+      "[program:gunicorn]",
+      "[program:gunicorn].command",
+      "[program:gunicorn].directory",
+      "[program:gunicorn].user",
+      "[program:gunicorn].autorestart",
+      "[program:gunicorn].redirect_stderr"
+    ]
+  },
+  {
+    "file_path": "examples/nginx.conf",
+    "selection_reason": "extension",
+    "mime": "text/plain",
+    "hash": "sha256:b510dc80ffd380d3f923aec3a6338422e1a84840884aed4bab2a3a8fc7fc3bf1",
+    "keys": []
+  }
+]

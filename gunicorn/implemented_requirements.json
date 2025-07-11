@@ -1,0 +1,1388 @@
+{
+  "implemented_requirements": [
+    {
+      "uuid": "46704fe0-42be-4956-8f4b-9cb7ec99b175",
+      "control-id": "ac-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Concurrent Session Control",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Limit the number of concurrent sessions for each accounts and/or account types for which to limit the number of concurrent sessions is defined; to the number of concurrent sessions to be allowed for each account and/or account type is defined;.\n\nAdditional requirements:\n- accounts and/or account types for which to limit the number of concurrent sessions is defined;\n- the number of concurrent sessions to be allowed for each account and/or account type is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn is a Python WSGI HTTP server designed to serve web applications. As per the security overview, Gunicorn explicitly states that it \"does not implement application-level authentication mechanisms\" and \"Session handling is not a feature of Gunicorn and is expected to be managed by the application it serves.\" The control AC-10 pertains to limiting concurrent sessions for specific accounts or account types, which are application-level concepts. Gunicorn operates at a lower layer, handling HTTP requests and delegating these higher-level concerns to the hosted WSGI application. Therefore, this control is not applicable to Gunicorn itself.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-10_smt.a",
+          "uuid": "74867b0f-42bc-49df-ab8b-ee87e6be5e3e",
+          "description": "The control statement requires limiting concurrent sessions for specific accounts or account types. Gunicorn, by design, does not manage user accounts, authenticate users, or maintain application-level user sessions. These responsibilities are explicitly delegated to the WSGI application it serves. The `worker_connections` setting in `gunicorn/config.py` limits the maximum number of simultaneous *client connections* to the server, which is a resource management parameter and not related to limiting *concurrent user sessions per account*. As Gunicorn lacks the necessary mechanisms to identify, track, or manage user accounts and their sessions, it cannot implement the requirements of this control statement."
+        }
+      ],
+      "control_id": "ac-10"
+    },
+    {
+      "uuid": "9e758b6e-147f-46fd-8e00-17480c7b85f2",
+      "control-id": "ac-12",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Session Termination",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Automatically terminate a user session after conditions or trigger events requiring session disconnect are defined;.\n\nAdditional requirements:\n- conditions or trigger events requiring session disconnect are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn is a Python WSGI HTTP server designed to serve web applications. As stated in the service security overview, 'Session handling is not a feature of Gunicorn and is expected to be managed by the application it serves.' Gunicorn's responsibilities are at the server and process level (e.g., managing worker processes and network connections), not at the user session or application-level authentication layer. The provided code evidence, such as `_eventlet_stop` for connection handling and `stop` and `handle_quit` for worker process termination, confirms Gunicorn's role in managing its internal components and connections, not user sessions. Therefore, the control for user session termination is outside the scope of Gunicorn's functionality.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "gunicorn/workers/geventlet.py",
+            "gunicorn/workers/gthread.py",
+            "gunicorn/arbiter.py",
+            "gunicorn/workers/base.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-12_smt.a",
+          "uuid": "1accce14-5b94-40a2-b2db-7c236bec8da5",
+          "description": "The control statement 'Automatically terminate a user session after conditions or trigger events requiring session disconnect are defined' is not implemented by Gunicorn. Gunicorn operates as a low-level HTTP server, delegating application-level security concerns, including user session management, to the hosted WSGI application. Its architectural design focuses on serving requests and managing worker processes, not on maintaining or terminating user-specific logical sessions. The evidence provided details mechanisms for gracefully stopping server processes and closing network connections, which are distinct from the concept of user session termination as typically understood in application security."
+        }
+      ],
+      "control_id": "ac-12"
+    },
+    {
+      "uuid": "aedd438c-92f3-4284-813e-6bce7babfffb",
+      "control-id": "ac-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Access Enforcement",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn implements access enforcement for its own system resources and internal operations through robust privilege separation and file permission management. Specifically, worker processes are configured to run under different, reduced user and group IDs (UID/GID) than the master process, as indicated by the security summary and the `util.py` description (via `set_owner_process` and `chown`). This ensures that worker processes operate with least privilege, limiting their access to system resources. File permissions are also enforced using `umask` and checks for file ownership before access. Additionally, Gunicorn provides network-level access enforcement by allowing configuration of trusted proxies via `proxy_allow_ips` and `FORWARDED_ALLOW_IPS` settings. However, Gunicorn explicitly delegates application-level logical access enforcement, including user authentication and authorization for access to application information and resources, to the hosted WSGI application or an upstream proxy. This delegation represents a significant gap in Gunicorn's direct implementation of logical access enforcement for end-user interactions with application data.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "LICENSE",
+            "SECURITY.md",
+            "NOTICE",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-3_smt.a",
+          "uuid": "b9364c60-b965-4c21-b1fb-9446d3353aeb",
+          "description": "The control statement 'Enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies' is partially satisfied by Gunicorn's internal mechanisms. Gunicorn enforces its own internal access control policies by implementing privilege separation, where worker processes operate with reduced user and group IDs, limiting their access to system resources. This is supported by functions like `set_owner_process` and `chown` for managing process ownership and permissions. File permissions are also managed via `umask` and ownership checks, ensuring authorized access to Gunicorn's internal files. Furthermore, Gunicorn enforces network-level access policies by allowing administrators to specify trusted proxy IP addresses. However, Gunicorn's design explicitly defers the enforcement of logical access for end-users to the information and system resources provided by the hosted WSGI application; this critical aspect of logical access enforcement is outside of Gunicorn's scope and is expected to be handled by the application or an upstream proxy."
+        }
+      ],
+      "control_id": "ac-3"
+    },
+    {
+      "uuid": "9e7a8bdd-1731-4215-96de-37cb76d90110",
+      "control-id": "ac-4",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information Flow Enforcement",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Enforce approved authorizations for controlling the flow of information within the system and between connected systems based on information flow control policies within the system and between connected systems are defined;.\n\nAdditional requirements:\n- information flow control policies within the system and between connected systems are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn implements several mechanisms for information flow enforcement. It utilizes privilege separation via `set_owner_process` and `chown` to control information flow between the master and worker processes by restricting worker capabilities. Network-level information flow is enforced by allowing administrators to define trusted proxy IPs through the `forwarded_allow_ips` setting, ensuring that only requests from authorized front-ends can influence proxy-related headers. File descriptors are securely managed with `util.close_on_exec` to prevent unintended information leakage to child processes. Input parsing for configuration and application arguments uses `ast.literal_eval` to mitigate code injection risks, and output encoding (`html.escape`) prevents XSS in error messages, controlling information flow to clients. However, a significant gap exists in the `MemoryWatch` module (identified as an internal Gunicorn component for worker management). This module uses the deprecated `commands.getoutput` with direct string formatting for process IDs without input validation, creating a command injection vulnerability. This flaw directly undermines the control's objective by potentially allowing unauthorized execution of commands and thus uncontrolled information flow or system compromise within the system.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "gunicorn/config.py",
+              "key_path": "forwarded_allow_ips",
+              "line_number": 1270
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "LICENSE",
+            "SECURITY.md",
+            "gunicorn/workers/sync.py",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-4_smt.a",
+          "uuid": "a3aa7bbf-4850-4783-8166-fd0a264400ee",
+          "description": "Information flow control policies are defined and partially enforced within Gunicorn. Policies include: 1) **Privilege Separation:** Enforced by running worker processes with reduced privileges (different UID/GID) than the master process, managed by `set_owner_process` and `chown` in `util.py`. This limits the access workers have to system resources and sensitive information. 2) **Trusted Proxy Control:** A policy to only trust forwarded headers from explicitly allowed IP addresses is enforced through the `forwarded_allow_ips` configuration option in `gunicorn/config.py`. This prevents IP spoofing and ensures accurate client information. 3) **Secure File Descriptor Handling:** The `util.close_on_exec` function ensures that open file descriptors (like sockets) are not inherited by child processes, preventing unintended information leakage or access. 4) **Safe Input Parsing and Output Encoding:** `util.py` employs `ast.literal_eval` for safe evaluation of configuration/application arguments, and `html.escape` for output encoding in error messages, preventing information flow vulnerabilities like code injection and XSS. The primary gap in policy enforcement lies in the identified command injection vulnerability within the `MemoryWatch` module, which, if part of Gunicorn's worker management, allows unauthorized command execution via improper handling of process IDs, directly violating the principle of controlled information flow within the system."
+        }
+      ],
+      "control_id": "ac-4"
+    },
+    {
+      "uuid": "58784450-2ad3-4d97-9343-5c8427ca6cf1",
+      "control-id": "ac-9",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Previous Logon Notification",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Notify the user, upon successful logon to the system, of the date and time of the last logon.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn is a Python WSGI HTTP server designed to serve web applications. As explicitly stated in its security overview, Gunicorn does not implement application-level authentication mechanisms, nor does it handle user identity or session management. These responsibilities are delegated to the WSGI application it hosts or an upstream proxy. Therefore, control AC-9, which requires notifying a user of their last logon time, is outside the scope of Gunicorn's functionality and is not applicable to the server itself. The provided code evidence supports Gunicorn's role as a low-level server, focusing on process management, request handling, and utility functions, rather than user-facing authentication or session-related notifications.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "gunicorn/workers/gtornado.py",
+            "gunicorn/reloader.py",
+            "gunicorn/workers/ggevent.py",
+            "gunicorn/util.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-9_smt.a",
+          "uuid": "ec79a914-61a4-4ce6-8ab7-425b3a51d646",
+          "description": "The control statement requires notification to a user upon successful logon. Gunicorn, as a foundational HTTP server, does not manage user logons, user identities, or sessions. Its role is to pass requests to a WSGI application, which would then be responsible for handling authentication, user sessions, and any associated notifications like last logon time. No code patterns or mechanisms within Gunicorn's codebase relate to user authentication, session tracking, or the display of last logon information, as these are features implemented at the application layer above Gunicorn."
+        }
+      ],
+      "control_id": "ac-9"
+    },
+    {
+      "uuid": "03116947-afc5-44b0-9c81-2033e67f5404",
+      "control-id": "au-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Non-repudiation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Provide irrefutable evidence that an individual (or process acting on behalf of an individual) has performed actions to be covered by non-repudiation are defined;.\n\nAdditional requirements:\n- actions to be covered by non-repudiation are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn is a WSGI HTTP server designed to delegate application-level security concerns, including authentication, authorization, and session handling, to the hosted WSGI application or an upstream proxy. Non-repudiation requires robust user identification, authentication, and the logging of specific, defined user actions with mechanisms to ensure the integrity and irrefutability of the evidence. Gunicorn does not implement these application-level capabilities. While it performs process privilege separation and logs some network-level events (e.g., malformed basic auth headers), it does not define application-specific actions nor does it provide the necessary mechanisms to link actions to authenticated individuals with irrefutable evidence. The responsibility for defining actions and implementing non-repudiation for those actions lies entirely with the application served by Gunicorn.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "LICENSE",
+            "CONTRIBUTING.md",
+            "gunicorn/util.py",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "au-10_smt.a",
+          "uuid": "dcf1a791-305e-4f0c-9694-5f83698becac",
+          "description": "The control statement requires defining actions covered by non-repudiation and providing irrefutable evidence of an individual's performance of these actions. Gunicorn, as a low-level HTTP server, does not define application-specific actions; these are defined by the WSGI application it hosts. Furthermore, Gunicorn does not implement application-level authentication or session management, which are foundational for linking actions to specific individuals. While Gunicorn manages process UIDs/GIDs and logs certain server-level events, it lacks the mechanisms (e.g., cryptographic signatures, secure audit trails for user actions) to provide 'irrefutable evidence' for user-initiated actions, nor does it define the scope of such actions. Therefore, the core requirements of the control statement are not met by Gunicorn's inherent design or functionality."
+        }
+      ],
+      "control_id": "au-10"
+    },
+    {
+      "uuid": "ec1a3c3c-51a9-4906-ac47-d037ec68b92f",
+      "control-id": "au-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Content of Audit Records",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Ensure that audit records contain information that establishes the following:",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn, as a low-level WSGI HTTP server, provides basic operational logging capabilities, which inherently capture some information relevant to audit records. Its access and error logs typically include the timestamp of an event (establishing 'when'), the source IP address of the request (establishing 'where' and 'the source'), the HTTP method and path (partially establishing 'what'), and the HTTP status code (indicating the general 'outcome' of the request handling). The `syslog_facility` setting confirms its ability to integrate with system logging infrastructure for log collection.\n\nHowever, Gunicorn explicitly delegates application-level security concerns such such as authentication, authorization, and identity management to the hosted WSGI application or an upstream proxy. Consequently, Gunicorn's native logs do not contain detailed information about the authenticated user ('who') or the specific outcomes of application-level security events (e.g., successful/failed user logins, specific authorized/unauthorized user actions within the application). While it logs malformed basic authentication headers, this is a very limited aspect of detailed 'who' and 'outcome' information typically required for comprehensive audit records. The system's design as a foundational server means it inherently lacks the context to provide the full content required by AU-3 for application-specific security events.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "LICENSE",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "au-3_smt.a",
+          "uuid": "9d42680c-edfb-483b-acbe-12f9e11b2f97",
+          "description": "The implementation of audit record content in Gunicorn is partial due to its role as a low-level server. Gunicorn's access and error logs capture fundamental details that establish 'when' (timestamp of the request), 'where' (source IP address), and the general 'outcome' of HTTP request processing (HTTP status code). For instance, an access log entry would show the time a request was received, the client's IP, and whether the request was successfully served (e.g., HTTP 200) or resulted in an error (e.g., HTTP 500). The 'what' is established by the HTTP method and request path. The `gunicorn/config.py` evidence for `SyslogFacility` indicates support for sending these logs to a syslog server.\n\nHowever, the control requires information that establishes 'who' (the identity of the user or process initiating the event) and detailed 'the outcome' of security-relevant application actions. Gunicorn explicitly delegates application-level authentication and authorization to the WSGI application it hosts. Therefore, its logs do not inherently contain authenticated user IDs or detailed audit trails of user-specific actions or policy enforcement decisions within the application layer. While it may log issues with malformed authentication headers, it does not verify or log successful user identities or granular application-level security events. This architectural delegation means that comprehensive satisfaction of AU-3, particularly concerning user identity and application-specific security actions, relies on the hosted application or an upstream proxy, not Gunicorn itself."
+        }
+      ],
+      "control_id": "au-3"
+    },
+    {
+      "uuid": "403c419a-0e01-44c1-a771-0e25f091b172",
+      "control-id": "au-9",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Protection of Audit Information",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect audit information and audit logging tools from unauthorized access, modification, and deletion; and\n\nAdditional requirements:\n- personnel or roles to be alerted upon detection of unauthorized access, modification, or deletion of audit information is/are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn implements file-level and process-level protections for its own operational logs (audit information) and logging tools. The Security Summary explicitly states that Gunicorn uses privilege separation (master/worker processes with different UIDs/GIDs), `umask` for setting file permissions, and checks for file ownership to protect its logs. It also ensures users retain access to logs after privilege dropping. The `syslog` configuration option (`gunicorn/config.py`) further allows logs to be sent to an external, potentially more secure, logging system, aiding in their protection. Gaps exist as Gunicorn does not define personnel or roles to be alerted upon detection of unauthorized access, modification, or deletion of audit information. This functionality is typically handled by external monitoring and alerting systems that consume Gunicorn's logs. Additionally, Gunicorn's scope is limited to its own operational logs; it does not manage or protect the audit information generated by the *application* it hosts, as application-level security is delegated.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "LICENSE",
+            "SECURITY.md",
+            "NOTICE",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "au-9_smt.a",
+          "uuid": "4ed616ba-a176-43a1-afc4-78caf9dc0b1d",
+          "description": "Gunicorn protects its operational audit information (logs) primarily through operating system-level mechanisms and process privilege separation. The Security Summary highlights that Gunicorn supports privilege separation, allowing worker processes to run with reduced privileges (different UID/GID) compared to the master process, which isolates the processes generating and handling logs. It utilizes `umask` to set appropriate file permissions for created files, including log files, and performs checks for file ownership before accessing files, thereby preventing unauthorized access or modification. The system ensures that users retain access to logs even after privilege dropping, indicating a controlled approach to log access. The `syslog` configuration (defined in `gunicorn/config.py` as `Syslog` class) allows Gunicorn's logs to be directed to a syslog daemon, which can be configured for centralized, protected storage and further analysis, thereby contributing to the protection of audit information. However, the mechanism for defining personnel or roles for alerts upon detection of unauthorized access/modification/deletion of audit information is not implemented within Gunicorn itself."
+        }
+      ],
+      "control_id": "au-9"
+    },
+    {
+      "uuid": "ed1bc02b-5f60-42cc-8dff-2afb27dcdcea",
+      "control-id": "cm-14",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Signed Components",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Prevent the installation of {{ insert: param, cm-14_prm_1 }} without verification that the component has been digitally signed using a certificate that is recognized and approved by the organization.\n\nAdditional requirements:\n- software components requiring verification of a digitally signed certificate before installation are defined;\n- firmware components requiring verification of a digitally signed certificate before installation are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn is a Python WSGI HTTP server whose primary function is to serve web applications. It does not manage the installation or lifecycle of software or firmware components, nor does it act as a package manager or update service for its own components or other system components. The control CM-14 focuses on preventing the installation of components without digital signature verification. This responsibility typically falls to the underlying operating system's package management system or the deployment mechanism responsible for installing Gunicorn itself, not Gunicorn's runtime functionality. The provided evidence, specifically the `cert_reqs` setting, pertains to client certificate verification during SSL/TLS communication, which is distinct from verifying the digital signatures of software or firmware components prior to their installation.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "cm-14_smt.a",
+          "uuid": "5191708d-a8af-4b5c-96e1-26435c4e05b1",
+          "description": "The Gunicorn service does not implement mechanisms for verifying digital signatures of software or firmware components prior to their installation. Its core function is to serve web applications, and it does not manage the lifecycle or installation of software/firmware. The `cert_reqs` setting in `gunicorn/config.py` allows for client certificate verification during SSL/TLS handshakes for secure network communication, but this mechanism does not fulfill the requirement of validating the digital signatures of components (software/firmware) before their installation within the system or by the service itself."
+        }
+      ],
+      "control_id": "cm-14"
+    },
+    {
+      "uuid": "d627be0b-7229-498c-9825-e57f84209ef0",
+      "control-id": "cm-5",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Access Restrictions for Change",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Define, document, approve, and enforce physical and logical access restrictions associated with changes to the system.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The `CONTRIBUTING.md` file explicitly defines the change management process for the Gunicorn project, stating that \"all decisions affecting gunicorn, big and small, follow the same 3 steps: Step 1: Open a pull request.\" This indicates that changes to the Gunicorn codebase are managed through a pull request (PR) workflow. This workflow inherently implements logical access restrictions:\n*   **Definition and Documentation:** The `CONTRIBUTING.md` itself defines and documents the process.\n*   **Approval:** Changes proposed via PRs require review and approval by project maintainers before they can be merged into the main branches, ensuring that only authorized and reviewed changes are integrated.\n*   **Enforcement:** The underlying Git repository platform (e.g., GitHub, GitLab) enforces these logical access restrictions by controlling who has merge permissions on branches, thereby preventing unauthorized direct commits or merges without review.\nPhysical access restrictions, while not directly evident in the Gunicorn codebase, would typically be managed by the security of the hosting platform for the Git repository and the development environments of contributors. For a software project, the primary \"system\" undergoing change is the source code, and the PR workflow effectively addresses logical access for its modification.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "LICENSE",
+            "CONTRIBUTING.md",
+            "SECURITY.md",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "cm-5_smt.a",
+          "uuid": "4b968a28-44e4-40d3-8dfb-ac23dd6b48c8",
+          "description": "The control statement's implementation is primarily through the documented development workflow outlined in `CONTRIBUTING.md`. This document establishes that all changes to the Gunicorn system, including source code, APIs, and documentation, are managed via pull requests. This PR-centric approach ensures:\n1.  **Defined Process:** A clear, documented process for submitting and integrating changes.\n2.  **Logical Access Restrictions:** Only authorized individuals (project maintainers with merge permissions) can approve and merge pull requests, effectively restricting who can introduce changes to the main codebase. This is enforced by the access control mechanisms of the Git repository hosting platform.\n3.  **Approval Mechanism:** The pull request review process serves as the formal approval mechanism, where changes are scrutinized before acceptance.\nThe evidence directly supports the definition, documentation, approval, and enforcement of logical access restrictions for changes to the system's codebase. Physical access to the underlying repository infrastructure is external to the codebase itself."
+        }
+      ],
+      "control_id": "cm-5"
+    },
+    {
+      "uuid": "4c0f3f3e-d840-4cf1-925b-458b2cb59495",
+      "control-id": "ia-11",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Re-authentication",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Require users to re-authenticate when circumstances or situations requiring re-authentication are defined;.\n\nAdditional requirements:\n- circumstances or situations requiring re-authentication are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn is a Python WSGI HTTP server designed to serve web applications. As explicitly stated in the service security overview, Gunicorn does not implement application-level authentication mechanisms, nor does it handle user sessions. These responsibilities, including re-authentication, are delegated entirely to the WSGI application it hosts or an upstream proxy. The provided code evidence confirms Gunicorn's focus on server-level concerns (e.g., worker management, process isolation, request parsing, logging) rather than user-facing authentication or session management.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "SECURITY.md",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-11_smt.a",
+          "uuid": "7cd9e2da-2800-4e38-b50b-7da98d6bda13",
+          "description": "Gunicorn's architecture is that of a low-level HTTP server, not an application-level identity provider or session manager. Consequently, it does not implement any mechanisms for user re-authentication. The control statement's requirement for defining and enforcing re-authentication circumstances is outside the scope of Gunicorn's functionality and is expected to be handled by the deployed WSGI application or an upstream security component."
+        }
+      ],
+      "control_id": "ia-11"
+    },
+    {
+      "uuid": "b8b9e680-c670-4939-ac32-3b76ce8a48a3",
+      "control-id": "ia-2",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Identification and Authentication (Organizational Users)",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Uniquely identify and authenticate organizational users and associate that unique identification with processes acting on behalf of those users.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn inherently implements mechanisms to uniquely identify and associate its worker processes with specific system user and group IDs (UID/GID), which represent 'organizational users' in the context of server operation. The `set_owner_process` function in `gunicorn/util.py` (lines 139-158) is central to this, allowing the master process to drop privileges and run worker processes under a specified UID and GID. This function explicitly calls `os.setuid` and `os.setgid`, thereby uniquely identifying the process's operating system user and associating the process with that identity. The `initgroups` configuration (defined in `gunicorn/config.py` lines 1204-1221) further allows the worker process to inherit all groups of the specified user via `os.initgroups`, strengthening this association. While Gunicorn itself does not perform authentication of these system users (this responsibility lies with the underlying operating system), it relies on and leverages the OS's authenticated user context to establish these unique process identities and associations.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "gunicorn/config.py",
+              "key_path": "initgroups",
+              "line_number": 1204
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "CONTRIBUTING.md",
+            "gunicorn/util.py",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-2_smt.a",
+          "uuid": "b2a29df6-1e18-4b08-80f9-155d5574a61e",
+          "description": "Gunicorn addresses the unique identification and association of 'organizational users' (specifically, the system users under which its worker processes operate) through its robust privilege separation capabilities. The `set_owner_process` function in `gunicorn/util.py` is a core architectural decision that enables this. It explicitly sets the `uid` (unique identification) and `gid` for worker processes, ensuring that these processes operate on behalf of a specific, uniquely identified system user. The `initgroups` configuration setting, defined in `gunicorn/config.py`, further refines this association by allowing the worker process's group access list to include all groups of the specified user. This implementation satisfies the control by ensuring that Gunicorn's operational processes are uniquely identified by system UIDs/GIDs and are explicitly associated with these identities, leveraging the underlying operating system's authentication mechanisms for these 'organizational users'."
+        }
+      ],
+      "control_id": "ia-2"
+    },
+    {
+      "uuid": "be302bea-6c9a-419d-b799-f1d790fcb36e",
+      "control-id": "ia-6",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Authentication Feedback",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Obscure feedback of authentication information during the authentication process to protect the information from possible exploitation and use by unauthorized individuals.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn is a low-level WSGI HTTP server that explicitly delegates application-level security concerns, including authentication and session management, to the WSGI application it hosts or an upstream proxy. As Gunicorn does not implement its own authentication mechanisms, it does not provide authentication feedback to users. Therefore, the control IA-6, which focuses on obscuring authentication feedback during the authentication process, is not applicable to Gunicorn itself.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "LICENSE",
+            "examples/websocket/websocket.py",
+            "examples/websocket/gevent_websocket.py",
+            "SECURITY.md",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-6_smt.a",
+          "uuid": "e32a329e-62c2-42b8-a88f-799b4e2e0eae",
+          "description": "Gunicorn's architecture is designed to serve as a foundational HTTP server, passing requests to a WSGI application. The security overview and code evidence consistently state that authentication and authorization are responsibilities of the hosted WSGI application or an upstream proxy, not Gunicorn. For instance, the security summary explicitly states: 'Gunicorn does not implement application-level authentication mechanisms; this responsibility is delegated to the WSGI application it hosts or an upstream proxy.' Consequently, Gunicorn does not handle user authentication information or provide feedback related to it, making the control statement irrelevant to its core functionality."
+        }
+      ],
+      "control_id": "ia-6"
+    },
+    {
+      "uuid": "1aa4b263-7ce5-42a6-98b9-3923372726b3",
+      "control-id": "ia-7",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Cryptographic Module Authentication",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Implement mechanisms for authentication to a cryptographic module that meet the requirements of applicable laws, executive orders, directives, policies, regulations, standards, and guidelines for such authentication.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn is a WSGI HTTP server designed to delegate application-level security concerns, including authentication, to the hosted WSGI application or an upstream proxy. While Gunicorn utilizes cryptographic functionalities for TLS communication via Python's `ssl` module (which interfaces with underlying cryptographic libraries like OpenSSL), it does not implement mechanisms for authenticating *to* these cryptographic modules themselves. The control IA-7 typically refers to systems that authenticate to dedicated cryptographic hardware (e.g., Hardware Security Modules - HSMs, Trusted Platform Modules - TPMs) or specialized software modules that require explicit authentication (e.g., a password or PIN) to access or perform operations. Gunicorn's code demonstrates the configuration of SSL contexts and the loading of certificate/key files for TLS, but it does not show any internal mechanism for authenticating to the module that stores or processes these cryptographic assets. This responsibility, if required (e.g., for password-protected keys or HSM integration), would fall to the environment Gunicorn runs in or the application it serves, not Gunicorn itself.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "gunicorn/sock.py",
+            "examples/websocket/websocket.py",
+            "examples/websocket/gevent_websocket.py",
+            "SECURITY.md",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-7_smt.a",
+          "uuid": "3a67a1f0-597b-47da-923e-aed3ef70d743",
+          "description": "Gunicorn's design philosophy explicitly states that it does not handle application-level authentication. Its interaction with cryptography is limited to configuring SSL/TLS for secure data in transit. The `gunicorn/sock.py` module shows the creation of an `ssl.SSLContext` and the loading of `certfile` and `keyfile` for TLS. This process configures how the server will identify itself and encrypt communications. However, it does not involve Gunicorn authenticating *to* the cryptographic module (e.g., OpenSSL) that processes these files. Any authentication required by an underlying cryptographic module (such as a password for a protected private key or a PIN for an HSM) would be handled by the environment or system where Gunicorn is deployed, not by Gunicorn's internal code. Therefore, the control statement, which focuses on mechanisms for authentication *to* a cryptographic module, is not implemented by Gunicorn, as this functionality is outside its scope."
+        }
+      ],
+      "control_id": "ia-7"
+    },
+    {
+      "uuid": "dc6db917-af08-4c42-9007-50c7113b1325",
+      "control-id": "ia-8",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Identification and Authentication (Non-organizational Users)",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Uniquely identify and authenticate non-organizational users or processes acting on behalf of non-organizational users.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn is a low-level Python WSGI HTTP server designed to serve web applications. As explicitly stated in the 'Security Summary' and reinforced by the code evidence, Gunicorn does not implement application-level authentication mechanisms, user identity management, or session handling. These responsibilities are delegated entirely to the WSGI application it hosts or an upstream proxy. Therefore, control IA-8, which pertains to the unique identification and authentication of non-organizational users interacting with the application, falls outside Gunicorn's scope and inherent functionality.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "CONTRIBUTING.md",
+            "gunicorn/util.py",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-8_smt.a",
+          "uuid": "3310856d-8365-406d-9c0b-1aa81d868086",
+          "description": "The control statement requires unique identification and authentication of non-organizational users. Gunicorn's design philosophy places this responsibility squarely on the WSGI application it serves or an upstream proxy. Gunicorn itself does not contain code patterns or mechanisms for user authentication, session management, or identity verification beyond its internal process UID/GID management for privilege separation (as seen in `gunicorn/util.py:set_owner_process`). Its role is to provide the server infrastructure, not to manage application-level user identities."
+        }
+      ],
+      "control_id": "ia-8"
+    },
+    {
+      "uuid": "cd054026-5a8f-4df8-b71c-fa2212e6386b",
+      "control-id": "sc-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Network Disconnect",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Terminate the network connection associated with a communications session at the end of the session or after a time period of inactivity after which the system terminates a network connection associated with a communication session is defined; of inactivity.\n\nAdditional requirements:\n- a time period of inactivity after which the system terminates a network connection associated with a communication session is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn, acting as an HTTP server, manages the lifecycle of network connections, including persistent (keep-alive) HTTP connections. Control SC-10 requires the termination of network connections after a period of inactivity. The evidence from `gunicorn/workers/gthread.py` (lines 240-271) shows that when a connection is marked for `keepalive`, `conn.set_timeout()` is invoked. This indicates that Gunicorn applies a timeout mechanism to these connections. By default, Gunicorn's `keepalive` setting is 2 seconds, which defines the specific time period of inactivity after which the system will terminate an idle persistent connection. This inherent behavior ensures that network connections are not left open indefinitely, preventing resource exhaustion and satisfying the control's requirements for inactivity-based termination.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "gunicorn/arbiter.py",
+            "gunicorn/workers/gthread.py",
+            "gunicorn/config.py",
+            "gunicorn/workers/geventlet.py",
+            "gunicorn/workers/sync.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-10_smt.a",
+          "uuid": "2c1226f6-3d5d-4e85-a569-1bea9e6f977a",
+          "description": "Gunicorn implements network connection termination for inactive HTTP keep-alive sessions. The `gunicorn/workers/gthread.py` module (lines 240-271) demonstrates this via the `conn.set_timeout()` call when a connection is to be kept alive. This mechanism ensures that if no further requests are received on a persistent connection within a defined period, the connection is automatically closed. The default `keepalive` timeout in Gunicorn is 2 seconds, which explicitly defines the time period of inactivity after which a network connection associated with a communication session is terminated, thereby fulfilling both aspects of the control statement."
+        }
+      ],
+      "control_id": "sc-10"
+    },
+    {
+      "uuid": "4d2fcc59-8594-4905-8fb1-3b59993a3f6d",
+      "control-id": "sc-2",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Separation of System and User Functionality",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Separate user functionality, including user interface services, from system management functionality.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn is designed as a low-level WSGI HTTP server, and its architecture inherently separates system management functionality from user functionality. Gunicorn itself does not implement application-level user functionality, user interfaces, authentication, or authorization. Instead, it explicitly delegates these responsibilities to the WSGI web application it hosts or an upstream proxy, as detailed in the Security Summary. Gunicorn's codebase is dedicated to server mechanics, process management (e.g., privilege separation via the `User` setting as shown in `gunicorn/config.py`), request parsing, and WSGI environment creation, which are all system management functions. The `BaseApplication` class serves as an interface for configuring and loading the *user's web framework*, further emphasizing this separation. Examples like `multiapp.py` illustrate how external applications provide the user functionality that Gunicorn serves.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "LICENSE",
+            "examples/multiapp.py",
+            "gunicorn/app/base.py",
+            "CONTRIBUTING.md",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-2_smt.a",
+          "uuid": "fbf76712-8ff4-4bb0-8830-05b4db30b403",
+          "description": "The control statement is satisfied through Gunicorn's fundamental architectural design. Gunicorn operates as a distinct server layer, providing system management capabilities such as process handling, network communication, and privilege dropping (e.g., `user` and `group` settings for worker processes). It explicitly avoids implementing user-facing functionality or user interface services. These are the responsibility of the separate WSGI application that Gunicorn serves. This clear delegation ensures that Gunicorn's codebase focuses solely on system-level concerns, while user-specific interactions and interfaces reside within the hosted application, thereby achieving a robust separation."
+        }
+      ],
+      "control_id": "sc-2"
+    },
+    {
+      "uuid": "63ac6c75-2f16-48fc-a501-082294048461",
+      "control-id": "sc-23",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Session Authenticity",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the authenticity of communications sessions.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn, as a WSGI HTTP server, explicitly delegates application-level security concerns, including session handling and authentication, to the WSGI application it hosts or an upstream proxy. The security overview clearly states that \"Session handling is not a feature of Gunicorn and is expected to be managed by the application it serves.\" While Gunicorn supports SSL/TLS for encrypted communication, which contributes to the authenticity and integrity of the transport layer, it does not implement mechanisms for managing or protecting the authenticity of application-level sessions (e.g., session ID generation, validation, or protection against replay attacks or hijacking beyond transport encryption). The provided code evidence, such as the `verify_client: pass` in websocket examples, further confirms the absence of such application-level session authenticity checks within Gunicorn's core functionality. Therefore, this control is not applicable to Gunicorn's inherent responsibilities.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "LICENSE",
+            "examples/websocket/websocket.py",
+            "examples/websocket/gevent_websocket.py",
+            "SECURITY.md",
+            "gunicorn/workers/geventlet.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-23_smt.a",
+          "uuid": "e739dd8f-0cd9-47e3-9280-1ad9e8ebb1a9",
+          "description": "Gunicorn's architectural design explicitly excludes the implementation of application-level session authenticity. Its role is to serve as a low-level HTTP server, delegating such concerns to the deployed WSGI application. The service overview states, \"Session handling is not a feature of Gunicorn and is expected to be managed by the application it serves.\" While Gunicorn can establish secure transport sessions via SSL/TLS (as seen in `gunicorn/workers/geventlet.py` with `ssl_wrap_socket`), this only ensures the authenticity and integrity of the communication channel itself, not the authenticity of the logical application session throughout its lifecycle. Application-level session authenticity, including mechanisms for session ID management, token validation, or protection against session hijacking, is outside the scope of Gunicorn's responsibilities and must be handled by the application or an upstream proxy."
+        }
+      ],
+      "control_id": "sc-23"
+    },
+    {
+      "uuid": "75faf2db-87ec-492a-9874-ada5796e57a0",
+      "control-id": "sc-24",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Fail in Known State",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Fail to a known system state to which system components fail in the event of a system failure is defined; for the following failures on the indicated components while preserving system state information to be preserved in the event of a system failure is defined; in failure: types of system failures for which the system components fail to a known state are defined;.\n\nAdditional requirements:\n- types of system failures for which the system components fail to a known state are defined;\n- known system state to which system components fail in the event of a system failure is defined;\n- system state information to be preserved in the event of a system failure is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn inherently satisfies the 'Fail in Known State' control through robust mechanisms for configuration validation and integration with system process management. The `ConfigCheck` class and `ConfigError` exception ensure that configuration issues lead to an immediate and defined exit status (1), preventing the service from starting in an undefined or unstable state. This proactively establishes a known 'failed to start' state. Furthermore, the `sd_notify` function allows Gunicorn to communicate its operational state (e.g., READY, STOPPING) to systemd. This crucial integration enables systemd to monitor Gunicorn's health and react appropriately to failures, such as restarting the service or logging the event. This ensures that even in the event of an unexpected crash, the overall service state is managed and brought back to a known state (either running, restarting, or stopped and logged by systemd). Gunicorn, as a low-level server, focuses on its own operational integrity rather than application-specific state, and these mechanisms ensure its predictable behavior during failures.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "CONTRIBUTING.md",
+            "gunicorn/errors.py",
+            "gunicorn/systemd.py",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-24_smt.a",
+          "uuid": "10cd2c04-3326-4ed3-97cd-14fa0f8f5680",
+          "description": "The control statement is implemented by defining specific failure types, the known states they lead to, and how system state information is preserved. Gunicorn explicitly handles configuration errors as a defined failure type; the `ConfigCheck` mechanism (e.g., via `--check-config` CLI option) ensures that an invalid configuration results in an immediate exit with a known error status (1), preventing runtime issues. The `ConfigError` class provides a specific exception for such scenarios. For runtime failures, Gunicorn leverages the `sd_notify` function to communicate its operational state to `systemd`. This allows `systemd` to detect process termination or unresponsiveness and take predefined actions (e.g., restart, log), thereby transitioning the service to a known state (e.g., 'restarting', 'stopped and logged'). While Gunicorn does not preserve application-specific data, it contributes to preserving system state information through its logging and by enabling `systemd` to log all service state transitions and failures, providing an auditable record of the system's state before and during a failure event."
+        }
+      ],
+      "control_id": "sc-24"
+    },
+    {
+      "uuid": "41e92c7d-622b-4157-8ddb-51bd3c457e12",
+      "control-id": "sc-28",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Protection of Information at Rest",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the {{ insert: param, sc-28_odp.01 }} of the following information at rest: information at rest requiring protection is defined;.\n\nAdditional requirements:\n- information at rest requiring protection is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn is a low-level WSGI HTTP server whose primary function is to serve Python web applications. As explicitly stated in the 'Security Summary', Gunicorn 'does not manage data encryption at rest'. Its design delegates application-level security concerns, including data at rest protection, to the deployed WSGI application or an upstream proxy. Gunicorn itself does not store or manage persistent sensitive information that would require protection at rest within its own scope beyond its configuration, which is expected to be secured by the underlying operating system.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-28_smt.a",
+          "uuid": "62cb0fdb-cf6f-4c2c-a17c-b66427a93075",
+          "description": "The control statement 'Protection of Information at Rest' is not applicable to Gunicorn's scope. Gunicorn's architecture and purpose are focused on handling transient HTTP requests and responses, and serving WSGI applications. It explicitly delegates the responsibility for defining and protecting 'information at rest' to the applications it hosts or the surrounding infrastructure (e.g., database, file system, or upstream proxies). Therefore, Gunicorn does not implement mechanisms for protecting information at rest because it does not manage such data within its operational boundaries."
+        }
+      ],
+      "control_id": "sc-28"
+    },
+    {
+      "uuid": "60d64ad0-4184-497d-b7f5-217f4c2a7741",
+      "control-id": "sc-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Security Function Isolation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Isolate security functions from nonsecurity functions.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn inherently implements security function isolation through its master-worker process model and robust privilege separation. The master process, responsible for managing worker processes and binding to privileged ports, retains necessary permissions. In contrast, worker processes, which handle application requests, operate with significantly reduced privileges by running under different user and group IDs. This critical security function is managed by dedicated utilities within `gunicorn/util.py`, specifically through functions like `set_owner_process` and `chown`, ensuring that privilege dropping and management are isolated from the general request processing logic. This design prevents a compromise in a worker process from escalating privileges to the system level.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "LICENSE",
+            "gunicorn/util.py",
+            "gunicorn/workers/base.py",
+            "SECURITY.md",
+            "gunicorn/systemd.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-3_smt.a",
+          "uuid": "e25def20-06fd-443a-a949-d235288aaac7",
+          "description": "The control statement is satisfied by Gunicorn's architectural design that isolates security functions, primarily privilege separation, from non-security functions. The master process handles security-sensitive operations such as privilege management and socket binding, while worker processes, which execute the WSGI application logic, are explicitly isolated by dropping privileges to a non-privileged user and group ID. This ensures that the security-critical operation of privilege management is distinct from the general application execution. The implementation details for this isolation, such as `set_owner_process` and `chown` for changing process ownership, are encapsulated within `gunicorn/util.py`, thereby centralizing and isolating these security mechanisms."
+        }
+      ],
+      "control_id": "sc-3"
+    },
+    {
+      "uuid": "272d6f86-02f7-450c-92ed-cfccd84cffe9",
+      "control-id": "sc-39",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Process Isolation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Maintain a separate execution domain for each executing system process.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn is designed with a pre-fork worker model that inherently provides process isolation. The master process forks child worker processes using `os.fork()`, as evidenced in `gunicorn/arbiter.py`'s `reexec` method. Each worker process operates in its own separate execution domain, including its own memory space and PID, preventing direct interference between workers and the master process. The `gunicorn/workers/gtornado.py` file further illustrates this by ensuring that process-specific resources, such as the `IOLoop`, are not shared across forks and are re-initialized for each worker, reinforcing the principle of isolated execution environments. The `preload_app` configuration in `gunicorn/config.py` describes how application code loading interacts with this forking model, but the fundamental process isolation provided by `os.fork()` remains.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "gunicorn/workers/gtornado.py",
+            "gunicorn/arbiter.py",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-39_smt.a",
+          "uuid": "a7024f30-a685-4856-b0ae-133ed3f9476c",
+          "description": "Gunicorn implements process isolation by employing a master-worker architecture where the master process (`arbiter.py`) creates and manages worker processes using the `os.fork()` system call. This mechanism ensures that each worker process runs in a distinct and isolated execution domain, possessing its own memory space, file descriptors (copied at fork, but can be independently managed thereafter), and process ID. This prevents one worker's failure or malicious activity from directly impacting other workers or the master process. The design explicitly accounts for resources that cannot be shared across processes, as shown in `gunicorn/workers/gtornado.py` where `IOLoop` is cleared and re-initialized per worker, ensuring proper isolation of execution contexts. This pre-fork model directly satisfies the requirement for maintaining separate execution domains for each system process."
+        }
+      ],
+      "control_id": "sc-39"
+    },
+    {
+      "uuid": "b1aa4d8f-eb33-4ff3-9b58-9d3aa5bd6b69",
+      "control-id": "sc-4",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information in Shared System Resources",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Prevent unauthorized and unintended information transfer via shared system resources.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn inherently satisfies SC-4 through its architectural design and robust process management. The pre-fork worker model provides strong process isolation, ensuring that each worker process operates in its own memory space, thereby preventing unintended information transfer between different requests or application instances. Furthermore, the `daemonize` function in `gunicorn/util.py` (lines 466-539) explicitly sets `os.umask(0o22)`, which ensures that any files created by Gunicorn processes have restrictive default permissions (read/write for owner, read-only for group and others). This prevents unauthorized access to temporary files or other system resources that might inadvertently hold sensitive information. The service also supports privilege separation, allowing worker processes to run with reduced user and group IDs (UID/GID) compared to the master process. This limits the scope of access for worker processes to shared system resources, mitigating the risk of unauthorized information transfer in the event of a worker compromise.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "LICENSE",
+            "NOTICE",
+            "gunicorn/util.py",
+            "SECURITY.md",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-4_smt.a",
+          "uuid": "07ef48fa-5254-47a6-bc6c-1b294fed3a92",
+          "description": "The control statement, 'Prevent unauthorized and unintended information transfer via shared system resources,' is primarily implemented through Gunicorn's fundamental architectural choices and specific system calls. The pre-fork worker model ensures that each request is handled by a separate process, providing memory and resource isolation between concurrent operations. This minimizes the potential for one request's data to leak into another via shared memory. The `os.umask(0o22)` call within the `daemonize` utility function (gunicorn/util.py) is a direct mechanism to prevent unintended information transfer through the file system by ensuring newly created files have sufficiently restrictive permissions. Additionally, the ability to run worker processes under reduced privileges (different UID/GID) further restricts their access to shared system resources, preventing unauthorized data access or modification. These mechanisms collectively ensure that information handled by Gunicorn processes remains isolated and protected from unintended exposure or transfer."
+        }
+      ],
+      "control_id": "sc-4"
+    },
+    {
+      "uuid": "49946999-1d85-44b9-9d5f-1836d0020bfd",
+      "control-id": "sc-5",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Denial-of-service Protection",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "{{ insert: param, sc-05_odp.02 }} the effects of the following types of denial-of-service events: types of denial-of-service events to be protected against or limited are defined; ; and\n\nAdditional requirements:\n- types of denial-of-service events to be protected against or limited are defined;\n- controls to achieve the denial-of-service objective by type of denial-of-service event are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn implements denial-of-service protection primarily through its architectural design and robust HTTP request handling. The pre-fork worker model, as described in `docs/source/design.rst`, ensures that a central master process manages and automatically restarts worker processes upon termination. This mechanism inherently protects against DoS attempts that might cause individual workers to crash or become unresponsive, by rapidly restoring service availability.\n\nFurthermore, Gunicorn incorporates strong input validation and error handling for HTTP requests. The `PermitUnconventionalHTTPMethod` setting in `gunicorn/config.py` (defaulting to `False`) ensures that Gunicorn applies nonstandard restrictions to HTTP methods, rejecting malformed or unconventional methods with a 400 (Bad Request) status. The 'Worker class' description further highlights robust input validation and error handling for other malformed requests, such as `InvalidRequestLine`, `ForbiddenProxyRequest`, and `SSLError`, returning appropriate status codes. This prevents resource exhaustion and server instability from processing invalid or malicious input. Privilege separation, also mentioned in the 'Worker class' description, contributes by limiting the blast radius of a compromised worker, indirectly mitigating DoS effects.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "examples/echo.py",
+            "gunicorn/workers/ggevent.py",
+            "docs/source/design.rst",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-5_smt.a",
+          "uuid": "a398f8b0-dc7c-4f80-b04b-ebab612e3f7c",
+          "description": "The control statement's requirements for defining DoS event types and corresponding protection controls are satisfied through Gunicorn's core design and implementation.\n\n1.  **Types of denial-of-service events protected against:**\n    *   **Worker crashes/unresponsiveness:** The system is designed to handle worker process failures, which can be caused by DoS attempts. The master process monitors worker health and restarts them as needed.\n    *   **Malformed HTTP requests:** This includes unconventional HTTP methods (e.g., methods of incorrect length or containing invalid characters), invalid request lines, forbidden proxy requests, and SSL errors.\n    *   **Resource exhaustion due to processing invalid input:** By rejecting malformed requests early.\n\n2.  **Controls to achieve the denial-of-service objective:**\n    *   **Automatic worker restart:** The pre-fork worker model (`docs/source/design.rst`) ensures that the master process listens for `CHLD` signals (child process termination) and automatically restarts failed workers. This architectural decision provides resilience against DoS attacks that aim to crash individual worker processes, ensuring continuous service availability.\n    *   **Strict HTTP input validation and error handling:** Gunicorn's default behavior, controlled by `PermitUnconventionalHTTPMethod` in `gunicorn/config.py` (which defaults to `False` to enforce restrictions), rejects malformed HTTP methods with a 400 response. Additionally, the 'Worker class' implements robust validation for other HTTP parsing errors (e.g., `InvalidRequestLine`, `ForbiddenProxyRequest`), returning appropriate error codes rather than processing them. This prevents malicious or malformed requests from consuming excessive server resources or exploiting parsing vulnerabilities, thus limiting the attack surface for protocol-level DoS.\n    *   **Privilege separation:** Worker processes operate with reduced privileges, limiting the potential impact of a successful attack on a single worker."
+        }
+      ],
+      "control_id": "sc-5"
+    },
+    {
+      "uuid": "bf84296a-54fe-4272-9988-5df35161822c",
+      "control-id": "sc-8",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Transmission Confidentiality and Integrity",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the {{ insert: param, sc-08_odp }} of transmitted information.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-8_smt.a",
+          "uuid": "b6a3e52e-cf7f-478f-af05-03b414ec9589",
+          "description": ""
+        }
+      ],
+      "control_id": "sc-8"
+    },
+    {
+      "uuid": "17a2b7d5-be84-43b5-adf4-c6fc8414fc68",
+      "control-id": "si-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information Input Validation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Check the validity of the following information inputs: information inputs to the system requiring validity checks are defined;.\n\nAdditional requirements:\n- information inputs to the system requiring validity checks are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn implements input validation for several key information inputs. The `validate_pos_int` function in `gunicorn/config.py` ensures that integer inputs are positive. The `util.py` module explicitly performs input validation for network addresses (`parse_address`) and safely parses arguments for dynamic application loading (`import_app`) using `ast.literal_eval` to mitigate code execution. However, a significant gap exists in the `MemoryWatch` module, where input validation for Process IDs (PIDs) is explicitly noted as absent, leading to a critical command injection vulnerability. This indicates that while validation mechanisms are present for some inputs, they are not comprehensively applied across all system inputs requiring checks.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "si-10_smt.a",
+          "uuid": "4cc2e26f-4f21-42b3-bcb4-20f573fe2bc5",
+          "description": "The control statement is partially implemented through specific code patterns that define and check the validity of certain inputs. For instance, `gunicorn/config.py` includes the `validate_pos_int` function (lines 356-367) which defines and enforces that a given value must be a positive integer. Furthermore, `util.py` is noted to perform input validation for network addresses via `parse_address` and for arguments used in dynamic application loading (`import_app`) leveraging `ast.literal_eval` for safe parsing. These mechanisms demonstrate an effort to define and check input validity for specific data types and contexts. However, the identified lack of input validation for PIDs in the `MemoryWatch` module indicates that not all information inputs requiring validity checks are adequately defined and checked, leading to a critical security vulnerability."
+        }
+      ],
+      "control_id": "si-10"
+    },
+    {
+      "uuid": "d0143528-97fb-4226-9234-beb62fa6dd77",
+      "control-id": "si-16",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Memory Protection",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Implement the following controls to protect the system memory from unauthorized code execution: controls to be implemented to protect the system memory from unauthorized code execution are defined;.\n\nAdditional requirements:\n- controls to be implemented to protect the system memory from unauthorized code execution are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Gunicorn implements several inherent mechanisms to protect system memory and prevent unauthorized code execution. The core design utilizes a pre-fork worker model, ensuring **process isolation** where each worker operates in its own memory space, thereby preventing memory corruption or unauthorized access in one worker from affecting others or the master process. Furthermore, Gunicorn supports **privilege separation** by allowing worker processes to run with reduced user and group IDs (UID/GID) compared to the master process. This architectural control limits the capabilities and potential impact of any unauthorized code that might gain execution within a worker process.\n\nAt the code level, the `import_app` function (and related utilities) directly addresses arbitrary code execution by leveraging `ast.literal_eval` for safely parsing arguments during dynamic application loading. This mechanism inherently mitigates risks associated with untrusted input in configuration leading to code execution. Additionally, robust **input validation** for HTTP header names and values within `wsgi.py` helps prevent injection vulnerabilities that could lead to memory corruption or unauthorized code execution.\n\nWhile the `max_requests` setting is available to mitigate memory leaks by recycling workers, this is considered a general memory health feature rather than a direct control against unauthorized code execution, and its default state does not negate the inherent satisfaction provided by the core security mechanisms.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "LICENSE",
+            "examples/when_ready.conf.py",
+            "gunicorn/util.py",
+            "SECURITY.md",
+            "gunicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "si-16_smt.a",
+          "uuid": "e7405a85-73fb-4a5f-9f01-6e481f3c3b16",
+          "description": "The control statement, requiring defined and implemented controls to protect system memory from unauthorized code execution, is satisfied through Gunicorn's foundational design and code patterns. Controls are defined by the architectural decision to use a pre-fork worker model, which inherently provides process isolation. Privilege separation is explicitly defined and implemented by allowing workers to run with reduced privileges via `set_owner_process` and `chown` in `gunicorn/util.py`. The prevention of unauthorized code execution during application loading is addressed by the use of `ast.literal_eval` for safe parsing of arguments in dynamic application loading (`import_app` function). Furthermore, the `wsgi.py` module includes strict input validation for HTTP headers, effectively mitigating injection vulnerabilities that could otherwise lead to memory corruption or unauthorized code execution. These mechanisms are integral to Gunicorn's operation and are active by default."
+        }
+      ],
+      "control_id": "si-16"
+    }
+  ],
+  "_metadata": {
+    "generation_info": {
+      "model": "gemini-2.5-flash",
+      "provider": "gemini",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
+      "start_time": "2025-07-11T11:17:01.121523",
+      "command": "generate",
+      "config_file": "config/gunicorn.yaml",
+      "version": "0.1.0"
+    }
+  }
+}

@@ -1,0 +1,475 @@
+{
+  "evaluation_results": [
+    {
+      "control-id": "ac-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable and not satisfied' is correct, as the explanation and statement both make clear that Uvicorn does not implement per-account concurrent session controls and that this requirement is not met by the component.",
+        "explanation_quality": "The control-explanation is clearly written, accurately describes the technical gap, references relevant Uvicorn features, and appropriately distinguishes between global and per-account session controls.",
+        "configuration_support": "An empty configuration is accurate, since there is no relevant configuration in Uvicorn to support this control; the mapping correctly omits any misleading or incorrect configuration details.",
+        "overall_consistency": "All parts (status, explanation, configuration, and statement) reinforce each other with no contradictions and clearly attribute responsibility for this control outside Uvicorn."
+      },
+      "recommendation": "No improvements needed; the mapping is precise, candid about the control gap, and appropriately directs responsibility to the consuming application. If desired, explicitly noting that evidence is not applicable due to lack of implementation could further clarify the mapping."
+    },
+    {
+      "control-id": "ac-12",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'not applicable' status is accurate, as the explanation and statement clearly establish that Uvicorn does not implement application-level session management, which is the subject of the control.",
+        "explanation_quality": "The explanation is clear, detailed, and directly references both the documented functionality and the relevant code, demonstrating why the control does not apply.",
+        "configuration_support": "The empty configuration section is appropriate since there is no relevant configuration in Uvicorn for session termination; the submitted evidence and code references reinforce this.",
+        "overall_consistency": "All elements\u2014status, explanation, configuration, and statement\u2014are consistent and mutually reinforce the conclusion that this control is not applicable to Uvicorn."
+      },
+      "recommendation": "No improvements are necessary; the mapping is thorough, well-justified, and clearly documents why the control does not apply to this component."
+    },
+    {
+      "control-id": "ac-3",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'not applicable' control-status is accurate because the explanation and statement make it clear that access enforcement is outside the scope of Uvicorn's architecture.",
+        "explanation_quality": "The control-explanation is clear, specific, and directly addresses why access enforcement does not apply to Uvicorn, referencing both product design and relevant documentation.",
+        "configuration_support": "No configuration is required or provided, which is appropriate given the control is not applicable; this is supported by the detailed explanation of scope.",
+        "overall_consistency": "All parts\u2014status, explanation, configuration, and statement\u2014are mutually reinforcing and free from contradiction, consistently supporting the 'not applicable' status."
+      },
+      "recommendation": "No improvements are needed; this mapping is thorough, well-justified, and internally consistent. If desired, a brief citation of the exact section or quote from the referenced documentation could further strengthen the mapping."
+    },
+    {
+      "control-id": "ac-4",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable and not satisfied' is correct; the explanation and statement clearly demonstrate that Uvicorn does not implement information flow enforcement and this requirement is not met by the component.",
+        "explanation_quality": "The control explanation is clear, detailed, and substantiated with references to documentation and code locations. It accurately describes the architectural reasons why this control is not implemented by Uvicorn.",
+        "configuration_support": "No configuration is provided, which is appropriate, as the explanation justifies that there is no relevant configuration for this control given Uvicorn's design and responsibilities.",
+        "overall_consistency": "The status, explanation, configuration, and statement are all mutually reinforcing, with no contradictions. The mapping accurately represents the control's applicability and the component's limitations."
+      },
+      "recommendation": "No significant improvements are needed. For completeness, consider explicitly stating in the configuration section (even as a comment or note) that 'no configurations are available or applicable for information flow enforcement in Uvicorn,' to preempt ambiguity for future reviewers."
+    },
+    {
+      "control-id": "ac-9",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'not applicable' status is appropriate because Uvicorn, as an ASGI server, does not implement or manage user authentication or logon events, making the control outside its scope.",
+        "explanation_quality": "The explanation clearly and specifically describes why Uvicorn cannot implement this control, referencing both the product's documentation and its architectural boundaries.",
+        "configuration_support": "No configuration is required or possible for this control in the context of Uvicorn, which is accurately reflected in the empty configuration property.",
+        "overall_consistency": "The control status, explanation, configuration, and statement are all aligned, with no contradictions; the rationale is coherent and consistent throughout."
+      },
+      "recommendation": "No immediate improvements are necessary; the mapping is clear, accurate, and well-supported. Optionally, referencing the exact section in the Security Summary or including a direct link could further strengthen the evidence."
+    },
+    {
+      "control-id": "au-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable and not satisfied' is correct, as the explanation and statement both show that Uvicorn cannot fulfill AU-10 due to lack of authentication and identity management capabilities.",
+        "explanation_quality": "The explanation is thorough, clearly describing why non-repudiation cannot be achieved by Uvicorn alone and explicitly linking this to the control's requirements.",
+        "configuration_support": "No configuration is provided, which is appropriate because the explanation confirms there is no relevant configuration in Uvicorn that could satisfy this control; thus, the empty configuration is valid.",
+        "overall_consistency": "The status, explanation, configuration, and statement consistently reinforce that Uvicorn cannot satisfy AU-10, with no contradictions."
+      },
+      "recommendation": "No significant changes are needed. For added clarity, a brief mention in the configuration section noting 'not applicable\u2014Uvicorn does not perform user authentication or identity management' might further reinforce the rationale for auditors unfamiliar with the system."
+    },
+    {
+      "control-id": "au-3",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 2
+      },
+      "total_score": 7,
+      "justifications": {
+        "status_alignment": "The status 'applicable but partially satisfied' is accurate given the clear identification of a gap ('who' is not logged); other aspects are satisfied.",
+        "explanation_quality": "The explanation is thorough, specifically describing what is and isn't logged, referencing actual implementation details and design limitations.",
+        "configuration_support": "No specific configuration values are listed; while the explanation references the capability to configure logging, the configuration property is an empty array.",
+        "overall_consistency": "There is internal consistency: the explanation, status, and statement all support each other and do not contradict."
+      },
+      "recommendation": "Include concrete examples or snippets of logging configuration (e.g., sample log format, logger settings) in the control-configuration property to strengthen evidence of implementation. If no configuration is required, explicitly state this for clarity."
+    },
+    {
+      "control-id": "au-9",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable but partially satisfied' is accurate because Uvicorn provides audit log generation but does not itself enforce protection, alerting, or role assignment, which the explanation clearly notes.",
+        "explanation_quality": "The explanation is thorough, specific, and explains both what Uvicorn provides and what is explicitly not implemented, fully justifying the chosen control status.",
+        "configuration_support": "The empty configuration is appropriate here since the component does not implement any configuration for audit information protection or alerting, and the explanation makes this clear.",
+        "overall_consistency": "All parts\u2014the status, explanation, configuration, and statement\u2014are aligned and reinforce each other without contradiction, providing a consistent mapping."
+      },
+      "recommendation": "No significant changes are needed. For additional clarity, you may briefly reference the specific components of the control not implemented (e.g., alerting, access restrictions) as a bulleted list in the explanation, but the current mapping is complete and accurate."
+    },
+    {
+      "control-id": "cm-14",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The control-status of 'not applicable' is correct, as the explanation and supporting statement establish that Uvicorn does not handle software or firmware installation, which is the subject of CM-14.",
+        "explanation_quality": "The explanation is clear, detailed, and accurately describes both the scope of the control and why it does not apply to Uvicorn's functionality, specifically distinguishing SSL/TLS usage from signed component verification.",
+        "configuration_support": "No configuration is needed or provided, which is appropriate since the control is marked 'not applicable' and the explanation justifies the absence of relevant settings.",
+        "overall_consistency": "All parts\u2014status, explanation, configuration, and statement\u2014are internally consistent, reinforcing each other without contradiction."
+      },
+      "recommendation": "No changes are needed. The mapping is clear, precise, and well-justified. For completeness, you could cite authoritative documentation or standards that further define the boundary of responsibility for application servers versus system-level installers, though this is not strictly necessary."
+    },
+    {
+      "control-id": "cm-5",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'applicable but partially satisfied' status accurately reflects the reality that while change documentation exists, the enforcement of access restrictions is external and not handled by the codebase itself.",
+        "explanation_quality": "The explanation is clear, comprehensive, and directly addresses each element of the control, explicitly distinguishing between what is and isn't handled by the codebase.",
+        "configuration_support": "No internal configuration is expected or present, which is appropriate given the codebase's lack of direct enforcement mechanisms; this is correctly reflected in the empty configuration.",
+        "overall_consistency": "All sections\u2014the status, explanation, configuration, and statement\u2014are mutually reinforcing, consistently representing the gap in code-level enforcement and reliance on external controls."
+      },
+      "recommendation": "No major improvements needed. If available, provide references or links to external systems (e.g., GitHub branch protection, CI/CD access controls) as supporting evidence for the external enforcement mechanisms."
+    },
+    {
+      "control-id": "ia-11",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'not applicable' control-status is correct, as the explanation and statement show that Uvicorn does not handle authentication or re-authentication, placing this control outside its scope.",
+        "explanation_quality": "The explanation is clear, accurate, and directly references Uvicorn's architectural boundaries, making it easy to understand why the control does not apply.",
+        "configuration_support": "No configuration is provided\u2014which is correct and appropriate\u2014since Uvicorn cannot implement re-authentication mechanisms at the server level.",
+        "overall_consistency": "All parts (status, explanation, configuration, and statement) consistently reinforce the conclusion that re-authentication is not managed at the Uvicorn layer, with no contradictions."
+      },
+      "recommendation": "No improvements needed; this control mapping is thorough and well-aligned. For enhanced clarity, referencing specific lines or sections in the cited documentation could strengthen the evidence trail."
+    },
+    {
+      "control-id": "ia-2",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'not applicable' is correct because Uvicorn does not provide authentication or user identification, as explained and supported by the description and statements.",
+        "explanation_quality": "The explanation is specific, well-written, and accurately describes Uvicorn's scope and why the control does not apply, referencing both the architecture and operational context.",
+        "configuration_support": "No configuration is required or present, which is appropriate given the control is 'not applicable' and Uvicorn does not implement relevant mechanisms.",
+        "overall_consistency": "All provided parts\u2014status, explanation, configuration, and statement\u2014are in agreement and reinforce the rationale that this control does not apply to Uvicorn."
+      },
+      "recommendation": "No changes needed; this control mapping is thorough, accurate, and clearly justified. For completeness, a brief reference to any relevant documentation or architectural diagram in the evidence could be added, but this is optional."
+    },
+    {
+      "control-id": "ia-6",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The control-status of 'not applicable' is correct, as the explanation and statement clearly establish that Uvicorn itself performs no authentication and thus is outside the scope of this control.",
+        "explanation_quality": "The explanation is thorough, clearly written, and directly references how Uvicorn delegates all authentication to the application layer, making the control inapplicable.",
+        "configuration_support": "No configuration is required or provided, which is appropriate and accurate given the control is not applicable and Uvicorn does not implement authentication features.",
+        "overall_consistency": "All components (status, explanation, configuration, and statement) are in agreement and reinforce each other without contradiction, offering a consistent and well-supported mapping."
+      },
+      "recommendation": "No changes are needed; the mapping is complete and well justified for the stated scope. Optionally, a brief mention that any application built atop Uvicorn should be evaluated for this control could further clarify the boundary."
+    },
+    {
+      "control-id": "ia-7",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'applicable and inherently satisfied' status is justified as the explanation and source code reference show Uvicorn natively supports password-based authentication for SSL key files, directly fulfilling the control requirement.",
+        "explanation_quality": "The explanation is clear, specific, and directly maps the control requirement to the observed implementation, describing how Uvicorn's SSL keyfile password feature restricts access to the cryptographic material.",
+        "configuration_support": "A precise configuration is provided, referencing the relevant file, key path, and code line that implements the authentication mechanism, enabling verification of the technical control.",
+        "overall_consistency": "There is strong alignment across status, explanation, configuration, and statement, with no contradictions or gaps; all reinforce the control's satisfaction through a concrete implementation."
+      },
+      "recommendation": "No significant improvements are required. For further enhancement, consider referencing specific versions of Uvicorn and adding a sample configuration snippet or command-line usage to illustrate operationalization."
+    },
+    {
+      "control-id": "ia-8",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'not applicable' control-status is appropriate because the control pertains to authentication of non-organizational users, which is explicitly not handled by Uvicorn per both the explanation and the referenced documentation.",
+        "explanation_quality": "The explanation is clear, specific, and directly references Uvicorn's design and documentation, accurately justifying why the control does not apply to this component.",
+        "configuration_support": "An empty configuration is valid and appropriate in this context, as Uvicorn does not provide any relevant settings or mechanisms for user authentication, and this is clearly explained.",
+        "overall_consistency": "There is strong alignment among the status, explanation, configuration, and the statement; all reinforce the fact that Uvicorn does not implement this control and defer this responsibility to the application layer."
+      },
+      "recommendation": "No changes are necessary. This mapping is comprehensive, accurate, and fully justified for a 'not applicable' determination. For further clarity, consider referencing specific sections or quotes from the official documentation to further substantiate the rationale."
+    },
+    {
+      "control-id": "sc-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 2
+      },
+      "total_score": 7,
+      "justifications": {
+        "status_alignment": "The status 'applicable and inherently satisfied' is appropriate, as the explanation and statement clearly describe default mechanisms that fulfill the control without additional configuration.",
+        "explanation_quality": "The explanation is clear, technically accurate, and references both the configuration option and implementation logic, effectively grounding the rationale in observed implementation.",
+        "configuration_support": "No configuration is explicitly listed in the 'control-configuration' property, which is presented as an empty list. While the default behavior is described, if an explicit or non-default timeout is required, the actual configuration value should be referenced for completeness.",
+        "overall_consistency": "The status, explanation, references, and statement are consistent with each other, all pointing to the same mechanism and outcome without any contradictions."
+      },
+      "recommendation": "If the control requires a specific timeout value or if the default setting is relied upon, explicitly state this in the 'control-configuration' field for clarity. Consider including the exact CLI command, configuration file snippet, or policy reference to reinforce evidence of control implementation."
+    },
+    {
+      "control-id": "sc-2",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable and inherently satisfied' is correct, as the explanation and statement both show that Uvicorn's architecture inherently separates system and user functionality as required by the control.",
+        "explanation_quality": "The explanation is clear, specific, and accurately describes how Uvicorn satisfies the control through its design, explicitly referencing the separation of system and user functions.",
+        "configuration_support": "No configuration is needed or provided, which is appropriate for an architectural control that is inherently satisfied by design rather than by configurable parameters.",
+        "overall_consistency": "All parts\u2014status, explanation, configuration, and statement\u2014are mutually reinforcing and consistent, with no contradictions present."
+      },
+      "recommendation": "No substantive improvements required; the mapping is thorough and appropriately justified. As a minor enhancement, you could explicitly state in the configuration field that 'no configuration is required to satisfy this control,' to avoid any ambiguity."
+    },
+    {
+      "control-id": "sc-23",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable and not satisfied' is correct, as Uvicorn does not implement session authenticity controls but delegates them to the application layer, which is clearly stated in the explanation.",
+        "explanation_quality": "The explanation is thorough, clearly articulates the division of responsibility, and refers to both documentation and implementation specifics, making it accurate and well-grounded.",
+        "configuration_support": "No configuration is provided, which is appropriate since Uvicorn does not implement this control; the empty configuration is justified and valid.",
+        "overall_consistency": "All elements\u2014status, explanation, statement, and configuration\u2014are mutually reinforcing and consistently support the claim that Uvicorn does not satisfy this control."
+      },
+      "recommendation": "No changes necessary. The mapping is clear, accurate, and appropriately scoped. For extra clarity, you may optionally reference the relevant section of the ASGI application documentation to further demonstrate the delegation."
+    },
+    {
+      "control-id": "sc-24",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable and inherently satisfied' is appropriate, as the explanation and statement show that Uvicorn\u2019s core behavior natively fulfills the control\u2019s requirements without additional configuration.",
+        "explanation_quality": "The explanation is detailed, clearly describes mechanisms for known failure states, references specific methods and observed behaviors, and acknowledges limitations (delegation to ASGI apps), demonstrating accuracy and completeness.",
+        "configuration_support": "No additional configuration is listed or necessary, which aligns with the claim that the control is 'inherently satisfied' by default system behavior; evidence from code and documentation supports this.",
+        "overall_consistency": "The explanation, statement, status, and configuration all reinforce each other: each aspect points to Uvicorn\u2019s default design and logging fulfilling SC-24, with no contradictions present."
+      },
+      "recommendation": "No significant improvements are needed; the mapping is thorough and well-supported. Optionally, referencing specific log formats or including direct code snippets would further strengthen the evidence base."
+    },
+    {
+      "control-id": "sc-28",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'not applicable' status is properly justified, as the explanation and statement clearly establish that Uvicorn does not handle data at rest and thus the control does not apply.",
+        "explanation_quality": "The explanation is clear, specific, and references both the service's documented security overview and code artifacts, accurately supporting the inapplicability of the control.",
+        "configuration_support": "No configuration is required since the control is not applicable; this is correctly reflected by the empty configuration section.",
+        "overall_consistency": "All parts\u2014status, explanation, configuration, and statement\u2014are in agreement and consistently reinforce the rationale that this control does not pertain to Uvicorn."
+      },
+      "recommendation": "No improvement is necessary; the control mapping is complete, consistent, and well-supported. For further clarity, you could reference the specific sections of the cited documentation or code that demonstrate the absence of data at rest."
+    },
+    {
+      "control-id": "sc-3",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'applicable and inherently satisfied' status is appropriate because the explanation and supporting statement clearly demonstrate that Uvicorn's architecture and codebase inherently provide the required isolation without need for additional configuration.",
+        "explanation_quality": "The explanation is detailed, clearly written, and directly references both the architectural design and specific implementation details, making it accurate and grounded in observed evidence.",
+        "configuration_support": "No additional configuration is required to achieve isolation, and the explanation justifies this by describing how isolation is fundamental to Uvicorn's architecture; source code references further substantiate this.",
+        "overall_consistency": "The status, explanation, configuration, and statement are mutually reinforcing with no contradictions; all components support the claim that the control is inherently satisfied."
+      },
+      "recommendation": "No substantive improvements are needed; however, for even greater clarity, explicitly stating that no user or administrator action is required to maintain the isolation could further reinforce the inherently satisfied status."
+    },
+    {
+      "control-id": "sc-39",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'applicable and inherently satisfied' status is appropriate given the explanation and evidence that process isolation is built into the architecture and does not require additional configuration.",
+        "explanation_quality": "The control explanation is clear, detailed, and references specific mechanisms ('spawn' method, new interpreter instance, PID) that directly satisfy the requirement for process isolation.",
+        "configuration_support": "No configuration is needed to achieve this control, as the mechanism is inherent to the default operation described; the empty configuration array is appropriate and accurate.",
+        "overall_consistency": "All elements\u2014status, explanation, configuration, and statement\u2014are mutually reinforcing and consistently describe how process isolation is achieved by default in Uvicorn's multiprocess mode."
+      },
+      "recommendation": "No significant changes are necessary. For enhancement, consider explicitly stating that no user action is required to maintain compliance, as the process isolation is enforced by default in the relevant mode."
+    },
+    {
+      "control-id": "sc-4",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The 'applicable and inherently satisfied' status is supported by the detailed explanation and evidence of built-in mechanisms that address the control intent without requiring user intervention.",
+        "explanation_quality": "The explanation is clear, specific, and directly references architectural features and implementation details (e.g., resource_sharer.DupSocket, FlowControl, protocol error handling) that prevent unauthorized information transfer.",
+        "configuration_support": "No configurable parameters are needed for this control as described; the rationale is fully grounded in the default server design, and the empty configuration field is justified and accurate.",
+        "overall_consistency": "All aspects\u2014the status, explanation, configuration, and statement\u2014align and reinforce each other with no contradictions; references and mechanisms are internally consistent and mapped to the control's objective."
+      },
+      "recommendation": "No significant improvements needed; however, consider adding brief evidence of ongoing testing or quality checks (such as references to automated tests or code review practices) to further substantiate claims of inherent satisfaction."
+    },
+    {
+      "control-id": "sc-5",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 2
+      },
+      "total_score": 7,
+      "justifications": {
+        "status_alignment": "The status 'applicable and inherently satisfied' is appropriate, as the explanation and statements show that DoS protection is built into Uvicorn's core features.",
+        "explanation_quality": "The explanation is thorough, clearly describing both the types of DoS attacks mitigated and the mechanisms used, directly referencing internal logic and configurations.",
+        "configuration_support": "No explicit configuration values are provided in the 'control-configuration' field, even though the explanation references configurable parameters; at minimum, defaults or required settings should be shown.",
+        "overall_consistency": "All sections consistently describe Uvicorn\u2019s built-in DoS protections, with no contradictions between status, explanation, statement, and configuration."
+      },
+      "recommendation": "Add specific example values or current settings for key parameters (e.g., '--limit-concurrency', '--limit-max-requests') in the 'control-configuration' field to concretely demonstrate the implemented protections. This would strengthen evidence for auditors and improve traceability."
+    },
+    {
+      "control-id": "sc-8",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The control status 'applicable but only satisfied through configuration' is accurate, as the default state is insecure and requires user intervention to meet the control's requirements.",
+        "explanation_quality": "The explanation is clear, detailed, and directly references both the strengths and limitations of the implementation, including default weaknesses and the need for specific configuration.",
+        "configuration_support": "The configuration section lists all relevant parameters in a specific and valid manner, directly supporting the explanation and the nature of the control.",
+        "overall_consistency": "All parts\u2014status, explanation, configuration, and statement\u2014are mutually reinforcing, consistently describing the need for secure configuration due to insecure defaults."
+      },
+      "recommendation": "No substantive changes are needed. For further clarity, you could include example secure configuration values (e.g., recommended TLS versions and ciphers) or reference documentation that prescribes secure settings."
+    },
+    {
+      "control-id": "si-10",
+      "scores": {
+        "status_alignment": 2,
+        "explanation_quality": 2,
+        "configuration_support": 2,
+        "overall_consistency": 2
+      },
+      "total_score": 8,
+      "justifications": {
+        "status_alignment": "The status 'applicable and inherently satisfied' is accurate based on the explanation and evidence provided, as Uvicorn natively validates all inputs within its operational scope.",
+        "explanation_quality": "The explanation is comprehensive and clearly delineates what Uvicorn validates (protocol-level and configuration inputs) and what it does not (application-level data), accurately reflecting the actual implementation.",
+        "configuration_support": "No specific runtime configuration is required to satisfy the control beyond Uvicorn's defaults, and the statement references the relevant code and configuration points for validation, making the mapping specific and valid.",
+        "overall_consistency": "The status, explanation, supporting code references, and statement all reinforce each other without contradiction, clearly aligning Uvicorn\u2019s built-in behaviors with the control\u2019s requirements."
+      },
+      "recommendation": "No significant improvements needed. For further clarity, consider explicitly stating in the configuration section that no additional configuration is required for the default control satisfaction, to preempt questions about the empty configuration property."
+    },
+    {
+      "control-id": "si-16",
+      "scores": {
+        "status_alignment": 1,
+        "explanation_quality": 2,
+        "configuration_support": 1,
+        "overall_consistency": 1
+      },
+      "total_score": 5,
+      "justifications": {
+        "status_alignment": "The status 'applicable and inherently satisfied' is partially supported: while the identified controls are part of Uvicorn's core, some require explicit configuration or tuning (e.g., setting --limit-concurrency), so 'inherently' may overstate the default state.",
+        "explanation_quality": "The explanation is thorough, clearly describing how Uvicorn's features protect memory; it references specific mechanisms, files, and configuration options, providing strong evidence.",
+        "configuration_support": "The configuration is marked as empty, yet the explanation references settings such as --limit-concurrency and --limit-max-requests, which are configurable and should be listed to fully support the claim.",
+        "overall_consistency": "There is some inconsistency: the mapping claims inherent satisfaction but references optional/configurable controls; the absence of configuration details also weakens the overall alignment between explanation, status, and evidence."
+      },
+      "recommendation": "Explicitly list relevant configuration options (e.g., --limit-concurrency, --limit-max-requests, WebSocket max message size) in the control-configuration section, and consider revising the control-status to 'applicable and satisfied' if these controls require user configuration rather than being always active by default."
+    }
+  ],
+  "evaluation_timestamp": "2025-07-11 11:48:59.904874",
+  "_metadata": {
+    "generation_info": {
+      "model": "gpt-4.1",
+      "provider": "openai",
+      "base_url": "https://api.openai.com/v1",
+      "start_time": "2025-07-11T11:46:49.872197",
+      "command": "evaluate",
+      "config_file": "config/uvicorn.yaml",
+      "version": "0.1.0"
+    }
+  }
+}

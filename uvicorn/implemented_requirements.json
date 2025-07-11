@@ -1,0 +1,1444 @@
+{
+  "implemented_requirements": [
+    {
+      "uuid": "d8eaf757-0a92-46db-8b2d-d6dbd04c8e6a",
+      "control-id": "ac-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Concurrent Session Control",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Limit the number of concurrent sessions for each accounts and/or account types for which to limit the number of concurrent sessions is defined; to the number of concurrent sessions to be allowed for each account and/or account type is defined;.\n\nAdditional requirements:\n- accounts and/or account types for which to limit the number of concurrent sessions is defined;\n- the number of concurrent sessions to be allowed for each account and/or account type is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Uvicorn service itself does not implement concurrent session control for individual accounts or account types. As stated in the security overview, 'Authentication mechanisms', 'Authorization models and policies', 'Identity management', and 'Session handling' are *not provided by the Uvicorn service itself* and are *entirely delegated to the ASGI application*. While Uvicorn offers a `--limit-concurrency` option to limit the total number of concurrent connections or tasks globally, this is a server-level resource management feature and does not provide the capability to limit sessions *per account* or *per account type*, which is a core requirement of AC-10. Therefore, this control must be implemented by the ASGI application running on top of Uvicorn.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/server-behavior.md",
+            "docs/concepts/lifespan.md",
+            "docs/settings.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-10_smt.a",
+          "uuid": "88d02231-6e9f-4484-8568-aa35889bd636",
+          "description": "The control statement requires limiting concurrent sessions for specific accounts or account types. Uvicorn, as an ASGI server, does not manage user sessions, accounts, or their associated types. This responsibility is explicitly delegated to the ASGI application it hosts. Uvicorn's `--limit-concurrency` feature (documented in `docs/settings.md` and `docs/server-behavior.md`) is a global server-side resource limit that restricts the total number of concurrent connections or tasks, returning a 503 Service Unavailable response when exceeded. This mechanism does not differentiate between users or account types and thus does not satisfy the granular, identity-based concurrent session control specified by AC-10. The implementation of this control falls outside the scope of Uvicorn's functionality and must be handled by the consuming application."
+        }
+      ],
+      "control_id": "ac-10"
+    },
+    {
+      "uuid": "bd0cbe95-28d5-4976-a64d-95d2aae3be8d",
+      "control-id": "ac-12",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Session Termination",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Automatically terminate a user session after conditions or trigger events requiring session disconnect are defined;.\n\nAdditional requirements:\n- conditions or trigger events requiring session disconnect are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Uvicorn service, as an ASGI web server, explicitly delegates all session handling responsibilities, including session termination, to the ASGI application it hosts. As stated in the 'Security Summary - Session handling' section, 'Session handling is not implemented by the Uvicorn service. This functionality is delegated to the ASGI application.' The provided code evidence for timeouts (`--timeout-keep-alive`, `--timeout-graceful-shutdown`), connection shutdown logic (`h11_impl.py`, `httptools_impl.py`), WebSocket close handling (`wsproto_impl.py`), and process termination (`multiprocess.py`) pertains to network connection management, server lifecycle, or worker process control, not user session management or termination.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/settings.md",
+            "uvicorn/supervisors/multiprocess.py",
+            "uvicorn/protocols/websockets/wsproto_impl.py",
+            "uvicorn/protocols/http/httptools_impl.py",
+            "uvicorn/protocols/http/h11_impl.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-12_smt.a",
+          "uuid": "c49dffc8-ac9d-478c-ba03-d800c7994409",
+          "description": "The control statement regarding automatic termination of user sessions is not implemented by the Uvicorn service. Uvicorn operates at the server and protocol level, managing connections and the server lifecycle. Any user session management, including defining conditions or trigger events for session disconnect and their subsequent termination, is the sole responsibility of the ASGI application that Uvicorn serves. Uvicorn provides the underlying communication infrastructure but does not manage application-level user sessions."
+        }
+      ],
+      "control_id": "ac-12"
+    },
+    {
+      "uuid": "1219831a-06fb-45db-9a33-e155c965113d",
+      "control-id": "ac-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Access Enforcement",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn functions as an ASGI web server, primarily handling network communication and server lifecycle management. As explicitly stated in the 'Authentication and Authorization' section of the security overview, Uvicorn delegates all responsibilities related to authentication, authorization, identity management, session handling, and access control for application resources entirely to the ASGI application it serves. Uvicorn itself does not manage 'information and system resources' in a way that requires enforcing approved authorizations based on access control policies. While it offers resource limits like `limit_concurrency` and `limit_max_requests`, these are mechanisms for resource management and denial-of-service prevention, not for enforcing logical access based on user authorization policies.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/settings.md",
+            "uvicorn/_types.py",
+            "LICENSE.md",
+            "docs/server-behavior.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-3_smt.a",
+          "uuid": "34654fcb-d4de-40b0-8e89-fe55028014c4",
+          "description": "The control statement 'Enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies' describes a function that is explicitly outside the scope of Uvicorn's design. Uvicorn's architecture is that of a foundational server, passing requests to an ASGI application. The implementation of user authentication, authorization, and fine-grained access control to application data or functions is entirely the responsibility of the ASGI application built atop Uvicorn. There are no code patterns or mechanisms within Uvicorn itself that address this control statement."
+        }
+      ],
+      "control_id": "ac-3"
+    },
+    {
+      "uuid": "03d22ee2-141f-4626-b3e2-81b7aab49607",
+      "control-id": "ac-4",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information Flow Enforcement",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Enforce approved authorizations for controlling the flow of information within the system and between connected systems based on information flow control policies within the system and between connected systems are defined;.\n\nAdditional requirements:\n- information flow control policies within the system and between connected systems are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn, as an ASGI web server, primarily functions as a transport layer for HTTP and WebSocket communication. As explicitly stated in the security overview, the service **does not implement authentication, authorization, or access control mechanisms**. These critical responsibilities for enforcing approved authorizations on information flow are entirely delegated to the ASGI application that runs on top of Uvicorn. While Uvicorn provides features like `limit_concurrency` (documented in `docs/settings.md`) and `FlowControl` (implemented in `uvicorn/protocols/http/flow_control.py`), these are mechanisms for resource management and preventing denial-of-service attacks, not for enforcing authorization policies on who or what can send specific information. Similarly, while Uvicorn supports SSL/TLS for data in transit, this ensures confidentiality and integrity of the channel, not authorization of the information content or source/destination based on defined policies. Consequently, Uvicorn does not enforce information flow control based on approved authorizations or defined policies, as these functions are outside its scope and delegated to the application layer.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/settings.md",
+            "uvicorn/protocols/http/flow_control.py",
+            "docs/server-behavior.md",
+            "uvicorn/server.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-4_smt.a",
+          "uuid": "a6e6bdaa-608b-46e9-8b09-e23c7427ebe1",
+          "description": "The Uvicorn service does not directly implement the enforcement of approved authorizations for controlling the flow of information. Its architectural design delegates all authentication, authorization, and access control responsibilities, including the definition and enforcement of information flow control policies, to the ASGI application it hosts. Therefore, Uvicorn itself does not define or enforce information flow control policies within the system or between connected systems based on authorization. Code evidence, such as the `__init__.py` description and the general security overview, confirms that Uvicorn's scope is primarily transport and resource management, not policy-based information flow authorization."
+        }
+      ],
+      "control_id": "ac-4"
+    },
+    {
+      "uuid": "b6c1f59b-313b-417e-9515-0c4c2e0cc07f",
+      "control-id": "ac-9",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Previous Logon Notification",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Notify the user, upon successful logon to the system, of the date and time of the last logon.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Uvicorn service functions as an ASGI web server. As explicitly stated in the 'Authentication and Authorization' section of the Security Summary, Uvicorn does not provide authentication mechanisms, authorization models, identity management, or session handling. These responsibilities are entirely delegated to the ASGI application built atop Uvicorn. Therefore, Uvicorn itself does not perform or manage user logons, and consequently, cannot provide a notification of the date and time of the last logon. This control falls outside the scope and responsibilities of the Uvicorn service.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "uvicorn/supervisors/statreload.py",
+            "uvicorn/_types.py",
+            "docs/release-notes.md",
+            "uvicorn/protocols/http/httptools_impl.py",
+            "uvicorn/supervisors/basereload.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-9_smt.a",
+          "uuid": "548a7c0e-5124-4e3b-a7f4-faacde2a993a",
+          "description": "The control statement requires notifying the user upon successful logon. Uvicorn, as an ASGI server, is responsible for handling network communication and orchestrating the server's lifecycle, but it explicitly delegates all user-level authentication, session management, and identity management to the hosted ASGI application. Since Uvicorn does not manage user logon events or user sessions, it cannot implement a 'previous logon notification' mechanism. The provided code evidence pertains to server lifecycle, connection management, and reloading, none of which are related to user authentication or logon events."
+        }
+      ],
+      "control_id": "ac-9"
+    },
+    {
+      "uuid": "ecc53691-dd9d-4a32-9cef-76db9c4e3839",
+      "control-id": "au-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Non-repudiation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Provide irrefutable evidence that an individual (or process acting on behalf of an individual) has performed actions to be covered by non-repudiation are defined;.\n\nAdditional requirements:\n- actions to be covered by non-repudiation are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn, as an ASGI web server, explicitly delegates authentication, authorization, and identity management to the ASGI application it hosts. The control AU-10 requires providing 'irrefutable evidence that an individual (or process acting on behalf of an individual) has performed actions'. Non-repudiation, particularly for individual actions, fundamentally relies on the ability to identify and authenticate that individual. Since Uvicorn does not handle user identity or authentication, it cannot fulfill this core requirement. While Uvicorn provides extensive logging capabilities for server-side events (e.g., access logs, error logs, connection lifecycles), these logs capture network interactions and server behavior, not actions directly linked to an authenticated individual. Therefore, Uvicorn's architecture prevents it from inherently satisfying the non-repudiation requirements concerning individual actions.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "uvicorn/protocols/websockets/websockets_sansio_impl.py",
+            "uvicorn/_types.py",
+            "LICENSE.md",
+            "uvicorn/protocols/http/h11_impl.py",
+            "uvicorn/protocols/http/flow_control.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "au-10_smt.a",
+          "uuid": "9bec115f-6185-46c8-94cf-1c14fc611fee",
+          "description": "The control statement requires defining actions for non-repudiation and providing irrefutable evidence of actions performed by an individual. Uvicorn does not define actions to be covered by non-repudiation in terms of individual user actions, nor does it implement the necessary authentication and identity management mechanisms to link actions to specific individuals. The security overview explicitly states that authentication, authorization, and identity management are entirely delegated to the ASGI application. While Uvicorn logs server-side events such as incoming requests and connection statuses, these logs do not contain information about the authenticated identity of the user, which is crucial for non-repudiation of user actions. Consequently, Uvicorn does not directly implement the mechanisms to satisfy this control statement."
+        }
+      ],
+      "control_id": "au-10"
+    },
+    {
+      "uuid": "d88bc0ba-b543-4240-a7f3-90b8e030eb72",
+      "control-id": "au-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Content of Audit Records",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Ensure that audit records contain information that establishes the following:",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn, as an ASGI web server, implements extensive audit logging capabilities to record server and connection events. It utilizes Python's standard `logging` module, allowing for highly configurable log formats and verbosity levels via the `configure_logging` function in `uvicorn/config.py`. This setup ensures that audit records generally contain information about 'what' event occurred (e.g., HTTP request, WebSocket message, server startup/shutdown, errors), 'when' it occurred (timestamps are standard in Python logging), and the 'outcome' (e.g., HTTP status codes like 200, 400, 503, or error messages). For network events, 'where' (source IP address) is typically logged. However, a significant gap exists regarding the 'who' aspect concerning authenticated user identities. Uvicorn explicitly delegates authentication, authorization, and identity management to the ASGI application it hosts. Therefore, while Uvicorn logs information about the 'process' (e.g., worker lifecycle events) or the 'source of a connection' (e.g., client IP), it does not provide specific authenticated user IDs in its audit records. This means the control is partially satisfied, as it covers 'process' and connection source but not application-level 'user' identity.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "uvicorn/_types.py",
+            "LICENSE.md",
+            "uvicorn/config.py",
+            "scripts/sync-version",
+            "uvicorn/protocols/http/h11_impl.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "au-3_smt.a",
+          "uuid": "bda787d7-f596-406f-b812-de3c55620be3",
+          "description": "Uvicorn's implementation satisfies the 'what', 'when', 'where' (for network sources), and 'outcome' components of audit records through its robust logging framework. The `uvicorn.error` and `uvicorn.access` loggers capture detailed event information, including timestamps for 'when' (standard `logging` behavior), event descriptions for 'what' (e.g., 'GET /path HTTP/1.1'), and HTTP status codes or error messages for 'outcome'. The 'where' is covered by logging source IP addresses for incoming connections. The `configure_logging` function in `uvicorn/config.py` allows for flexible configuration of log formats (e.g., JSON, YAML) and levels, enabling rich, structured audit trails. However, the 'who' component, specifically regarding authenticated user identities, is not implemented by Uvicorn. As per its design, Uvicorn does not handle application-level authentication; this responsibility is entirely delegated to the ASGI application. Consequently, Uvicorn's audit records will contain information about the initiating 'process' (for internal events) or the 'source connection' (for external requests), but not the specific authenticated 'user' identity."
+        }
+      ],
+      "control_id": "au-3"
+    },
+    {
+      "uuid": "047bf864-9319-46ad-9829-df8e1de4ed6b",
+      "control-id": "au-9",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Protection of Audit Information",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect audit information and audit logging tools from unauthorized access, modification, and deletion; and\n\nAdditional requirements:\n- personnel or roles to be alerted upon detection of unauthorized access, modification, or deletion of audit information is/are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn generates comprehensive audit information, including access logs, error logs, connection lifecycle events, and protocol-specific events, utilizing Python's standard `logging` module. Logging verbosity and format are highly configurable via the `--log-level` and `--log-config` options, supporting structured logging formats (JSON, YAML) which facilitates external log processing and protection. However, Uvicorn's responsibility for audit information protection ends at log generation and output (defaulting to stdout). The service explicitly delegates the protection of audit information (e.g., integrity, confidentiality, availability of stored logs) and the logging tools' configurations from unauthorized access, modification, or deletion to external log collection and retention systems. Furthermore, Uvicorn does not implement internal alert mechanisms or define personnel/roles for notification upon detection of unauthorized activities related to audit information; it only provides the raw log data that could be used by external alerting systems.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "uvicorn/supervisors/multiprocess.py",
+            "uvicorn/_types.py",
+            "docs/release-notes.md",
+            "LICENSE.md",
+            "uvicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "au-9_smt.a",
+          "uuid": "1c86a36f-5fe3-4877-978d-c285938b3c4e",
+          "description": "Uvicorn implements the generation of audit information through its robust logging capabilities, leveraging Python's `logging` module. Server errors are logged via `uvicorn.error`, and access logs via `uvicorn.access`. The `configure_logging` function in `uvicorn/config.py` allows for extensive customization of logging behavior, including log levels (`--log-level`) and formats via a dictionary, JSON, or YAML file specified by `--log-config`. This enables the collection of detailed operational and security-relevant events. However, the control's requirements for protecting audit information from unauthorized access, modification, and deletion, as well as defining alert mechanisms and personnel, are not directly implemented by Uvicorn. These aspects are explicitly delegated to external systems responsible for log collection, storage, and monitoring, as Uvicorn primarily outputs logs to `stdout`."
+        }
+      ],
+      "control_id": "au-9"
+    },
+    {
+      "uuid": "0f27a872-b03c-4a30-90b9-cfb00b4c89e8",
+      "control-id": "cm-14",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Signed Components",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Prevent the installation of {{ insert: param, cm-14_prm_1 }} without verification that the component has been digitally signed using a certificate that is recognized and approved by the organization.\n\nAdditional requirements:\n- software components requiring verification of a digitally signed certificate before installation are defined;\n- firmware components requiring verification of a digitally signed certificate before installation are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Uvicorn service functions as an ASGI web server and is not responsible for the installation or management of software or firmware components. The control CM-14, 'Signed Components,' specifically focuses on preventing the installation of such components without digital signature verification. Uvicorn's scope is to orchestrate the server's lifecycle and handle network requests, not to act as a package manager, installer, or firmware updater for itself or other system components. Therefore, the core functionality described by this control does not fall within Uvicorn's responsibilities. The SSL/TLS certificate handling present in Uvicorn (e.g., `create_ssl_context`) is used for securing runtime network communication (HTTPS/WSS) by verifying server identity and optional client certificates, which is distinct from verifying the integrity and authenticity of installable software or firmware components.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "uvicorn/protocols/http/httptools_impl.py",
+            "uvicorn/config.py",
+            "docs/deployment/index.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "cm-14_smt.a",
+          "uuid": "993429d6-e5e4-4aac-b406-f90bcc3fefc5",
+          "description": "Uvicorn's architecture and functionality do not involve the installation or management of software or firmware components. Its role is limited to serving ASGI applications and handling network protocols. As such, there are no code patterns or mechanisms within Uvicorn designed to verify digital signatures of components prior to installation, as this activity is outside its operational scope. This control is typically implemented at the operating system level, by package managers (e.g., pip, apt, yum), or by dedicated firmware update mechanisms, none of which are part of Uvicorn's responsibilities or capabilities."
+        }
+      ],
+      "control_id": "cm-14"
+    },
+    {
+      "uuid": "25050cec-e45a-4ffe-a070-590d25415d60",
+      "control-id": "cm-5",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Access Restrictions for Change",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Define, document, approve, and enforce physical and logical access restrictions associated with changes to the system.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Uvicorn codebase itself does not implement mechanisms for defining, documenting, approving, or enforcing physical and logical access restrictions associated with changes to Uvicorn's own system (source code, configuration, deployment). These aspects are typically managed externally through version control system (e.g., GitHub) permissions, CI/CD pipeline access controls, and organizational policies.\n\nThe `docs/contributing.md` file describes a release process involving pull requests, changelog updates, and version bumps, which implicitly points to a change management process. This documentation partially satisfies the 'define and document' aspect of the control by outlining steps that inherently require some form of access control (e.g., only authorized maintainers can merge PRs). However, the *enforcement* mechanisms for these access restrictions are not present within the Uvicorn codebase itself. The code does not contain features for managing user roles, permissions, or audit trails specifically for changes to Uvicorn's source code or configuration. Therefore, while a process is documented, the direct code-level enforcement of access restrictions for changes is a gap.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/settings.md",
+            "docs/server-behavior.md",
+            "uvicorn/_types.py",
+            "LICENSE.md",
+            "docs/contributing.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "cm-5_smt.a",
+          "uuid": "4d76d7aa-8c7c-4257-b63b-b832d3c86d0f",
+          "description": "The `docs/contributing.md` file outlines the process for 'Releasing' new versions, detailing steps such as creating pull requests, updating the changelog, and bumping the version. This documentation implicitly establishes a change management process where modifications are proposed, reviewed (via pull requests), and then integrated into the system. This satisfies the 'document' aspect of the control by providing guidelines for how changes are made. However, the enforcement of logical access restrictions (e.g., who has merge rights, who can approve) and physical access restrictions (e.g., to build or deployment environments) is external to the Uvicorn codebase. These are managed by third-party platforms like Git hosting services (e.g., GitHub's branch protection rules) and CI/CD systems, rather than being implemented within Uvicorn's own code."
+        }
+      ],
+      "control_id": "cm-5"
+    },
+    {
+      "uuid": "b3e85772-613a-416e-9f8d-0c17dc96ee9f",
+      "control-id": "ia-11",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Re-authentication",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Require users to re-authenticate when circumstances or situations requiring re-authentication are defined;.\n\nAdditional requirements:\n- circumstances or situations requiring re-authentication are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn functions as an ASGI web server and explicitly delegates all authentication, authorization, identity management, and session handling responsibilities to the ASGI application it hosts. As such, Uvicorn itself does not implement any user-facing re-authentication mechanisms. This control is outside the architectural scope of the Uvicorn server.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/server-behavior.md",
+            "docs/release-notes.md",
+            "LICENSE.md",
+            "uvicorn/config.py",
+            "uvicorn/protocols/http/h11_impl.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-11_smt.a",
+          "uuid": "ec2e9567-1cad-4cc6-ba21-30132d58a55b",
+          "description": "The Uvicorn service's core functionality is to manage the server's lifecycle and handle asynchronous requests/responses for ASGI applications. The service security overview explicitly states that 'Authentication mechanisms are not provided by the Uvicorn service itself. Application-level authentication is entirely delegated to the ASGI application built atop Uvicorn.' This delegation extends to session handling and any re-authentication logic, which must be implemented by the ASGI application. Therefore, Uvicorn does not implement re-authentication as it is not part of its design or functional scope."
+        }
+      ],
+      "control_id": "ia-11"
+    },
+    {
+      "uuid": "dac709ba-257d-49b6-9c7e-d4d6bf3351b8",
+      "control-id": "ia-2",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Identification and Authentication (Organizational Users)",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Uniquely identify and authenticate organizational users and associate that unique identification with processes acting on behalf of those users.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn is an ASGI web server designed to run a Python application. As per the security overview, Uvicorn itself does not provide authentication, authorization, identity management, or session handling mechanisms. These responsibilities are explicitly delegated to the ASGI application it serves. Uvicorn does not have a user interface or API for 'organizational users' (e.g., administrators, operators) to directly log into or manage the Uvicorn server itself in a way that would require Uvicorn to uniquely identify and authenticate them. Interactions with Uvicorn, such as starting, stopping, or configuring it, are typically handled via command-line interfaces, process managers (like Gunicorn), or deployment scripts, where authentication and identification would be managed by the underlying operating system, orchestration tools, or the process manager itself, not by Uvicorn.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "uvicorn/_types.py",
+            "LICENSE.md",
+            "uvicorn/supervisors/multiprocess.py",
+            "docs/deployment/index.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-2_smt.a",
+          "uuid": "9d0c2a97-5e67-44ed-80d3-13a016f377aa",
+          "description": "The control statement 'Uniquely identify and authenticate organizational users and associate that unique identification with processes acting on behalf of those users' is not implemented by Uvicorn. Uvicorn's architecture is focused on serving an ASGI application, not on managing direct 'organizational users' of the server itself. Therefore, it does not provide any code patterns or mechanisms for unique identification or authentication of such users. Any authentication for system administrators or developers interacting with the Uvicorn process (e.g., starting, stopping, configuring) would occur at the operating system level, through secure shell access, or via a higher-level orchestration or deployment system, which are outside the scope of Uvicorn's functionality."
+        }
+      ],
+      "control_id": "ia-2"
+    },
+    {
+      "uuid": "95fd6973-3184-495c-b3ce-861a326a0909",
+      "control-id": "ia-6",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Authentication Feedback",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Obscure feedback of authentication information during the authentication process to protect the information from possible exploitation and use by unauthorized individuals.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Uvicorn service, as an ASGI web server, explicitly delegates all authentication, authorization, identity management, and session handling responsibilities to the ASGI application it hosts. As Uvicorn does not perform any authentication itself, it inherently does not provide authentication feedback. Therefore, the control regarding obscuring authentication feedback during the authentication process is not applicable to the Uvicorn service's scope.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/server-behavior.md",
+            "uvicorn/protocols/websockets/websockets_sansio_impl.py",
+            "uvicorn/protocols/websockets/wsproto_impl.py",
+            "uvicorn/protocols/http/httptools_impl.py",
+            "uvicorn/protocols/http/h11_impl.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-6_smt.a",
+          "uuid": "58353f27-a3b1-40d6-8de8-b55c21532121",
+          "description": "Uvicorn's architecture is designed to be a generic ASGI server, and as such, it does not implement any authentication mechanisms. The security overview explicitly states that 'Authentication mechanisms are not provided by the Uvicorn service itself. Application-level authentication is entirely delegated to the ASGI application built atop Uvicorn.' Consequently, Uvicorn does not generate or handle any authentication feedback that would need to be obscured. This control's requirements would apply to the ASGI application running on Uvicorn, not Uvicorn itself."
+        }
+      ],
+      "control_id": "ia-6"
+    },
+    {
+      "uuid": "5a7ede98-e5fa-425f-a104-3199d3043777",
+      "control-id": "ia-7",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Cryptographic Module Authentication",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Implement mechanisms for authentication to a cryptographic module that meet the requirements of applicable laws, executive orders, directives, policies, regulations, standards, and guidelines for such authentication.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn implements a mechanism for authentication to its cryptographic module, specifically the SSL key file. When an SSL key file is password-protected, Uvicorn allows the server operator to provide this password via the `--ssl-keyfile-password` configuration option. The `create_ssl_context` function in `uvicorn/config.py` (lines 103-123) utilizes this password. It passes a callable that returns the provided password to the `ssl.SSLContext.load_cert_chain()` method. This ensures that the private key within the SSL key file can only be decrypted and loaded into memory after the correct password has been supplied, thereby authenticating access to the cryptographic material.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "uvicorn/config.py",
+              "key_path": "ssl_keyfile_password",
+              "line_number": 112
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/concepts/websockets.md",
+            "docs/settings.md",
+            "uvicorn/config.py",
+            "docs/release-notes.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-7_smt.a",
+          "uuid": "1f386368-9c78-40dd-838d-5648b0af05b7",
+          "description": "The control statement is implemented by Uvicorn's capability to handle password-protected SSL key files. The `create_ssl_context` function, located in `uvicorn/config.py`, is responsible for creating the SSL context for secure communication. This function takes `keyfile` and `password` parameters. If an `ssl_keyfile_password` is provided in the server configuration, this password is used by the underlying `ssl.SSLContext.load_cert_chain()` method to decrypt and load the private key. This process acts as an authentication mechanism, ensuring that only authorized entities with knowledge of the key's password can access and utilize the cryptographic module (the private key) for TLS handshake operations. This directly satisfies the requirement for authentication to a cryptographic module."
+        }
+      ],
+      "control_id": "ia-7"
+    },
+    {
+      "uuid": "7ce11a0f-d7d9-4c35-a579-1326b02230c5",
+      "control-id": "ia-8",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Identification and Authentication (Non-organizational Users)",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Uniquely identify and authenticate non-organizational users or processes acting on behalf of non-organizational users.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn, as an ASGI web server, explicitly delegates the responsibility for authentication and identification of non-organizational users to the ASGI application it serves. The security overview clearly states that 'Authentication mechanisms are not provided by the Uvicorn service itself. Application-level authentication is entirely delegated to the ASGI application built atop Uvicorn.' Therefore, Uvicorn itself does not implement or satisfy this control; it relies on the application layer to handle user identification and authentication.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "uvicorn/_types.py",
+            "LICENSE.md",
+            "docs/sponsorship.md",
+            "uvicorn/supervisors/multiprocess.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-8_smt.a",
+          "uuid": "491bdce5-6638-454a-a804-211550bcf3ac",
+          "description": "The control statement 'Uniquely identify and authenticate non-organizational users or processes acting on behalf of non-organizational users' is not implemented within the Uvicorn codebase. Uvicorn's design philosophy places the responsibility for all application-level authentication, including the identification and authentication of non-organizational users, squarely on the ASGI application that runs on top of the server. Uvicorn acts solely as a communication layer, passing requests to the application without performing any user-specific identification or authentication itself."
+        }
+      ],
+      "control_id": "ia-8"
+    },
+    {
+      "uuid": "08e203b8-6e9a-4c7c-92ee-6c1c3ede4470",
+      "control-id": "sc-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Network Disconnect",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Terminate the network connection associated with a communications session at the end of the session or after a time period of inactivity after which the system terminates a network connection associated with a communication session is defined; of inactivity.\n\nAdditional requirements:\n- a time period of inactivity after which the system terminates a network connection associated with a communication session is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Uvicorn service implements network connection termination based on inactivity. The `--timeout-keep-alive` option, which defaults to 5 seconds, defines the period of inactivity after which a Keep-Alive HTTP connection will be closed if no new data is received. The `timeout_keep_alive_handler` functions, found in `uvicorn/protocols/http/h11_impl.py` and `uvicorn/protocols/http/httptools_impl.py`, contain the logic to explicitly close the transport (`self.transport.close()`) when this timeout is reached. This mechanism ensures that idle network connections are terminated, satisfying the requirement for network disconnect after a defined period of inactivity.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/settings.md",
+            "uvicorn/protocols/http/httptools_impl.py",
+            "uvicorn/protocols/http/h11_impl.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-10_smt.a",
+          "uuid": "db470cdc-c7fe-435b-a720-4b9b9fbe8e5c",
+          "description": "The control statement is implemented through Uvicorn's `timeout_keep_alive` mechanism. Uvicorn, as an ASGI web server, manages network connections and provides the `--timeout-keep-alive` configuration option. This option, with a default value of 5 seconds, defines the maximum allowed idle time for a Keep-Alive HTTP connection. When this inactivity period is exceeded, the `timeout_keep_alive_handler` functions within `uvicorn/protocols/http/h11_impl.py` and `uvicorn/protocols/http/httptools_impl.py` are triggered. These handlers are responsible for explicitly closing the underlying network transport, effectively terminating the communication session. This design ensures that network connections are not left open indefinitely after a period of inactivity, directly satisfying the control's requirements for defining and enforcing a network disconnect timeout."
+        }
+      ],
+      "control_id": "sc-10"
+    },
+    {
+      "uuid": "b6d8d890-9288-4992-9bdd-92ac2af58ef5",
+      "control-id": "sc-2",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Separation of System and User Functionality",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Separate user functionality, including user interface services, from system management functionality.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Uvicorn service inherently satisfies this control by design. As an ASGI web server, Uvicorn's core functionality is limited to system management tasks such as server lifecycle management (startup, shutdown), connection handling, protocol implementation (HTTP/1.1, WebSockets), and resource limits (e.g., `--limit-concurrency`, `--backlog`). User functionality, including authentication, authorization, session management, identity management, and application-specific business logic or user interface services, is explicitly and entirely delegated to the ASGI application that Uvicorn hosts. This clear architectural separation ensures that Uvicorn does not intertwine system management with user-facing application logic.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/server-behavior.md",
+            "docs/concepts/asgi.md",
+            "docs/settings.md",
+            "docs/deployment/index.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-2_smt.a",
+          "uuid": "97d0d4b6-2e65-4910-9dd4-84e72886fab4",
+          "description": "Uvicorn's architecture as an ASGI server strictly separates its system management functionality from user functionality. The server handles low-level concerns like network communication, protocol parsing, and server resource management. User functionality, such as user interface services, business logic, authentication, and authorization, is the sole responsibility of the ASGI application running on top of Uvicorn. This delegation is a fundamental design principle of ASGI servers, ensuring a clean boundary between the server's operational responsibilities and the application's user-facing services."
+        }
+      ],
+      "control_id": "sc-2"
+    },
+    {
+      "uuid": "4ef06f4c-fbdd-46fa-95c8-abfb5bc94d65",
+      "control-id": "sc-23",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Session Authenticity",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the authenticity of communications sessions.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Uvicorn service, as an ASGI web server, explicitly delegates all session handling and authentication mechanisms to the ASGI application it hosts. The security overview states: 'Session handling is not implemented by the Uvicorn service. This functionality is delegated to the ASGI application.' Therefore, Uvicorn itself does not implement controls to protect the authenticity of communications sessions at the application level (e.g., managing session IDs, tokens, or re-authentication). While Uvicorn supports TLS/SSL for secure transport, which is crucial for session integrity and confidentiality, this does not constitute implementation of application-level session authenticity management.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "uvicorn/protocols/websockets/websockets_sansio_impl.py",
+            "uvicorn/protocols/websockets/websockets_impl.py",
+            "docs/release-notes.md",
+            "LICENSE.md",
+            "uvicorn/protocols/http/h11_impl.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-23_smt.a",
+          "uuid": "931d1940-b7fb-43cd-9954-75b88d4d0b76",
+          "description": "Uvicorn does not implement mechanisms to protect the authenticity of communication sessions. Its role is limited to handling the network transport and passing requests to the ASGI application. The responsibility for establishing, maintaining, and protecting the authenticity of application-level sessions (e.g., preventing session hijacking, ensuring user identity across requests) is entirely delegated to the ASGI application running on top of Uvicorn. The code evidence provided relates to low-level connection handling (like `connection_lost` for WebSockets or `data_received` for HTTP) and does not show any session management or authenticity protection mechanisms."
+        }
+      ],
+      "control_id": "sc-23"
+    },
+    {
+      "uuid": "b96cff24-111e-40c0-bdd8-8ed67dec8ecf",
+      "control-id": "sc-24",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Fail in Known State",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Fail to a known system state to which system components fail in the event of a system failure is defined; for the following failures on the indicated components while preserving system state information to be preserved in the event of a system failure is defined; in failure: types of system failures for which the system components fail to a known state are defined;.\n\nAdditional requirements:\n- types of system failures for which the system components fail to a known state are defined;\n- known system state to which system components fail in the event of a system failure is defined;\n- system state information to be preserved in the event of a system failure is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn implements robust mechanisms to ensure its core server components and connections fail to a known state. For instance, when a WebSocket connection is lost, the `connection_lost` method in `uvicorn/protocols/websockets/websockets_impl.py` explicitly removes the connection from active management, logs the event, and ensures the underlying transport is closed, transitioning the connection to a clean, known terminated state. Server-level failures, such as exceeding concurrency limits, result in a defined 503 'Service Unavailable' response, indicating an overloaded but still operational server. Malformed HTTP requests are consistently handled with a 400 'Bad Request' response. All significant errors and lifecycle events, including application startup/shutdown failures, are extensively logged at appropriate levels (e.g., `error` level for server errors) to `stdout`, which serves as the primary mechanism for preserving critical state information for debugging and operational auditing. While Uvicorn delegates application-specific state management and integrity to the ASGI application it hosts, it ensures its own components transition to a stable, predictable state upon failure and provides comprehensive logging for external monitoring and analysis.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "uvicorn/server.py",
+            "docs/server-behavior.md",
+            "uvicorn/protocols/websockets/websockets_impl.py",
+            "docs/release-notes.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-24_smt.a",
+          "uuid": "55577ac4-a888-4867-90f3-719539cbad1a",
+          "description": "Uvicorn defines and implements known failure states for its various components and processes. The types of system failures for which components fail to a known state include connection loss, server overload, malformed input, and application lifecycle failures. For example, the `connection_lost` method in `uvicorn/protocols/websockets/websockets_impl.py` (lines 134-147) demonstrates how a lost WebSocket connection is transitioned to a known state: it's removed from active connections (`self.connections.remove(self)`), logged (`self.logger.log`), and its underlying transport is closed (`self.transport.close()`), defining a clean, terminated state for the connection. The server's `limit_concurrency` mechanism defines a failure state for overload, returning a 503 response. Furthermore, the extensive logging capabilities, as described in `docs/server-behavior.md` and the lifespan protocol summary, ensure that 'system state information to be preserved in the event of a system failure is defined' through detailed error logs, access logs, and lifecycle event logs. These logs provide crucial context and data for post-failure analysis, satisfying the requirement for preserving state information."
+        }
+      ],
+      "control_id": "sc-24"
+    },
+    {
+      "uuid": "38aef2e8-ccfd-4cc9-ae15-959f1330117e",
+      "control-id": "sc-28",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "not applicable",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Protection of Information at Rest",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the {{ insert: param, sc-28_odp.01 }} of the following information at rest: information at rest requiring protection is defined;.\n\nAdditional requirements:\n- information at rest requiring protection is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Uvicorn service functions primarily as an ASGI web server, handling network communication (data in transit) and server lifecycle management. As stated in the security overview, 'The Uvicorn service does not explicitly address data encryption at rest. Its role is primarily in handling network communication.' and 'It does not provide mechanisms for long-term data storage.' The provided code evidence supports this, focusing on HTTP/WebSocket protocol handling, request/response processing, and server state, with no indication of any persistent data storage or management of 'information at rest' within Uvicorn's scope. Therefore, this control is not applicable to Uvicorn itself.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "uvicorn/protocols/http/flow_control.py",
+            "docs/server-behavior.md",
+            "uvicorn/protocols/http/httptools_impl.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-28_smt.a",
+          "uuid": "7914b625-44b9-439d-b1a4-56e7bef99171",
+          "description": "Uvicorn's core functionality is to act as an ASGI server, processing incoming requests and sending responses. It does not store or manage any 'information at rest' that would necessitate protection under this control. Any data requiring protection at rest would be handled by the underlying operating system, file system, database, or the ASGI application running on top of Uvicorn, which is outside the scope of Uvicorn's responsibilities."
+        }
+      ],
+      "control_id": "sc-28"
+    },
+    {
+      "uuid": "5c648b6a-fd98-462e-82b2-29c38af8c7cb",
+      "control-id": "sc-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Security Function Isolation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Isolate security functions from nonsecurity functions.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn, as an ASGI web server, inherently isolates security functions by delegating application-level security concerns (such as authentication, authorization, identity management, and session handling) entirely to the ASGI application it serves. This architectural decision prevents the server's core functionality from being intertwined with application-specific security logic. Furthermore, Uvicorn's own security-related features are modularly implemented. For instance, transport layer security (TLS/SSL) is handled through dedicated configuration parameters (`ssl_keyfile`, `ssl_certfile`) and relies on underlying cryptographic libraries. Network-level security configurations like trusted proxy management (`forwarded_allow_ips`) are encapsulated within specific middleware, such as the `ProxyHeadersMiddleware` (`uvicorn/middleware/proxy_headers.py`). Input validation for HTTP headers and WebSocket messages is integrated into the respective protocol implementations as distinct security-focused parsing activities. Logging, a critical security function for auditability, utilizes Python's standard `logging` module with separate, dedicated loggers (`uvicorn.error`, `uvicorn.access`), ensuring log generation is isolated and configurable. Operational non-security functions, such as signal handling in `uvicorn/supervisors/multiprocess.py` or file change monitoring in `uvicorn/supervisors/watchfilesreload.py`, are clearly separated into distinct modules and components, reinforcing the overall isolation of concerns.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "uvicorn/supervisors/watchfilesreload.py",
+            "uvicorn/supervisors/multiprocess.py",
+            "uvicorn/_types.py",
+            "uvicorn/middleware/proxy_headers.py",
+            "LICENSE.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-3_smt.a",
+          "uuid": "6f790b7a-dd52-4510-a309-f1f5d2516a54",
+          "description": "The control statement is implemented through Uvicorn's fundamental architectural design and modular code structure. A key mechanism is the explicit delegation of all application-level security responsibilities (e.g., authentication, authorization, session management) to the ASGI application. This ensures that Uvicorn, as the server, does not contain or intertwine its core server functions with potentially complex and application-specific security logic, thereby achieving a strong form of isolation.\n\nWithin Uvicorn's own scope, security-related functions are isolated into distinct components and mechanisms:\n*   **Transport Security:** TLS/SSL handling is managed through specific configuration parameters (`ssl_keyfile`, `ssl_certfile`) that interact with underlying cryptographic libraries, ensuring this critical security function is distinct from general request processing.\n*   **Network Security Configuration:** Features like trusted proxy configuration (`forwarded_allow_ips`) are implemented within dedicated middleware, such as `uvicorn/middleware/proxy_headers.py`, encapsulating the logic for processing and validating proxy headers.\n*   **Input Validation:** While integrated into protocol implementations, input validation for HTTP requests (e.g., malformed headers) and WebSocket messages (e.g., UTF-8 decoding, maximum message size) represents a distinct security-focused parsing and validation layer, preventing malformed or oversized inputs from affecting core server stability.\n*   **Logging:** Security-relevant logging (e.g., errors, access logs) is handled by Python's standard `logging` module, utilizing separate loggers (`uvicorn.error`, `uvicorn.access`). This provides a clear and isolated mechanism for generating audit trails without mixing logging logic with other server functions.\n\nConversely, non-security functions, such as server lifecycle management (e.g., signal handling in `uvicorn/supervisors/multiprocess.py`) and development-time features like code reloading via file watching (`uvicorn/supervisors/watchfilesreload.py`), are implemented in separate modules and components. This clear separation of concerns ensures that security functions are distinct and not co-mingled with unrelated operational or functional code, satisfying the control requirements."
+        }
+      ],
+      "control_id": "sc-3"
+    },
+    {
+      "uuid": "88984e89-9fe9-44ec-91d8-b5c238fdea76",
+      "control-id": "sc-39",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Process Isolation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Maintain a separate execution domain for each executing system process.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn achieves process isolation by utilizing Python's `multiprocessing` module, specifically employing the 'spawn' start method to create worker processes. The 'spawn' method ensures that each child process is a completely new interpreter instance, meaning it has its own distinct memory space, global interpreter lock (GIL), and process ID (PID), thereby creating a separate execution domain for each worker. The `Multiprocess` supervisor orchestrates these isolated worker processes, ensuring that server operations are distributed across independent execution domains.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "uvicorn/_subprocess.py",
+            "uvicorn/supervisors/multiprocess.py",
+            "docs/release-notes.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-39_smt.a",
+          "uuid": "16d17c4b-4292-4f22-a7bc-557042ba818c",
+          "description": "Uvicorn's architecture leverages Python's `multiprocessing` module to achieve process isolation. When configured for multiprocess operation (e.g., via the `Multiprocess` supervisor), worker processes are initiated using the `spawn` context (`multiprocessing.get_context(\"spawn\")`), as evidenced in `uvicorn/_subprocess.py`. This design ensures that each worker runs in its own distinct operating system process with its own dedicated memory space and resources. This inherently prevents one worker's activities or failures from directly impacting the memory or execution of another worker, satisfying the control's requirement for maintaining a separate execution domain for each executing system process."
+        }
+      ],
+      "control_id": "sc-39"
+    },
+    {
+      "uuid": "c5bf85cd-0ca1-4467-9e34-05ab84c5c85a",
+      "control-id": "sc-4",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information in Shared System Resources",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Prevent unauthorized and unintended information transfer via shared system resources.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn, as an ASGI web server, inherently manages shared system resources, primarily network sockets, connection pools, and worker processes. The implementation prevents unauthorized and unintended information transfer through robust resource management. Specifically, the release notes indicate the use of `resource_sharer.DupSocket` to resolve socket sharing issues on Windows, which is a direct measure to ensure proper isolation of shared sockets across worker processes. The server's design prioritizes 'connection and resource management' and 'resilience to poor client behavior or denial of service attacks' (as per `docs/server-behavior.md`), implying internal mechanisms like `FlowControl` (mentioned in the security overview) to prevent resource exhaustion and maintain data integrity on shared network buffers. Furthermore, protocol implementations, such as `wsproto_impl.py`, handle `RemoteProtocolError` by closing the transport, preventing malformed data from impacting the integrity of other data streams on shared connections.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/server-behavior.md",
+            "uvicorn/protocols/websockets/wsproto_impl.py",
+            "uvicorn/_types.py",
+            "docs/release-notes.md",
+            "LICENSE.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-4_smt.a",
+          "uuid": "ec2cbba3-e35e-4792-855f-16d41a0ac411",
+          "description": "The control statement is implemented through Uvicorn's core design principles and specific mechanisms for managing shared system resources. Key patterns include:\n1.  **Socket Sharing Resolution:** The system explicitly addresses socket sharing across worker processes, particularly on Windows, by utilizing `resource_sharer.DupSocket`. This ensures that shared listening sockets are handled correctly, preventing unintended data leakage or interference between processes.\n2.  **Robust Resource Management:** The server's architecture is designed with a strong focus on 'connection and resource management' to ensure resilience and graceful handling of errors. This includes managing shared connection limits (`limit_concurrency`) and implementing `FlowControl` to prevent resource exhaustion on network buffers, which is critical for maintaining the integrity and isolation of data streams.\n3.  **Protocol Error Handling:** Uvicorn's protocol implementations (e.g., `uvicorn/protocols/websockets/wsproto_impl.py`) include mechanisms to detect and gracefully handle protocol errors (like `RemoteProtocolError`). Upon detection, the connection is closed, preventing malformed data from corrupting or exposing information through the shared network resources. These combined efforts ensure that the underlying server infrastructure prevents unauthorized and unintended information transfer across shared system resources like network connections and process memory."
+        }
+      ],
+      "control_id": "sc-4"
+    },
+    {
+      "uuid": "3e75f1b7-d493-4b8b-922c-1521ec7c065c",
+      "control-id": "sc-5",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Denial-of-service Protection",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "{{ insert: param, sc-05_odp.02 }} the effects of the following types of denial-of-service events: types of denial-of-service events to be protected against or limited are defined; ; and\n\nAdditional requirements:\n- types of denial-of-service events to be protected against or limited are defined;\n- controls to achieve the denial-of-service objective by type of denial-of-service event are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn is explicitly designed with attention to denial-of-service (DoS) resilience, as stated in `docs/server-behavior.md`. It implements several inherent mechanisms to limit the effects of various DoS events:\n\n1.  **Resource Limits:** The server provides configurable limits such as `--limit-concurrency` (maximum concurrent connections/tasks) and `--limit-max-requests` (maximum requests before process termination). When concurrency limits are exceeded, Uvicorn responds with an HTTP 503 'Service Unavailable' status, protecting against resource exhaustion. The `--backlog` option also limits the number of pending connections to prevent saturation.\n2.  **Input Validation:** Robust input validation is performed for HTTP headers and general request structures, leading to 400 Bad Request responses for malformed inputs. For WebSocket connections, it includes UTF-8 decoding and supports a configurable maximum message size, mitigating attacks based on malformed or excessively large messages.\n3.  **Flow Control:** The service incorporates `FlowControl` mechanisms to pause reading data from clients, preventing resource exhaustion caused by slow clients or large data streams.\n4.  **Graceful Handling:** Uvicorn supports the WebSocket Denial Response ASGI extension, allowing applications to explicitly signal when a WebSocket connection is denied, contributing to overall resilience and clearer error handling during DoS events.\n\nThese mechanisms are built into the core server logic, defining the types of DoS events protected against (e.g., connection/task exhaustion, request floods, connection backlog saturation, malformed inputs, large messages) and providing the controls to mitigate them.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/server-behavior.md",
+            "uvicorn/_types.py",
+            "docs/settings.md",
+            "docs/release-notes.md"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-5_smt.a",
+          "uuid": "c564107d-449b-4be0-8ee7-b9c4cacb79fa",
+          "description": "The control statement is satisfied as Uvicorn explicitly defines the types of denial-of-service events it protects against and the controls to achieve that objective. This is evident through:\n\n1.  **Defined DoS Event Types:** The documentation and core functionality implicitly define DoS events such as connection exhaustion, request flooding, connection backlog saturation, and malformed request attacks. For instance, the `--limit-concurrency`, `--limit-max-requests`, and `--backlog` options directly correspond to limiting the effects of connection/task and request-based DoS events.\n2.  **Defined Controls:** Specific controls are implemented in the codebase to mitigate these defined event types:\n    *   **Resource Throttling:** The server's main loop and connection management logic (e.g., within the `Server` module) enforce limits set by `--limit-concurrency` and `--limit-max-requests`, returning HTTP 503 when thresholds are met. The `--backlog` option configures the underlying socket's listen backlog.\n    *   **Input Sanitization:** Protocol implementations (e.g., `httptools_impl.py`, `websockets_impl.py`) perform input validation, rejecting malformed HTTP requests with 400 Bad Request and handling WebSocket message size limits and decoding errors.\n    *   **Flow Control:** The `FlowControl` mechanism (mentioned in the security summary) is integrated into the data handling to prevent resource exhaustion by managing data reading rates.\n    *   **ASGI Extensions:** Support for the WebSocket Denial Response ASGI extension allows the application layer to participate in DoS mitigation by signaling denied connections.\n\nOverall, Uvicorn's architecture, configurable parameters, and internal protocol handling mechanisms collectively define and implement comprehensive controls against various DoS attack types, fulfilling the control requirements."
+        }
+      ],
+      "control_id": "sc-5"
+    },
+    {
+      "uuid": "787ed1b6-978d-46e6-9ca2-867d50cc818e",
+      "control-id": "sc-8",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Transmission Confidentiality and Integrity",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the {{ insert: param, sc-08_odp }} of transmitted information.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn provides robust mechanisms for protecting the confidentiality and integrity of transmitted information, primarily through its support for TLS/SSL encryption for both HTTP (HTTPS) and WebSocket (WSS) connections. This is configurable via parameters such as `ssl_keyfile`, `ssl_certfile`, `ssl_keyfile_password`, `ssl_version`, `ssl_ciphers`, and `ssl_ca_certs`. Furthermore, the service implements inherent protocol-level integrity checks, such as returning 400 Bad Request responses for malformed HTTP inputs (evidenced in `httptools_impl.py`) and handling protocol errors in WebSocket connections (evidenced in `wsproto_impl.py` and `websockets_sansio_impl.py`) by closing the connection. However, the control is classified as 'applicable but only satisfied through configuration' because the security overview explicitly states that the *default* `ssl_ciphers` is `TLSv1`, which is an outdated and critically weak protocol version, and client certificate verification is off by default. To achieve adequate protection, users must explicitly configure stronger TLS versions and cipher suites, and optionally enable client certificate verification.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "uvicorn/config.py",
+              "key_path": "ssl_keyfile",
+              "line_number": 0
+            },
+            {
+              "file_path": "uvicorn/config.py",
+              "key_path": "ssl_certfile",
+              "line_number": 0
+            },
+            {
+              "file_path": "uvicorn/config.py",
+              "key_path": "ssl_keyfile_password",
+              "line_number": 0
+            },
+            {
+              "file_path": "uvicorn/config.py",
+              "key_path": "ssl_version",
+              "line_number": 0
+            },
+            {
+              "file_path": "uvicorn/config.py",
+              "key_path": "ssl_cert_reqs",
+              "line_number": 0
+            },
+            {
+              "file_path": "uvicorn/config.py",
+              "key_path": "ssl_ca_certs",
+              "line_number": 0
+            },
+            {
+              "file_path": "uvicorn/config.py",
+              "key_path": "ssl_ciphers",
+              "line_number": 0
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "uvicorn/protocols/websockets/websockets_sansio_impl.py",
+            "uvicorn/protocols/websockets/wsproto_impl.py",
+            "docs/release-notes.md",
+            "uvicorn/main.py",
+            "uvicorn/protocols/http/httptools_impl.py",
+            "uvicorn/config.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-8_smt.a",
+          "uuid": "825dd64d-41fb-4e33-b495-15ff43b41ad4",
+          "description": "The control statement, 'Protect the confidentiality and integrity of transmitted information,' is addressed by Uvicorn primarily through its capability to establish secure communication channels using TLS/SSL. The server can be configured to use HTTPS for HTTP/1.1 and WSS for WebSocket connections, allowing the specification of certificates, private keys, and various SSL/TLS parameters to encrypt data in transit and ensure its integrity. This is managed through configuration options defined in `uvicorn/config.py` and exposed via command-line arguments in `uvicorn/main.py`. Additionally, the service incorporates internal mechanisms to maintain protocol integrity by validating incoming data, such as rejecting malformed HTTP requests with a 400 response (`httptools_impl.py`) and handling WebSocket parser exceptions by closing the connection (`wsproto_impl.py`, `websockets_sansio_impl.py`), which prevents the processing of corrupted or invalid messages. However, the default TLS configuration is explicitly noted as weak (`TLSv1`), requiring explicit user configuration for effective protection of confidentiality and integrity."
+        }
+      ],
+      "control_id": "sc-8"
+    },
+    {
+      "uuid": "e623b261-362b-42e9-b41f-2d6ca119baac",
+      "control-id": "si-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information Input Validation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Check the validity of the following information inputs: information inputs to the system requiring validity checks are defined;.\n\nAdditional requirements:\n- information inputs to the system requiring validity checks are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Uvicorn, as an ASGI web server, inherently performs input validation on the information inputs relevant to its scope. This includes validation of network protocol inputs (HTTP/1.1 requests, WebSocket frames) and messages exchanged via the ASGI protocol with the application. For HTTP, Uvicorn validates headers and general request structure, returning 400 Bad Request for malformed inputs. For WebSockets, it includes mechanisms like UTF-8 decoding and adheres to a configurable maximum message size. It also validates the sequence and type of messages received from the ASGI application to ensure protocol integrity. Furthermore, specific configuration inputs, such as trusted IP addresses for proxy headers, are validated by the system. Application-level data validation (e.g., specific JSON payload schemas) is explicitly delegated to the ASGI application, as it falls outside Uvicorn's responsibility as a server.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/server-behavior.md",
+            "docs/release-notes.md",
+            "uvicorn/middleware/proxy_headers.py",
+            "LICENSE.md",
+            "uvicorn/protocols/http/h11_impl.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "si-10_smt.a",
+          "uuid": "30abfaec-322f-4bcf-96d5-c9a036a38877",
+          "description": "Uvicorn defines its information inputs implicitly through its role as an ASGI server handling network protocols and the ASGI specification. The implementation satisfies the control by validating these defined inputs. Specific code patterns and architectural decisions include: \n1.  **Network Protocol Validation:** The system rejects malformed HTTP requests (e.g., invalid headers, incorrect structure) with a 400 Bad Request response, as stated in the security summary. For WebSockets, it performs UTF-8 decoding and enforces maximum message sizes.\n2.  **ASGI Protocol Integrity:** As described in `docs/server-behavior.md` and the ASGI lifespan protocol overview, Uvicorn validates the sequence and types of messages sent by the ASGI application, raising errors for invalid sequences or partial responses. This ensures the integrity of the communication between Uvicorn and the hosted application.\n3.  **Configuration Input Validation:** The `uvicorn/middleware/proxy_headers.py` file demonstrates validation for configuration inputs like `forwarded_allow_ips`. The `__contains__` method checks if a given host (IP address or literal) is within the defined trusted hosts or networks, preventing invalid or untrusted inputs from being processed."
+        }
+      ],
+      "control_id": "si-10"
+    },
+    {
+      "uuid": "83000af8-9bbe-4710-ba0a-c4d343cc05fa",
+      "control-id": "si-16",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Memory Protection",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Implement the following controls to protect the system memory from unauthorized code execution: controls to be implemented to protect the system memory from unauthorized code execution are defined;.\n\nAdditional requirements:\n- controls to be implemented to protect the system memory from unauthorized code execution are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Uvicorn service implements several inherent controls to protect system memory from unauthorized code execution, primarily by mitigating resource exhaustion and preventing certain types of Denial-of-Service (DoS) attacks that could lead to memory instability or exploit vectors. Key mechanisms include:\n\n1.  **Resource Limits:** The `--limit-concurrency` option restricts the maximum number of concurrent connections or tasks, preventing memory exhaustion under high load. The `--limit-max-requests` option is designed to prevent memory leaks in long-running processes by gracefully terminating and restarting workers after a specified number of requests.\n2.  **Flow Control:** The `FlowControl` mechanism, implemented in `uvicorn/protocols/http/flow_control.py`, ensures that large amounts of data do not become excessively buffered on the transport layer. This prevents memory overruns when one side of a connection is sending data faster than the other can handle, as explicitly stated in `docs/server-behavior.md`.\n3.  **Input Validation and Message Size Limits:** For WebSocket connections, the service incorporates input validation (e.g., UTF-8 decoding) and supports a configurable maximum message size. These measures directly mitigate DoS vectors that could exploit memory by sending excessively large or malformed data, as noted in the service security overview for WebSocket protocol implementation.\n\nThese controls are integral to Uvicorn's core functionality and directly contribute to memory protection by managing resource consumption and preventing malicious input from causing memory issues.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/settings.md",
+            "docs/server-behavior.md",
+            "LICENSE.md",
+            "uvicorn/server.py",
+            "uvicorn/protocols/http/flow_control.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "si-16_smt.a",
+          "uuid": "72fcb7d9-f171-4aea-929e-a759ef3e9975",
+          "description": "The control statement, requiring that 'controls to be implemented to protect the system memory from unauthorized code execution are defined,' is satisfied by Uvicorn's architectural design and explicit features. The implementation defines and utilizes:\n\n*   **Concurrency and Request Limiting:** The `--limit-concurrency` and `--limit-max-requests` settings are defined as controls to manage memory usage patterns and prevent memory leaks, respectively. These are explicit configurations designed for memory protection.\n*   **Flow Control Mechanism:** The `FlowControl` class and associated logic are architecturally defined components to manage data buffering, preventing memory overruns by pausing data reading when necessary.\n*   **Protocol-level Input Validation:** For protocols like WebSockets, specific mechanisms are defined to validate input (e.g., UTF-8 decoding) and enforce maximum message sizes, thereby preventing memory-based DoS attacks. Connection termination on invalid data or parser errors also contributes to memory integrity.\n\nThese mechanisms are explicitly designed, documented, and implemented within Uvicorn's core, demonstrating that controls for memory protection are clearly defined and in place."
+        }
+      ],
+      "control_id": "si-16"
+    }
+  ],
+  "_metadata": {
+    "generation_info": {
+      "model": "gemini-2.5-flash",
+      "provider": "gemini",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
+      "start_time": "2025-07-11T11:39:58.371727",
+      "command": "generate",
+      "config_file": "config/uvicorn.yaml",
+      "version": "0.1.0"
+    }
+  }
+}

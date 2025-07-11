@@ -1,0 +1,2101 @@
+{
+  "LICENSE.md": {
+    "summary": "This `LICENSE.md` file is a legal document outlining software distribution and usage terms, not an implementation of security controls. It contains no code related to authentication, authorization, encryption, or input validation. Similarly, it lacks features for compliance such as logging, auditing, or IAM role definitions. The most significant security-relevant aspect is the explicit disclaimer of all warranties, including fitness for a particular purpose, and the disavowal of liability for damages. This places the entire burden of security and operational risk onto the user, implying the software itself comes with no inherent security guarantees or assurances.",
+    "vector_id": 0,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/LICENSE.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/LICENSE.md. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "mkdocs.yml": {
+    "summary": "This `mkdocs.yml` file configures a static documentation website, offering minimal direct security controls beyond build-time validation through `strict: true` and link checks. Transport encryption (HTTPS) is implied by the `site_url`, but not configured here. The setup lacks inherent authentication, authorization, or internal auditing features. Compliance considerations arise from the use of Google Analytics, impacting user privacy. Notable risks include the `hooks` section executing custom Python code (`docs/plugins/main.py`) and the presence of a custom `llmstxt` plugin; both require thorough review for potential build-time code injection or other vulnerabilities. The `edit_uri` relies on external source control for write access protection.",
+    "vector_id": 1,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/mkdocs.yml",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/mkdocs.yml. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "requirements.txt": {
+    "summary": "This `requirements.txt` outlines a Python project with web-related dependencies like `h11` and `websockets`. The presence of `cryptography` is significant, indicating the application likely handles sensitive data or secure communications, necessitating a rigorous review of its implementation for robust encryption and hashing. While `trustme` is included for testing TLS, its strict isolation from production environments is paramount to prevent insecure certificate usage. A key area for review is the absence of explicit input validation or authentication/authorization libraries, implying these critical security controls must be implemented and thoroughly audited within the application code itself. Dependency pinning requires a robust process for regular security updates to mitigate supply chain risks. The inclusion of comprehensive testing and linting tools (`pytest`, `ruff`, `mypy`) suggests a commitment to code quality, which indirectly supports security and compliance.",
+    "vector_id": 2,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/requirements.txt",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/requirements.txt. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "CITATION.cff": {
+    "summary": "This `CITATION.cff` file is a static metadata declaration for the Uvicorn project, not executable source code. As such, it contains no security controls like authentication, authorization, encryption, or input validation. Similarly, it lacks compliance-relevant features such as logging, auditing mechanisms, or IAM role definitions. There are no direct security risks or actionable TODOs within this metadata file itself, as its purpose is solely to provide citation information for the software project it describes. Any security considerations would pertain to the Uvicorn web server software it references, not this metadata file.",
+    "vector_id": 3,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/CITATION.cff",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/CITATION.cff. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "pyproject.toml": {
+    "summary": "This `pyproject.toml` describes Uvicorn, an ASGI server, indicating its core function involves processing untrusted network input via dependencies like `h11`, `httptools`, and `websockets`. While direct security controls such as authentication, authorization, or encryption are not defined here, the configuration emphasizes robust code quality through comprehensive linting, static type checking, and 100% test coverage, which indirectly enhance security by reducing bugs. Compliance-wise, it notes a BSD-3-Clause license. Obvious risks include potential deserialization vulnerabilities introduced by `PyYAML` if not carefully managed. A notable omission from a compliance and operational security standpoint is the lack of explicit logging or auditing configuration within this project metadata.",
+    "vector_id": 4,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/pyproject.toml",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/pyproject.toml. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "README.md": {
+    "summary": "Uvicorn is an ASGI web server focused on low-level HTTP/1.1 and WebSocket protocol handling. Application-level security controls, such as authentication, authorization, and detailed input validation, are delegated to the ASGI application built atop it. For compliance, the server offers configurable logging via `--log-config`, but specifics regarding log content for auditing or integration with IAM roles are not detailed. Obvious risks include the implicit requirement for an external reverse proxy to handle TLS encryption, potential sensitive data exposure through `--env-file` if misconfigured, and the `--reload` development feature being unsuitable for production environments. A comprehensive hardening guide and explicit secure deployment recommendations would enhance its overall security posture.",
+    "vector_id": 5,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/README.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/README.md. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "docs/sponsorship.md": {
+    "summary": "This static sponsorship page for Starlette and Uvicorn details funding objectives, including enabling security enhancements and vulnerability management for the projects. All transactional security, authentication, and authorization are entirely externalized to GitHub Sponsors, with no direct controls or compliance-relevant features like logging or IAM roles managed by this document. Key risks include singular reliance on GitHub Sponsors for financial operations and the public exposure of a direct contact email. Explicit future plans involve evaluating additional sponsorship platforms and establishing a fair model for distributing funds to other contributors.",
+    "vector_id": 6,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/sponsorship.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/sponsorship.md. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "docs/settings.md": {
+    "summary": "Uvicorn's configuration options provide critical security and compliance features. Security controls include robust HTTPS configuration for encryption, granular socket binding options (e.g., `--uds`), trusted proxy header management via `--forwarded-allow-ips`, and resource limits (`--limit-concurrency`) to mitigate denial-of-service attacks. For compliance, comprehensive logging capabilities are available through `--log-level` and `--log-config`. Obvious risks include binding to `--host 0.0.0.0` without proper network segmentation, using `--reload` in production environments, and the potential for insecure `--forwarded-allow-ips` configurations like `*`. A key TODO is migrating from the deprecated native WSGI implementation; additionally, passing sensitive SSL key passwords directly via CLI is a security concern.",
+    "vector_id": 7,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/settings.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/settings.md. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "docs/release-notes.md": {
+    "summary": "The release notes highlight ongoing efforts to enhance network protocol robustness and security. Key security controls include significant improvements to proxy header handling, allowing trusted IP networks and mitigating spoofing, alongside fixes for invalid HTTP header values and secure path logging. Resource exhaustion protection is addressed via `max_request_limit` warnings and configurable `max_incomplete_event_size`. Compliance-relevant features encompass detailed WebSocket logging, flexible logging configuration, and the removal of potentially insecure debug functionalities. Obvious risks include the critical need for proper `forwarded_allow_ips` configuration to prevent proxy bypasses, the careful handling of new WebSocket features like per-message-deflate for compression attack mitigation, and ensuring deployment pipelines account for optional dependencies.",
+    "vector_id": 8,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/release-notes.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/release-notes.md. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "docs/CNAME": {
+    "summary": "This configuration file, likely a DNS CNAME record, points to an external domain. It inherently lacks direct security controls such as authentication, authorization, or encryption, as these are managed by the underlying DNS and hosting infrastructure. Compliance-relevant features are external, relying on version control logging for file changes and IAM roles for access management. The primary security risk is potential domain hijacking or misconfiguration, which could redirect users to malicious content. There's also a dependency on the security posture of the target domain. Future considerations should include strict access controls for its modification and regular verification of its intended target.",
+    "vector_id": 9,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/CNAME",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/CNAME. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "docs/index.md": {
+    "summary": "This document describes Uvicorn, an ASGI web server for Python, focusing on its installation and basic usage. For security, it highlights a `log_level` configuration option, which is crucial for compliance and operational auditing. The server itself, as presented, does not implement application-level security controls like authentication, authorization, or input validation; these are expected from the ASGI application layer. A significant risk and TODO is the explicit deprecation of the `uvicorn.workers` module, requiring migration to the `uvicorn-worker` package for future compatibility and stability in production deployments using Gunicorn. The provided examples are simple and do not illustrate security best practices.",
+    "vector_id": 10,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/index.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/index.md. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "docs/contributing.md": {
+    "summary": "This file details development and contribution guidelines, highlighting robust **security controls** through mandatory code quality checks (`scripts/check`) and a strict 100% test coverage requirement, which prevent regressions and improve code integrity. **Compliance-relevant features** include structured bug reporting aiding post-incident analysis, and a clear release process emphasizing changelogs and automated PyPI publication, enhancing software supply chain transparency. Obvious **risks/TODOs** involve the unexamined security of the `scripts/install` and `scripts/publish` utilities, which could introduce vulnerabilities if compromised, and the inherent third-party risk reliance on platforms like GitHub and PyPI for development and distribution.",
+    "vector_id": 11,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/contributing.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/contributing.md. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "docs/server-behavior.md": {
+    "summary": "Uvicorn focuses on robust connection and resource management to ensure resilience against client errors and denial of service attacks. Key security controls include write/read flow control to prevent excessive buffering, configurable keep-alive timeouts, and resource limits for concurrency and maximum requests to prevent exhaustion. It validates response content lengths and handles `Expect: 100-Continue` for controlled large request body uploads. For compliance, server errors are logged to `stdout` at the `error` level. Obvious risks include concurrency and request limits defaulting to off, requiring explicit configuration to prevent resource overruns. The server also sends a `Server` header by default. Higher-level security features like authentication, authorization, and encryption are not provided, necessitating external mechanisms or application-level implementation.",
+    "vector_id": 12,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/server-behavior.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/server-behavior.md. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "docs/installation.md": {
+    "summary": "The document describes Uvicorn installation and its optional dependencies, including components for logging configuration via YAML and enhanced log output. While these features support compliance and observability, the file provides no information on Uvicorn's security controls, such as authentication, authorization, or explicit input validation. Obvious risks include potential supply chain vulnerabilities introduced by numerous third-party dependencies like `httptools` or `websockets`. Furthermore, loading configurations from `.env` or `.yaml` files could pose a risk if not securely managed, and the `--reload` development feature, enabled by `watchfiles`, represents a significant risk if inadvertently used in production environments. The focus is entirely on installation, not secure operational practices.",
+    "vector_id": 13,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/installation.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/installation.md. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "scripts/lint": {
+    "summary": "This shell script automates code quality enforcement using `ruff` for formatting and static analysis of `uvicorn` and `tests` source files, adapting to a virtual environment if present. While it implements no direct security controls like authentication or encryption, it's a vital component for secure development, indirectly enhancing code security by improving quality, maintainability, and auditability, thus supporting compliance efforts. No significant security risks are apparent; `set -x` is a minor debug feature, not a vulnerability, and there are no TODOs within this utility script.",
+    "vector_id": 14,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/scripts/lint",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/scripts/lint. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "scripts/install": {
+    "summary": "This shell script automates Python virtual environment setup and dependency installation. It lacks explicit security controls like authentication, authorization, or encryption. While `set -x` provides basic command tracing, it offers no structured logging for compliance or auditing, nor does it integrate with IAM roles. The primary security risk is the software supply chain: dependencies are installed from `requirements.txt` without integrity checks, leaving the environment vulnerable to malicious code if the file or its sources are compromised. The script also directly uses an optional Python executable path without robust validation.",
+    "vector_id": 15,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/scripts/install",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/scripts/install. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "scripts/docs": {
+    "summary": "This shell script acts as a wrapper for the `mkdocs` command, optionally executing it within a Python virtual environment. It lacks explicit security controls like input validation, authentication, or authorization, directly passing all command-line arguments to `mkdocs`. For compliance, the `set -x` command provides basic command execution logging, offering a rudimentary audit trail. Obvious risks include the absence of input sanitization, which could potentially allow malicious arguments to be passed through if the script's input is untrusted. There are no IAM roles or encryption features. A key TODO is to thoroughly assess the trustworthiness of the input arguments and the inherent security posture of the `mkdocs` tool itself.",
+    "vector_id": 16,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/scripts/docs",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/scripts/docs. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "scripts/publish": {
+    "summary": "This shell script automates software and documentation publication, primarily within a GitHub Actions environment. It includes a critical integrity check, ensuring the package version extracted from source code matches the Git tag for the current reference, preventing unauthorized or mismatched releases. While the script itself doesn't handle authentication or authorization, it implicitly relies on external credentials for sensitive operations like PyPI uploads and GitHub Pages deployments. Compliance features include command tracing (`set -x`) for basic logging and an explicit error message for version mismatches. A notable risk is the reliance on external, securely managed credentials (e.g., environment variables) for these high-privilege actions. The `--force` option for documentation deployment also poses a risk of accidental overwrites.",
+    "vector_id": 17,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/scripts/publish",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/scripts/publish. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "scripts/check": {
+    "summary": "This shell script automates static code analysis, primarily enhancing code quality and security posture. Security controls include static type checking via `mypy` to enforce type safety and prevent common programming errors, and `ruff check` for linting, which identifies potential insecure coding patterns and style violations. `ruff format` ensures consistent code style. For compliance, `set -x` provides command execution logging, aiding auditability of the build process. A notable risk or TODO is the execution of `./scripts/sync-version`, whose contents are not visible and could introduce vulnerabilities if not properly reviewed. The script itself does not implement authentication, authorization, or encryption, as these controls are typically managed at a higher level by the execution environment.",
+    "vector_id": 18,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/scripts/check",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/scripts/check. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "scripts/sync-version": {
+    "summary": "This shell script enforces version consistency between two internal source files by employing a robust semantic versioning regular expression for data validation. As a local utility, it lacks traditional security controls such as authentication, authorization, or encryption. For compliance, it provides a basic error message upon version mismatch, serving as a minimal logging mechanism. Obvious risks include the script's reactive nature, merely identifying inconsistencies rather than preventing manual update errors. There's no robust auditing or IAM integration. Potential enhancements include automating version updates, expanding checks to other version-sensitive files, and providing more detailed error reports.",
+    "vector_id": 19,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/scripts/sync-version",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/scripts/sync-version. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "uvicorn/_types.py": {
+    "summary": "This file primarily defines type annotations for WSGI and ASGI application interfaces, detailing the structure of request scopes and events for HTTP and WebSocket protocols. It **lacks any implemented security controls** like authentication, authorization, input validation, or encryption. Applications utilizing these types are solely responsible for implementing robust input validation on fields like `query_string`, `body`, and `headers` to prevent vulnerabilities. Furthermore, no compliance-specific features, such as logging, auditing, or IAM role definitions, are present. The generic `state` dictionary within scopes poses a potential risk if sensitive data is stored without adequate application-level protection.",
+    "vector_id": 20,
+    "inspector_results": {
+      "file_path": "uvicorn/_types.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "sys",
+          "types",
+          "__future__",
+          "typing",
+          "collections"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/_types.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/server.py": {
+    "summary": "This `server.py` file, a core component of Uvicorn, orchestrates the server's lifecycle, including startup, connection management, and graceful shutdown. Security controls include explicit support for SSL/TLS encryption via configuration. For compliance and operational visibility, the module features extensive logging of server events and errors. It also implements robust signal handling for graceful termination and resource limits like `limit_max_requests` and `timeout_graceful_shutdown`. A potential risk lies in the default `0o666` permissions set for UNIX domain sockets, which could be overly permissive depending on the deployment environment and should be reviewed. As a foundational server, it inherently defers application-level authentication, authorization, and input validation to the served application.",
+    "vector_id": 21,
+    "inspector_results": {
+      "file_path": "uvicorn/server.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "contextlib",
+          "logging",
+          "os",
+          "platform",
+          "signal",
+          "socket",
+          "sys",
+          "threading",
+          "time",
+          "click",
+          "__future__",
+          "types",
+          "typing",
+          "collections",
+          "email",
+          "uvicorn"
+        ],
+        "network_modules": [
+          "socket"
+        ],
+        "file_system_modules": [
+          "os"
+        ],
+        "logging_modules": [
+          "logging"
+        ],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/server.py is written in Python. Discovery of networking modules shows the following being used for connectivity: ['socket']. File system access is expected using the discovered modules: ['os']. Logging capabilities are expected to be using these modules: ['logging']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/config.py": {
+    "summary": "This configuration file manages server setup, emphasizing network protocols and operational aspects. Security controls include configurable TLS encryption, supporting certificate and key files, although the default `ssl_ciphers` of \"TLSv1\" is a critical weakness that demands stronger suite selection. Client certificate verification is off by default. `ProxyHeadersMiddleware` enhances security by allowing trusted proxy IP configuration. Compliance features include comprehensive, configurable logging, with access logs and dynamic loading of logging configurations from various sources. Obvious risks are the overly permissive `0o666` permissions for Unix domain sockets and the severely outdated default SSL cipher suite. Dynamic loading of application components and protocols also presents a risk if configuration sources are not fully trusted.",
+    "vector_id": 22,
+    "inspector_results": {
+      "file_path": "uvicorn/config.py",
+      "language": "Python",
+      "control_hints": [
+        "sc8"
+      ],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "inspect",
+          "json",
+          "logging",
+          "os",
+          "socket",
+          "ssl",
+          "sys",
+          "click",
+          "__future__",
+          "configparser",
+          "pathlib",
+          "typing",
+          "collections",
+          "uvicorn"
+        ],
+        "network_modules": [
+          "socket",
+          "ssl"
+        ],
+        "file_system_modules": [
+          "os",
+          "pathlib"
+        ],
+        "logging_modules": [
+          "logging"
+        ],
+        "cryptographic_modules": [
+          "ssl"
+        ]
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/config.py is written in Python. Discovery of networking modules shows the following being used for connectivity: ['socket', 'ssl']. File system access is expected using the discovered modules: ['os', 'pathlib']. Logging capabilities are expected to be using these modules: ['logging']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. Potential cryptographic operations are happening using the following modules. ['ssl']."
+    }
+  },
+  "uvicorn/importer.py": {
+    "summary": "This utility dynamically imports objects based on a string representation, performing basic input validation on the string format and type. It lacks any authentication, authorization, or encryption controls. The primary security risk is that if the input string is sourced from an untrusted origin, it could lead to arbitrary code execution or information disclosure by allowing the import of dangerous modules or access to sensitive attributes. There are no compliance-relevant logging or auditing features. Consumers of this function must implement robust input sanitization or whitelisting of allowed imports to mitigate the inherent code execution vulnerability.",
+    "vector_id": 23,
+    "inspector_results": {
+      "file_path": "uvicorn/importer.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "importlib",
+          "typing"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/importer.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/_subprocess.py": {
+    "summary": "This module facilitates Uvicorn child process management, passing pre-bound sockets and re-establishing `sys.stdin`. Logging is explicitly reconfigured in child processes, aiding observability and potential auditing. Security controls like authentication, authorization, or encryption are absent, as the module operates within an assumed trusted environment for internal process spawning. A key risk involves the direct execution of the `target` callable; if an attacker could manipulate this, it would lead to arbitrary code execution. Input validation is minimal, relying on upstream integrity. Furthermore, the module lacks explicit resource limits or comprehensive error handling for the `target`'s execution beyond suppressing KeyboardInterrupts, potentially impacting resilience.",
+    "vector_id": 24,
+    "inspector_results": {
+      "file_path": "uvicorn/_subprocess.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "multiprocessing",
+          "os",
+          "sys",
+          "__future__",
+          "socket",
+          "typing",
+          "uvicorn"
+        ],
+        "network_modules": [
+          "socket"
+        ],
+        "file_system_modules": [
+          "os"
+        ],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/_subprocess.py is written in Python. Discovery of networking modules shows the following being used for connectivity: ['socket']. File system access is expected using the discovered modules: ['os']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/__init__.py": {
+    "summary": "This `__init__.py` file acts as a package entry point for Uvicorn, exposing core server components like `Config`, `Server`, `main`, and `run`. It does not implement any direct security controls such as authentication, authorization, encryption, or input validation. Similarly, it lacks explicit compliance-relevant features like logging or auditing mechanisms within its scope. Obvious risks are indirect, stemming from the secure configuration and use of the exposed Uvicorn server in an application. Potential TODOs involve ensuring the Uvicorn version is up-to-date and that applications utilizing these components implement robust security and compliance measures.",
+    "vector_id": 25,
+    "inspector_results": {
+      "file_path": "uvicorn/__init__.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "uvicorn"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/__init__.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/py.typed": {
+    "summary": "This empty `py.typed` file serves solely as a marker for Python type checkers, indicating the package provides type stubs. As it contains no executable code, configuration, or data, it inherently lacks any security controls such as authentication, authorization, encryption, or input validation mechanisms. Similarly, there are no compliance-relevant features like logging, auditing, or IAM role definitions present within this file. Consequently, it presents no direct security risks or outstanding TODOs from an application security perspective.",
+    "vector_id": 26,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/uvicorn/py.typed",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/uvicorn/py.typed. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "uvicorn/workers.py": {
+    "summary": "This Uvicorn Gunicorn worker module configures server operation, integrating essential security features like TLS encryption via `ssl_keyfile` and `ssl_certfile` support, and `forwarded_allow_ips` for trusted proxy configuration. For compliance and auditing, it explicitly sets up `uvicorn.error` and `uvicorn.access` logging using Gunicorn's handlers. The most significant risk is the prominent `DeprecationWarning`, indicating the module is superseded, which may lead to a lack of future security updates. The module itself lacks internal input validation, heavily relying on upstream Gunicorn configuration and the served ASGI application for authentication, authorization, and further security controls.",
+    "vector_id": 27,
+    "inspector_results": {
+      "file_path": "uvicorn/workers.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "logging",
+          "signal",
+          "sys",
+          "warnings",
+          "__future__",
+          "typing",
+          "gunicorn",
+          "uvicorn"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [
+          "logging"
+        ],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/workers.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. Logging capabilities are expected to be using these modules: ['logging']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/_compat.py": {
+    "summary": "This compatibility file provides a version-agnostic `asyncio.run` implementation, extending older Python versions with a `loop_factory` parameter. It includes basic input validation to ensure the main argument is a coroutine. For compliance, it leverages the asyncio event loop's exception handler to report unhandled exceptions during shutdown, contributing to system auditability. A potential risk lies in the `loop_factory` parameter, which, if not carefully controlled by the caller, could allow injection of custom, potentially insecure, event loop configurations. As a low-level utility, it contains no direct authentication, authorization, or encryption controls.",
+    "vector_id": 28,
+    "inspector_results": {
+      "file_path": "uvicorn/_compat.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "sys",
+          "__future__",
+          "typing",
+          "collections"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/_compat.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/main.py": {
+    "summary": "This file defines Uvicorn's command-line interface, configuring server operation. Security controls include optional TLS/SSL encryption, with configurable protocols and ciphers, and proxy header processing (requiring careful `forwarded_allow_ips` configuration to prevent IP spoofing). Resource limits are provided to mitigate denial-of-service attacks. Compliance-relevant features include extensive logging capabilities, with configurable levels and access logging. Obvious risks include an outdated default SSL cipher (`TLSv1`), the default `ssl.CERT_NONE` for client certificate requirements, and passing the SSL key password via CLI arguments. The `app-dir` option, which modifies `sys.path`, also warrants careful consideration in untrusted environments.",
+    "vector_id": 29,
+    "inspector_results": {
+      "file_path": "uvicorn/main.py",
+      "language": "Python",
+      "control_hints": [
+        "sc8"
+      ],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "logging",
+          "os",
+          "platform",
+          "ssl",
+          "sys",
+          "warnings",
+          "click",
+          "uvicorn",
+          "__future__",
+          "configparser",
+          "typing"
+        ],
+        "network_modules": [
+          "ssl"
+        ],
+        "file_system_modules": [
+          "os"
+        ],
+        "logging_modules": [
+          "logging"
+        ],
+        "cryptographic_modules": [
+          "ssl"
+        ]
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/main.py is written in Python. Discovery of networking modules shows the following being used for connectivity: ['ssl']. File system access is expected using the discovered modules: ['os']. Logging capabilities are expected to be using these modules: ['logging']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. Potential cryptographic operations are happening using the following modules. ['ssl']."
+    }
+  },
+  "uvicorn/__main__.py": {
+    "summary": "This file solely imports and directly invokes Uvicorn's main function, starting an ASGI server without defining or serving any application logic. Consequently, it lacks all essential security controls such as authentication, authorization, encryption (TLS configuration), and input validation, as these would reside within the missing application. For compliance, there's no explicit logging or auditing configuration, relying on Uvicorn defaults which are typically insufficient. The primary risk is the complete absence of a functional application and the implicit use of insecure default Uvicorn settings, making it a critical \"TODO\" for any practical or secure deployment.",
+    "vector_id": 30,
+    "inspector_results": {
+      "file_path": "uvicorn/__main__.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "uvicorn"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/__main__.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/middleware/asgi2.py": {
+    "summary": "This file defines a minimal ASGI2 middleware that wraps an ASGI2 application, instantiating and invoking it with the provided scope, receive, and send callables. As a low-level adapter, it implements no inherent security controls such as authentication, authorization, encryption, or input validation. Similarly, it lacks compliance-relevant features like logging, auditing, or IAM role integration. The primary risk lies in its complete delegation of all security and error handling to the wrapped application, offering no protective or observable layers. There are no explicit TODOs, but the absence of any error handling or input sanitization could be a concern if the wrapped application is untrusted or vulnerable.",
+    "vector_id": 31,
+    "inspector_results": {
+      "file_path": "uvicorn/middleware/asgi2.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "uvicorn"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/middleware/asgi2.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/middleware/__init__.py": {
+    "summary": "The provided `__init__.py` file is empty, indicating a complete absence of explicit security controls such as authentication, authorization, encryption, or input validation within this specific file. Similarly, no compliance-relevant features like logging, auditing, or IAM role definitions are present. The primary risk is that a critical package or module is uninitialized or lacks any foundational security configurations, offering no inherent protection. This state implies an immediate TODO to implement necessary security hardening and compliance features if this file is part of a functional application.",
+    "vector_id": 32,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/uvicorn/middleware/__init__.py",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/uvicorn/middleware/__init__.py. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "uvicorn/middleware/proxy_headers.py": {
+    "summary": "This middleware processes `X-Forwarded-Proto` and `X-Forwarded-For` headers, adjusting the ASGI scope's client and scheme based on a configurable list of `trusted_hosts`. Input validation is applied to `X-Forwarded-Proto` values and `X-Forwarded-For` hosts, leveraging `ipaddress` for robust IP and network parsing. The core security control is the `trusted_hosts` configuration, which defines the trust boundary. A significant risk is misconfiguration of `trusted_hosts`, potentially allowing IP spoofing. The middleware lacks intrinsic logging or auditing for proxy header processing, relying on downstream components. A minor TODO highlights potential debugging challenges if `trusted_hosts` are malformed.",
+    "vector_id": 33,
+    "inspector_results": {
+      "file_path": "uvicorn/middleware/proxy_headers.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "ipaddress",
+          "__future__",
+          "uvicorn"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/middleware/proxy_headers.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/middleware/wsgi.py": {
+    "summary": "This file implements a deprecated WSGI adapter for Uvicorn, translating ASGI requests into the WSGI `environ` format. Security controls are minimal: it decodes input headers and body, but lacks explicit authentication, authorization, or comprehensive input validation. For compliance, `wsgi.errors` defaults to `sys.stdout`, offering basic logging without advanced auditing features. Obvious risks include the explicit deprecation warning, potential `QUERY_STRING` decoding issues with non-ASCII characters, and the in-memory buffering of entire request bodies which could pose a DoS risk without external limits. The component relies on the wrapped WSGI application or upstream ASGI layers for robust security.",
+    "vector_id": 34,
+    "inspector_results": {
+      "file_path": "uvicorn/middleware/wsgi.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "concurrent",
+          "io",
+          "sys",
+          "warnings",
+          "__future__",
+          "collections",
+          "uvicorn"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/middleware/wsgi.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/supervisors/statreload.py": {
+    "summary": "This Python file implements a code reloader that monitors Python source files for modifications. It tracks file modification times within configured directories to trigger application restarts. While it includes logging for operational awareness, such as warning about unused configuration options without an external dependency, it lacks direct security controls like authentication or explicit input validation for its configuration paths. A potential risk is that developers might misunderstand the dependency on an external library for certain reload exclusions/inclusions, leading to unintended monitoring behavior. Its primary role is operational stability through automatic restarts, not security enforcement or auditing of changes.",
+    "vector_id": 35,
+    "inspector_results": {
+      "file_path": "uvicorn/supervisors/statreload.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "logging",
+          "__future__",
+          "pathlib",
+          "socket",
+          "typing",
+          "collections",
+          "uvicorn"
+        ],
+        "network_modules": [
+          "socket"
+        ],
+        "file_system_modules": [
+          "pathlib"
+        ],
+        "logging_modules": [
+          "logging"
+        ],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/supervisors/statreload.py is written in Python. Discovery of networking modules shows the following being used for connectivity: ['socket']. File system access is expected using the discovered modules: ['pathlib']. Logging capabilities are expected to be using these modules: ['logging']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/supervisors/__init__.py": {
+    "summary": "This file primarily manages the conditional import and exposure of Uvicorn's reload supervisors, `Multiprocess` and `ChangeReload`. It contains no direct security controls such as authentication, authorization, or input validation, as its scope is limited to framework component loading. Similarly, there are no inherent compliance features like logging or IAM role definitions present. The most notable functional aspect is the `ImportError` fallback from `WatchFilesReload` to `StatReload`, which could result in less performant file change detection if the preferred library is unavailable. No explicit security vulnerabilities or TODOs are evident within this foundational module's scope.",
+    "vector_id": 36,
+    "inspector_results": {
+      "file_path": "uvicorn/supervisors/__init__.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "__future__",
+          "typing"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/supervisors/__init__.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/supervisors/watchfilesreload.py": {
+    "summary": "This file implements Uvicorn's `WatchFilesReload` mechanism, which monitors file system changes to trigger application restarts. It leverages a configurable `FileFilter` to include or exclude specific files and directories from triggering reloads. The code lacks explicit security controls like authentication, authorization, or encryption. Similarly, compliance-relevant features such as detailed logging for audit trails or IAM role integration are not present. Obvious risks include potential denial-of-service if rapid file changes lead to excessive reloads, and the critical reliance on secure configuration and robust file system permissions to prevent malicious code injection or unintended application behavior via file manipulation. No explicit TODOs are noted within the code.",
+    "vector_id": 37,
+    "inspector_results": {
+      "file_path": "uvicorn/supervisors/watchfilesreload.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "__future__",
+          "pathlib",
+          "socket",
+          "typing",
+          "watchfiles",
+          "uvicorn"
+        ],
+        "network_modules": [
+          "socket"
+        ],
+        "file_system_modules": [
+          "pathlib"
+        ],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/supervisors/watchfilesreload.py is written in Python. Discovery of networking modules shows the following being used for connectivity: ['socket']. File system access is expected using the discovered modules: ['pathlib']. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/supervisors/basereload.py": {
+    "summary": "This file defines a base class for a process reloader, focusing on managing child processes and responding to system signals for graceful restarts and shutdowns. It features strong logging for operational visibility and auditing, detailing process lifecycle events and detected file changes, which aids compliance. A primary security consideration is the `target` callable executed by the child process; if derived from untrusted input, it could allow arbitrary code execution. The `should_restart` method, implemented in subclasses, is critical for securely controlling reload triggers. The class itself lacks explicit input validation, authentication, or authorization, as these are presumably handled by higher-level components or the `Config` object it consumes.",
+    "vector_id": 38,
+    "inspector_results": {
+      "file_path": "uvicorn/supervisors/basereload.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "logging",
+          "os",
+          "signal",
+          "sys",
+          "threading",
+          "click",
+          "__future__",
+          "pathlib",
+          "socket",
+          "types",
+          "typing",
+          "collections",
+          "uvicorn"
+        ],
+        "network_modules": [
+          "socket"
+        ],
+        "file_system_modules": [
+          "os",
+          "pathlib"
+        ],
+        "logging_modules": [
+          "logging"
+        ],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/supervisors/basereload.py is written in Python. Discovery of networking modules shows the following being used for connectivity: ['socket']. File system access is expected using the discovered modules: ['os', 'pathlib']. Logging capabilities are expected to be using these modules: ['logging']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/supervisors/multiprocess.py": {
+    "summary": "This Python file orchestrates multiprocess worker lifecycles for a server, managing their creation, termination, and restarting. Compliance is primarily met through extensive logging of all process-related events, including starts, stops, terminations, and signal handling, which provides a valuable audit trail. Security controls are minimal; inter-process communication via pipes lacks explicit input validation or authentication, and child processes inherit the parent's privileges without explicit separation. Obvious risks include potential resource exhaustion or denial-of-service if the executed `target` function is untrusted or vulnerable, or if an attacker could inject OS signals to manipulate worker counts, though signal injection typically requires elevated privileges.",
+    "vector_id": 39,
+    "inspector_results": {
+      "file_path": "uvicorn/supervisors/multiprocess.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "logging",
+          "os",
+          "signal",
+          "threading",
+          "click",
+          "__future__",
+          "multiprocessing",
+          "socket",
+          "typing",
+          "uvicorn"
+        ],
+        "network_modules": [
+          "socket"
+        ],
+        "file_system_modules": [
+          "os"
+        ],
+        "logging_modules": [
+          "logging"
+        ],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/supervisors/multiprocess.py is written in Python. Discovery of networking modules shows the following being used for connectivity: ['socket']. File system access is expected using the discovered modules: ['os']. Logging capabilities are expected to be using these modules: ['logging']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/lifespan/off.py": {
+    "summary": "The `LifespanOff` class defines a no-operation Uvicorn lifespan handler, with empty `startup` and `shutdown` methods. This implementation explicitly lacks any security controls such as authentication, authorization, encryption, or input validation. Similarly, it contains no compliance-relevant features like logging, auditing mechanisms, or IAM role configurations. The \"Off\" in its name, combined with its empty methods, strongly suggests an intentional design to bypass application lifecycle events. The primary risk or TODO is ensuring this no-op handler is not inadvertently deployed in environments where critical setup, resource management, or security-sensitive initialization is expected during application startup or shutdown.",
+    "vector_id": 40,
+    "inspector_results": {
+      "file_path": "uvicorn/lifespan/off.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "__future__",
+          "typing",
+          "uvicorn"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/lifespan/off.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/lifespan/on.py": {
+    "summary": "This Python module manages the ASGI lifespan protocol for Uvicorn. Compliance-relevant features include extensive logging of application lifecycle events (startup/shutdown, success/failure), which is valuable for operational auditing. Security controls are limited to internal state assertions and basic message type validation for protocol integrity. A notable risk is the broad `BaseException` catch, potentially obscuring critical errors. It passes a mutable `state` dictionary to the application, trusting the application's secure handling without internal enforcement. Authentication, authorization, and encryption are outside this component's scope, delegated to the ASGI application, and no explicit input validation beyond message type is performed.",
+    "vector_id": 41,
+    "inspector_results": {
+      "file_path": "uvicorn/lifespan/on.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "logging",
+          "__future__",
+          "typing",
+          "uvicorn"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [
+          "logging"
+        ],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/lifespan/on.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. Logging capabilities are expected to be using these modules: ['logging']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/lifespan/__init__.py": {
+    "summary": "This `__init__.py` file is empty, serving purely as a Python package marker. As such, it contains no explicit security controls like authentication, authorization, input validation, or encryption mechanisms. Similarly, no compliance-relevant features such as logging configurations, auditing capabilities, or IAM role definitions are present. The primary \"risk\" is the complete absence of any security logic or configuration within this specific file; any security-related initialisation or control must be implemented in other modules. No obvious TODOs are apparent for this file beyond its standard function as a package identifier.",
+    "vector_id": 42,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/uvicorn/lifespan/__init__.py",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/uvicorn/lifespan/__init__.py. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "uvicorn/loops/uvloop.py": {
+    "summary": "This file provides a factory function for instantiating `uvloop` event loops. It contains no direct security controls such as authentication, authorization, encryption, or input validation, as its scope is limited to event loop creation. Similarly, there are no explicit compliance-relevant features like logging, auditing, or IAM role definitions within this module. A clear observation is the unused `use_subprocess` parameter in the `uvloop_loop_factory` function, representing an obvious TODO item or a potential misleading interface that should either be implemented or removed to avoid confusion or unfulfilled expectations.",
+    "vector_id": 43,
+    "inspector_results": {
+      "file_path": "uvicorn/loops/uvloop.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "uvloop",
+          "__future__",
+          "collections"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/loops/uvloop.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/loops/asyncio.py": {
+    "summary": "This Python file provides a factory function for `asyncio` event loops, dynamically selecting between `ProactorEventLoop` (for Windows without subprocesses) and `SelectorEventLoop`. It lacks explicit security controls like authentication, authorization, or encryption, and does not implement compliance-relevant features such as logging or auditing. Input validation is not directly applicable given the internal, boolean parameter and system-derived platform check. The code presents no obvious security risks or outstanding TODOs, as its sole purpose is to configure the event loop based on OS and subprocess usage, without handling sensitive data or external interactions.",
+    "vector_id": 44,
+    "inspector_results": {
+      "file_path": "uvicorn/loops/asyncio.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "sys",
+          "__future__",
+          "collections"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/loops/asyncio.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/loops/__init__.py": {
+    "summary": "The provided file is empty, indicating an uninitialized or placeholder Python package. Consequently, it currently implements no security controls such as authentication, authorisation, input validation, or encryption. Similarly, no compliance-relevant features like logging, auditing, or IAM role definitions are present. The primary risk is the complete absence of any defined functionality, leaving all security and compliance considerations unaddressed. An obvious TODO is to populate this file with the intended package initialization logic and essential security mechanisms.",
+    "vector_id": 45,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/uvicorn/loops/__init__.py",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/uvicorn/loops/__init__.py. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "uvicorn/loops/auto.py": {
+    "summary": "This module's primary function is to dynamically select an asynchronous event loop, preferring `uvloop` when present, otherwise falling back to `asyncio`. It passes a `use_subprocess` flag to the chosen loop factory. As a low-level utility, it inherently lacks direct security controls such as authentication, authorization, encryption, or input validation. Similarly, it contains no compliance-relevant features like logging, auditing, or IAM role management. The most significant potential risk is indirect, stemming from the security posture of the underlying `uvicorn` and `uvloop` dependencies, especially if subprocess execution is enabled. No explicit security-related TODOs are apparent within this file.",
+    "vector_id": 46,
+    "inspector_results": {
+      "file_path": "uvicorn/loops/auto.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "__future__",
+          "collections"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/loops/auto.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/protocols/__init__.py": {
+    "summary": "The provided `__init__.py` file is entirely empty, containing no implemented security controls such as authentication, authorisation, encryption, or input validation. Consequently, it also lacks any compliance-relevant features like logging, auditing, or IAM role definitions. As an empty file, it presents no direct code-level vulnerabilities or risks. However, if this file is intended to contain critical security logic or configuration for a Python package, its current state represents a significant functional omission and a potential operational risk, necessitating immediate review to determine its intended purpose and populate it accordingly.",
+    "vector_id": 47,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/uvicorn/protocols/__init__.py",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/uvicorn/protocols/__init__.py. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "uvicorn/protocols/utils.py": {
+    "summary": "This utility file primarily provides functions for extracting network connection details and constructing URL paths. It supports compliance by providing data (client/server addresses, requested path) useful for logging and auditing. A security control identified is the use of URL quoting for path components, mitigating some injection risks. The presence of an SSL check (`is_ssl`) indicates potential use of transport encryption. A notable risk or TODO is the `ascii` decoding of query strings, which could lead to errors or data loss with non-ASCII inputs. The file lacks explicit authentication, authorization, or broader input validation beyond URL encoding, suggesting these are handled elsewhere in the application.",
+    "vector_id": 48,
+    "inspector_results": {
+      "file_path": "uvicorn/protocols/utils.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "urllib",
+          "__future__",
+          "uvicorn"
+        ],
+        "network_modules": [
+          "urllib"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/protocols/utils.py is written in Python. Discovery of networking modules shows the following being used for connectivity: ['urllib']. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/protocols/websockets/websockets_sansio_impl.py": {
+    "summary": "This WebSocket protocol implementation focuses on robust connection management and data transfer for ASGI applications. It supports WSS for encrypted communication and incorporates input validation mechanisms like UTF-8 decoding and configurable maximum message size to mitigate certain DoS vectors. Connection termination occurs on invalid data or parser errors. Extensive logging of connection lifecycle, handshake status, and application exceptions provides compliance-relevant auditing capabilities. Critically, authentication and authorization responsibilities are entirely delegated to the consuming ASGI application. Potential risks include several `no cover` code paths in error handling, suggesting less tested scenarios, and the necessity for downstream input sanitization by the application.",
+    "vector_id": 49,
+    "inspector_results": {
+      "file_path": "uvicorn/protocols/websockets/websockets_sansio_impl.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "logging",
+          "sys",
+          "__future__",
+          "http",
+          "typing",
+          "urllib",
+          "websockets",
+          "uvicorn"
+        ],
+        "network_modules": [
+          "http",
+          "urllib"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [
+          "logging"
+        ],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/protocols/websockets/websockets_sansio_impl.py is written in Python. Discovery of networking modules shows the following being used for connectivity: ['http', 'urllib']. No file system access has been detected in this file. Logging capabilities are expected to be using these modules: ['logging']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/protocols/websockets/__init__.py": {
+    "summary": "The provided `__init__.py` file is empty. Consequently, it contains no discernible security controls such as authentication, authorization, encryption, or input validation mechanisms. Similarly, there are no compliance-relevant features like logging, auditing, or IAM role configurations present within this file. As an empty file, it inherently poses no direct security risks or outstanding TODOs, but its lack of content means it contributes nothing to the overall security posture or compliance framework of the application.",
+    "vector_id": 50,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/uvicorn/protocols/websockets/__init__.py",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/uvicorn/protocols/websockets/__init__.py. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "uvicorn/protocols/websockets/websockets_impl.py": {
+    "summary": "This file implements the WebSocket protocol, delegating authentication and authorization entirely to the ASGI application, which can accept or reject connections. It incorporates basic input validation for request headers and paths, along with configurable limits for message size and queue depth to mitigate denial-of-service attacks. Comprehensive logging of connection events and application errors provides an audit trail. Key security considerations include the application's responsibility for all access control and the critical importance of proper configuration for DoS protection parameters. Error handling focuses on graceful connection termination.",
+    "vector_id": 51,
+    "inspector_results": {
+      "file_path": "uvicorn/protocols/websockets/websockets_impl.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "http",
+          "logging",
+          "websockets",
+          "__future__",
+          "typing",
+          "collections",
+          "urllib",
+          "uvicorn"
+        ],
+        "network_modules": [
+          "http",
+          "urllib"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [
+          "logging"
+        ],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/protocols/websockets/websockets_impl.py is written in Python. Discovery of networking modules shows the following being used for connectivity: ['http', 'urllib']. No file system access has been detected in this file. Logging capabilities are expected to be using these modules: ['logging']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/protocols/websockets/wsproto_impl.py": {
+    "summary": "This file implements a WebSocket protocol handler, managing connection states and ASGI application interaction. It supports secure connections via transport-layer SSL detection and leverages `wsproto` for protocol adherence. Security controls such as authentication and authorization are entirely delegated to the ASGI application, which receives connection details in its `scope`. Basic input processing includes path unquoting. For compliance, the module extensively logs connection lifecycle events and application exceptions, aiding in auditing. A notable risk is the explicit TODO to guard the size of incoming message buffers, indicating a potential for resource exhaustion. Additionally, the application's robust error handling sends appropriate rejection codes (403, 500) for protocol violations or internal errors.",
+    "vector_id": 52,
+    "inspector_results": {
+      "file_path": "uvicorn/protocols/websockets/wsproto_impl.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "logging",
+          "wsproto",
+          "__future__",
+          "typing",
+          "urllib",
+          "uvicorn"
+        ],
+        "network_modules": [
+          "urllib"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [
+          "logging"
+        ],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/protocols/websockets/wsproto_impl.py is written in Python. Discovery of networking modules shows the following being used for connectivity: ['urllib']. No file system access has been detected in this file. Logging capabilities are expected to be using these modules: ['logging']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/protocols/websockets/auto.py": {
+    "summary": "This file acts as a dependency resolver for Uvicorn's WebSocket protocol implementation, dynamically selecting between the `websockets` and `wsproto` libraries. It does not implement any direct security controls such as authentication, authorization, encryption, or input validation; these functionalities would reside within the chosen protocol implementation or the application layer. Similarly, it lacks compliance-relevant features like logging, auditing, or IAM role integration. The primary security consideration is the inherent trustworthiness and vulnerability status of the underlying `websockets` or `wsproto` libraries it selects. No explicit security TODOs or obvious risks are present within this selection logic itself.",
+    "vector_id": 53,
+    "inspector_results": {
+      "file_path": "uvicorn/protocols/websockets/auto.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "__future__",
+          "typing"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/protocols/websockets/auto.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/protocols/http/__init__.py": {
+    "summary": "This empty `__init__.py` file contains no explicit security controls such as authentication, authorization, or input validation. Similarly, there are no compliance-relevant features like logging, auditing, or IAM role configurations present within this module. The primary risk is the complete absence of any code, which implies no security features are implemented here by design, leaving this component potentially uninitialized or insecure. All security and compliance requirements for this module are currently unmet, necessitating substantial development to address these critical areas.",
+    "vector_id": 54,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/uvicorn/protocols/http/__init__.py",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/uvicorn/protocols/http/__init__.py. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "uvicorn/protocols/http/flow_control.py": {
+    "summary": "This module defines a `FlowControl` class for managing asynchronous network I/O, specifically pausing and resuming transport operations to prevent resource exhaustion. It also provides a utility function to send a hardcoded HTTP 503 \"Service Unavailable\" response. As a low-level component, it inherently lacks direct security controls such as authentication, authorisation, encryption, or input validation. Similarly, compliance-relevant features like logging or auditing are not present within this file. While the module itself doesn't introduce obvious security vulnerabilities, its proper integration is crucial for system stability and preventing resource exhaustion, underscoring the need for robust security controls at higher application layers.",
+    "vector_id": 55,
+    "inspector_results": {
+      "file_path": "uvicorn/protocols/http/flow_control.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "uvicorn"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/protocols/http/flow_control.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/protocols/http/h11_impl.py": {
+    "summary": "This file implements the HTTP/1.1 protocol for a server, managing connections and the request/response lifecycle. Security controls include limiting incomplete event sizes and managing concurrency to mitigate resource exhaustion. Input validation primarily relies on the `h11` library for protocol compliance, with basic URL path unquoting. Compliance-relevant features are robust error and access logging, forming an audit trail. While HTTPS is supported at the transport layer, application-level authentication, authorization, and comprehensive input sanitation are explicitly delegated to the served ASGI application. Obvious risks include the inherent reliance on the upstream application for full security, and potential edge cases in path decoding.",
+    "vector_id": 56,
+    "inspector_results": {
+      "file_path": "uvicorn/protocols/http/h11_impl.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "http",
+          "logging",
+          "h11",
+          "__future__",
+          "typing",
+          "urllib",
+          "uvicorn"
+        ],
+        "network_modules": [
+          "http",
+          "urllib"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [
+          "logging"
+        ],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/protocols/http/h11_impl.py is written in Python. Discovery of networking modules shows the following being used for connectivity: ['http', 'urllib']. No file system access has been detected in this file. Logging capabilities are expected to be using these modules: ['logging']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/protocols/http/auto.py": {
+    "summary": "This file dynamically selects an HTTP protocol implementation, opting for `httptools` if available, otherwise defaulting to `h11`. It offers no direct security controls such as authentication, authorization, or encryption, nor does it include explicit input validation; these aspects would be handled by the chosen underlying protocol library or higher-level application logic. The code also lacks compliance-relevant features like logging or auditing. A potential risk is the implicit reliance on the chosen protocol's parsing robustness, highlighting a need to ensure both `httptools` and `h11` dependencies are securely maintained and validated against parsing vulnerabilities.",
+    "vector_id": 57,
+    "inspector_results": {
+      "file_path": "uvicorn/protocols/http/auto.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "__future__"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/protocols/http/auto.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "uvicorn/protocols/http/httptools_impl.py": {
+    "summary": "This Python file implements an HTTP protocol handler, managing request parsing and response generation. Security controls include rigorous input validation for HTTP headers and general request structure, leading to 400 errors for malformed requests. It prevents denial-of-service by limiting concurrency, returning 503 when thresholds are met, and provides robust error handling with appropriate 500 responses for application failures. For compliance, detailed access and error logging is implemented, crucial for auditing and incident response. A key area for further security review is the use of \"dangerous leniencies\" in the HTTP parser, which, despite its intended purpose for pipelining, could present subtle parsing risks.",
+    "vector_id": 58,
+    "inspector_results": {
+      "file_path": "uvicorn/protocols/http/httptools_impl.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "asyncio",
+          "http",
+          "logging",
+          "re",
+          "urllib",
+          "httptools",
+          "__future__",
+          "collections",
+          "typing",
+          "uvicorn"
+        ],
+        "network_modules": [
+          "http",
+          "urllib"
+        ],
+        "file_system_modules": [],
+        "logging_modules": [
+          "logging"
+        ],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file uvicorn/protocols/http/httptools_impl.py is written in Python. Discovery of networking modules shows the following being used for connectivity: ['http', 'urllib']. No file system access has been detected in this file. Logging capabilities are expected to be using these modules: ['logging']. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "docs/overrides/main.html": {
+    "summary": "This HTML template, `main.html`, primarily defines an announcement banner with inline styling. As a static front-end component, it inherently contains no explicit security controls like authentication, authorization, encryption, or input validation mechanisms. Similarly, it lacks compliance-relevant features such as logging or IAM role configurations. A key area for improvement is the use of inline CSS, which could impede strict Content Security Policy (CSP) implementation, suggesting a TODO to externalize styles. While this specific file presents no direct XSS vulnerabilities, it's crucial to ensure all template rendering, particularly from `base.html` or user-controlled inputs elsewhere, properly escapes data to prevent injection risks.",
+    "vector_id": 59,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/overrides/main.html",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/overrides/main.html. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "docs/plugins/main.py": {
+    "summary": "This MkDocs plugin modifies generated content, primarily adding hyperlinks to release notes and embedding external command output. Security controls are minimal; there's no explicit authentication, authorization, or encryption. Input validation is limited to regex-based transformations, assuming source content is trusted. Compliance-relevant features like logging or auditing are absent. The primary security risk is the use of `subprocess.run` to execute an external command (`uvicorn --help`). While arguments are hardcoded, this introduces a dependency on the external executable's integrity and the build environment's security, posing a potential command execution vector if the environment were compromised.",
+    "vector_id": 60,
+    "inspector_results": {
+      "file_path": "docs/plugins/main.py",
+      "language": "Python",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [
+          "re",
+          "subprocess",
+          "__future__",
+          "functools",
+          "mkdocs"
+        ],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_modules": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "The file docs/plugins/main.py is written in Python. No networking capabilities have been detected in this file. No file system access has been detected in this file. No logging capabilities have been detected in this file. No configuration settings (e.g., environmental variables, etc.) have been imported from this file. "
+    }
+  },
+  "docs/deployment/index.md": {
+    "summary": "This document details Uvicorn deployment, emphasizing security through layered architecture. Production setups recommend Gunicorn, Nginx, and CDNs for resilience, load balancing, and strong DDoS protection. HTTPS configuration is supported with `ssl-keyfile` and `ssl-certfile`. Critical security controls involve careful trust management of `X-Forwarded-For` headers via `forwarded-allow-ips` to prevent IP spoofing, with a strict warning against trusting all clients. Logging capabilities are noted for compliance. Obvious risks include the deprecation of `uvicorn.workers` and the inherent danger of misconfiguring proxy header trust, alongside the unsuitability of `--reload` for production.",
+    "vector_id": 61,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/deployment/index.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/deployment/index.md. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "docs/deployment/docker.md": {
+    "summary": "This guide outlines Dockerfile creation for Python applications, leveraging `uv` and `uv.lock` for deterministic dependency management, which enhances supply chain security and reproducibility. A critical security control highlighted is the explicit warning to create and run containers as a non-root user in production, mitigating privilege escalation risks. The example application, however, lacks essential security controls like authentication, authorization, and encryption (HTTPS), which are crucial for any real-world deployment. Logging is basic. Obvious risks include ignoring the non-root user warning and using the development-oriented `docker-compose` setup (with code volumes and hot-reloading) in a production environment without proper hardening. Further considerations for production include secrets management and network segmentation.",
+    "vector_id": 62,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/deployment/docker.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/deployment/docker.md. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "docs/concepts/lifespan.md": {
+    "summary": "This document details the ASGI lifespan protocol, which handles application startup and shutdown for resource initialization and cleanup. While essential for managing components like databases and caches, it presents a critical security surface. The description lacks explicit mention of security controls such as authentication, authorization, or encryption for the resources initialized within these hooks. Any vulnerabilities or misconfigurations during startup or shutdown could lead to systemic compromise. Compliance-wise, basic logging is demonstrated, but robust auditing of these crucial lifecycle events is not explicitly outlined. A key risk is insecure resource setup; a major TODO is to implement stringent security practices, including secure credential management and comprehensive error handling, within all lifespan operations.",
+    "vector_id": 63,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/concepts/lifespan.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/concepts/lifespan.md. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "docs/concepts/asgi.md": {
+    "summary": "The ASGI specification outlines an asynchronous interface for Python web applications, enabling high-performance handling of HTTP and WebSocket connections through `scope`, `receive`, and `send` channels. Crucially, it offers no intrinsic security controls like authentication, authorization, or input validation; these are left entirely to the application or framework. Compliance-relevant features such as logging or auditing are also outside its scope. A significant risk when building directly on ASGI is the complete absence of built-in input validation, demanding meticulous implementation to prevent vulnerabilities. The provided examples also lack demonstrations of comprehensive error handling or security-focused HTTP header management.",
+    "vector_id": 64,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/concepts/asgi.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/concepts/asgi.md. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "docs/concepts/websockets.md": {
+    "summary": "This document outlines Uvicorn's WebSocket protocol implementation, detailing the upgrade handshake and the ASGI event model. Crucially, the ASGI application is responsible for connection acceptance, which includes implementing authentication and authorization logic. While outlining message exchange, the file does not explicitly cover built-in input validation for received data, transport encryption (WSS/TLS), or integrated logging/auditing features. These vital security and compliance controls are implicitly delegated to the application developer, highlighting significant implementation responsibilities and potential risks if not properly addressed within the ASGI application itself.",
+    "vector_id": 65,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/concepts/websockets.md",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/concepts/websockets.md. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "docs/overrides/partials/toc-item.html": {
+    "summary": "This HTML template, designed for recursive table of contents rendering, exhibits no direct security controls like authentication or authorization, which are expected at a higher application layer. Similarly, compliance features such as logging or IAM roles are absent. The primary security risk is Cross-Site Scripting (XSS) due to the direct rendering of `toc_item.url` and `toc_item.title`. While `striptags` is applied to `aria-label`, the main `href` and `span` content lack explicit output encoding or robust input validation, relying solely on the cleanliness of upstream data. This omission poses a clear vulnerability.",
+    "vector_id": 66,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/overrides/partials/toc-item.html",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/overrides/partials/toc-item.html. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "docs/overrides/partials/nav.html": {
+    "summary": "This Jinja2 template renders a navigation menu, primarily focusing on UI presentation. It correctly employs output encoding for the site name, mitigating potential Cross-Site Scripting (XSS) vulnerabilities in that specific field. As a client-side UI component, it naturally lacks direct security controls like authentication, authorization, or encryption, and no compliance-relevant features such as logging or auditing are present. A potential risk could involve an open redirect if homepage URLs are derived from unvalidated, user-controlled input, though these are typically static configurations. The overall security relies on proper sanitization and escaping of all dynamic content, especially within the imported navigation item partial.",
+    "vector_id": 67,
+    "inspector_results": {
+      "file_path": "/Users/chrisrimondi/Code/uvicorn/docs/overrides/partials/nav.html",
+      "language": "unknown",
+      "control_hints": [],
+      "loaded_modules": {
+        "modules": [],
+        "network_modules": [],
+        "file_system_modules": [],
+        "logging_modules": [],
+        "cryptographic_module": []
+      },
+      "configuration_settings": [],
+      "file_system_interactions": [],
+      "cryptography": {},
+      "identified_vulnerabilities": {},
+      "access_controls": {},
+      "authn_authz": {},
+      "input_validation": {},
+      "logging": {},
+      "error_handling": {},
+      "file_summary": "No specific inspection available for /Users/chrisrimondi/Code/uvicorn/docs/overrides/partials/nav.html. This file type is not currently supported by the automated inspectors."
+    }
+  },
+  "_metadata": {
+    "generation_info": {
+      "model": "gemini-2.5-flash",
+      "provider": "gemini",
+      "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
+      "start_time": "2025-07-11T11:39:40.787362",
+      "command": "analyze",
+      "config_file": null,
+      "version": "0.1.0"
+    }
+  }
+}
