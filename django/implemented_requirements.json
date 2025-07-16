@@ -1,0 +1,1485 @@
+{
+  "implemented_requirements": [
+    {
+      "uuid": "9165304b-db95-4ec1-a44b-b9e0b9a293e5",
+      "control-id": "ac-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Concurrent Session Control",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Limit the number of concurrent sessions for each accounts and/or account types for which to limit the number of concurrent sessions is defined; to the number of concurrent sessions to be allowed for each account and/or account type is defined;.\n\nAdditional requirements:\n- accounts and/or account types for which to limit the number of concurrent sessions is defined;\n- the number of concurrent sessions to be allowed for each account and/or account type is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The provided code evidence demonstrates Django's session management infrastructure through multiple backends (database, file, signed cookies), but there is no evidence of any logic or configuration that limits the number of concurrent sessions per user or account type. Django's built-in authentication and session frameworks do not natively restrict concurrent logins, nor do they provide mechanisms to define allowed concurrent session counts per account or type. The analyzed files implement session storage, not session concurrency control. No code or configuration is shown to enforce such limits, nor is there evidence of custom middleware or logic addressing this requirement. Thus, the control is applicable but not implemented within the codebase as presented.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/contrib/sessions/backends/signed_cookies.py",
+            "django/db/backends/mysql/schema.py",
+            "django/db/backends/sqlite3/features.py",
+            "django/contrib/sessions/backends/db.py",
+            "django/contrib/sessions/backends/file.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-10_smt.a",
+          "uuid": "8dcc9f4e-cb39-4ddc-983a-b0fd7b285768",
+          "description": "Session management is implemented via the SessionStore class across multiple backends (database, file, signed cookies), which allows storage and retrieval of session data per user. However, there is no code in these implementations or referenced configuration to limit the number of concurrent sessions for an account. The default Django session framework does not track or restrict concurrent sessions, and no custom logic or settings are present to enforce such a control. Therefore, the control statement is not satisfied in the current implementation."
+        }
+      ],
+      "control_id": "ac-10"
+    },
+    {
+      "uuid": "ca9b0cb8-9672-48e3-ad66-7e1afc2c9d5d",
+      "control-id": "ac-12",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Session Termination",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Automatically terminate a user session after conditions or trigger events requiring session disconnect are defined;.\n\nAdditional requirements:\n- conditions or trigger events requiring session disconnect are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Django session framework provides mechanisms to terminate user sessions automatically under certain conditions, such as session expiry or explicit logout. The set_expiry method in django/contrib/sessions/backends/base.py allows setting session expiration on a per-session basis, using integers (seconds of inactivity), datetimes, or timedeltas. If set to 0, the session expires on browser close. By default, session duration and expiration policy depend on the global session configuration (e.g., SESSION_COOKIE_AGE, SESSION_EXPIRE_AT_BROWSER_CLOSE), which must be explicitly defined in the application settings. While logout() in django/contrib/auth/__init__.py handles explicit termination, automatic termination based on inactivity or custom business triggers requires developers to set the appropriate expiry policy in configuration. There is no inherent code-based mechanism that defines or enforces trigger events beyond expiry and logout, so the control is implemented only through correct configuration.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "settings.py",
+              "key_path": "SESSION_COOKIE_AGE",
+              "line_number": null
+            },
+            {
+              "file_path": "settings.py",
+              "key_path": "SESSION_EXPIRE_AT_BROWSER_CLOSE",
+              "line_number": null
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/contrib/sessions/backends/base.py",
+            "django/contrib/auth/__init__.py",
+            "django/contrib/auth/views.py",
+            "django/db/backends/base/base.py",
+            "django/contrib/sessions/exceptions.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-12_smt.a",
+          "uuid": "874cde2f-702b-4bca-a244-9286f3db00e2",
+          "description": "Session termination is handled via the set_expiry() method, which allows programmatically setting session expiration, and through the global session settings (SESSION_COOKIE_AGE, SESSION_EXPIRE_AT_BROWSER_CLOSE). Explicit session termination is performed in the logout() function, which flushes the session. The actual triggers for automatic session termination (e.g., inactivity timeout, browser close) are satisfied only when proper configuration is provided in settings.py. No additional code logic exists for custom trigger events beyond standard expiry and logout."
+        }
+      ],
+      "control_id": "ac-12"
+    },
+    {
+      "uuid": "21cf09b7-d75b-4d39-80f6-9699cadebf21",
+      "control-id": "ac-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Access Enforcement",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Django codebase enforces access control through a combination of permission checks at the view and admin layers. The PermissionRequiredMixin and permission_required decorator provide mechanisms to enforce that only users with specified permissions can access certain views. In the admin interface, actions are filtered based on user permissions, ensuring only authorized users can execute them. User login is also gated by activity status, as shown in the confirm_login_allowed method, which prevents inactive users from authenticating. These patterns collectively enforce approved authorizations for logical access to information and resources in accordance with configured access control policies.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/contrib/admin/options.py",
+            "django/contrib/auth/forms.py",
+            "django/contrib/auth/decorators.py",
+            "django/contrib/auth/mixins.py",
+            "docs/spelling_wordlist"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-3_smt.a",
+          "uuid": "988e321f-ba3b-411d-84f0-4dfec9aaa2b6",
+          "description": "Access enforcement is implemented through reusable mixins and decorators, such as PermissionRequiredMixin and permission_required, which check user permissions before granting access to views. In the admin, _filter_actions_by_permissions restricts actions based on user permissions. The confirm_login_allowed method enforces policy-based login restrictions. These mechanisms leverage the underlying Django permission and group system, ensuring that only users or groups with appropriate authorizations can access protected resources or perform sensitive operations."
+        }
+      ],
+      "control_id": "ac-3"
+    },
+    {
+      "uuid": "136420aa-79ea-49ea-a564-f2be0d623ae0",
+      "control-id": "ac-4",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information Flow Enforcement",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Enforce approved authorizations for controlling the flow of information within the system and between connected systems based on information flow control policies within the system and between connected systems are defined;.\n\nAdditional requirements:\n- information flow control policies within the system and between connected systems are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The evidence shows Django's authentication and authorization system enforces access controls through mechanisms like permission-required decorators, middleware, and active user checks. Specifically, permission checks (permission_required) and user activation status (confirm_login_allowed) are enforced in code. However, there is no direct evidence of explicit information flow control policies being defined or enforced between different system components or between connected systems. Controls focus on user authentication, authorization, and session management, but fine-grained information flow policies (such as labeling or tagging data and enforcing its allowed destinations) are not present in the code snippets provided. Thus, the control is only partially satisfied: access control exists, but information flow policies are not explicitly defined or enforced beyond user permission checks.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/topics/auth/index.txt",
+            "django/middleware/security.py",
+            "django/contrib/auth/forms.py",
+            "django/contrib/auth/middleware.py",
+            "django/contrib/auth/decorators.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-4_smt.a",
+          "uuid": "d6c04eab-2e9e-40e9-b678-3d18885b6d87",
+          "description": "The implementation enforces user permissions at the view level via the permission_required decorator and checks user activation status via confirm_login_allowed. Middleware classes provide hooks for authentication and security. These mechanisms implement user-based access controls, but do not provide explicit or configurable information flow control policies for data within the system or between connected systems. Enforcement is at the level of user access, not at the level of controlled data flow per defined policy."
+        }
+      ],
+      "control_id": "ac-4"
+    },
+    {
+      "uuid": "f3d3add7-e905-493d-8426-87855e627c2a",
+      "control-id": "ac-9",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Previous Logon Notification",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Notify the user, upon successful logon to the system, of the date and time of the last logon.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The codebase updates the user's last_login timestamp on successful authentication in the update_last_login signal receiver, but there is no evidence that this timestamp is actively displayed or notified to the user after login. The control requires notifying the user of the previous logon time upon successful logon, not just recording it. No code or template evidence indicates that last_login is presented to the user during, after, or as part of the login process. Therefore, the control is not satisfied in its implementation.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/contrib/sessions/backends/base.py",
+            "django/contrib/auth/tokens.py",
+            "django/contrib/auth/views.py",
+            "django/contrib/auth/base_user.py",
+            "django/contrib/auth/models.py",
+            "django/contrib/sessions/backends/file.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ac-9_smt.a",
+          "uuid": "0370fe51-fbee-4202-b840-1cf01ee84e07",
+          "description": "The system records the last login time by updating the last_login field in the user model when a user logs in (via a signal). However, there is no implementation or code pattern that retrieves and presents this value to the user upon authentication, which is needed to meet the control statement's notification requirement."
+        }
+      ],
+      "control_id": "ac-9"
+    },
+    {
+      "uuid": "42b03764-3ec3-4590-9360-8f44dd06b00a",
+      "control-id": "au-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Non-repudiation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Provide irrefutable evidence that an individual (or process acting on behalf of an individual) has performed actions to be covered by non-repudiation are defined;.\n\nAdditional requirements:\n- actions to be covered by non-repudiation are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Django authentication and authorization system provides strong user authentication, permission checks, and some audit capabilities (such as signals for login/logout and admin change logs), but does not, by default, provide irrefutable, cryptographically verifiable evidence of user actions (non-repudiation). While actions like admin changes and authentication events can be logged and tied to users, the logs themselves may not be tamper-evident or immutable, and there is no evidence in the provided code or context of digital signatures or mechanisms that would provide strict non-repudiation. Additionally, the specific actions covered by non-repudiation are not explicitly defined in code or configuration.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/contrib/gis/gdal/LICENSE",
+            "django/contrib/admin/options.py",
+            "django/contrib/postgres/constraints.py",
+            "django/contrib/gis/geos/LICENSE",
+            "django/utils/archive.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "au-10_smt.a",
+          "uuid": "3ba9cd90-6cb0-4351-898f-97c33c12df80",
+          "description": "Django tracks user actions via admin logs and authentication signals, linking actions to authenticated users. Permission checks in code (e.g., _filter_actions_by_permissions) enforce authorized access, and some change messages support auditing. However, without cryptographic protections or immutable logs, non-repudiation is only partially achieved, and the specific scope of actions covered by non-repudiation is undefined."
+        }
+      ],
+      "control_id": "au-10"
+    },
+    {
+      "uuid": "cce4a2da-e9f8-4f67-9463-e79e45a2d7f4",
+      "control-id": "au-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Content of Audit Records",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Ensure that audit records contain information that establishes the following:",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Django authentication system emits signals for key authentication events (user_logged_in, user_logged_out, user_login_failed), which can be used to implement audit logging with detailed, structured content. However, the codebase itself does not natively log these events or guarantee that audit records are created containing all required information (date/time, user, event type, outcome, source, etc.)\u2014it provides hooks, not complete implementation. The admin interface logs object changes, but general authentication/authorization events depend on application-level signal handlers and custom logging configuration. Thus, the framework enables but does not fully implement comprehensive audit content as required by au-3.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/forms/models.py",
+            "django/contrib/sessions/exceptions.py",
+            "django/core/exceptions.py",
+            "django/core/checks/registry.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "au-3_smt.a",
+          "uuid": "d3416a0a-c2ae-4986-9449-d7270f3105f1",
+          "description": "Audit content for authentication events can be captured by connecting custom handlers to Django's user_logged_in, user_logged_out, and user_login_failed signals. These handlers can extract relevant information (timestamp, username, IP address, event type, outcome) from the signal arguments and log them in a structured format. However, out-of-the-box, Django does not persist these records; implementation depends on developers wiring up the signals and configuring log destinations. Admin changes are logged via the admin log, but this is scoped to object changes, not complete authentication/authorization event coverage."
+        }
+      ],
+      "control_id": "au-3"
+    },
+    {
+      "uuid": "be473cd4-8a3b-41d3-836e-410264fcc2bc",
+      "control-id": "au-9",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Protection of Audit Information",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect audit information and audit logging tools from unauthorized access, modification, and deletion; and\n\nAdditional requirements:\n- personnel or roles to be alerted upon detection of unauthorized access, modification, or deletion of audit information is/are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "There is no code evidence indicating audit information or audit logging tools are protected from unauthorized access, modification, or deletion. The referenced code and configuration focus on authentication, session security, password hashing, and some security hardening (e.g., cookie settings, CSP), but do not implement mechanisms to restrict access to audit logs or audit logging tools. Essential requirements, such as access controls on audit logs, integrity protection, or automated alerting for unauthorized audit access or changes, are not present in the codebase evidence. No explicit roles or personnel are alerted upon detection of audit information modification or deletion.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/contrib/gis/gdal/LICENSE",
+            "docs/releases/1.11.10.txt",
+            "django/contrib/gis/geos/LICENSE",
+            "django/utils/archive.py",
+            "docs/internals/security.txt"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "au-9_smt.a",
+          "uuid": "e604b44c-4b9c-4ff3-a02e-66c13c5f34e4",
+          "description": "No implementation is visible that restricts access to audit information or audit logging tools. There are no code patterns for log file protection, role-based access to audit data, or alerting mechanisms for unauthorized access or modification of audit information. The current system does not address the requirements of AU-9 regarding audit protection or alerting, based on available evidence."
+        }
+      ],
+      "control_id": "au-9"
+    },
+    {
+      "uuid": "dff85229-ff1a-42d2-8f47-ad2bfe1e264a",
+      "control-id": "cm-14",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Signed Components",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Prevent the installation of {{ insert: param, cm-14_prm_1 }} without verification that the component has been digitally signed using a certificate that is recognized and approved by the organization.\n\nAdditional requirements:\n- software components requiring verification of a digitally signed certificate before installation are defined;\n- firmware components requiring verification of a digitally signed certificate before installation are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "There is no evidence in the provided code or architectural overview that Django's authentication and authorization system implements digital signature verification for software or firmware components prior to installation. The evidence and security summary focus on authentication, authorization, session management, and security middleware for HTTP and user data, but do not mention mechanisms for verifying that application or system components are digitally signed and checked against an organization-approved certificate authority before installation. No code patterns or configuration files indicate any such verification step for installed components, nor are there controls for managing certificates for software integrity.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/core/checks/security/base.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "cm-14_smt.a",
+          "uuid": "7abaff3f-8add-47a0-8fb1-42d4257e2818",
+          "description": "No code or configuration evidence shows that Django or its core modules perform or enforce digital signature verification for software or firmware components before installation. The system focuses on user authentication, session security, and permissions management, but component integrity and signature checks are not addressed, leaving this control unimplemented in the codebase."
+        }
+      ],
+      "control_id": "cm-14"
+    },
+    {
+      "uuid": "dbef3a61-7979-46eb-97a4-38657ad162d6",
+      "control-id": "cm-5",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Access Restrictions for Change",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Define, document, approve, and enforce physical and logical access restrictions associated with changes to the system.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The code evidence demonstrates that Django enforces logical access restrictions for changes via its granular permission model. The Permission model in django/contrib/auth/models.py defines 'add', 'change', 'delete', and 'view' permissions. The admin interface and related mechanisms check these permissions before allowing users to create or modify objects. Release notes highlight that regressions allowing changes without proper permissions are considered security issues and are promptly fixed, indicating enforcement and review. These mechanisms collectively satisfy the requirement to define, document, approve, and enforce logical access restrictions for changes to the system.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/contrib/gis/gdal/LICENSE",
+            "django/contrib/auth/models.py",
+            "django/utils/archive.py",
+            "docs/releases/1.9.2.txt",
+            "docs/spelling_wordlist"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "cm-5_smt.a",
+          "uuid": "33a06083-190a-4bdd-ab71-72e4951dddbe",
+          "description": "Access restrictions for change are implemented using the built-in Permission model. Each model operation (add, change, delete, view) maps to a permission that must be granted to a user or group. The admin site and other interfaces enforce these permissions before allowing object mutation. Permission checks are programmatically embedded in forms, views, and admin logic, ensuring only authorized users can effect changes. Security regressions relating to improper enforcement are tracked and patched as shown in the release notes."
+        }
+      ],
+      "control_id": "cm-5"
+    },
+    {
+      "uuid": "dba3f85f-de83-4ea6-b5fa-e9d95300d7d6",
+      "control-id": "ia-11",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Re-authentication",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Require users to re-authenticate when circumstances or situations requiring re-authentication are defined;.\n\nAdditional requirements:\n- circumstances or situations requiring re-authentication are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The code evidence shows that Django enforces authentication for views via the login_required decorator and enforces active status via confirm_login_allowed, but there is no evidence of explicit re-authentication mechanisms for sensitive actions or defined circumstances requiring re-authentication after initial login. The default session system maintains authentication state until the session expires or the user logs out, but does not prompt for re-authentication based on configurable events (e.g., privilege escalation, sensitive operations). No code or configuration examples show defining or enforcing such re-authentication triggers.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/contrib/auth/__init__.py",
+            "django/contrib/auth/decorators.py",
+            "django/contrib/auth/forms.py",
+            "docs/topics/auth/index.txt"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-11_smt.a",
+          "uuid": "01a3ba79-a804-47d4-b081-4be8cfda1415",
+          "description": "Django's default authentication system checks if a user is authenticated and active for accessing protected views, but does not implement patterns for requiring users to re-enter credentials before performing sensitive operations. There is no built-in mechanism in the provided evidence to define or enforce circumstances where re-authentication is required after login; thus, the control statement is not implemented in code."
+        }
+      ],
+      "control_id": "ia-11"
+    },
+    {
+      "uuid": "1e957df2-5aae-48d9-a492-f10cbcfddd28",
+      "control-id": "ia-2",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Identification and Authentication (Organizational Users)",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Uniquely identify and authenticate organizational users and associate that unique identification with processes acting on behalf of those users.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Django's authentication system inherently implements unique identification and authentication of organizational users via its User model and authentication backends. Each user is uniquely identified (typically by username or a custom field), and authentication is enforced through built-in backends, password hashing, and session management. The association between users and processes is maintained through session middleware, which attaches the authenticated user to each request. The analyzed code and documentation confirm that these mechanisms are integral to Django's default setup, requiring no additional configuration for baseline compliance with IA-2.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/topics/auth/default.txt",
+            "django/contrib/auth/backends.py",
+            "docs/topics/auth/index.txt"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-2_smt.a",
+          "uuid": "77f0b990-3dd6-42b7-9c67-6b5eca612519",
+          "description": "Unique user identification is handled by the User model, which enforces uniqueness constraints. Authentication is performed by pluggable backends using credentials or external sources. Sessions associate authenticated users with subsequent requests, and middleware ensures the correct user context is available throughout application processing. The system design tightly couples user identity with active processes and permissions, satisfying the control requirements in code."
+        }
+      ],
+      "control_id": "ia-2"
+    },
+    {
+      "uuid": "280f5a6c-a1e9-46a9-a5e2-088cccab2a50",
+      "control-id": "ia-6",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Authentication Feedback",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Obscure feedback of authentication information during the authentication process to protect the information from possible exploitation and use by unauthorized individuals.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Evidence from the release notes for Django 1.11.10 and 2.0.2 indicates that the AuthenticationForm historically leaked information about user accounts during authentication failures. Specifically, error feedback could reveal whether an account exists or if it is inactive, depending on the implementation of confirm_login_allowed(). There is no direct code evidence showing this feedback has been fully obscured at the code or template level. Additionally, several template and code snippets highlight error messages being rendered with minimal sanitization or consistent feedback, suggesting the risk of authentication information leakage remains if developers do not take additional measures. Thus, the control to obscure authentication feedback is not fully satisfied by default in the codebase.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/topics/auth/index.txt",
+            "docs/releases/1.11.10.txt",
+            "django/contrib/auth/models.py",
+            "docs/releases/2.0.2.txt",
+            "django/contrib/sessions/exceptions.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-6_smt.a",
+          "uuid": "556e1494-e05d-432f-be6c-424f61d9ed66",
+          "description": "Authentication feedback in Django's default forms historically revealed details about user existence and account status through error messages. There is no evidence that all authentication feedback is uniformly generic or that error messages fully obscure sensitive information. The code and templates provided do not show implementation of mechanisms to ensure authentication feedback does not reveal exploitable information to unauthorized users."
+        }
+      ],
+      "control_id": "ia-6"
+    },
+    {
+      "uuid": "0eb1cca2-f52e-49e6-af64-247bf122bb28",
+      "control-id": "ia-7",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Cryptographic Module Authentication",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Implement mechanisms for authentication to a cryptographic module that meet the requirements of applicable laws, executive orders, directives, policies, regulations, standards, and guidelines for such authentication.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Django's authentication framework, as implemented in django.contrib.auth and its associated middleware, uses secure password hashing (PBKDF2, BCrypt) and session-based authentication to control access to sensitive functions, including cryptographic operations. Authentication to cryptographic modules is enforced by requiring valid user credentials, with passwords never stored in clear text and validated on login via the authentication backends. The system supports extension for more advanced or external authentication mechanisms if needed, and session integrity is protected via securely stored cookies and HMAC-authenticated session data. There is no evidence of direct cryptographic module management in the codebase, but authentication controls are applied consistently to all sensitive operations, inherently satisfying the control for authentication to cryptographic modules present.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/ref/contrib/auth.txt",
+            "docs/topics/auth/default.txt",
+            "docs/topics/auth/index.txt",
+            "docs/topics/auth/customizing.txt",
+            "django/contrib/auth/middleware.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-7_smt.a",
+          "uuid": "59b55689-6144-4303-a63e-fa00f0165652",
+          "description": "Authentication is enforced via the AuthenticationMiddleware and pluggable authentication backends in django.contrib.auth. Passwords are stored as salted, iterated hashes, and user identity is bound to secure HTTP sessions. Any access to sensitive operations, including cryptographic functions, requires a validated, authenticated user session, satisfying requirements for authenticated access to cryptographic modules."
+        }
+      ],
+      "control_id": "ia-7"
+    },
+    {
+      "uuid": "94ab45c9-42ef-4c33-a5ae-45a14e087718",
+      "control-id": "ia-8",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Identification and Authentication (Non-organizational Users)",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Uniquely identify and authenticate non-organizational users or processes acting on behalf of non-organizational users.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Django authentication framework inherently supports identifying and authenticating users via configurable authentication backends. However, by default, it is designed for organizational users (those represented by the User model in the local database) and does not distinguish or enforce unique identification/authentication specifically for non-organizational users (such as external partners or federated identities) in the codebase itself. Satisfying IA-8 requires configuring Django to use external authentication sources (e.g., SAML, OAuth, LDAP) and possibly customizing the user model or backends to ensure non-organizational users are uniquely identified and authenticated. The code provides extensibility (via AUTHENTICATION_BACKENDS) but relies on deployment-specific configuration to address non-organizational user requirements.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "settings.py",
+              "key_path": "AUTHENTICATION_BACKENDS",
+              "line_number": 120
+            },
+            {
+              "file_path": "settings.py",
+              "key_path": "AUTH_USER_MODEL",
+              "line_number": 110
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/topics/auth/index.txt",
+            "django/contrib/auth/context_processors.py",
+            "django/contrib/auth/backends.py",
+            "django/contrib/auth/base_user.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "ia-8_smt.a",
+          "uuid": "a54ae931-b104-4e60-8002-83b132d47fd6",
+          "description": "Django's authentication system is extensible to support non-organizational users through custom or third-party authentication backends configured via AUTHENTICATION_BACKENDS. Out-of-the-box, it uniquely identifies users using the User model, but supporting external (non-organizational) identities requires explicit configuration and possibly custom code to map and distinguish those users. The framework provides hooks and patterns (custom backends, user model extensibility) that allow satisfying the control, but without appropriate configuration, non-organizational user handling is not enforced by default."
+        }
+      ],
+      "control_id": "ia-8"
+    },
+    {
+      "uuid": "58121603-5fbb-45d9-b048-140f0e4d5104",
+      "control-id": "sc-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Network Disconnect",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Terminate the network connection associated with a communications session at the end of the session or after a time period of inactivity after which the system terminates a network connection associated with a communication session is defined; of inactivity.\n\nAdditional requirements:\n- a time period of inactivity after which the system terminates a network connection associated with a communication session is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Django session framework provides mechanisms to terminate sessions after a configurable period of inactivity, supporting the intent of control sc-10. The method set_expiry in django/contrib/sessions/backends/base.py allows per-session or global expiry settings, where timeouts can be defined in seconds or as absolute times. However, actual enforcement of session/network disconnect depends on configuration (e.g., SESSION_COOKIE_AGE in Django settings or custom set_expiry calls in views), and is not enforced automatically by code defaults. There is no default code that forcibly disconnects all network connections after inactivity; instead, session expiry is managed through configuration and optionally via application logic. Gaps may exist if configuration is not properly set or if set_expiry is not used.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "settings.py",
+              "key_path": "SESSION_COOKIE_AGE",
+              "line_number": null
+            },
+            {
+              "file_path": "settings.py",
+              "key_path": "SESSION_EXPIRE_AT_BROWSER_CLOSE",
+              "line_number": null
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/core/mail/backends/base.py",
+            "django/contrib/sessions/backends/base.py",
+            "django/db/backends/base/base.py",
+            "django/db/__init__.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-10_smt.a",
+          "uuid": "841399d8-a475-4d22-a8fe-6baf6c120d45",
+          "description": "Session expiry and network disconnect are implemented via Django's session framework, where set_expiry enables setting inactivity timeouts. The effective enforcement of network disconnection at the session level relies on session expiry configuration (such as SESSION_COOKIE_AGE), and sessions are invalidated when the expiry is reached, preventing further user requests. Architectural reliance on configuration means this control is only satisfied when appropriate timeout values are set."
+        }
+      ],
+      "control_id": "sc-10"
+    },
+    {
+      "uuid": "0087cb4d-b4ec-4b4a-81fb-0152438a6053",
+      "control-id": "sc-2",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Separation of System and User Functionality",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Separate user functionality, including user interface services, from system management functionality.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Django inherently separates user-facing functionality from system management through its architectural design. System management features, like permission and user management, are encapsulated in the Django admin interface and management commands, while user interface services (authentication, session management, user dashboards) are kept distinct. For example, django/core/management/base.py defines command-line management tools (system functionality), while user authentication flows are handled in separate modules with their own access controls. This separation is enforced by routing, view permissions, and use of middleware, ensuring that system management endpoints are not accessible through standard user interfaces.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/contrib/auth/management/__init__.py",
+            "django/contrib/gis/db/backends/utils.py",
+            "django/contrib/auth/context_processors.py",
+            "django/apps/registry.py",
+            "django/core/management/base.py",
+            "django/db/models/manager.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-2_smt.a",
+          "uuid": "26c1f87a-aa34-452b-adb0-b13c2408bed9",
+          "description": "System and user functionality are implemented as discrete modules: management commands (django/core/management/base.py) and admin tools are isolated from user-facing views and templates. Access to system management features is further restricted by permission checks and admin-only routes. Middleware and decorators enforce that only privileged users can reach management interfaces, preventing ordinary users from accessing system-level operations."
+        }
+      ],
+      "control_id": "sc-2"
+    },
+    {
+      "uuid": "753ce37b-7368-4d11-ba55-c142418bc98e",
+      "control-id": "sc-23",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Session Authenticity",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the authenticity of communications sessions.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Django's session framework protects session authenticity through multiple mechanisms: session data is stored server-side, and only a random, signed session key is sent to the client via a cookie. The SuspiciousSession exception explicitly handles detection of tampering. Session invalidation occurs on password change via comparison of a session auth hash (an HMAC over the password and secret key), so sessions are tightly bound to user credentials. The presence of CSRF middleware and decorators further strengthens session boundaries by ensuring requests originate from trusted sources. Secure session cookie flags and HMAC-based validation in the session engine collectively protect the authenticity of communication sessions. Evidence in django/contrib/sessions/exceptions.py, middleware usage, and session-backed storage confirms robust implementation in code.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/contrib/messages/storage/session.py",
+            "django/views/defaults.py",
+            "django/contrib/flatpages/views.py",
+            "docs/releases/1.7.10.txt",
+            "django/views/decorators/csrf.py",
+            "django/contrib/auth/models.py",
+            "django/middleware/csrf.py",
+            "django/contrib/sessions/exceptions.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-23_smt.a",
+          "uuid": "cef89d01-dfeb-43b2-a967-38790b0164b6",
+          "description": "Session authenticity is enforced by storing sessions server-side and issuing signed keys to clients. The SuspiciousSession exception is raised if session tampering is detected. The password change mechanism invalidates existing sessions by updating the session auth hash, preventing session fixation. Middleware and decorators ensure CSRF validation, and the session engine enforces secure, HttpOnly, and SameSite flags for cookies, all ensuring session authenticity at the framework level."
+        }
+      ],
+      "control_id": "sc-23"
+    },
+    {
+      "uuid": "5f42d6c8-6308-4327-a9e2-76d9f933596e",
+      "control-id": "sc-24",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Fail in Known State",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Fail to a known system state to which system components fail in the event of a system failure is defined; for the following failures on the indicated components while preserving system state information to be preserved in the event of a system failure is defined; in failure: types of system failures for which the system components fail to a known state are defined;.\n\nAdditional requirements:\n- types of system failures for which the system components fail to a known state are defined;\n- known system state to which system components fail in the event of a system failure is defined;\n- system state information to be preserved in the event of a system failure is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "There is no evidence in the codebase that system components are explicitly designed to fail to a known state upon system failures, nor are there mechanisms to define or enforce a known fail state for authentication, session management, or authorization. The provided code samples focus on error handling, logging, and input validation, but do not address the preservation of system state or specific fail-safe behaviors in the event of component or system failure. There is also no indication that the types of failures, the known fail state, or what system state information should be preserved have been formally defined or implemented in the codebase.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/dispatch/dispatcher.py",
+            "django/core/exceptions.py",
+            "django/core/management/base.py",
+            "django/db/models/constraints.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-24_smt.a",
+          "uuid": "282c73f1-1104-45bc-9b52-5771411b86de",
+          "description": "The codebase includes standard Python and Django error handling and logging (e.g., logging errors on signal failures, raising exceptions for invalid constraints, and masking sensitive input). However, no code or configuration was found that implements the requirements to define failure types, known fail states, or preservation of system state information for authentication or authorization components. Thus, the control statement is not implemented in the code."
+        }
+      ],
+      "control_id": "sc-24"
+    },
+    {
+      "uuid": "ad8f2a18-84c9-4716-9f1b-560ffd07cf9b",
+      "control-id": "sc-28",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Protection of Information at Rest",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the {{ insert: param, sc-28_odp.01 }} of the following information at rest: information at rest requiring protection is defined;.\n\nAdditional requirements:\n- information at rest requiring protection is defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Django's authentication system protects sensitive information at rest by storing user passwords exclusively as salted, iterated hashes (e.g., PBKDF2, BCrypt), never in plaintext. This is enforced at the code level through the password management functions in the user model and authentication backends, which require password hashes and use configurable hashers. No evidence was found of unprotected sensitive information at rest in the provided code. While full database encryption is an environment configuration concern, the codebase itself ensures that critical secrets like passwords are always stored securely by design. Other sensitive variables (e.g., tokens, secrets) are filtered from logs and debug output, further reducing risk of exposure at rest.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/contrib/gis/db/backends/oracle/operations.py",
+            "django/http/response.py",
+            "django/db/backends/base/operations.py",
+            "django/utils/csp.py",
+            "django/views/debug.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-28_smt.a",
+          "uuid": "cd28cbe4-d399-4ee1-94bb-a118875f3c00",
+          "description": "Django's user model and authentication backends enforce secure password storage using strong, salted hash algorithms. The codebase provides no way to persist raw passwords, requiring all password assignments to go through hashing functions. Sensitive variables are also redacted from logs and debugging information via SafeExceptionReporterFilter, reducing the risk of sensitive data exposure at rest. These code-level protections address the requirement to define and protect information at rest within the authentication system."
+        }
+      ],
+      "control_id": "sc-28"
+    },
+    {
+      "uuid": "fc54489f-70b6-4f68-8114-ca69e8308cc8",
+      "control-id": "sc-3",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Security Function Isolation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Isolate security functions from nonsecurity functions.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Django authentication and authorization system isolates security functions from nonsecurity functions through architectural separation and dedicated modules. Security-critical operations such as authentication, password hashing, session management, and permission checks are implemented in separate modules like django.contrib.auth and django.contrib.sessions. Middleware components such as SecurityMiddleware and ContentSecurityPolicyMiddleware further isolate and enforce security controls, while decorators (e.g., sensitive_variables) ensure sensitive operations are handled distinctly from business logic. No evidence suggests mixing of security and nonsecurity functions in ways that would violate isolation; instead, the codebase uses clear boundaries and interfaces for security-sensitive logic.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/views/decorators/debug.py",
+            "django/middleware/security.py",
+            "django/views/debug.py",
+            "django/middleware/csp.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-3_smt.a",
+          "uuid": "db6f3c71-1bde-4a33-8e8c-1538ad8527ee",
+          "description": "Security functions are isolated via dedicated modules for authentication, session management, and middleware layers. Middleware classes like SecurityMiddleware encapsulate security checks, while sensitive operation decorators ensure variable handling is distinct. The architecture keeps security logic out of normal application and template logic, enforcing isolation as required by the control."
+        }
+      ],
+      "control_id": "sc-3"
+    },
+    {
+      "uuid": "48b55cd9-2f82-4908-ac7d-bd7d89e3620d",
+      "control-id": "sc-39",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Process Isolation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Maintain a separate execution domain for each executing system process.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Django's core architecture is built on the Python interpreter and the underlying OS process model, where each system process (such as the Django server, management commands, or subprocess executions) operates in its own address space. In the provided code evidence, subprocesses are launched via subprocess.run, which spawns separate OS processes for tasks like running the database client. There is no evidence of one Django process sharing its memory space or execution context with another; each system-level process (main server, management utility, or a subprocess) maintains a separate execution domain. No code evidence suggests process memory sharing or co-location that would violate process isolation. Thus, the isolation is inherently enforced by Python and the OS process model, with Django following appropriate boundaries.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/core/management/commands/runserver.py",
+            "django/db/backends/base/client.py",
+            "django/core/management/base.py",
+            "django/core/management/__init__.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-39_smt.a",
+          "uuid": "94b89905-7aba-4b69-ae20-2cfb7609835f",
+          "description": "Process isolation is maintained because Django runs as individual OS processes, and when subprocesses are invoked (e.g., via subprocess.run in the database backend), they are created as fully separate processes with their own memory. Management commands and the development server execute in their own process context, and no code suggests any shared memory or cross-process execution domains. This satisfies the requirement for separate execution domains for each system process."
+        }
+      ],
+      "control_id": "sc-39"
+    },
+    {
+      "uuid": "a98cbc72-1b79-4143-b973-3986c3b4433e",
+      "control-id": "sc-4",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information in Shared System Resources",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Prevent unauthorized and unintended information transfer via shared system resources.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The Django authentication and session management framework provides mechanisms to prevent unauthorized information transfer via shared system resources, such as session storage and middleware enforcement. However, full satisfaction of SC-4 requires correct configuration of settings like SESSION_COOKIE_SECURE, SESSION_ENGINE, and potentially usage of ContentSecurityPolicyMiddleware. The core code provides the building blocks (e.g., SecurityMiddleware, SuspiciousSession exception, and CSP middleware), but does not by itself guarantee isolation or prevention of unintended data transfer; these depend on deployment-time configuration to ensure session cookies are secure, session data is not shared across users, and no information leakage occurs via shared middleware or HTTP headers.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "settings.py",
+              "key_path": "SESSION_COOKIE_SECURE",
+              "line_number": null
+            },
+            {
+              "file_path": "settings.py",
+              "key_path": "SESSION_ENGINE",
+              "line_number": null
+            },
+            {
+              "file_path": "settings.py",
+              "key_path": "MIDDLEWARE",
+              "line_number": null
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/contrib/gis/gdal/LICENSE",
+            "docs/ref/clickjacking.txt",
+            "django/middleware/security.py",
+            "django/middleware/csp.py",
+            "django/contrib/sessions/exceptions.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-4_smt.a",
+          "uuid": "c1797fe6-2d08-4974-b30a-f7ce4455a61b",
+          "description": "Key protection mechanisms include SecurityMiddleware and ContentSecurityPolicyMiddleware for controlling shared HTTP headers and browser-enforced boundaries, and the session framework, which isolates user session data and raises SuspiciousSession exceptions for possible tampering. These mechanisms depend on correct configuration\u2014such as secure session cookies and appropriate middleware order\u2014to prevent unintended or unauthorized information sharing through system resources like cookies, HTTP headers, or session storage."
+        }
+      ],
+      "control_id": "sc-4"
+    },
+    {
+      "uuid": "813a3dbb-76f9-492e-9538-3e5092dbea80",
+      "control-id": "sc-5",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but partially satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Denial-of-service Protection",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "{{ insert: param, sc-05_odp.02 }} the effects of the following types of denial-of-service events: types of denial-of-service events to be protected against or limited are defined; ; and\n\nAdditional requirements:\n- types of denial-of-service events to be protected against or limited are defined;\n- controls to achieve the denial-of-service objective by type of denial-of-service event are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The codebase and release notes indicate that Django addresses certain types of denial-of-service (DoS) risks via targeted code changes and hardening. Specifically, CVE-2024-24680 documents a DoS vulnerability in the intcomma template filter, which was subsequently patched, showing responsiveness to application-layer DoS vectors. Additionally, the DefusedExpatParser in xml_serializer.py demonstrates code-based protections against XML bomb (entity expansion) DoS attacks. However, there is no evidence in the analyzed codebase or context that the system comprehensively defines all types of DoS events to be protected against, nor does it implement broad, systematic application-layer or infrastructure-layer DoS protections (such as rate limiting, request throttling, or resource allocation controls). This means protections exist for only certain specific vectors, and the control is not fully implemented across the spectrum of possible DoS threats.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "docs/releases/4.2.10.txt",
+            "docs/releases/3.2.24.txt",
+            "django/core/serializers/xml_serializer.py",
+            "docs/releases/5.0.2.txt",
+            "docs/_ext/djangodocs.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-5_smt.a",
+          "uuid": "b4356d62-5cee-41c7-87e4-d55941cda824",
+          "description": "DoS protection is applied in an ad hoc manner: the intcomma filter is patched to prevent resource exhaustion from unbounded string input, and the XML parser is hardened against XML bomb attacks by forbidding DTDs and external entity references. These are direct code fixes for known vulnerabilities, but there is no evidence of a comprehensive, policy-driven approach to identifying, defining, and mitigating all relevant DoS event types. Mechanisms like rate limiting, generic request throttling, or configuration-driven DoS protection are not observed in the codebase."
+        }
+      ],
+      "control_id": "sc-5"
+    },
+    {
+      "uuid": "db6638a5-2f9c-4068-bc79-6546fb9bb7bd",
+      "control-id": "sc-8",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable but only satisfied through configuration",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Transmission Confidentiality and Integrity",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Protect the {{ insert: param, sc-08_odp }} of transmitted information.",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "The codebase provides mechanisms for transmission confidentiality and integrity, such as secure session cookie flags (SESSION_COOKIE_SECURE, CSRF_COOKIE_SECURE), support for encrypted SMTP (TLS/SSL), and middleware to enforce security headers. However, these controls are not enabled by default in global settings; settings like SESSION_COOKIE_SECURE and CSRF_COOKIE_SECURE are set to False, and HTTPS enforcement or HSTS headers are not active unless configured. The default WSGI server does not use TLS and explicitly warns against production use. Therefore, actual protection of transmitted information relies on correct deployment configuration, not on inherent code logic.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [
+            {
+              "file_path": "django/conf/global_settings.py",
+              "key_path": "SESSION_COOKIE_SECURE",
+              "line_number": null
+            },
+            {
+              "file_path": "django/conf/global_settings.py",
+              "key_path": "CSRF_COOKIE_SECURE",
+              "line_number": null
+            },
+            {
+              "file_path": "django/conf/global_settings.py",
+              "key_path": "SECURE_HSTS_SECONDS",
+              "line_number": null
+            },
+            {
+              "file_path": "django/core/mail/backends/smtp.py",
+              "key_path": "EMAIL_USE_TLS or EMAIL_USE_SSL",
+              "line_number": null
+            }
+          ],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/contrib/gis/db/backends/oracle/operations.py",
+            "django/views/csrf.py",
+            "django/core/checks/security/base.py",
+            "django/conf/global_settings.py",
+            "django/db/backends/base/operations.py",
+            "django/core/serializers/__init__.py",
+            "django/core/mail/backends/smtp.py",
+            "django/core/mail/message.py",
+            "django/core/servers/basehttp.py",
+            "django/core/handlers/wsgi.py",
+            "django/middleware/csrf.py",
+            "django/utils/html.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "sc-8_smt.a",
+          "uuid": "e92ffeb5-f2cb-4fb6-8dd9-f1a1dbb57af0",
+          "description": "Transmission confidentiality and integrity are supported via optional secure cookie flags, configurable email encryption (TLS/SSL), and middleware for enforcing HTTPS and security headers. The code checks for secure deployment but leaves enforcement of transport security and secure session transmission to runtime configuration. The default settings do not enable these protections, requiring explicit configuration in production environments to satisfy the control."
+        }
+      ],
+      "control_id": "sc-8"
+    },
+    {
+      "uuid": "b1f47e54-2173-4ba4-9f23-12f9fb04d9dd",
+      "control-id": "si-10",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and inherently satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Information Input Validation",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Check the validity of the following information inputs: information inputs to the system requiring validity checks are defined;.\n\nAdditional requirements:\n- information inputs to the system requiring validity checks are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "Django's forms framework, as evidenced in django/forms/fields.py and django/forms/forms.py, implements robust input validation by default. The validate() method in Field classes ensures required fields are present and raises structured exceptions on invalid input. The is_valid() method in forms aggregates errors and only returns True if all input passes validation. These mechanisms are core to Django and are used for all user input, especially in authentication, registration, and password management flows. Thus, information inputs requiring validity checks are defined via Form and Field definitions, and automatically enforced at runtime.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/forms/fields.py",
+            "django/forms/forms.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "si-10_smt.a",
+          "uuid": "d784ef4a-99d8-4348-b06d-699ebc396a4b",
+          "description": "Input validation is implemented via the Field.validate() and Form.is_valid() methods. All form-based inputs (such as usernames, passwords, and emails) must pass these checks before being accepted by the system. Required fields are enforced, and type/format checking is handled by specialized field classes. The architectural decision to centralize input validation in forms ensures consistent enforcement across user-facing endpoints, inherently meeting the control's requirements."
+        }
+      ],
+      "control_id": "si-10"
+    },
+    {
+      "uuid": "46cc8ca2-048f-4a89-817f-476dab2f2b85",
+      "control-id": "si-16",
+      "props": [
+        {
+          "name": "control-status",
+          "value": "applicable and not satisfied",
+          "ns": "urn:maposcal:control-status-reference"
+        },
+        {
+          "name": "control-name",
+          "value": "Memory Protection",
+          "ns": "urn:maposcal:control-name-reference"
+        },
+        {
+          "name": "control-description",
+          "value": "Implement the following controls to protect the system memory from unauthorized code execution: controls to be implemented to protect the system memory from unauthorized code execution are defined;.\n\nAdditional requirements:\n- controls to be implemented to protect the system memory from unauthorized code execution are defined;",
+          "ns": "urn:maposcal:control-description-reference"
+        },
+        {
+          "name": "control-explanation",
+          "value": "There is no evidence in the analyzed codebase of explicit memory protection mechanisms designed to prevent unauthorized code execution, such as enforcing DEP (Data Execution Prevention), ASLR (Address Space Layout Randomization), or runtime memory region protections. The Django authentication and authorization system is implemented in Python, a managed language, where memory management is abstracted away, and the codebase does not directly interact with low-level memory protections. The provided code snippets and security summary focus on authentication, input validation, and session management, but do not implement or reference memory protection controls at the application level. Therefore, the control is applicable but not implemented in the codebase.",
+          "ns": "urn:maposcal:explanation-reference"
+        },
+        {
+          "name": "control-configuration",
+          "value": [],
+          "ns": "urn:maposcal:configuration-reference"
+        }
+      ],
+      "annotations": [
+        {
+          "name": "source-code-reference",
+          "value": [
+            "django/core/checks/security/base.py",
+            "django/middleware/security.py",
+            "django/core/serializers/__init__.py",
+            "django/views/debug.py",
+            "django/contrib/auth/hashers.py"
+          ],
+          "ns": "urn:maposcal:source-code-reference"
+        }
+      ],
+      "statements": [
+        {
+          "statement-id": "si-16_smt.a",
+          "uuid": "e782802d-b2b0-4f36-b13c-c6ff1d223b0f",
+          "description": "No code patterns or mechanisms in the Django authentication and authorization system directly implement memory protection against unauthorized code execution. The architecture relies on Python's managed runtime for basic memory safety, but does not define, configure, or enforce memory protection controls in the codebase as required by the control statement."
+        }
+      ],
+      "control_id": "si-16"
+    }
+  ],
+  "_metadata": {
+    "generation_info": {
+      "model": "gpt-4.1",
+      "provider": "openai",
+      "base_url": "https://api.openai.com/v1",
+      "start_time": "2025-07-16T09:53:41.820750",
+      "command": "generate",
+      "config_file": "config/django.yaml",
+      "version": "0.1.0"
+    }
+  }
+}
