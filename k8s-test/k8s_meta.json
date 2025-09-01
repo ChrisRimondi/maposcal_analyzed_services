@@ -1,0 +1,2399 @@
+[
+  {
+    "source_file": "workload_maposcal-demo/Job/data-migration-v2",
+    "content": "Workload: maposcal-demo/Job/data-migration-v2\nNamespace: maposcal-demo\nController: Job data-migration-v2\nType: controller\nSelectors: {'app': 'migration', 'component': 'data-migration', 'tier': 'maintenance', 'version': 'v2.0.0'}\n\nConfigMaps:\n  - migration-scripts: ['001_create_new_tables.sql', '002_migrate_data.sql']\n  - migration-config: ['migration.yml']\n\nSecrets:\n  - migration-secrets: Opaque\n\nServiceAccount: migration-sa\n\nRBAC:\n  - ServiceAccount: migration-sa\n  - RoleBinding: migration-role-binding\n  - Role: migration-role\n",
+    "summary": "K8s workload: maposcal-demo/Job/data-migration-v2",
+    "workload_id": "maposcal-demo/Job/data-migration-v2",
+    "workload_data": {
+      "id": "maposcal-demo/Job/data-migration-v2",
+      "namespace": "maposcal-demo",
+      "controller": {
+        "kind": "Job",
+        "name": "data-migration-v2"
+      },
+      "selectors": {
+        "app": "migration",
+        "component": "data-migration",
+        "tier": "maintenance",
+        "version": "v2.0.0"
+      },
+      "services": [],
+      "ingress": [],
+      "configMaps": [
+        {
+          "name": "migration-scripts",
+          "data_keys": [
+            "001_create_new_tables.sql",
+            "002_migrate_data.sql"
+          ]
+        },
+        {
+          "name": "migration-config",
+          "data_keys": [
+            "migration.yml"
+          ]
+        }
+      ],
+      "secrets": [
+        {
+          "name": "migration-secrets",
+          "type": "Opaque"
+        }
+      ],
+      "serviceAccount": {
+        "name": "migration-sa",
+        "automountServiceAccountToken": true
+      },
+      "sharedRefs": [],
+      "pods": {
+        "materialized": false,
+        "items": [],
+        "template_labels": {
+          "app": "migration",
+          "component": "data-migration",
+          "tier": "maintenance",
+          "version": "v2.0.0"
+        }
+      },
+      "replicaSets": [],
+      "jobs": [],
+      "storage": {
+        "pvcs": [],
+        "pvs": [],
+        "storageClasses": []
+      },
+      "resilience": {
+        "hpas": [],
+        "pdbs": [],
+        "networkPolicies": []
+      },
+      "rbac": {
+        "serviceAccounts": [
+          {
+            "name": "migration-sa",
+            "automountServiceAccountToken": true
+          }
+        ],
+        "roleBindings": [
+          {
+            "name": "migration-role-binding",
+            "roleRef": {
+              "kind": "Role",
+              "name": "migration-role",
+              "apiGroup": "rbac.authorization.k8s.io"
+            }
+          }
+        ],
+        "roles": [
+          {
+            "name": "migration-role",
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods",
+                  "services",
+                  "configmaps",
+                  "secrets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/log"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/status"
+                ],
+                "verbs": [
+                  "get",
+                  "patch",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "batch"
+                ],
+                "resources": [
+                  "jobs"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch",
+                  "patch",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "create",
+                  "patch"
+                ]
+              }
+            ]
+          }
+        ],
+        "clusterRoleBindings": [],
+        "clusterRoles": [],
+        "effectiveRules": {
+          "verbs": [
+            "watch",
+            "create",
+            "list",
+            "get",
+            "update",
+            "patch"
+          ],
+          "apiGroups": [
+            "",
+            "batch"
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "jobs",
+            "configmaps",
+            "secrets",
+            "pods/status",
+            "events"
+          ]
+        }
+      },
+      "notes": {
+        "conflicts": [],
+        "orphans": [],
+        "crossNamespace": []
+      },
+      "sub_workloads": [],
+      "parent_workload": null,
+      "workload_type": "controller"
+    }
+  },
+  {
+    "source_file": "workload_maposcal-demo/Pod/utility-pod",
+    "content": "Workload: maposcal-demo/Pod/utility-pod\nNamespace: maposcal-demo\nController: Pod utility-pod\nType: controller\nSelectors: {'app': 'utility', 'component': 'maintenance', 'tier': 'utility', 'version': 'v1.0.0'}\n\nConfigMaps:\n  - utility-config: ['utility.yml']\n\nSecrets:\n  - utility-secrets: Opaque\n\nServiceAccount: utility-sa\n\nRBAC:\n  - ServiceAccount: utility-sa\n  - RoleBinding: utility-role-binding\n  - Role: utility-role\n",
+    "summary": "K8s workload: maposcal-demo/Pod/utility-pod",
+    "workload_id": "maposcal-demo/Pod/utility-pod",
+    "workload_data": {
+      "id": "maposcal-demo/Pod/utility-pod",
+      "namespace": "maposcal-demo",
+      "controller": {
+        "kind": "Pod",
+        "name": "utility-pod"
+      },
+      "selectors": {
+        "app": "utility",
+        "component": "maintenance",
+        "tier": "utility",
+        "version": "v1.0.0"
+      },
+      "services": [],
+      "ingress": [],
+      "configMaps": [
+        {
+          "name": "utility-config",
+          "data_keys": [
+            "utility.yml"
+          ]
+        }
+      ],
+      "secrets": [
+        {
+          "name": "utility-secrets",
+          "type": "Opaque"
+        }
+      ],
+      "serviceAccount": {
+        "name": "utility-sa",
+        "automountServiceAccountToken": true
+      },
+      "sharedRefs": [],
+      "pods": {
+        "materialized": false,
+        "items": [],
+        "template_labels": {
+          "app": "utility",
+          "component": "maintenance",
+          "tier": "utility",
+          "version": "v1.0.0"
+        }
+      },
+      "replicaSets": [],
+      "jobs": [],
+      "storage": {
+        "pvcs": [],
+        "pvs": [],
+        "storageClasses": []
+      },
+      "resilience": {
+        "hpas": [],
+        "pdbs": [],
+        "networkPolicies": []
+      },
+      "rbac": {
+        "serviceAccounts": [
+          {
+            "name": "utility-sa",
+            "automountServiceAccountToken": true
+          }
+        ],
+        "roleBindings": [
+          {
+            "name": "utility-role-binding",
+            "roleRef": {
+              "kind": "Role",
+              "name": "utility-role",
+              "apiGroup": "rbac.authorization.k8s.io"
+            }
+          }
+        ],
+        "roles": [
+          {
+            "name": "utility-role",
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods",
+                  "services",
+                  "configmaps",
+                  "secrets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/log"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/status"
+                ],
+                "verbs": [
+                  "get",
+                  "patch",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "create",
+                  "patch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "endpoints"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              }
+            ]
+          }
+        ],
+        "clusterRoleBindings": [],
+        "clusterRoles": [],
+        "effectiveRules": {
+          "verbs": [
+            "watch",
+            "create",
+            "list",
+            "get",
+            "update",
+            "patch"
+          ],
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "secrets",
+            "endpoints",
+            "pods/status",
+            "events"
+          ]
+        }
+      },
+      "notes": {
+        "conflicts": [],
+        "orphans": [],
+        "crossNamespace": []
+      },
+      "sub_workloads": [],
+      "parent_workload": null,
+      "workload_type": "controller"
+    }
+  },
+  {
+    "source_file": "workload_maposcal-demo/CronJob/database-backup",
+    "content": "Workload: maposcal-demo/CronJob/database-backup\nNamespace: maposcal-demo\nController: CronJob database-backup\nType: controller\nSelectors: {}\n",
+    "summary": "K8s workload: maposcal-demo/CronJob/database-backup",
+    "workload_id": "maposcal-demo/CronJob/database-backup",
+    "workload_data": {
+      "id": "maposcal-demo/CronJob/database-backup",
+      "namespace": "maposcal-demo",
+      "controller": {
+        "kind": "CronJob",
+        "name": "database-backup"
+      },
+      "selectors": {},
+      "services": [],
+      "ingress": [],
+      "configMaps": [],
+      "secrets": [],
+      "serviceAccount": null,
+      "sharedRefs": [],
+      "pods": {
+        "materialized": false,
+        "items": [],
+        "template_labels": {}
+      },
+      "replicaSets": [],
+      "jobs": [],
+      "storage": {
+        "pvcs": [],
+        "pvs": [],
+        "storageClasses": []
+      },
+      "resilience": {
+        "hpas": [],
+        "pdbs": [],
+        "networkPolicies": []
+      },
+      "rbac": {
+        "serviceAccounts": [],
+        "roleBindings": [],
+        "roles": [],
+        "clusterRoleBindings": [],
+        "clusterRoles": [],
+        "effectiveRules": {
+          "verbs": [],
+          "apiGroups": [],
+          "resources": []
+        }
+      },
+      "notes": {
+        "conflicts": [],
+        "orphans": [],
+        "crossNamespace": []
+      },
+      "sub_workloads": [],
+      "parent_workload": null,
+      "workload_type": "controller"
+    }
+  },
+  {
+    "source_file": "workload_maposcal-demo/Deployment/webapp-frontend",
+    "content": "Workload: maposcal-demo/Deployment/webapp-frontend\nNamespace: maposcal-demo\nController: Deployment webapp-frontend\nType: controller\nSelectors: {'app': 'webapp', 'component': 'frontend', 'tier': 'web', 'version': 'v1.0.0'}\n\nSub-workloads: maposcal-demo/Service/webapp-service\n\nServices:\n  - webapp-service: {'app': 'webapp', 'component': 'frontend', 'tier': 'web'}\n\nIngress:\n  - webapp-ingress: ['webapp-service']\n  - shared-ingress: ['webapp-service', 'shared-service']\n\nConfigMaps:\n  - nginx-config: ['default.conf']\n  - webapp-config: ['nginx.conf', 'app.config']\n\nSecrets:\n  - webapp-secrets: Opaque\n\nServiceAccount: webapp-sa\n\nShared Resources:\n  - Service:webapp-service\n  - Ingress:webapp-ingress\n  - Ingress:shared-ingress\n  - ConfigMap:nginx-config\n  - ConfigMap:webapp-config\n  - Secret:webapp-secrets\nStorage:\n  - PVC: webapp-data-pvc\n\nResilience:\n  - HPA: webapp-hpa\n\nRBAC:\n  - ServiceAccount: webapp-sa\n  - RoleBinding: webapp-role-binding\n  - RoleBinding: shared-role-binding\n  - Role: webapp-role\n  - Role: shared-role\n",
+    "summary": "K8s workload: maposcal-demo/Deployment/webapp-frontend",
+    "workload_id": "maposcal-demo/Deployment/webapp-frontend",
+    "workload_data": {
+      "id": "maposcal-demo/Deployment/webapp-frontend",
+      "namespace": "maposcal-demo",
+      "controller": {
+        "kind": "Deployment",
+        "name": "webapp-frontend"
+      },
+      "selectors": {
+        "app": "webapp",
+        "component": "frontend",
+        "tier": "web",
+        "version": "v1.0.0"
+      },
+      "services": [
+        {
+          "name": "webapp-service",
+          "selectors": {
+            "app": "webapp",
+            "component": "frontend",
+            "tier": "web"
+          },
+          "ports": [
+            {
+              "port": 80,
+              "targetPort": 80,
+              "protocol": "TCP",
+              "name": "http"
+            }
+          ]
+        }
+      ],
+      "ingress": [
+        {
+          "name": "webapp-ingress",
+          "backend_services": [
+            "webapp-service"
+          ]
+        },
+        {
+          "name": "shared-ingress",
+          "backend_services": [
+            "webapp-service",
+            "shared-service"
+          ]
+        }
+      ],
+      "configMaps": [
+        {
+          "name": "nginx-config",
+          "data_keys": [
+            "default.conf"
+          ]
+        },
+        {
+          "name": "webapp-config",
+          "data_keys": [
+            "nginx.conf",
+            "app.config"
+          ]
+        }
+      ],
+      "secrets": [
+        {
+          "name": "webapp-secrets",
+          "type": "Opaque"
+        }
+      ],
+      "serviceAccount": {
+        "name": "webapp-sa",
+        "automountServiceAccountToken": true
+      },
+      "sharedRefs": [
+        "Service:webapp-service",
+        "Ingress:webapp-ingress",
+        "Ingress:shared-ingress",
+        "ConfigMap:nginx-config",
+        "ConfigMap:webapp-config",
+        "Secret:webapp-secrets"
+      ],
+      "pods": {
+        "materialized": false,
+        "items": [],
+        "template_labels": {
+          "app": "webapp",
+          "component": "frontend",
+          "tier": "web",
+          "version": "v1.0.0"
+        }
+      },
+      "replicaSets": [],
+      "jobs": [],
+      "storage": {
+        "pvcs": [
+          {
+            "name": "webapp-data-pvc",
+            "storageClassName": "fast-ssd",
+            "accessModes": [
+              "ReadWriteOnce"
+            ]
+          }
+        ],
+        "pvs": [],
+        "storageClasses": []
+      },
+      "resilience": {
+        "hpas": [
+          {
+            "name": "webapp-hpa",
+            "targetRef": {
+              "apiVersion": "apps/v1",
+              "kind": "Deployment",
+              "name": "webapp-frontend"
+            },
+            "minReplicas": 2,
+            "maxReplicas": 10
+          }
+        ],
+        "pdbs": [],
+        "networkPolicies": []
+      },
+      "rbac": {
+        "serviceAccounts": [
+          {
+            "name": "webapp-sa",
+            "automountServiceAccountToken": true
+          }
+        ],
+        "roleBindings": [
+          {
+            "name": "webapp-role-binding",
+            "roleRef": {
+              "kind": "Role",
+              "name": "webapp-role",
+              "apiGroup": "rbac.authorization.k8s.io"
+            }
+          },
+          {
+            "name": "shared-role-binding",
+            "roleRef": {
+              "kind": "Role",
+              "name": "shared-role",
+              "apiGroup": "rbac.authorization.k8s.io"
+            }
+          }
+        ],
+        "roles": [
+          {
+            "name": "webapp-role",
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods",
+                  "services",
+                  "configmaps",
+                  "secrets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/log"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/status"
+                ],
+                "verbs": [
+                  "get",
+                  "patch",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "create",
+                  "patch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "autoscaling"
+                ],
+                "resources": [
+                  "horizontalpodautoscalers"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "shared-role",
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods",
+                  "services",
+                  "configmaps",
+                  "secrets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/log"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              }
+            ]
+          }
+        ],
+        "clusterRoleBindings": [],
+        "clusterRoles": [],
+        "effectiveRules": {
+          "verbs": [
+            "watch",
+            "create",
+            "list",
+            "get",
+            "update",
+            "patch"
+          ],
+          "apiGroups": [
+            "",
+            "autoscaling"
+          ],
+          "resources": [
+            "horizontalpodautoscalers",
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "secrets",
+            "pods/status",
+            "events"
+          ]
+        }
+      },
+      "notes": {
+        "conflicts": [],
+        "orphans": [],
+        "crossNamespace": []
+      },
+      "sub_workloads": [
+        "maposcal-demo/Service/webapp-service"
+      ],
+      "parent_workload": null,
+      "workload_type": "controller"
+    }
+  },
+  {
+    "source_file": "workload_maposcal-demo/StatefulSet/postgres-db",
+    "content": "Workload: maposcal-demo/StatefulSet/postgres-db\nNamespace: maposcal-demo\nController: StatefulSet postgres-db\nType: controller\nSelectors: {'app': 'database', 'component': 'postgres', 'tier': 'data', 'version': 'v13.0'}\n\nSub-workloads: maposcal-demo/Service/postgres-service\n\nServices:\n  - postgres-service: {'app': 'database', 'component': 'postgres', 'tier': 'data'}\n\nConfigMaps:\n  - postgres-config: ['postgresql.conf']\n\nSecrets:\n  - postgres-secrets: Opaque\n\nServiceAccount: postgres-sa\n\nShared Resources:\n  - Service:postgres-service\n  - ConfigMap:postgres-config\n  - Secret:postgres-secrets\nRBAC:\n  - ServiceAccount: postgres-sa\n  - RoleBinding: postgres-role-binding\n  - RoleBinding: shared-role-binding\n  - Role: postgres-role\n  - Role: shared-role\n",
+    "summary": "K8s workload: maposcal-demo/StatefulSet/postgres-db",
+    "workload_id": "maposcal-demo/StatefulSet/postgres-db",
+    "workload_data": {
+      "id": "maposcal-demo/StatefulSet/postgres-db",
+      "namespace": "maposcal-demo",
+      "controller": {
+        "kind": "StatefulSet",
+        "name": "postgres-db"
+      },
+      "selectors": {
+        "app": "database",
+        "component": "postgres",
+        "tier": "data",
+        "version": "v13.0"
+      },
+      "services": [
+        {
+          "name": "postgres-service",
+          "selectors": {
+            "app": "database",
+            "component": "postgres",
+            "tier": "data"
+          },
+          "ports": [
+            {
+              "port": 5432,
+              "targetPort": 5432,
+              "protocol": "TCP",
+              "name": "postgres"
+            }
+          ]
+        }
+      ],
+      "ingress": [],
+      "configMaps": [
+        {
+          "name": "postgres-config",
+          "data_keys": [
+            "postgresql.conf"
+          ]
+        }
+      ],
+      "secrets": [
+        {
+          "name": "postgres-secrets",
+          "type": "Opaque"
+        }
+      ],
+      "serviceAccount": {
+        "name": "postgres-sa",
+        "automountServiceAccountToken": false
+      },
+      "sharedRefs": [
+        "Service:postgres-service",
+        "ConfigMap:postgres-config",
+        "Secret:postgres-secrets"
+      ],
+      "pods": {
+        "materialized": false,
+        "items": [],
+        "template_labels": {
+          "app": "database",
+          "component": "postgres",
+          "tier": "data",
+          "version": "v13.0"
+        }
+      },
+      "replicaSets": [],
+      "jobs": [],
+      "storage": {
+        "pvcs": [],
+        "pvs": [],
+        "storageClasses": []
+      },
+      "resilience": {
+        "hpas": [],
+        "pdbs": [],
+        "networkPolicies": []
+      },
+      "rbac": {
+        "serviceAccounts": [
+          {
+            "name": "postgres-sa",
+            "automountServiceAccountToken": false
+          }
+        ],
+        "roleBindings": [
+          {
+            "name": "postgres-role-binding",
+            "roleRef": {
+              "kind": "Role",
+              "name": "postgres-role",
+              "apiGroup": "rbac.authorization.k8s.io"
+            }
+          },
+          {
+            "name": "shared-role-binding",
+            "roleRef": {
+              "kind": "Role",
+              "name": "shared-role",
+              "apiGroup": "rbac.authorization.k8s.io"
+            }
+          }
+        ],
+        "roles": [
+          {
+            "name": "postgres-role",
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods",
+                  "services",
+                  "configmaps",
+                  "secrets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/log"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/status"
+                ],
+                "verbs": [
+                  "get",
+                  "patch",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "create",
+                  "patch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "persistentvolumeclaims"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "shared-role",
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods",
+                  "services",
+                  "configmaps",
+                  "secrets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/log"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              }
+            ]
+          }
+        ],
+        "clusterRoleBindings": [],
+        "clusterRoles": [],
+        "effectiveRules": {
+          "verbs": [
+            "watch",
+            "create",
+            "list",
+            "get",
+            "update",
+            "patch"
+          ],
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "persistentvolumeclaims",
+            "services",
+            "configmaps",
+            "secrets",
+            "pods/status",
+            "events"
+          ]
+        }
+      },
+      "notes": {
+        "conflicts": [],
+        "orphans": [],
+        "crossNamespace": []
+      },
+      "sub_workloads": [
+        "maposcal-demo/Service/postgres-service"
+      ],
+      "parent_workload": null,
+      "workload_type": "controller"
+    }
+  },
+  {
+    "source_file": "workload_monitoring/DaemonSet/node-exporter",
+    "content": "Workload: monitoring/DaemonSet/node-exporter\nNamespace: monitoring\nController: DaemonSet node-exporter\nType: controller\nSelectors: {'app': 'monitoring', 'component': 'node-exporter', 'tier': 'monitoring', 'version': 'v1.3.1'}\n\nSub-workloads: monitoring/Service/node-exporter-service\n\nServices:\n  - node-exporter-service: {'app': 'monitoring', 'component': 'node-exporter', 'tier': 'monitoring'}\n\nConfigMaps:\n  - node-exporter-config: ['config.yml']\n\nServiceAccount: monitoring-sa\n\nShared Resources:\n  - Service:node-exporter-service\n  - ConfigMap:node-exporter-config\nRBAC:\n  - ServiceAccount: monitoring-sa\n  - ClusterRoleBinding: node-exporter-cluster-role-binding\n  - ClusterRoleBinding: shared-cluster-role-binding\n  - ClusterRole: node-exporter-cluster-role\n  - ClusterRole: shared-cluster-role\n",
+    "summary": "K8s workload: monitoring/DaemonSet/node-exporter",
+    "workload_id": "monitoring/DaemonSet/node-exporter",
+    "workload_data": {
+      "id": "monitoring/DaemonSet/node-exporter",
+      "namespace": "monitoring",
+      "controller": {
+        "kind": "DaemonSet",
+        "name": "node-exporter"
+      },
+      "selectors": {
+        "app": "monitoring",
+        "component": "node-exporter",
+        "tier": "monitoring",
+        "version": "v1.3.1"
+      },
+      "services": [
+        {
+          "name": "node-exporter-service",
+          "selectors": {
+            "app": "monitoring",
+            "component": "node-exporter",
+            "tier": "monitoring"
+          },
+          "ports": [
+            {
+              "port": 9100,
+              "targetPort": 9100,
+              "protocol": "TCP",
+              "name": "metrics"
+            }
+          ]
+        }
+      ],
+      "ingress": [],
+      "configMaps": [
+        {
+          "name": "node-exporter-config",
+          "data_keys": [
+            "config.yml"
+          ]
+        }
+      ],
+      "secrets": [],
+      "serviceAccount": {
+        "name": "monitoring-sa",
+        "automountServiceAccountToken": true
+      },
+      "sharedRefs": [
+        "Service:node-exporter-service",
+        "ConfigMap:node-exporter-config"
+      ],
+      "pods": {
+        "materialized": false,
+        "items": [],
+        "template_labels": {
+          "app": "monitoring",
+          "component": "node-exporter",
+          "tier": "monitoring",
+          "version": "v1.3.1"
+        }
+      },
+      "replicaSets": [],
+      "jobs": [],
+      "storage": {
+        "pvcs": [],
+        "pvs": [],
+        "storageClasses": []
+      },
+      "resilience": {
+        "hpas": [],
+        "pdbs": [],
+        "networkPolicies": []
+      },
+      "rbac": {
+        "serviceAccounts": [
+          {
+            "name": "monitoring-sa",
+            "automountServiceAccountToken": true
+          }
+        ],
+        "roleBindings": [],
+        "roles": [],
+        "clusterRoleBindings": [
+          {
+            "name": "node-exporter-cluster-role-binding",
+            "roleRef": {
+              "kind": "ClusterRole",
+              "name": "node-exporter-cluster-role",
+              "apiGroup": "rbac.authorization.k8s.io"
+            }
+          },
+          {
+            "name": "shared-cluster-role-binding",
+            "roleRef": {
+              "kind": "ClusterRole",
+              "name": "shared-cluster-role",
+              "apiGroup": "rbac.authorization.k8s.io"
+            }
+          }
+        ],
+        "clusterRoles": [
+          {
+            "name": "node-exporter-cluster-role",
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "nodes",
+                  "nodes/proxy",
+                  "services",
+                  "endpoints",
+                  "pods"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "nodes/metrics"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "nodes/stats"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "metrics.k8s.io"
+                ],
+                "resources": [
+                  "nodes",
+                  "pods"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "shared-cluster-role",
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "nodes",
+                  "namespaces"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "metrics.k8s.io"
+                ],
+                "resources": [
+                  "pods",
+                  "nodes"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              }
+            ]
+          }
+        ],
+        "effectiveRules": {
+          "verbs": [
+            "get",
+            "watch",
+            "list"
+          ],
+          "apiGroups": [
+            "",
+            "metrics.k8s.io"
+          ],
+          "resources": [
+            "nodes",
+            "nodes/stats",
+            "pods",
+            "namespaces",
+            "services",
+            "nodes/proxy",
+            "nodes/metrics",
+            "endpoints",
+            "events"
+          ]
+        }
+      },
+      "notes": {
+        "conflicts": [],
+        "orphans": [],
+        "crossNamespace": []
+      },
+      "sub_workloads": [
+        "monitoring/Service/node-exporter-service"
+      ],
+      "parent_workload": null,
+      "workload_type": "controller"
+    }
+  },
+  {
+    "source_file": "workload_monitoring/Service/node-exporter-service",
+    "content": "Workload: monitoring/Service/node-exporter-service\nNamespace: monitoring\nController: Service node-exporter-service\nType: service\nSelectors: {'app': 'monitoring', 'component': 'node-exporter', 'tier': 'monitoring'}\n\nParent: monitoring/DaemonSet/node-exporter\n\nServices:\n  - node-exporter-service: {'app': 'monitoring', 'component': 'node-exporter', 'tier': 'monitoring'}\n\nConfigMaps:\n  - node-exporter-config: ['config.yml']\n\nServiceAccount: monitoring-sa\n\nShared Resources:\n  - Service:node-exporter-service\n  - ConfigMap:node-exporter-config\nRBAC:\n  - ServiceAccount: monitoring-sa\n  - ClusterRoleBinding: node-exporter-cluster-role-binding\n  - ClusterRoleBinding: shared-cluster-role-binding\n  - ClusterRole: node-exporter-cluster-role\n  - ClusterRole: shared-cluster-role\n",
+    "summary": "K8s workload: monitoring/Service/node-exporter-service",
+    "workload_id": "monitoring/Service/node-exporter-service",
+    "workload_data": {
+      "id": "monitoring/Service/node-exporter-service",
+      "namespace": "monitoring",
+      "controller": {
+        "kind": "Service",
+        "name": "node-exporter-service"
+      },
+      "selectors": {
+        "app": "monitoring",
+        "component": "node-exporter",
+        "tier": "monitoring"
+      },
+      "services": [
+        {
+          "kind": "Service",
+          "name": "node-exporter-service",
+          "namespace": "monitoring",
+          "labels": {
+            "app": "monitoring",
+            "component": "node-exporter",
+            "tier": "monitoring"
+          },
+          "annotations": {},
+          "source_file": "examples/k8s-sample/04-monitoring-daemonset.yaml",
+          "raw_resource": {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+              "name": "node-exporter-service",
+              "namespace": "monitoring",
+              "labels": {
+                "app": "monitoring",
+                "component": "node-exporter",
+                "tier": "monitoring"
+              }
+            },
+            "spec": {
+              "type": "ClusterIP",
+              "ports": [
+                {
+                  "port": 9100,
+                  "targetPort": 9100,
+                  "protocol": "TCP",
+                  "name": "metrics"
+                }
+              ],
+              "selector": {
+                "app": "monitoring",
+                "component": "node-exporter",
+                "tier": "monitoring"
+              }
+            }
+          },
+          "selectors": {
+            "app": "monitoring",
+            "component": "node-exporter",
+            "tier": "monitoring"
+          },
+          "ports": [
+            {
+              "port": 9100,
+              "targetPort": 9100,
+              "protocol": "TCP",
+              "name": "metrics"
+            }
+          ]
+        }
+      ],
+      "ingress": [],
+      "configMaps": [
+        {
+          "name": "node-exporter-config",
+          "data_keys": [
+            "config.yml"
+          ]
+        }
+      ],
+      "secrets": [],
+      "serviceAccount": {
+        "name": "monitoring-sa",
+        "automountServiceAccountToken": true
+      },
+      "sharedRefs": [
+        "Service:node-exporter-service",
+        "ConfigMap:node-exporter-config"
+      ],
+      "pods": {
+        "materialized": false,
+        "items": [],
+        "template_labels": {}
+      },
+      "replicaSets": [],
+      "jobs": [],
+      "storage": {
+        "pvcs": [],
+        "pvs": [],
+        "storageClasses": []
+      },
+      "resilience": {
+        "hpas": [],
+        "pdbs": [],
+        "networkPolicies": []
+      },
+      "rbac": {
+        "serviceAccounts": [
+          {
+            "name": "monitoring-sa",
+            "automountServiceAccountToken": true
+          }
+        ],
+        "roleBindings": [],
+        "roles": [],
+        "clusterRoleBindings": [
+          {
+            "name": "node-exporter-cluster-role-binding",
+            "roleRef": {
+              "kind": "ClusterRole",
+              "name": "node-exporter-cluster-role",
+              "apiGroup": "rbac.authorization.k8s.io"
+            }
+          },
+          {
+            "name": "shared-cluster-role-binding",
+            "roleRef": {
+              "kind": "ClusterRole",
+              "name": "shared-cluster-role",
+              "apiGroup": "rbac.authorization.k8s.io"
+            }
+          }
+        ],
+        "clusterRoles": [
+          {
+            "name": "node-exporter-cluster-role",
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "nodes",
+                  "nodes/proxy",
+                  "services",
+                  "endpoints",
+                  "pods"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "nodes/metrics"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "nodes/stats"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "metrics.k8s.io"
+                ],
+                "resources": [
+                  "nodes",
+                  "pods"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "shared-cluster-role",
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "nodes",
+                  "namespaces"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "metrics.k8s.io"
+                ],
+                "resources": [
+                  "pods",
+                  "nodes"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              }
+            ]
+          }
+        ],
+        "effectiveRules": {
+          "verbs": [
+            "get",
+            "watch",
+            "list"
+          ],
+          "apiGroups": [
+            "",
+            "metrics.k8s.io"
+          ],
+          "resources": [
+            "nodes",
+            "nodes/stats",
+            "pods",
+            "namespaces",
+            "services",
+            "nodes/proxy",
+            "nodes/metrics",
+            "endpoints",
+            "events"
+          ]
+        }
+      },
+      "notes": {
+        "conflicts": [],
+        "orphans": [],
+        "crossNamespace": []
+      },
+      "sub_workloads": [],
+      "parent_workload": "monitoring/DaemonSet/node-exporter",
+      "workload_type": "service"
+    }
+  },
+  {
+    "source_file": "workload_maposcal-demo/Service/webapp-service",
+    "content": "Workload: maposcal-demo/Service/webapp-service\nNamespace: maposcal-demo\nController: Service webapp-service\nType: service\nSelectors: {'app': 'webapp', 'component': 'frontend', 'tier': 'web'}\n\nParent: maposcal-demo/Deployment/webapp-frontend\n\nSub-workloads: maposcal-demo/Ingress/webapp-ingress, maposcal-demo/Ingress/shared-ingress\n\nServices:\n  - webapp-service: {'app': 'webapp', 'component': 'frontend', 'tier': 'web'}\n\nConfigMaps:\n  - nginx-config: ['default.conf']\n  - webapp-config: ['nginx.conf', 'app.config']\n\nSecrets:\n  - webapp-secrets: Opaque\n\nServiceAccount: webapp-sa\n\nShared Resources:\n  - Service:webapp-service\n  - ConfigMap:nginx-config\n  - ConfigMap:webapp-config\n  - Secret:webapp-secrets\nRBAC:\n  - ServiceAccount: webapp-sa\n  - RoleBinding: webapp-role-binding\n  - RoleBinding: shared-role-binding\n  - Role: webapp-role\n  - Role: shared-role\n",
+    "summary": "K8s workload: maposcal-demo/Service/webapp-service",
+    "workload_id": "maposcal-demo/Service/webapp-service",
+    "workload_data": {
+      "id": "maposcal-demo/Service/webapp-service",
+      "namespace": "maposcal-demo",
+      "controller": {
+        "kind": "Service",
+        "name": "webapp-service"
+      },
+      "selectors": {
+        "app": "webapp",
+        "component": "frontend",
+        "tier": "web"
+      },
+      "services": [
+        {
+          "kind": "Service",
+          "name": "webapp-service",
+          "namespace": "maposcal-demo",
+          "labels": {
+            "app": "webapp",
+            "component": "frontend"
+          },
+          "annotations": {},
+          "source_file": "examples/k8s-sample/02-webapp-deployment.yaml",
+          "raw_resource": {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+              "name": "webapp-service",
+              "namespace": "maposcal-demo",
+              "labels": {
+                "app": "webapp",
+                "component": "frontend"
+              }
+            },
+            "spec": {
+              "type": "ClusterIP",
+              "ports": [
+                {
+                  "port": 80,
+                  "targetPort": 80,
+                  "protocol": "TCP",
+                  "name": "http"
+                }
+              ],
+              "selector": {
+                "app": "webapp",
+                "component": "frontend",
+                "tier": "web"
+              }
+            }
+          },
+          "selectors": {
+            "app": "webapp",
+            "component": "frontend",
+            "tier": "web"
+          },
+          "ports": [
+            {
+              "port": 80,
+              "targetPort": 80,
+              "protocol": "TCP",
+              "name": "http"
+            }
+          ]
+        }
+      ],
+      "ingress": [],
+      "configMaps": [
+        {
+          "name": "nginx-config",
+          "data_keys": [
+            "default.conf"
+          ]
+        },
+        {
+          "name": "webapp-config",
+          "data_keys": [
+            "nginx.conf",
+            "app.config"
+          ]
+        }
+      ],
+      "secrets": [
+        {
+          "name": "webapp-secrets",
+          "type": "Opaque"
+        }
+      ],
+      "serviceAccount": {
+        "name": "webapp-sa",
+        "automountServiceAccountToken": true
+      },
+      "sharedRefs": [
+        "Service:webapp-service",
+        "ConfigMap:nginx-config",
+        "ConfigMap:webapp-config",
+        "Secret:webapp-secrets"
+      ],
+      "pods": {
+        "materialized": false,
+        "items": [],
+        "template_labels": {}
+      },
+      "replicaSets": [],
+      "jobs": [],
+      "storage": {
+        "pvcs": [],
+        "pvs": [],
+        "storageClasses": []
+      },
+      "resilience": {
+        "hpas": [],
+        "pdbs": [],
+        "networkPolicies": []
+      },
+      "rbac": {
+        "serviceAccounts": [
+          {
+            "name": "webapp-sa",
+            "automountServiceAccountToken": true
+          }
+        ],
+        "roleBindings": [
+          {
+            "name": "webapp-role-binding",
+            "roleRef": {
+              "kind": "Role",
+              "name": "webapp-role",
+              "apiGroup": "rbac.authorization.k8s.io"
+            }
+          },
+          {
+            "name": "shared-role-binding",
+            "roleRef": {
+              "kind": "Role",
+              "name": "shared-role",
+              "apiGroup": "rbac.authorization.k8s.io"
+            }
+          }
+        ],
+        "roles": [
+          {
+            "name": "webapp-role",
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods",
+                  "services",
+                  "configmaps",
+                  "secrets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/log"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/status"
+                ],
+                "verbs": [
+                  "get",
+                  "patch",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "create",
+                  "patch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  "autoscaling"
+                ],
+                "resources": [
+                  "horizontalpodautoscalers"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "shared-role",
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods",
+                  "services",
+                  "configmaps",
+                  "secrets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/log"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              }
+            ]
+          }
+        ],
+        "clusterRoleBindings": [],
+        "clusterRoles": [],
+        "effectiveRules": {
+          "verbs": [
+            "watch",
+            "create",
+            "list",
+            "get",
+            "update",
+            "patch"
+          ],
+          "apiGroups": [
+            "",
+            "autoscaling"
+          ],
+          "resources": [
+            "horizontalpodautoscalers",
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "secrets",
+            "pods/status",
+            "events"
+          ]
+        }
+      },
+      "notes": {
+        "conflicts": [],
+        "orphans": [],
+        "crossNamespace": []
+      },
+      "sub_workloads": [
+        "maposcal-demo/Ingress/webapp-ingress",
+        "maposcal-demo/Ingress/shared-ingress"
+      ],
+      "parent_workload": "maposcal-demo/Deployment/webapp-frontend",
+      "workload_type": "service"
+    }
+  },
+  {
+    "source_file": "workload_maposcal-demo/Service/postgres-service",
+    "content": "Workload: maposcal-demo/Service/postgres-service\nNamespace: maposcal-demo\nController: Service postgres-service\nType: service\nSelectors: {'app': 'database', 'component': 'postgres', 'tier': 'data'}\n\nParent: maposcal-demo/StatefulSet/postgres-db\n\nServices:\n  - postgres-service: {'app': 'database', 'component': 'postgres', 'tier': 'data'}\n\nConfigMaps:\n  - postgres-config: ['postgresql.conf']\n\nSecrets:\n  - postgres-secrets: Opaque\n\nServiceAccount: postgres-sa\n\nShared Resources:\n  - Service:postgres-service\n  - ConfigMap:postgres-config\n  - Secret:postgres-secrets\nRBAC:\n  - ServiceAccount: postgres-sa\n  - RoleBinding: postgres-role-binding\n  - RoleBinding: shared-role-binding\n  - Role: postgres-role\n  - Role: shared-role\n",
+    "summary": "K8s workload: maposcal-demo/Service/postgres-service",
+    "workload_id": "maposcal-demo/Service/postgres-service",
+    "workload_data": {
+      "id": "maposcal-demo/Service/postgres-service",
+      "namespace": "maposcal-demo",
+      "controller": {
+        "kind": "Service",
+        "name": "postgres-service"
+      },
+      "selectors": {
+        "app": "database",
+        "component": "postgres",
+        "tier": "data"
+      },
+      "services": [
+        {
+          "kind": "Service",
+          "name": "postgres-service",
+          "namespace": "maposcal-demo",
+          "labels": {
+            "app": "database",
+            "component": "postgres",
+            "tier": "data"
+          },
+          "annotations": {},
+          "source_file": "examples/k8s-sample/03-database-statefulset.yaml",
+          "raw_resource": {
+            "apiVersion": "v1",
+            "kind": "Service",
+            "metadata": {
+              "name": "postgres-service",
+              "namespace": "maposcal-demo",
+              "labels": {
+                "app": "database",
+                "component": "postgres",
+                "tier": "data"
+              }
+            },
+            "spec": {
+              "type": "ClusterIP",
+              "ports": [
+                {
+                  "port": 5432,
+                  "targetPort": 5432,
+                  "protocol": "TCP",
+                  "name": "postgres"
+                }
+              ],
+              "selector": {
+                "app": "database",
+                "component": "postgres",
+                "tier": "data"
+              }
+            }
+          },
+          "selectors": {
+            "app": "database",
+            "component": "postgres",
+            "tier": "data"
+          },
+          "ports": [
+            {
+              "port": 5432,
+              "targetPort": 5432,
+              "protocol": "TCP",
+              "name": "postgres"
+            }
+          ]
+        }
+      ],
+      "ingress": [],
+      "configMaps": [
+        {
+          "name": "postgres-config",
+          "data_keys": [
+            "postgresql.conf"
+          ]
+        }
+      ],
+      "secrets": [
+        {
+          "name": "postgres-secrets",
+          "type": "Opaque"
+        }
+      ],
+      "serviceAccount": {
+        "name": "postgres-sa",
+        "automountServiceAccountToken": false
+      },
+      "sharedRefs": [
+        "Service:postgres-service",
+        "ConfigMap:postgres-config",
+        "Secret:postgres-secrets"
+      ],
+      "pods": {
+        "materialized": false,
+        "items": [],
+        "template_labels": {}
+      },
+      "replicaSets": [],
+      "jobs": [],
+      "storage": {
+        "pvcs": [],
+        "pvs": [],
+        "storageClasses": []
+      },
+      "resilience": {
+        "hpas": [],
+        "pdbs": [],
+        "networkPolicies": []
+      },
+      "rbac": {
+        "serviceAccounts": [
+          {
+            "name": "postgres-sa",
+            "automountServiceAccountToken": false
+          }
+        ],
+        "roleBindings": [
+          {
+            "name": "postgres-role-binding",
+            "roleRef": {
+              "kind": "Role",
+              "name": "postgres-role",
+              "apiGroup": "rbac.authorization.k8s.io"
+            }
+          },
+          {
+            "name": "shared-role-binding",
+            "roleRef": {
+              "kind": "Role",
+              "name": "shared-role",
+              "apiGroup": "rbac.authorization.k8s.io"
+            }
+          }
+        ],
+        "roles": [
+          {
+            "name": "postgres-role",
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods",
+                  "services",
+                  "configmaps",
+                  "secrets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/log"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/status"
+                ],
+                "verbs": [
+                  "get",
+                  "patch",
+                  "update"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "create",
+                  "patch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "persistentvolumeclaims"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "shared-role",
+            "rules": [
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods",
+                  "services",
+                  "configmaps",
+                  "secrets"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "pods/log"
+                ],
+                "verbs": [
+                  "get",
+                  "list"
+                ]
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "resources": [
+                  "events"
+                ],
+                "verbs": [
+                  "get",
+                  "list",
+                  "watch"
+                ]
+              }
+            ]
+          }
+        ],
+        "clusterRoleBindings": [],
+        "clusterRoles": [],
+        "effectiveRules": {
+          "verbs": [
+            "watch",
+            "create",
+            "list",
+            "get",
+            "update",
+            "patch"
+          ],
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "persistentvolumeclaims",
+            "services",
+            "configmaps",
+            "secrets",
+            "pods/status",
+            "events"
+          ]
+        }
+      },
+      "notes": {
+        "conflicts": [],
+        "orphans": [],
+        "crossNamespace": []
+      },
+      "sub_workloads": [],
+      "parent_workload": "maposcal-demo/StatefulSet/postgres-db",
+      "workload_type": "service"
+    }
+  },
+  {
+    "source_file": "workload_maposcal-demo/Ingress/webapp-ingress",
+    "content": "Workload: maposcal-demo/Ingress/webapp-ingress\nNamespace: maposcal-demo\nController: Ingress webapp-ingress\nType: ingress\nSelectors: {}\n\nParent: maposcal-demo/Service/webapp-service\n\nIngress:\n  - webapp-ingress: ['webapp-service']\n\nShared Resources:\n  - Ingress:webapp-ingress",
+    "summary": "K8s workload: maposcal-demo/Ingress/webapp-ingress",
+    "workload_id": "maposcal-demo/Ingress/webapp-ingress",
+    "workload_data": {
+      "id": "maposcal-demo/Ingress/webapp-ingress",
+      "namespace": "maposcal-demo",
+      "controller": {
+        "kind": "Ingress",
+        "name": "webapp-ingress"
+      },
+      "selectors": {},
+      "services": [],
+      "ingress": [
+        {
+          "kind": "Ingress",
+          "name": "webapp-ingress",
+          "namespace": "maposcal-demo",
+          "labels": {},
+          "annotations": {
+            "nginx.ingress.kubernetes.io/rewrite-target": "/",
+            "nginx.ingress.kubernetes.io/ssl-redirect": "false"
+          },
+          "source_file": "examples/k8s-sample/02-webapp-deployment.yaml",
+          "raw_resource": {
+            "apiVersion": "networking.k8s.io/v1",
+            "kind": "Ingress",
+            "metadata": {
+              "name": "webapp-ingress",
+              "namespace": "maposcal-demo",
+              "annotations": {
+                "nginx.ingress.kubernetes.io/rewrite-target": "/",
+                "nginx.ingress.kubernetes.io/ssl-redirect": "false"
+              }
+            },
+            "spec": {
+              "rules": [
+                {
+                  "host": "webapp.example.com",
+                  "http": {
+                    "paths": [
+                      {
+                        "path": "/",
+                        "pathType": "Prefix",
+                        "backend": {
+                          "service": {
+                            "name": "webapp-service",
+                            "port": {
+                              "number": 80
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "backend_services": [
+            "webapp-service"
+          ]
+        }
+      ],
+      "configMaps": [],
+      "secrets": [],
+      "serviceAccount": null,
+      "sharedRefs": [
+        "Ingress:webapp-ingress"
+      ],
+      "pods": {
+        "materialized": false,
+        "items": [],
+        "template_labels": {}
+      },
+      "replicaSets": [],
+      "jobs": [],
+      "storage": {
+        "pvcs": [],
+        "pvs": [],
+        "storageClasses": []
+      },
+      "resilience": {
+        "hpas": [],
+        "pdbs": [],
+        "networkPolicies": []
+      },
+      "rbac": {
+        "serviceAccounts": [],
+        "roleBindings": [],
+        "roles": [],
+        "clusterRoleBindings": [],
+        "clusterRoles": [],
+        "effectiveRules": {
+          "verbs": [],
+          "apiGroups": [],
+          "resources": []
+        }
+      },
+      "notes": {
+        "conflicts": [],
+        "orphans": [],
+        "crossNamespace": []
+      },
+      "sub_workloads": [],
+      "parent_workload": "maposcal-demo/Service/webapp-service",
+      "workload_type": "ingress"
+    }
+  },
+  {
+    "source_file": "workload_maposcal-demo/Ingress/shared-ingress",
+    "content": "Workload: maposcal-demo/Ingress/shared-ingress\nNamespace: maposcal-demo\nController: Ingress shared-ingress\nType: ingress\nSelectors: {}\n\nParent: maposcal-demo/Service/webapp-service\n\nIngress:\n  - shared-ingress: ['webapp-service', 'shared-service']\n\nShared Resources:\n  - Ingress:shared-ingress",
+    "summary": "K8s workload: maposcal-demo/Ingress/shared-ingress",
+    "workload_id": "maposcal-demo/Ingress/shared-ingress",
+    "workload_data": {
+      "id": "maposcal-demo/Ingress/shared-ingress",
+      "namespace": "maposcal-demo",
+      "controller": {
+        "kind": "Ingress",
+        "name": "shared-ingress"
+      },
+      "selectors": {},
+      "services": [],
+      "ingress": [
+        {
+          "kind": "Ingress",
+          "name": "shared-ingress",
+          "namespace": "maposcal-demo",
+          "labels": {},
+          "annotations": {
+            "nginx.ingress.kubernetes.io/rewrite-target": "/",
+            "nginx.ingress.kubernetes.io/ssl-redirect": "false"
+          },
+          "source_file": "examples/k8s-sample/09-shared-resources.yaml",
+          "raw_resource": {
+            "apiVersion": "networking.k8s.io/v1",
+            "kind": "Ingress",
+            "metadata": {
+              "name": "shared-ingress",
+              "namespace": "maposcal-demo",
+              "annotations": {
+                "nginx.ingress.kubernetes.io/rewrite-target": "/",
+                "nginx.ingress.kubernetes.io/ssl-redirect": "false"
+              }
+            },
+            "spec": {
+              "rules": [
+                {
+                  "host": "shared.example.com",
+                  "http": {
+                    "paths": [
+                      {
+                        "path": "/webapp",
+                        "pathType": "Prefix",
+                        "backend": {
+                          "service": {
+                            "name": "webapp-service",
+                            "port": {
+                              "number": 80
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "path": "/api",
+                        "pathType": "Prefix",
+                        "backend": {
+                          "service": {
+                            "name": "shared-service",
+                            "port": {
+                              "number": 8080
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "backend_services": [
+            "webapp-service",
+            "shared-service"
+          ]
+        }
+      ],
+      "configMaps": [],
+      "secrets": [],
+      "serviceAccount": null,
+      "sharedRefs": [
+        "Ingress:shared-ingress"
+      ],
+      "pods": {
+        "materialized": false,
+        "items": [],
+        "template_labels": {}
+      },
+      "replicaSets": [],
+      "jobs": [],
+      "storage": {
+        "pvcs": [],
+        "pvs": [],
+        "storageClasses": []
+      },
+      "resilience": {
+        "hpas": [],
+        "pdbs": [],
+        "networkPolicies": []
+      },
+      "rbac": {
+        "serviceAccounts": [],
+        "roleBindings": [],
+        "roles": [],
+        "clusterRoleBindings": [],
+        "clusterRoles": [],
+        "effectiveRules": {
+          "verbs": [],
+          "apiGroups": [],
+          "resources": []
+        }
+      },
+      "notes": {
+        "conflicts": [],
+        "orphans": [],
+        "crossNamespace": []
+      },
+      "sub_workloads": [],
+      "parent_workload": "maposcal-demo/Service/webapp-service",
+      "workload_type": "ingress"
+    }
+  }
+]
